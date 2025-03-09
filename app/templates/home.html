@@ -1,0 +1,59 @@
+{# app/templates/home.html #}
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="language-switcher">
+    <a href="?lang=en"
+        class="lang-btn {% if g.lang_code == 'en' %}active{% endif %}">EN</a>
+    <a href="?lang=es"
+        class="lang-btn {% if g.lang_code == 'es' %}active{% endif %}">ES</a>
+</div>
+
+<div class="wedding-header">
+    <h1>Irene & Jaime</h1>
+    <p class="wedding-date">6 Junio, 2026</p>
+</div>
+
+<div class="tiles-container">
+    <a href="{{ url_for('rsvp.landing') }}" class="tile">
+        <i class="fas fa-envelope"></i>
+        <h2>RSVP</h2>
+        <p>Confirm your attendance</p>
+    </a>
+
+    <a href="{{ url_for('main.schedule') }}" class="tile">
+        <i class="fas fa-clock"></i>
+        <h2>Schedule</h2>
+        <p>View the wedding day timeline</p>
+    </a>
+
+    <a href="{{ url_for('main.venue') }}" class="tile">
+        <i class="fas fa-map-marker-alt"></i>
+        <h2>Venue</h2>
+        <p>Location and directions</p>
+    </a>
+
+    <a href="{{ url_for('main.accommodation') }}" class="tile">
+        <i class="fas fa-bed"></i>
+        <h2>Accommodation</h2>
+        <p>Where to stay</p>
+    </a>
+
+    <a href="{{ url_for('main.activities') }}" class="tile">
+        <i class="fas fa-umbrella-beach"></i>
+        <h2>Activities</h2>
+        <p>Things to do</p>
+    </a>
+
+    <a href="{{ url_for('main.gallery') }}" class="tile">
+        <i class="fas fa-images"></i>
+        <h2>Gallery</h2>
+        <p>Our photos</p>
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+﻿name,phone,email,has_plus_one,is_family,language
+John Doe,,john@example.com,TRUE,FALSE,en
+Jane Smith,,jane@example.com,FALSE,TRUE,es
+Family Group,,family@example.com,FALSE,TRUE,en
+test,12345,test@test.com,TRUE,TRUE,en

@@ -1,0 +1,16 @@
+{# app/templates/emails/invitation_en.html #}
+<!DOCTYPE html>
+<html>
+
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h1>Wedding Invitation</h1>
+    <p>Dear {{ name }},</p>
+    <p>We are delighted to invite you to our wedding celebration!</p>
+    <p>Please RSVP using the link below:</p>
+    <p><a href="{{ url_for('rsvp.rsvp_form', token=token, _external=True) }}"
+            style="background-color: #4CAF50; color: white; padding: 14px 20px; text-decoration: none; border-radius: 4px;">
+            RSVP Now
+        </a></p>
+</body>
+
+</html>

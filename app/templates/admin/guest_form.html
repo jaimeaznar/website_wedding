@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Add Guest</h2>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name"
+                                name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone
+                                Number</label>
+                            <input type="tel" class="form-control" id="phone"
+                                name="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email
+                                (optional)</label>
+                            <input type="email" class="form-control" id="email"
+                                name="email">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                    id="has_plus_one" name="has_plus_one">
+                                <label class="form-check-label"
+                                    for="has_plus_one">Has Plus One</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                    id="is_family" name="is_family">
+                                <label class="form-check-label"
+                                    for="is_family">Is Family</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="language" class="form-label">Preferred
+                                Language</label>
+                            <select class="form-select" id="language"
+                                name="language">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add
+                            Guest</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,364 @@
+{# app/templates/rsvp.html #}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            {% if show_warning %}
+            <div class="alert alert-warning mb-4">
+                <h4 class="alert-heading">Changes Restricted</h4>
+                <p>Changes are not possible within {{ config.WARNING_CUTOFF_DAYS
+                    }} days of the wedding date.</p>
+                <hr>
+                <p class="mb-0">Need assistance? Contact us at: {{ admin_phone
+                    }}</p>
+            </div>
+            {% endif %}
+
+
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">RSVP</h2>
+                    <p class="text-center">Welcome, {{ guest.name }}!</p>
+
+                    {% if rsvp and not rsvp.is_cancelled and rsvp.is_editable %}
+                    <div class="text-center mb-4">
+                        <p class="text-muted">Last updated: {{
+                            rsvp.last_updated.strftime('%Y-%m-%d %H:%M') }}</p>
+                        <form method="POST"
+                            action="{{ url_for('rsvp.cancel_rsvp', token=guest.token) }}"
+                            onsubmit="return confirm('Are you sure you want to cancel your RSVP? This action cannot be undone.');"
+                            class="d-inline">
+                            <button type="submit" class="btn btn-danger">Cancel
+                                RSVP</button>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    {% if rsvp and rsvp.is_cancelled %}
+                    <div class="alert alert-info mb-4">
+                        <h4 class="alert-heading">RSVP Cancelled</h4>
+                        <p>Your RSVP was cancelled on {{
+                            rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M') }}
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" id="rsvpForm" {% if readonly
+                        %}class="form-readonly" {% endif %}>
+                        <!-- Attendance Radio Buttons -->
+                        <div class="mb-4">
+                            <label class="form-label">Will you attend?*</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio"
+                                    name="is_attending" value="yes"
+                                    id="attending_yes" required {% if rsvp and
+                                    rsvp.is_attending %}checked{% endif %} {% if
+                                    readonly %}disabled{% endif %}>
+                                <label class="form-check-label"
+                                    for="attending_yes">Yes, I will
+                                    attend</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio"
+                                    name="is_attending" value="no"
+                                    id="attending_no" required {% if rsvp and
+                                    not rsvp.is_attending %}checked{% endif %}
+                                    {% if readonly %}disabled{% endif %}>
+                                <label class="form-check-label"
+                                    for="attending_no">No, I cannot
+                                    attend</label>
+                            </div>
+                        </div>
+
+                        <div id="attendance_details" class="attendance-section"
+                            style="display: none;">
+                            <!-- Hotel Information -->
+                            <div class="mb-3">
+                                <label for="hotel_name" class="form-label">Where
+                                    are you staying?</label>
+                                <input type="text" class="form-control"
+                                    id="hotel_name" name="hotel_name"
+                                    value="{{ rsvp.hotel_name if rsvp else '' }}"
+                                    placeholder="Enter hotel name or leave blank if undecided"
+                                    {% if readonly %}readonly{% endif %}>
+                            </div>
+
+                            <!-- Transport Options -->
+                            <div class="mb-3">
+                                <label class="form-label">Transport
+                                    Options</label>
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input transport-checkbox"
+                                        type="checkbox"
+                                        name="transport_to_church"
+                                        id="transport_to_church" {% if rsvp and
+                                        rsvp.transport_to_church %}checked{%
+                                        endif %} {% if readonly %}disabled{%
+                                        endif %}>
+                                    <label class="form-check-label"
+                                        for="transport_to_church">
+                                        Transport to church
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input transport-checkbox"
+                                        type="checkbox"
+                                        name="transport_to_hotel"
+                                        id="transport_to_hotel" {% if rsvp and
+                                        rsvp.transport_to_hotel %}checked{%
+                                        endif %} {% if readonly %}disabled{%
+                                        endif %}>
+                                    <label class="form-check-label"
+                                        for="transport_to_hotel">
+                                        Transport to hotel
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Allergens Section for Main Guest -->
+                            <div class="mb-3">
+                                <h5>Dietary Restrictions - {{ guest.name }}</h5>
+                                {% for allergen in allergens %}
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                        type="checkbox" name="allergens_main"
+                                        value="{{ allergen.id }}"
+                                        id="allergen_main_{{ allergen.id }}" {%
+                                        if readonly %}disabled{% endif %} {% if
+                                        rsvp and allergen.id in
+                                        rsvp.allergen_ids %}checked{% endif %}>
+                                    <label class="form-check-label"
+                                        for="allergen_main_{{ allergen.id }}">
+                                        {{ allergen.name }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                <div class="mt-2">
+                                    <label class="form-label">Other Dietary
+                                        Restrictions</label>
+                                    <input type="text" class="form-control"
+                                        name="custom_allergen_main"
+                                        value="{{ rsvp.custom_allergen if rsvp else '' }}"
+                                        {% if readonly %}readonly{% endif %}>
+                                </div>
+                            </div>
+
+                            <!-- Additional Guests Section -->
+                            {% if guest.is_family %}
+                            <div class="mb-3">
+                                <label for="adults_count"
+                                    class="form-label">Number of Additional
+                                    Adults</label>
+                                <select class="form-select" id="adults_count"
+                                    name="adults_count" {% if readonly
+                                    %}disabled{% endif %}>
+                                    <option value="0">0</option>
+                                    {% for i in range(1, 11) %}
+                                    <option value="{{ i }}" {% if rsvp and
+                                        rsvp.adults_count==i %}selected{% endif
+                                        %}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="additional_adults_container"></div>
+
+                            <div class="mb-3">
+                                <label for="children_count"
+                                    class="form-label">Number of
+                                    Children</label>
+                                <select class="form-select" id="children_count"
+                                    name="children_count" {% if readonly
+                                    %}disabled{% endif %}>
+                                    <option value="0">0</option>
+                                    {% for i in range(1, 11) %}
+                                    <option value="{{ i }}" {% if rsvp and
+                                        rsvp.children_count==i %}selected{%
+                                        endif %}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div id="children_container"></div>
+                            {% endif %}
+                        </div>
+
+                        {% if not readonly %}
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">Submit
+                                RSVP</button>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template for allergen sections -->
+<template id="allergen-template">
+    {% for allergen in allergens %}
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox"
+            name="allergens_PLACEHOLDER" value="{{ allergen.id }}"
+            id="allergen_PLACEHOLDER_{{ allergen.id }}">
+        <label class="form-check-label"
+            for="allergen_PLACEHOLDER_{{ allergen.id }}">
+            {{ allergen.name }}
+        </label>
+    </div>
+    {% endfor %}
+    <div class="mt-2">
+        <label class="form-label">Other Dietary Restrictions</label>
+        <input type="text" class="form-control"
+            name="custom_allergen_PLACEHOLDER">
+    </div>
+</template>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('rsvpForm');
+        const attendingRadios = document.querySelectorAll('input[name="is_attending"]');
+        const attendanceDetails = document.getElementById('attendance_details');
+        const transportCheckboxes = document.querySelectorAll('.transport-checkbox');
+        const hotelInput = document.getElementById('hotel_name');
+
+        // Show/hide attendance details based on selection
+        attendingRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                attendanceDetails.style.display = this.value === 'yes' ? 'block' : 'none';
+            });
+        });
+
+        // Set initial state if form has data
+        const initialAttendance = document.querySelector('input[name="is_attending"]:checked');
+        if (initialAttendance) {
+            attendanceDetails.style.display = initialAttendance.value === 'yes' ? 'block' : 'none';
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Clear existing errors
+            const existingErrors = document.querySelectorAll('.alert-danger');
+            existingErrors.forEach(error => error.remove());
+
+            let errors = [];
+
+            // Validate attendance selection
+            const attendanceSelected = document.querySelector('input[name="is_attending"]:checked');
+            if (!attendanceSelected) {
+                errors.push('Please indicate whether you will attend.');
+            }
+
+            if (attendanceSelected && attendanceSelected.value === 'yes') {
+                // Validate transport and hotel
+                const needsTransport = Array.from(transportCheckboxes).some(checkbox => checkbox.checked);
+                if (needsTransport && !hotelInput.value.trim()) {
+                    errors.push('Please specify a hotel if you need transport services.');
+                }
+
+                // Validate additional guests if any
+                const adultsCount = parseInt(document.getElementById('adults_count')?.value) || 0;
+                const childrenCount = parseInt(document.getElementById('children_count')?.value) || 0;
+
+                for (let i = 0; i < adultsCount; i++) {
+                    const nameInput = document.querySelector(`input[name="adult_name_${i}"]`);
+                    if (!nameInput?.value.trim()) {
+                        errors.push(`Please provide a name for additional adult #${i + 1}`);
+                    }
+                }
+
+                for (let i = 0; i < childrenCount; i++) {
+                    const nameInput = document.querySelector(`input[name="child_name_${i}"]`);
+                    if (!nameInput?.value.trim()) {
+                        errors.push(`Please provide a name for child #${i + 1}`);
+                    }
+                }
+            }
+
+            // Display errors if any
+            if (errors.length > 0) {
+                const errorContainer = document.createElement('div');
+                errorContainer.className = 'alert alert-danger';
+                errorContainer.innerHTML = errors.join('<br>');
+                form.insertBefore(errorContainer, form.firstChild);
+                return;
+            }
+
+            // If no errors, submit the form
+            form.submit();
+        });
+
+        // Handle additional guests
+        function createGuestInput(type, index) {
+            const card = document.createElement('div');
+            card.className = 'card mb-3';
+
+            // Get allergen template content and replace placeholder
+            const template = document.getElementById('allergen-template');
+            const allergenContent = template.innerHTML
+                .replaceAll('PLACEHOLDER', `${type}_${index}`);
+
+            card.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">${type === 'adult' ? 'Additional Adult' : 'Child'} #${index + 1}</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Name*</label>
+                        <input type="text" class="form-control" name="${type}_name_${index}" required>
+                    </div>
+                    <div class="mb-3">
+                        <h6>Dietary Restrictions</h6>
+                        ${allergenContent}
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Handle adults count change
+        const adultsSelect = document.getElementById('adults_count');
+        if (adultsSelect) {
+            const adultsContainer = document.getElementById('additional_adults_container');
+            adultsSelect.addEventListener('change', function () {
+                adultsContainer.innerHTML = '';
+                const count = parseInt(this.value) || 0;
+                for (let i = 0; i < count; i++) {
+                    adultsContainer.appendChild(createGuestInput('adult', i));
+                }
+            });
+        }
+
+        // Handle children count change
+        const childrenSelect = document.getElementById('children_count');
+        if (childrenSelect) {
+            const childrenContainer = document.getElementById('children_container');
+            childrenSelect.addEventListener('change', function () {
+                childrenContainer.innerHTML = '';
+                const count = parseInt(this.value) || 0;
+                for (let i = 0; i < count; i++) {
+                    childrenContainer.appendChild(createGuestInput('child', i));
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show"
+    role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"
+        aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}

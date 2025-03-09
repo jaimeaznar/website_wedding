@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Schedule{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-5">Wedding Schedule</h1>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="timeline">
+                <div class="event mb-4">
+                    <h3>Ceremony</h3>
+                    <p>Time: [Time]</p>
+                    <p>Location: [Location]</p>
+                    <p>[Description]</p>
+                </div>
+                <div class="event mb-4">
+                    <h3>Reception</h3>
+                    <p>Time: [Time]</p>
+                    <p>Location: [Location]</p>
+                    <p>[Description]</p>
+                </div>
+                <!-- Add more events as needed -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

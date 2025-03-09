@@ -1,0 +1,372 @@
+{# app/templates/admin/dashboard.html #}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="guests-tab" data-bs-toggle="tab"
+                data-bs-target="#guests" type="button">
+                Guest List
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="responses-tab" data-bs-toggle="tab"
+                data-bs-target="#responses" type="button">
+                RSVP Responses
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="adminTabContent">
+        <!-- Guests Tab -->
+        <div class="tab-pane fade show active" id="guests">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Guest Management</h2>
+                <div>
+                    <a href="{{ url_for('admin.add_guest') }}"
+                        class="btn btn-primary">Add Guest</a>
+                    <button type="button" class="btn btn-success"
+                        data-bs-toggle="modal" data-bs-target="#importModal">
+                        Import Guests
+                    </button>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Plus One</th>
+                        <th>Family</th>
+                        <th>RSVP Status</th>
+                        <th>RSVP Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for guest in guests %}
+                    <tr>
+                        <td>{{ guest.name }}</td>
+                        <td>{{ guest.phone }}</td>
+                        <td>{{ 'Yes' if guest.has_plus_one else 'No' }}</td>
+                        <td>{{ 'Yes' if guest.is_family else 'No' }}</td>
+                        <td>
+                            {% if guest.rsvp %}
+                            {% if guest.rsvp.is_cancelled %}
+                            <span class="badge bg-danger">Cancelled</span>
+                            {% else %}
+                            <span class="badge bg-success">Responded</span>
+                            {% endif %}
+                            {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text"
+                                    class="form-control form-control-sm"
+                                    value="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}"
+                                    id="link_{{ guest.id }}" readonly>
+                                <button class="btn btn-sm btn-outline-secondary"
+                                    onclick="copyLink('{{ guest.id }}')">
+                                    Copy
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Responses Tab -->
+        <div class="tab-pane fade" id="responses">
+            <h2 class="mb-4">RSVP Responses</h2>
+
+            <!-- Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Invitations</h5>
+                            <p class="card-text display-6">{{ total_guests }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Attending</h5>
+                            <p class="card-text display-6">{{ total_attending }}
+                            </p>
+                            <small class="text-muted">Including additional
+                                guests</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cancelled</h5>
+                            <p class="card-text display-6">{{ cancelled_count }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Pending</h5>
+                            <p class="card-text display-6">{{ pending_count }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transport Summary -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Transport Needs</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p><strong>To Church:</strong> {{
+                                transport_stats.to_church }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>To Reception:</strong> {{
+                                transport_stats.to_reception }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>To Hotel:</strong> {{
+                                transport_stats.to_hotel }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hotels Summary -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Hotels Selected</h5>
+                    <ul class="list-group">
+                        {% for hotel in transport_stats.hotels %}
+                        <li class="list-group-item">{{ hotel }}</li>
+                        {% else %}
+                        <li class="list-group-item text-muted">No hotels
+                            specified yet</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Detailed Responses -->
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Main Guest</th>
+                            <th>Status</th>
+                            <th>Additional Guests</th>
+                            <th>Hotel & Transport</th>
+                            <th>Dietary Restrictions</th>
+                            <th>Response Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rsvp in rsvps %}
+                        <tr {% if rsvp.is_cancelled
+                            %}class="table-secondary text-muted" {% endif %}>
+                            <td>
+                                <strong>{{ rsvp.guest.name }}</strong>
+                                {% if rsvp.guest.is_family %}
+                                <span class="badge bg-info">Family</span>
+                                {% endif %}
+                                {% if rsvp.is_cancelled %}
+                                <span class="badge bg-danger">Cancelled</span>
+                                <br>
+                                <small>Cancelled on: {{
+                                    rsvp.cancellation_date.strftime('%Y-%m-%d
+                                    %H:%M') }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if rsvp.is_cancelled %}
+                                Cancelled
+                                {% else %}
+                                {{ 'Yes' if rsvp.is_attending else 'No' }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if rsvp.is_cancelled %}
+                                -
+                                {% else %}
+                                {% if rsvp.is_attending and
+                                rsvp.additional_guests %}
+                                <ul class="list-unstyled mb-0">
+                                    {% for additional in rsvp.additional_guests
+                                    %}
+                                    <li>
+                                        {{ additional.name }}
+                                        {% if additional.is_child %}
+                                        <span
+                                            class="badge bg-secondary">Child</span>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                None
+                                {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if rsvp.is_cancelled %}
+                                -
+                                {% else %}
+                                {% if rsvp.is_attending %}
+                                <div class="mb-2">
+                                    <strong>Hotel:</strong>
+                                    {% if rsvp.hotel_name %}
+                                    {{ rsvp.hotel_name }}
+                                    {% else %}
+                                    <span class="text-muted">Not
+                                        specified</span>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <strong>Transport needed:</strong>
+                                    <ul class="list-unstyled mb-0">
+                                        {% if rsvp.transport_to_church %}
+                                        <li><i
+                                                class="fas fa-check text-success"></i>
+                                            To church</li>
+                                        {% endif %}
+                                        {% if rsvp.transport_to_reception %}
+                                        <li><i
+                                                class="fas fa-check text-success"></i>
+                                            To reception</li>
+                                        {% endif %}
+                                        {% if rsvp.transport_to_hotel %}
+                                        <li><i
+                                                class="fas fa-check text-success"></i>
+                                            To hotel</li>
+                                        {% endif %}
+                                        {% if not rsvp.transport_to_church and
+                                        not rsvp.transport_to_reception and not
+                                        rsvp.transport_to_hotel %}
+                                        <li class="text-muted">None needed</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                {% else %}
+                                -
+                                {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if rsvp.is_cancelled %}
+                                -
+                                {% else %}
+                                {% if rsvp.is_attending and rsvp.allergens %}
+                                <div class="accordion"
+                                    id="allergenAccordion{{ rsvp.id }}">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button
+                                                class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#allergenCollapse{{ rsvp.id }}">
+                                                View Dietary Restrictions
+                                            </button>
+                                        </h2>
+                                        <div id="allergenCollapse{{ rsvp.id }}"
+                                            class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                {% for allergen in
+                                                rsvp.allergens %}
+                                                <div class="mb-2">
+                                                    <strong>{{
+                                                        allergen.guest_name
+                                                        }}:</strong>
+                                                    {% if allergen.allergen %}
+                                                    {{ allergen.allergen.name }}
+                                                    {% endif %}
+                                                    {% if
+                                                    allergen.custom_allergen %}
+                                                    {{ allergen.custom_allergen
+                                                    }}
+                                                    {% endif %}
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                None
+                                {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>{{ rsvp.last_updated.strftime('%Y-%m-%d %H:%M')
+                                }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Import Guests</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <p>Download the template and fill it with your guest list:
+                    </p>
+                    <a href="{{ url_for('admin.download_template') }}"
+                        class="btn btn-secondary mb-3">Download Template</a>
+                </div>
+                <form action="{{ url_for('admin.import_guests') }}"
+                    method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">CSV File</label>
+                        <input type="file" class="form-control" id="file"
+                            name="file" accept=".csv" required>
+                    </div>
+                    <button type="submit"
+                        class="btn btn-primary">Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyLink(guestId) {
+        const linkInput = document.getElementById('link_' + guestId);
+        linkInput.select();
+        document.execCommand('copy');
+
+        const button = linkInput.nextElementSibling;
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        setTimeout(() => {
+            button.innerText = originalText;
+        }, 2000);
+    }
+</script>
+{% endblock %}

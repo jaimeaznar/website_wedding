@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Gallery{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-5">Our Gallery</h1>
+    <div class="row">
+        {% for image in images %}
+        <div class="col-md-4 gallery-item">
+            <img src="{{ image.url }}" alt="{{ image.caption }}"
+                class="img-fluid">
+            {% if image.caption %}
+            <p class="text-center mt-2">{{ image.caption }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

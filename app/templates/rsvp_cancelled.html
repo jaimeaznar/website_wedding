@@ -1,0 +1,22 @@
+{# app/templates/rsvp_cancelled.html #}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>RSVP Cancelled</h2>
+                    <p class="lead">This RSVP was cancelled on {{
+                        cancellation_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <hr>
+                    <p>If you need to make any changes, please contact us at:
+                    </p>
+                    <p class="h4">{{ admin_phone }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

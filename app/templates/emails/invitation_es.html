@@ -1,0 +1,16 @@
+{# app/templates/emails/invitation_es.html #}
+<!DOCTYPE html>
+<html>
+
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h1>Invitación de Boda</h1>
+    <p>Estimado/a {{ name }},</p>
+    <p>¡Nos complace invitarte a nuestra celebración de boda!</p>
+    <p>Por favor confirma tu asistencia usando el siguiente enlace:</p>
+    <p><a href="{{ url_for('rsvp.rsvp_form', token=token, _external=True) }}"
+            style="background-color: #4CAF50; color: white; padding: 14px 20px; text-decoration: none; border-radius: 4px;">
+            Confirmar Asistencia
+        </a></p>
+</body>
+
+</html>
