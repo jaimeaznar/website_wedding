@@ -1,14 +1,18 @@
 # app/routes/admin.py
-from flask import Blueprint, render_template, request, flash, redirect, url_for, Response
+from flask import Blueprint, render_template, request, flash, redirect, url_for, Response, current_app, session
+from werkzeug.security import check_password_hash
 from app import db
 from app.models.guest import Guest
 from app.models.rsvp import RSVP, AdditionalGuest
-from werkzeug.security import check_password_hash
+from app.forms import LoginForm, GuestForm, ImportForm
+from app.security import verify_admin_password, rate_limit
+from app.admin_auth import ADMIN_PASSWORD_HASH
 from functools import wraps
 import secrets
+import logging
 
-# Import the admin password hash from your config or admin_auth file
-from app.admin_auth import ADMIN_PASSWORD_HASH
+# Set up logger
+logger = logging.getLogger(__name__)
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -16,6 +20,7 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not request.cookies.get('admin_authenticated'):
+            logger.warning(f"Unauthorized admin access attempt: {request.remote_addr}")
             return redirect(url_for('admin.login'))
         return f(*args, **kwargs)
     return decorated_function
@@ -23,14 +28,13 @@ def admin_required(f):
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if check_password_hash(ADMIN_PASSWORD_HASH, request.form['password']):
-            response = redirect(url_for('admin.dashboard'))
-            response.set_cookie('admin_authenticated', 'true')
-            return response
+        password = request.form.get('password')
+        if check_password_hash(current_app.config['ADMIN_PASSWORD_HASH'], password):
+            session['admin_logged_in'] = True
+            return redirect(url_for('admin.dashboard'))
         flash('Invalid password', 'error')
     return render_template('admin/login.html')
 
-# In app/routes/admin.py, update the dashboard route
 @bp.route('/dashboard')
 @admin_required
 def dashboard():
@@ -86,58 +90,55 @@ def dashboard():
 @bp.route('/guest/add', methods=['GET', 'POST'])
 @admin_required
 def add_guest():
-    if request.method == 'POST':
+    form = GuestForm()
+    if form.validate_on_submit():
         guest = Guest(
-            name=request.form['name'],
-            phone=request.form['phone'],
-            email=request.form.get('email'),
+            name=form.name.data,
+            phone=form.phone.data,
+            email=form.email.data if form.email.data else None,
             token=secrets.token_urlsafe(32),
-            has_plus_one=bool(request.form.get('has_plus_one')),
-            is_family=bool(request.form.get('is_family')),
-            language_preference=request.form.get('language', 'en')
+            has_plus_one=form.has_plus_one.data,
+            is_family=form.is_family.data,
+            language_preference=form.language_preference.data
         )
         db.session.add(guest)
         
         try:
             db.session.commit()
+            logger.info(f"Guest added: {guest.name}")
             flash('Guest added successfully', 'success')
             return redirect(url_for('admin.dashboard'))
         except Exception as e:
             db.session.rollback()
+            logger.error(f"Error adding guest: {str(e)}")
             flash(f'Error adding guest: {str(e)}', 'error')
     
-    return render_template('admin/guest_form.html')
+    return render_template('admin/guest_form.html', form=form)
 
 @bp.route('/guest/import', methods=['POST'])
 @admin_required
 def import_guests():
-    if 'file' not in request.files:
-        flash('No file uploaded', 'error')
-        return redirect(url_for('admin.dashboard'))
-    
-    file = request.files['file']
-    if file.filename == '':
-        flash('No file selected', 'error')
-        return redirect(url_for('admin.dashboard'))
-    
-    if not file.filename.endswith('.csv'):
-        flash('Please upload a CSV file', 'error')
-        return redirect(url_for('admin.dashboard'))
-    
-    try:
-        # Process the CSV file using the import utility function
-        from app.utils.import_guests import process_guest_csv
-        guests = process_guest_csv(file.read())
-        
-        for guest in guests:
-            db.session.add(guest)
-        
-        db.session.commit()
-        flash(f'Successfully imported {len(guests)} guests', 'success')
-        
-    except Exception as e:
-        db.session.rollback()
-        flash(f'Error importing guests: {str(e)}', 'error')
+    form = ImportForm()
+    if form.validate_on_submit():
+        try:
+            # Process the CSV file using the import utility function
+            from app.utils.import_guests import process_guest_csv
+            guests = process_guest_csv(form.file.data.read())
+            
+            for guest in guests:
+                db.session.add(guest)
+            
+            db.session.commit()
+            logger.info(f"Successfully imported {len(guests)} guests")
+            flash(f'Successfully imported {len(guests)} guests', 'success')
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error importing guests: {str(e)}")
+            flash(f'Error importing guests: {str(e)}', 'error')
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field}: {error}", 'error')
     
     return redirect(url_for('admin.dashboard'))
 
@@ -153,6 +154,7 @@ def download_template():
 
 @bp.route('/logout')
 def logout():
+    logger.info(f"Admin logout: {request.remote_addr}")
     response = redirect(url_for('admin.login'))
     response.delete_cookie('admin_authenticated')
     return response

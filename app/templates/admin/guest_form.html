@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block title %}Add Guest{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -7,48 +9,78 @@
                 <div class="card-body">
                     <h2>Add Guest</h2>
                     <form method="POST">
+                        {{ form.csrf_token }}
+
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name"
-                                name="name" required>
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                            {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.name.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </div>
+
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone
-                                Number</label>
-                            <input type="tel" class="form-control" id="phone"
-                                name="phone" required>
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control") }}
+                            {% if form.phone.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.phone.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </div>
+
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email
-                                (optional)</label>
-                            <input type="email" class="form-control" id="email"
-                                name="email">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control") }}
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.email.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </div>
+
                         <div class="mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input"
-                                    id="has_plus_one" name="has_plus_one">
-                                <label class="form-check-label"
-                                    for="has_plus_one">Has Plus One</label>
+                                {{ form.has_plus_one(class="form-check-input")
+                                }}
+                                {{
+                                form.has_plus_one.label(class="form-check-label")
+                                }}
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input"
-                                    id="is_family" name="is_family">
-                                <label class="form-check-label"
-                                    for="is_family">Is Family</label>
+                                {{ form.is_family(class="form-check-input") }}
+                                {{
+                                form.is_family.label(class="form-check-label")
+                                }}
                             </div>
                         </div>
+
                         <div class="mb-3">
-                            <label for="language" class="form-label">Preferred
-                                Language</label>
-                            <select class="form-select" id="language"
-                                name="language">
-                                <option value="en">English</option>
-                                <option value="es">Spanish</option>
-                            </select>
+                            {{
+                            form.language_preference.label(class="form-label")
+                            }}
+                            {{ form.language_preference(class="form-select") }}
+                            {% if form.language_preference.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.language_preference.errors
+                                %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </div>
+
                         <button type="submit" class="btn btn-primary">Add
                             Guest</button>
                     </form>

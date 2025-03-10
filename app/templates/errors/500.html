@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <div class="error-container mt-5 mb-5">
+                <h1 class="display-1">500</h1>
+                <h2 class="display-4">Server Error</h2>
+                <p class="lead">Something went wrong on our end.</p>
+                <p>Our technical team has been notified. Please try again later
+                    or contact us directly.</p>
+                <div class="mt-4">
+                    <a href="{{ url_for('main.index') }}"
+                        class="btn btn-primary mt-3">Return Home</a>
+                    <a href="mailto:{{ config.ADMIN_EMAIL }}"
+                        class="btn btn-outline-secondary mt-3 ml-2">Contact
+                        Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

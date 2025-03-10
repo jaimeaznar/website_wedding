@@ -2,8 +2,8 @@ import os
 from datetime import timedelta
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
     # Basic Flask config
@@ -33,3 +33,9 @@ class Config:
     REMINDER_DAYS_BEFORE = 30  # Send reminder 30 days before deadline
     WARNING_MESSAGE_TIMEOUT = 0  # 0 means no auto-dismiss
     WARNING_CUTOFF_DAYS = 7     # days before wedding for warnings
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
+    ADMIN_PASSWORD_HASH = 'test-hash'

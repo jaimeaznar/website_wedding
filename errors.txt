@@ -1,0 +1,916 @@
+(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % pytest -v
+============================================================= test session starts ==============================================================
+platform darwin -- Python 3.12.9, pytest-7.4.3, pluggy-1.5.0 -- /Users/jaimeaznar/Desktop/website_wedding/venv/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /Users/jaimeaznar/Desktop/website_wedding
+plugins: flask-1.3.0, cov-4.1.0, mock-3.14.0, flask-sqlalchemy-1.1.0
+collected 37 items                                                                                                                             
+
+tests/test_functional.py::TestMainNavigation::test_home_page SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONAL_TESTS=1 to e...) [  2%]
+tests/test_functional.py::TestRSVPProcess::test_rsvp_attending_flow SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONAL_TESTS...) [  5%]
+tests/test_functional.py::TestRSVPProcess::test_rsvp_not_attending_flow SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONAL_T...) [  8%]
+tests/test_functional.py::TestAdminInterface::test_admin_login_and_dashboard SKIPPED (Functional tests are disabled. Set RUN_FUNCTIO...) [ 10%]
+tests/test_functional.py::TestAdminInterface::test_admin_add_guest SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONAL_TESTS=...) [ 13%]
+tests/test_models.py::TestGuestModel::test_create_guest PASSED                                                                           [ 16%]
+tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship PASSED                                                                [ 18%]
+tests/test_models.py::TestRSVPModel::test_create_rsvp PASSED                                                                             [ 21%]
+tests/test_models.py::TestRSVPModel::test_is_editable_property FAILED                                                                    [ 24%]
+tests/test_models.py::TestRSVPModel::test_cancel_method FAILED                                                                           [ 27%]
+tests/test_models.py::TestAllergenModel::test_create_allergen PASSED                                                                     [ 29%]
+tests/test_models.py::TestAllergenModel::test_create_guest_allergen FAILED                                                               [ 32%]
+tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest FAILED                                                      [ 35%]
+tests/test_routes.py::TestMainRoutes::test_index_route PASSED                                                                            [ 37%]
+tests/test_routes.py::TestMainRoutes::test_schedule_route PASSED                                                                         [ 40%]
+tests/test_routes.py::TestMainRoutes::test_venue_route PASSED                                                                            [ 43%]
+tests/test_routes.py::TestMainRoutes::test_language_switching PASSED                                                                     [ 45%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_landing PASSED                                                                           [ 48%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token FAILED                                                             [ 51%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_invalid_token PASSED                                                           [ 54%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission FAILED                                                                        [ 56%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel FAILED                                                                            [ 59%]
+tests/test_routes.py::TestAdminRoutes::test_admin_login_page FAILED                                                                      [ 62%]
+tests/test_routes.py::TestAdminRoutes::test_admin_login_success FAILED                                                                   [ 64%]
+tests/test_routes.py::TestAdminRoutes::test_admin_dashboard FAILED                                                                       [ 67%]
+tests/test_routes.py::TestAdminRoutes::test_admin_add_guest FAILED                                                                       [ 70%]
+tests/test_routes.py::TestAdminRoutes::test_admin_download_template FAILED                                                               [ 72%]
+tests/test_routes.py::TestAdminRoutes::test_admin_logout FAILED                                                                          [ 75%]
+tests/test_utils.py::TestImportGuests::test_process_guest_csv_valid PASSED                                                               [ 78%]
+tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_headers PASSED                                                     [ 81%]
+tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_required_fields PASSED                                             [ 83%]
+tests/test_utils.py::TestRSVPHelpers::test_process_allergens ERROR                                                                       [ 86%]
+tests/test_utils.py::TestRSVPValidator::test_validate_attendance PASSED                                                                  [ 89%]
+tests/test_utils.py::TestRSVPValidator::test_validate_transport PASSED                                                                   [ 91%]
+tests/test_utils.py::TestRSVPValidator::test_validate_family_members FAILED                                                              [ 94%]
+tests/test_utils.py::TestRSVPProcessor::test_process_success FAILED                                                                      [ 97%]
+tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure FAILED                                                           [100%]
+
+==================================================================== ERRORS ====================================================================
+___________________________________________ ERROR at setup of TestRSVPHelpers.test_process_allergens ___________________________________________
+file /Users/jaimeaznar/Desktop/website_wedding/tests/test_utils.py, line 55
+      def test_process_allergens(self, app, sample_rsvp, sample_allergens):
+E       fixture 'sample_allergens' not found
+>       available fixtures: _configure_application, _db, _engine, _monkeypatch_response_class, _push_request_context, _session, _transaction, accept_any, accept_json, accept_jsonp, accept_mimetype, app, auth_client, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, client_class, config, cov, db_engine, db_session, doctest_namespace, live_server, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, sample_guest, sample_rsvp, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jaimeaznar/Desktop/website_wedding/tests/test_utils.py:55
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+=================================================================== FAILURES ===================================================================
+___________________________________________________ TestRSVPModel.test_is_editable_property ____________________________________________________
+
+self = <tests.test_models.TestRSVPModel object at 0x10e3c9730>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
+
+    def test_is_editable_property(self, app, sample_rsvp):
+        with app.app_context():
+            # Should be editable if created within the last 24 hours
+>           assert sample_rsvp.is_editable is True
+
+tests/test_models.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <RSVP 1>
+
+    @property
+    def is_editable(self):
+        """Check if RSVP can be edited (more than a week before wedding)"""
+>       wedding_date = datetime.strptime(current_app.config['WEDDING_DATE'], '%Y-%m-%d')
+E       TypeError: strptime() argument 1 must be str, not None
+
+app/models/rsvp.py:29: TypeError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+_______________________________________________________ TestRSVPModel.test_cancel_method _______________________________________________________
+
+self = <tests.test_models.TestRSVPModel object at 0x10e3c9430>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
+
+    def test_cancel_method(self, app, sample_rsvp):
+        with app.app_context():
+>           sample_rsvp.cancel()
+
+tests/test_models.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/models/rsvp.py:35: in cancel
+    if not self.is_editable:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <RSVP 1>
+
+    @property
+    def is_editable(self):
+        """Check if RSVP can be edited (more than a week before wedding)"""
+>       wedding_date = datetime.strptime(current_app.config['WEDDING_DATE'], '%Y-%m-%d')
+E       TypeError: strptime() argument 1 must be str, not None
+
+app/models/rsvp.py:29: TypeError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+_________________________________________________ TestAllergenModel.test_create_guest_allergen _________________________________________________
+
+self = <tests.test_models.TestAllergenModel object at 0x10e3c8f20>, app = <Flask 'app'>, sample_guest = <Guest 1>
+
+    def test_create_guest_allergen(self, app, sample_guest):
+        """Test creating a guest allergen relationship."""
+        with app.app_context():
+            allergen = Allergen(name='Shellfish')
+            db.session.add(allergen)
+            db.session.commit()
+    
+>           sample_guest.allergens.append(allergen)
+E           AttributeError: 'Guest' object has no attribute 'allergens'
+
+tests/test_models.py:102: AttributeError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+____________________________________________ TestAdditionalGuestModel.test_create_additional_guest _____________________________________________
+
+self = <tests.test_models.TestAdditionalGuestModel object at 0x10e3c8b30>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
+
+    def test_create_additional_guest(self, app, sample_rsvp):
+        """Test creating an additional guest."""
+        with app.app_context():
+>           additional_guest = AdditionalGuest(
+                rsvp_id=sample_rsvp.id,
+                name='Jane Doe',
+                is_child=False
+            )
+E           NameError: name 'AdditionalGuest' is not defined
+
+tests/test_models.py:111: NameError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+________________________________________________ TestRSVPRoutes.test_rsvp_form_with_valid_token ________________________________________________
+
+self = <tests.test_routes.TestRSVPRoutes object at 0x10e3c9f70>, client = <FlaskClient <Flask 'app'>>, sample_guest = <Guest 1>
+
+    def test_rsvp_form_with_valid_token(self, client, sample_guest):
+        response = client.get(f'/rsvp/{sample_guest.token}')
+        assert response.status_code == 200
+>       assert b'RSVP Form' in response.data
+E       assert b'RSVP Form' in b'\n<!DOCTYPE html>\n<html lang="">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>RSVP</title>\n\n    <!-- Google Fonts -->\n    <link\n        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap"\n        rel="stylesheet">\n\n    <!-- Bootstrap CSS -->\n    <link\n        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"\n        rel="stylesheet">\n\n    <!-- Custom CSS -->\n    <link rel="stylesheet"\n        href="/static/css/style.css">\n\n    \n</head>\n\n<body class="">\n    <nav class="navbar navbar-expand-lg">\n        <div class="container">\n            <a class="navbar-brand" href="/">Our\n                Wedding</a>\n            <button class="navbar-toggler" type="button"\n                data-bs-toggle="collapse" data-bs-target="#navbarNav">\n                <span class="navbar-toggler-icon"></span>\n            </button>\n            <div class="collapse navbar-collapse" id="navbarNav">\n                <ul class="navbar-nav ms-auto">\n                    <li class="nav-item">...    adultsContainer.appendChild(createGuestInput(\'adult\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (adultsSelect.value > 0) {\n                const event = new Event(\'change\');\n                adultsSelect.dispatchEvent(event);\n            }\n        }\n\n        // Handle children count change\n        const childrenSelect = document.getElementById(\'children_count\');\n        if (childrenSelect) {\n            const childrenContainer = document.getElementById(\'children_container\');\n            childrenSelect.addEventListener(\'change\', function () {\n                childrenContainer.innerHTML = \'\';\n                const count = parseInt(this.value) || 0;\n                for (let i = 0; i < count; i++) {\n                    childrenContainer.appendChild(createGuestInput(\'child\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (childrenSelect.value > 0) {\n                const event = new Event(\'change\');\n                childrenSelect.dispatchEvent(event);\n            }\n        }\n    });\n</script>\n\n</body>\n\n</html>'
+E        +  where b'\n<!DOCTYPE html>\n<html lang="">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>RSVP</title>\n\n    <!-- Google Fonts -->\n    <link\n        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap"\n        rel="stylesheet">\n\n    <!-- Bootstrap CSS -->\n    <link\n        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"\n        rel="stylesheet">\n\n    <!-- Custom CSS -->\n    <link rel="stylesheet"\n        href="/static/css/style.css">\n\n    \n</head>\n\n<body class="">\n    <nav class="navbar navbar-expand-lg">\n        <div class="container">\n            <a class="navbar-brand" href="/">Our\n                Wedding</a>\n            <button class="navbar-toggler" type="button"\n                data-bs-toggle="collapse" data-bs-target="#navbarNav">\n                <span class="navbar-toggler-icon"></span>\n            </button>\n            <div class="collapse navbar-collapse" id="navbarNav">\n                <ul class="navbar-nav ms-auto">\n                    <li class="nav-item">...    adultsContainer.appendChild(createGuestInput(\'adult\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (adultsSelect.value > 0) {\n                const event = new Event(\'change\');\n                adultsSelect.dispatchEvent(event);\n            }\n        }\n\n        // Handle children count change\n        const childrenSelect = document.getElementById(\'children_count\');\n        if (childrenSelect) {\n            const childrenContainer = document.getElementById(\'children_container\');\n            childrenSelect.addEventListener(\'change\', function () {\n                childrenContainer.innerHTML = \'\';\n                const count = parseInt(this.value) || 0;\n                for (let i = 0; i < count; i++) {\n                    childrenContainer.appendChild(createGuestInput(\'child\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (childrenSelect.value > 0) {\n                const event = new Event(\'change\');\n                childrenSelect.dispatchEvent(event);\n            }\n        }\n    });\n</script>\n\n</body>\n\n</html>' = <WrapperTestResponse 16379 bytes [200 OK]>.data
+
+tests/test_routes.py:49: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+_____________________________________________________ TestRSVPRoutes.test_rsvp_submission ______________________________________________________
+
+self = <tests.test_routes.TestRSVPRoutes object at 0x10e3c8710>, client = <FlaskClient <Flask 'app'>>, sample_guest = <Guest 1>
+
+    def test_rsvp_submission(self, client, sample_guest):
+        data = {
+            'is_attending': 'yes',
+            'adults_count': '2',
+            'children_count': '0',
+            'hotel_name': 'Test Hotel',
+            'transport_to_church': 'on'
+        }
+        response = client.post(
+            f'/rsvp/{sample_guest.token}',
+            data=data,
+            follow_redirects=True
+        )
+        assert response.status_code == 200
+>       assert b'Thank you for your RSVP' in response.data
+E       assert b'Thank you for your RSVP' in b'\n<!DOCTYPE html>\n<html lang="">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>RSVP</title>\n\n    <!-- Google Fonts -->\n    <link\n        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap"\n        rel="stylesheet">\n\n    <!-- Bootstrap CSS -->\n    <link\n        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"\n        rel="stylesheet">\n\n    <!-- Custom CSS -->\n    <link rel="stylesheet"\n        href="/static/css/style.css">\n\n    \n</head>\n\n<body class="">\n    <nav class="navbar navbar-expand-lg">\n        <div class="container">\n            <a class="navbar-brand" href="/">Our\n                Wedding</a>\n            <button class="navbar-toggler" type="button"\n                data-bs-toggle="collapse" data-bs-target="#navbarNav">\n                <span class="navbar-toggler-icon"></span>\n            </button>\n            <div class="collapse navbar-collapse" id="navbarNav">\n                <ul class="navbar-nav ms-auto">\n                    <li class="nav-item">...    adultsContainer.appendChild(createGuestInput(\'adult\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (adultsSelect.value > 0) {\n                const event = new Event(\'change\');\n                adultsSelect.dispatchEvent(event);\n            }\n        }\n\n        // Handle children count change\n        const childrenSelect = document.getElementById(\'children_count\');\n        if (childrenSelect) {\n            const childrenContainer = document.getElementById(\'children_container\');\n            childrenSelect.addEventListener(\'change\', function () {\n                childrenContainer.innerHTML = \'\';\n                const count = parseInt(this.value) || 0;\n                for (let i = 0; i < count; i++) {\n                    childrenContainer.appendChild(createGuestInput(\'child\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (childrenSelect.value > 0) {\n                const event = new Event(\'change\');\n                childrenSelect.dispatchEvent(event);\n            }\n        }\n    });\n</script>\n\n</body>\n\n</html>'
+E        +  where b'\n<!DOCTYPE html>\n<html lang="">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>RSVP</title>\n\n    <!-- Google Fonts -->\n    <link\n        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap"\n        rel="stylesheet">\n\n    <!-- Bootstrap CSS -->\n    <link\n        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"\n        rel="stylesheet">\n\n    <!-- Custom CSS -->\n    <link rel="stylesheet"\n        href="/static/css/style.css">\n\n    \n</head>\n\n<body class="">\n    <nav class="navbar navbar-expand-lg">\n        <div class="container">\n            <a class="navbar-brand" href="/">Our\n                Wedding</a>\n            <button class="navbar-toggler" type="button"\n                data-bs-toggle="collapse" data-bs-target="#navbarNav">\n                <span class="navbar-toggler-icon"></span>\n            </button>\n            <div class="collapse navbar-collapse" id="navbarNav">\n                <ul class="navbar-nav ms-auto">\n                    <li class="nav-item">...    adultsContainer.appendChild(createGuestInput(\'adult\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (adultsSelect.value > 0) {\n                const event = new Event(\'change\');\n                adultsSelect.dispatchEvent(event);\n            }\n        }\n\n        // Handle children count change\n        const childrenSelect = document.getElementById(\'children_count\');\n        if (childrenSelect) {\n            const childrenContainer = document.getElementById(\'children_container\');\n            childrenSelect.addEventListener(\'change\', function () {\n                childrenContainer.innerHTML = \'\';\n                const count = parseInt(this.value) || 0;\n                for (let i = 0; i < count; i++) {\n                    childrenContainer.appendChild(createGuestInput(\'child\', i));\n                }\n            });\n\n            // Trigger once to initialize if needed\n            if (childrenSelect.value > 0) {\n                const event = new Event(\'change\');\n                childrenSelect.dispatchEvent(event);\n            }\n        }\n    });\n</script>\n\n</body>\n\n</html>' = <WrapperTestResponse 16749 bytes [200 OK]>.data
+
+tests/test_routes.py:70: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+_______________________________________________________ TestRSVPRoutes.test_rsvp_cancel ________________________________________________________
+
+self = <tests.test_routes.TestRSVPRoutes object at 0x10e3c8a40>, client = <FlaskClient <Flask 'app'>>, sample_guest = <Guest 1>
+sample_rsvp = <RSVP 1>
+
+    def test_rsvp_cancel(self, client, sample_guest, sample_rsvp):
+        response = client.post(
+            f'/rsvp/{sample_guest.token}/cancel',
+            follow_redirects=True
+        )
+>       assert response.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+tests/test_routes.py:77: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+CRITICAL app.error_handlers:error_handlers.py:37 Unhandled exception: strptime() argument 1 must be str, not None
+Traceback (most recent call last):
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/routes/rsvp.py", line 198, in cancel_rsvp
+    if not rsvp.is_editable:
+           ^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/models/rsvp.py", line 29, in is_editable
+    wedding_date = datetime.strptime(current_app.config['WEDDING_DATE'], '%Y-%m-%d')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: strptime() argument 1 must be str, not None
+____________________________________________________ TestAdminRoutes.test_admin_login_page _____________________________________________________
+
+self = <tests.test_routes.TestAdminRoutes object at 0x10e3c8e60>, client = <FlaskClient <Flask 'app'>>
+
+    def test_admin_login_page(self, client):
+        response = client.get('/admin/login')
+>       assert response.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+tests/test_routes.py:83: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+CRITICAL app.error_handlers:error_handlers.py:37 Unhandled exception: 'form' is undefined
+Traceback (most recent call last):
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/routes/admin.py", line 36, in login
+    return render_template('admin/login.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/admin/login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/base.html", line 88, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/admin/login.html", line 12, in block 'content'
+    {{ form.csrf_token }}
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'form' is undefined
+___________________________________________________ TestAdminRoutes.test_admin_login_success ___________________________________________________
+
+self = <tests.test_routes.TestAdminRoutes object at 0x10e3d4890>, client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
+
+    def test_admin_login_success(self, client, app):
+        with app.app_context():
+            response = client.post('/admin/login',
+                                 data={'password': app.config['ADMIN_PASSWORD_HASH']},
+                                 follow_redirects=True)
+>           assert response.status_code == 200
+E           assert 500 == 200
+E            +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+tests/test_routes.py:91: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+CRITICAL app.error_handlers:error_handlers.py:37 Unhandled exception: 'form' is undefined
+Traceback (most recent call last):
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/routes/admin.py", line 36, in login
+    return render_template('admin/login.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/admin/login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/base.html", line 88, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/admin/login.html", line 12, in block 'content'
+    {{ form.csrf_token }}
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'form' is undefined
+_____________________________________________________ TestAdminRoutes.test_admin_dashboard _____________________________________________________
+
+self = <tests.test_routes.TestAdminRoutes object at 0x10e3d4080>, auth_client = <FlaskClient <Flask 'app'>>
+
+    def test_admin_dashboard(self, auth_client):
+        response = auth_client.get('/admin/dashboard')
+>       assert response.status_code == 200
+E       assert 302 == 200
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+tests/test_routes.py:95: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+WARNING  app.routes.admin:admin.py:23 Unauthorized admin access attempt: 127.0.0.1
+_____________________________________________________ TestAdminRoutes.test_admin_add_guest _____________________________________________________
+
+self = <tests.test_routes.TestAdminRoutes object at 0x10e3d42c0>, auth_client = <FlaskClient <Flask 'app'>>
+
+    def test_admin_add_guest(self, auth_client):
+        response = auth_client.get('/admin/guest/add')
+>       assert response.status_code == 200
+E       assert 302 == 200
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+tests/test_routes.py:99: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+WARNING  app.routes.admin:admin.py:23 Unauthorized admin access attempt: 127.0.0.1
+_________________________________________________ TestAdminRoutes.test_admin_download_template _________________________________________________
+
+self = <tests.test_routes.TestAdminRoutes object at 0x10e3d4500>, auth_client = <FlaskClient <Flask 'app'>>
+
+    def test_admin_download_template(self, auth_client):
+        response = auth_client.get('/admin/download-template')
+>       assert response.status_code == 200
+E       assert 302 == 200
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+tests/test_routes.py:103: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+WARNING  app.routes.admin:admin.py:23 Unauthorized admin access attempt: 127.0.0.1
+______________________________________________________ TestAdminRoutes.test_admin_logout _______________________________________________________
+
+self = <tests.test_routes.TestAdminRoutes object at 0x10e3d4710>, auth_client = <FlaskClient <Flask 'app'>>
+
+    def test_admin_logout(self, auth_client):
+        response = auth_client.get('/admin/logout', follow_redirects=True)
+>       assert response.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+tests/test_routes.py:107: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+-------------------------------------------------------------- Captured log call ---------------------------------------------------------------
+INFO     app.routes.admin:admin.py:157 Admin logout: 127.0.0.1
+CRITICAL app.error_handlers:error_handlers.py:37 Unhandled exception: 'form' is undefined
+Traceback (most recent call last):
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/routes/admin.py", line 36, in login
+    return render_template('admin/login.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/admin/login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/base.html", line 88, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jaimeaznar/Desktop/website_wedding/app/templates/admin/login.html", line 12, in block 'content'
+    {{ form.csrf_token }}
+  File "/Users/jaimeaznar/Desktop/website_wedding/venv/lib/python3.12/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'form' is undefined
+________________________________________________ TestRSVPValidator.test_validate_family_members ________________________________________________
+
+self = <tests.test_utils.TestRSVPValidator object at 0x10e3d5460>
+
+    def test_validate_family_members(self):
+        """Test validating family members information."""
+        form = {
+            'adults_count': '2',
+            'children_count': '1',
+            'adult_name_0': 'Adult 1',
+            'adult_name_1': 'Adult 2',
+            'child_name_0': 'Child 1'
+        }
+        guest = MagicMock()
+        validator = RSVPValidator(form, guest)
+    
+        validator._validate_family_members()
+        assert len(validator.errors) == 0
+    
+        # Missing adult name
+        form = {
+            'adults_count': '2',
+            'children_count': '0',
+            'adult_name_0': 'Adult 1',
+            'adult_name_1': ''
+        }
+        validator = RSVPValidator(form, guest)
+        validator._validate_family_members()
+        assert len(validator.errors) == 1
+    
+        # Too many adults
+        form = {
+            'adults_count': '15'
+        }
+        validator = RSVPValidator(form, guest)
+        validator._validate_family_members()
+>       assert len(validator.errors) == 1
+E       AssertionError: assert 16 == 1
+E        +  where 16 = len(['Please contact us directly if you need to bring more than 10 additional adults.', 'Please provide a name for additional adult #1', 'Please provide a name for additional adult #2', 'Please provide a name for additional adult #3', 'Please provide a name for additional adult #4', 'Please provide a name for additional adult #5', ...])
+E        +    where ['Please contact us directly if you need to bring more than 10 additional adults.', 'Please provide a name for additional adult #1', 'Please provide a name for additional adult #2', 'Please provide a name for additional adult #3', 'Please provide a name for additional adult #4', 'Please provide a name for additional adult #5', ...] = <app.utils.validators.RSVPValidator object at 0x10e923b90>.errors
+
+tests/test_utils.py:152: AssertionError
+____________________________________________________ TestRSVPProcessor.test_process_success ____________________________________________________
+
+self = <tests.test_utils.TestRSVPProcessor object at 0x10e3d50a0>, mock_validator = <MagicMock name='RSVPValidator' id='4539258960'>
+app = <Flask 'app'>, sample_guest = <Guest 1>
+
+    @patch('app.utils.rsvp_processor.RSVPValidator')
+    def test_process_success(self, mock_validator, app, sample_guest):
+        """Test successful RSVP processing."""
+        with app.app_context():
+            # Mock the validator to pass validation
+            mock_validator.return_value.validate.return_value = (True, [])
+    
+            # Create form data
+            form_data = {
+                'is_attending': 'yes',
+                'hotel_name': 'Test Hotel',
+                'transport_to_church': 'on'
+            }
+    
+            # Create processor
+            processor = RSVPFormProcessor(form_data, sample_guest)
+    
+            # Override _get_or_create_rsvp to avoid database calls
+            processor._get_or_create_rsvp = MagicMock()
+            processor.rsvp = MagicMock()
+    
+            # Call process
+            success, message = processor.process()
+    
+            # Check result
+>           assert success is True
+E           assert False is True
+
+tests/test_utils.py:180: AssertionError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+______________________________________________ TestRSVPProcessor.test_process_validation_failure _______________________________________________
+
+self = <tests.test_utils.TestRSVPProcessor object at 0x10e3d5130>, mock_validator = <MagicMock name='RSVPValidator' id='4539495200'>
+app = <Flask 'app'>, sample_guest = <Guest 1>
+
+    @patch('app.utils.rsvp_processor.RSVPValidator')
+    def test_process_validation_failure(self, mock_validator, app, sample_guest):
+        """Test RSVP processing with validation failure."""
+        with app.app_context():
+            # Mock the validator to fail validation
+            mock_validator.return_value.validate.return_value = (False, ["Error 1", "Error 2"])
+    
+            # Create form data
+            form_data = {
+                'is_attending': 'yes',
+                'hotel_name': '',  # Missing required hotel
+                'transport_to_church': 'on'
+            }
+    
+            # Create processor
+            processor = RSVPFormProcessor(form_data, sample_guest)
+    
+            # Call process
+            success, message = processor.process()
+    
+            # Check result
+            assert success is False
+            assert "Error 1\nError 2" == message
+    
+            # Verify no RSVP was created
+>           assert not db.session.query(RSVP).filter_by(guest_id=sample_guest.id).first()
+E           NameError: name 'db' is not defined
+
+tests/test_utils.py:215: NameError
+------------------------------------------------------------ Captured stdout setup -------------------------------------------------------------
+Creating Flask app...
+Registering blueprints...
+Blueprints registered!
+Available routes:
+static: /static/<path:filename>
+main.index: /
+main.schedule: /schedule
+main.venue: /venue
+main.accommodation: /accommodation
+main.activities: /activities
+main.gallery: /gallery
+auth.login: /auth/login
+rsvp.landing: /rsvp/
+rsvp.rsvp_form: /rsvp/<token>
+rsvp.cancel_rsvp: /rsvp/<token>/cancel
+rsvp.confirmation: /rsvp/confirmation
+admin.login: /admin/login
+admin.dashboard: /admin/dashboard
+admin.add_guest: /admin/guest/add
+admin.import_guests: /admin/guest/import
+admin.download_template: /admin/download-template
+admin.logout: /admin/logout
+-------------------------------------------------------------- Captured log setup --------------------------------------------------------------
+INFO     app:logging_config.py:42 Wedding application startup
+=============================================================== warnings summary ===============================================================
+tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
+tests/test_models.py::TestRSVPModel::test_is_editable_property
+tests/test_models.py::TestRSVPModel::test_cancel_method
+tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel
+tests/test_utils.py::TestRSVPHelpers::test_process_allergens
+  /Users/jaimeaznar/Desktop/website_wedding/tests/conftest.py:54: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    created_at=datetime.utcnow()
+
+tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
+  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:40: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    guest = Guest.query.get(sample_guest.id)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================================================== short test summary info ============================================================
+FAILED tests/test_models.py::TestRSVPModel::test_is_editable_property - TypeError: strptime() argument 1 must be str, not None
+FAILED tests/test_models.py::TestRSVPModel::test_cancel_method - TypeError: strptime() argument 1 must be str, not None
+FAILED tests/test_models.py::TestAllergenModel::test_create_guest_allergen - AttributeError: 'Guest' object has no attribute 'allergens'
+FAILED tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest - NameError: name 'AdditionalGuest' is not defined
+FAILED tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token - assert b'RSVP Form' in b'\n<!DOCTYPE html>\n<html lang="">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=...
+FAILED tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission - assert b'Thank you for your RSVP' in b'\n<!DOCTYPE html>\n<html lang="">\n\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" c...
+FAILED tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel - assert 500 == 200
+FAILED tests/test_routes.py::TestAdminRoutes::test_admin_login_page - assert 500 == 200
+FAILED tests/test_routes.py::TestAdminRoutes::test_admin_login_success - assert 500 == 200
+FAILED tests/test_routes.py::TestAdminRoutes::test_admin_dashboard - assert 302 == 200
+FAILED tests/test_routes.py::TestAdminRoutes::test_admin_add_guest - assert 302 == 200
+FAILED tests/test_routes.py::TestAdminRoutes::test_admin_download_template - assert 302 == 200
+FAILED tests/test_routes.py::TestAdminRoutes::test_admin_logout - assert 500 == 200
+FAILED tests/test_utils.py::TestRSVPValidator::test_validate_family_members - AssertionError: assert 16 == 1
+FAILED tests/test_utils.py::TestRSVPProcessor::test_process_success - assert False is True
+FAILED tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure - NameError: name 'db' is not defined
+ERROR tests/test_utils.py::TestRSVPHelpers::test_process_allergens
+======================================== 16 failed, 15 passed, 5 skipped, 7 warnings, 1 error in 1.28s =========================================
+(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % 

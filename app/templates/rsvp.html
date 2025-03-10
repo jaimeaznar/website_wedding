@@ -1,5 +1,6 @@
 {# app/templates/rsvp.html #}
 {% extends "base.html" %}
+{% block title %}RSVP{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -16,7 +17,6 @@
             </div>
             {% endif %}
 
-
             <div class="card">
                 <div class="card-body">
                     <h2 class="text-center mb-4">RSVP</h2>
@@ -26,13 +26,10 @@
                     <div class="text-center mb-4">
                         <p class="text-muted">Last updated: {{
                             rsvp.last_updated.strftime('%Y-%m-%d %H:%M') }}</p>
-                        <form method="POST"
-                            action="{{ url_for('rsvp.cancel_rsvp', token=guest.token) }}"
-                            onsubmit="return confirm('Are you sure you want to cancel your RSVP? This action cannot be undone.');"
-                            class="d-inline">
-                            <button type="submit" class="btn btn-danger">Cancel
-                                RSVP</button>
-                        </form>
+                        <a href="{{ url_for('rsvp.cancel_rsvp', token=guest.token) }}"
+                            class="btn btn-danger">
+                            Cancel RSVP
+                        </a>
                     </div>
                     {% endif %}
 
@@ -47,42 +44,43 @@
 
                     <form method="POST" id="rsvpForm" {% if readonly
                         %}class="form-readonly" {% endif %}>
+                        {{ form.csrf_token }}
+
                         <!-- Attendance Radio Buttons -->
                         <div class="mb-4">
-                            <label class="form-label">Will you attend?*</label>
+                            <label class="form-label">{{
+                                form.is_attending.label.text }}*</label>
+                            {% for subfield in form.is_attending %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                    name="is_attending" value="yes"
-                                    id="attending_yes" required {% if rsvp and
-                                    rsvp.is_attending %}checked{% endif %} {% if
-                                    readonly %}disabled{% endif %}>
-                                <label class="form-check-label"
-                                    for="attending_yes">Yes, I will
-                                    attend</label>
+                                {{ subfield(class="form-check-input",
+                                disabled=readonly) }}
+                                {{ subfield.label(class="form-check-label") }}
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio"
-                                    name="is_attending" value="no"
-                                    id="attending_no" required {% if rsvp and
-                                    not rsvp.is_attending %}checked{% endif %}
-                                    {% if readonly %}disabled{% endif %}>
-                                <label class="form-check-label"
-                                    for="attending_no">No, I cannot
-                                    attend</label>
+                            {% endfor %}
+                            {% if form.is_attending.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.is_attending.errors %}
+                                {{ error }}
+                                {% endfor %}
                             </div>
+                            {% endif %}
                         </div>
 
                         <div id="attendance_details" class="attendance-section"
                             style="display: none;">
                             <!-- Hotel Information -->
                             <div class="mb-3">
-                                <label for="hotel_name" class="form-label">Where
-                                    are you staying?</label>
-                                <input type="text" class="form-control"
-                                    id="hotel_name" name="hotel_name"
-                                    value="{{ rsvp.hotel_name if rsvp else '' }}"
-                                    placeholder="Enter hotel name or leave blank if undecided"
-                                    {% if readonly %}readonly{% endif %}>
+                                {{ form.hotel_name.label(class="form-label") }}
+                                {{ form.hotel_name(class="form-control",
+                                placeholder="Enter hotel name or leave blank if
+                                undecided", readonly=readonly) }}
+                                {% if form.hotel_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.hotel_name.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
                             </div>
 
                             <!-- Transport Options -->
@@ -90,32 +88,28 @@
                                 <label class="form-label">Transport
                                     Options</label>
                                 <div class="form-check">
-                                    <input
-                                        class="form-check-input transport-checkbox"
-                                        type="checkbox"
-                                        name="transport_to_church"
-                                        id="transport_to_church" {% if rsvp and
-                                        rsvp.transport_to_church %}checked{%
-                                        endif %} {% if readonly %}disabled{%
-                                        endif %}>
-                                    <label class="form-check-label"
-                                        for="transport_to_church">
-                                        Transport to church
-                                    </label>
+                                    {{
+                                    form.transport_to_church(class="form-check-input
+                                    transport-checkbox", disabled=readonly) }}
+                                    {{
+                                    form.transport_to_church.label(class="form-check-label")
+                                    }}
                                 </div>
                                 <div class="form-check">
-                                    <input
-                                        class="form-check-input transport-checkbox"
-                                        type="checkbox"
-                                        name="transport_to_hotel"
-                                        id="transport_to_hotel" {% if rsvp and
-                                        rsvp.transport_to_hotel %}checked{%
-                                        endif %} {% if readonly %}disabled{%
-                                        endif %}>
-                                    <label class="form-check-label"
-                                        for="transport_to_hotel">
-                                        Transport to hotel
-                                    </label>
+                                    {{
+                                    form.transport_to_reception(class="form-check-input
+                                    transport-checkbox", disabled=readonly) }}
+                                    {{
+                                    form.transport_to_reception.label(class="form-check-label")
+                                    }}
+                                </div>
+                                <div class="form-check">
+                                    {{
+                                    form.transport_to_hotel(class="form-check-input
+                                    transport-checkbox", disabled=readonly) }}
+                                    {{
+                                    form.transport_to_hotel.label(class="form-check-label")
+                                    }}
                                 </div>
                             </div>
 
@@ -150,36 +144,33 @@
                             <!-- Additional Guests Section -->
                             {% if guest.is_family %}
                             <div class="mb-3">
-                                <label for="adults_count"
-                                    class="form-label">Number of Additional
-                                    Adults</label>
-                                <select class="form-select" id="adults_count"
-                                    name="adults_count" {% if readonly
-                                    %}disabled{% endif %}>
-                                    <option value="0">0</option>
-                                    {% for i in range(1, 11) %}
-                                    <option value="{{ i }}" {% if rsvp and
-                                        rsvp.adults_count==i %}selected{% endif
-                                        %}>{{ i }}</option>
+                                {{ form.adults_count.label(class="form-label")
+                                }}
+                                {{ form.adults_count(class="form-select",
+                                id="adults_count", disabled=readonly) }}
+                                {% if form.adults_count.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.adults_count.errors %}
+                                    {{ error }}
                                     {% endfor %}
-                                </select>
+                                </div>
+                                {% endif %}
                             </div>
                             <div id="additional_adults_container"></div>
 
                             <div class="mb-3">
-                                <label for="children_count"
-                                    class="form-label">Number of
-                                    Children</label>
-                                <select class="form-select" id="children_count"
-                                    name="children_count" {% if readonly
-                                    %}disabled{% endif %}>
-                                    <option value="0">0</option>
-                                    {% for i in range(1, 11) %}
-                                    <option value="{{ i }}" {% if rsvp and
-                                        rsvp.children_count==i %}selected{%
-                                        endif %}>{{ i }}</option>
+                                {{ form.children_count.label(class="form-label")
+                                }}
+                                {{ form.children_count(class="form-select",
+                                id="children_count", disabled=readonly) }}
+                                {% if form.children_count.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.children_count.errors
+                                    %}
+                                    {{ error }}
                                     {% endfor %}
-                                </select>
+                                </div>
+                                {% endif %}
                             </div>
                             <div id="children_container"></div>
                             {% endif %}
@@ -240,60 +231,6 @@
             attendanceDetails.style.display = initialAttendance.value === 'yes' ? 'block' : 'none';
         }
 
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Clear existing errors
-            const existingErrors = document.querySelectorAll('.alert-danger');
-            existingErrors.forEach(error => error.remove());
-
-            let errors = [];
-
-            // Validate attendance selection
-            const attendanceSelected = document.querySelector('input[name="is_attending"]:checked');
-            if (!attendanceSelected) {
-                errors.push('Please indicate whether you will attend.');
-            }
-
-            if (attendanceSelected && attendanceSelected.value === 'yes') {
-                // Validate transport and hotel
-                const needsTransport = Array.from(transportCheckboxes).some(checkbox => checkbox.checked);
-                if (needsTransport && !hotelInput.value.trim()) {
-                    errors.push('Please specify a hotel if you need transport services.');
-                }
-
-                // Validate additional guests if any
-                const adultsCount = parseInt(document.getElementById('adults_count')?.value) || 0;
-                const childrenCount = parseInt(document.getElementById('children_count')?.value) || 0;
-
-                for (let i = 0; i < adultsCount; i++) {
-                    const nameInput = document.querySelector(`input[name="adult_name_${i}"]`);
-                    if (!nameInput?.value.trim()) {
-                        errors.push(`Please provide a name for additional adult #${i + 1}`);
-                    }
-                }
-
-                for (let i = 0; i < childrenCount; i++) {
-                    const nameInput = document.querySelector(`input[name="child_name_${i}"]`);
-                    if (!nameInput?.value.trim()) {
-                        errors.push(`Please provide a name for child #${i + 1}`);
-                    }
-                }
-            }
-
-            // Display errors if any
-            if (errors.length > 0) {
-                const errorContainer = document.createElement('div');
-                errorContainer.className = 'alert alert-danger';
-                errorContainer.innerHTML = errors.join('<br>');
-                form.insertBefore(errorContainer, form.firstChild);
-                return;
-            }
-
-            // If no errors, submit the form
-            form.submit();
-        });
-
         // Handle additional guests
         function createGuestInput(type, index) {
             const card = document.createElement('div');
@@ -331,6 +268,12 @@
                     adultsContainer.appendChild(createGuestInput('adult', i));
                 }
             });
+
+            // Trigger once to initialize if needed
+            if (adultsSelect.value > 0) {
+                const event = new Event('change');
+                adultsSelect.dispatchEvent(event);
+            }
         }
 
         // Handle children count change
@@ -344,21 +287,14 @@
                     childrenContainer.appendChild(createGuestInput('child', i));
                 }
             });
+
+            // Trigger once to initialize if needed
+            if (childrenSelect.value > 0) {
+                const event = new Event('change');
+                childrenSelect.dispatchEvent(event);
+            }
         }
     });
 </script>
 {% endblock %}
 {% endblock %}
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div class="alert alert-{{ category }} alert-dismissible fade show"
-    role="alert">
-    {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"
-        aria-label="Close"></button>
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}

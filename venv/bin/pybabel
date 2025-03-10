@@ -1,4 +1,4 @@
-#!/Users/jaimeaznar/Desktop/wedding_website/venv/bin/python3.12
+#!/Users/jaimeaznar/Desktop/website_wedding/venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys

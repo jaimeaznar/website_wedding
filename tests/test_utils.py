@@ -193,23 +193,23 @@ class TestRSVPProcessor:
         with app.app_context():
             # Mock the validator to fail validation
             mock_validator.return_value.validate.return_value = (False, ["Error 1", "Error 2"])
-            
+    
             # Create form data
             form_data = {
                 'is_attending': 'yes',
                 'hotel_name': '',  # Missing required hotel
                 'transport_to_church': 'on'
             }
-            
+    
             # Create processor
             processor = RSVPFormProcessor(form_data, sample_guest)
-            
+    
             # Call process
             success, message = processor.process()
-            
+    
             # Check result
             assert success is False
             assert "Error 1\nError 2" == message
             
-            # Verify no database operations were attempted
-            assert not hasattr(processor, 'rsvp')
+            # Verify no RSVP was created
+            assert not db.session.query(RSVP).filter_by(guest_id=sample_guest.id).first()

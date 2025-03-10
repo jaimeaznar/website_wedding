@@ -1,19 +1,51 @@
-{# app/templates/rsvp_cancelled.html #}
 {% extends "base.html" %}
+{% block title %}Cancel RSVP{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
-                <div class="card-body text-center">
-                    <h2>RSVP Cancelled</h2>
-                    <p class="lead">This RSVP was cancelled on {{
-                        cancellation_date.strftime('%Y-%m-%d %H:%M') }}</p>
-                    <hr>
-                    <p>If you need to make any changes, please contact us at:
-                    </p>
-                    <p class="h4">{{ admin_phone }}</p>
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Cancel RSVP</h2>
+                    <p class="text-center">Hello, {{ guest.name }}!</p>
+
+                    <div class="alert alert-warning">
+                        <h4 class="alert-heading">Cancellation Confirmation</h4>
+                        <p>You are about to cancel your RSVP to our wedding.
+                            This action cannot be undone.</p>
+                        <hr>
+                        <p class="mb-0">If you need assistance, please contact
+                            us at {{ admin_phone }}.</p>
+                    </div>
+
+                    <form method="POST">
+                        {{ form.csrf_token }}
+
+                        <div class="form-check mb-4">
+                            {{
+                            form.confirm_cancellation(class="form-check-input")
+                            }}
+                            {{
+                            form.confirm_cancellation.label(class="form-check-label")
+                            }}
+                            {% if form.confirm_cancellation.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.confirm_cancellation.errors
+                                %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('rsvp.rsvp_form', token=guest.token) }}"
+                                class="btn btn-secondary">Go Back</a>
+                            <button type="submit" class="btn btn-danger">Cancel
+                                My RSVP</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
