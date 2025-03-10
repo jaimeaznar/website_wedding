@@ -1,0 +1,116 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask environment
+.env
+instance/
+.webassets-cache
+
+# Flask database files
+migrations/
+
+# SQLite databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs
+logs/
+*.log
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Web frontend
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# macOS 
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Development files
+.development.env
+.development.sqlite
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# File uploads (if applicable)
+media/uploads/
+uploads/
+
+# Cache files
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Local configuration
+local_settings.py
+settings_local.py
+
+# For wedding site specifically
+wedding_db
+
+# CSV backups of any data
+*.csv
