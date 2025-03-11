@@ -5,7 +5,7 @@ from flask import current_app
 
 class RSVP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    guest_id = db.Column(db.Integer, db.ForeignKey('guest.id'), nullable=False)
+    guest_id = db.Column(db.Integer, db.ForeignKey('guest.id', ondelete='CASCADE'), nullable=False)
     is_attending = db.Column(db.Boolean, default=False)
     is_cancelled = db.Column(db.Boolean, default=False)
     adults_count = db.Column(db.Integer, default=1)

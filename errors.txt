@@ -1,4 +1,4 @@
-(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % pytest -v
+(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % pytest -v                          
 ==================================================================== test session starts =====================================================================
 platform darwin -- Python 3.13.1, pytest-7.4.3, pluggy-1.5.0 -- /Users/jaimeaznar/Desktop/website_wedding/venv/bin/python3.13
 cachedir: .pytest_cache
@@ -8,28 +8,26 @@ collected 37 items
 
 tests/test_functional.py::TestMainNavigation::test_home_page PASSED                                                                                    [  2%]
 tests/test_functional.py::TestRSVPProcess::test_rsvp_attending_flow PASSED                                                                             [  5%]
-tests/test_functional.py::TestRSVPProcess::test_rsvp_attending_flow ERROR                                                                              [  5%]
 tests/test_functional.py::TestRSVPProcess::test_rsvp_not_attending_flow PASSED                                                                         [  8%]
-tests/test_functional.py::TestRSVPProcess::test_rsvp_not_attending_flow ERROR                                                                          [  8%]
-tests/test_functional.py::TestAdminInterface::test_admin_login_and_dashboard FAILED                                                                    [ 10%]
-tests/test_functional.py::TestAdminInterface::test_admin_add_guest FAILED                                                                              [ 13%]
+tests/test_functional.py::TestAdminInterface::test_admin_login_and_dashboard PASSED                                                                    [ 10%]
+tests/test_functional.py::TestAdminInterface::test_admin_add_guest PASSED                                                                              [ 13%]
 tests/test_models.py::TestGuestModel::test_create_guest PASSED                                                                                         [ 16%]
 tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship PASSED                                                                              [ 18%]
-tests/test_models.py::TestRSVPModel::test_create_rsvp PASSED                                                                                           [ 21%]
-tests/test_models.py::TestRSVPModel::test_is_editable_property PASSED                                                                                  [ 24%]
-tests/test_models.py::TestRSVPModel::test_cancel_method PASSED                                                                                         [ 27%]
+tests/test_models.py::TestRSVPModel::test_create_rsvp ERROR                                                                                            [ 21%]
+tests/test_models.py::TestRSVPModel::test_is_editable_property ERROR                                                                                   [ 24%]
+tests/test_models.py::TestRSVPModel::test_cancel_method ERROR                                                                                          [ 27%]
 tests/test_models.py::TestAllergenModel::test_create_allergen PASSED                                                                                   [ 29%]
-tests/test_models.py::TestAllergenModel::test_create_guest_allergen PASSED                                                                             [ 32%]
-tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest PASSED                                                                    [ 35%]
+tests/test_models.py::TestAllergenModel::test_create_guest_allergen ERROR                                                                              [ 32%]
+tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest ERROR                                                                     [ 35%]
 tests/test_routes.py::TestMainRoutes::test_index_route PASSED                                                                                          [ 37%]
 tests/test_routes.py::TestMainRoutes::test_schedule_route PASSED                                                                                       [ 40%]
 tests/test_routes.py::TestMainRoutes::test_venue_route PASSED                                                                                          [ 43%]
 tests/test_routes.py::TestMainRoutes::test_language_switching PASSED                                                                                   [ 45%]
 tests/test_routes.py::TestRSVPRoutes::test_rsvp_landing PASSED                                                                                         [ 48%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token PASSED                                                                           [ 51%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token ERROR                                                                            [ 51%]
 tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_invalid_token PASSED                                                                         [ 54%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission PASSED                                                                                      [ 56%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel PASSED                                                                                          [ 59%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission ERROR                                                                                       [ 56%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel ERROR                                                                                           [ 59%]
 tests/test_routes.py::TestAdminRoutes::test_admin_login_page PASSED                                                                                    [ 62%]
 tests/test_routes.py::TestAdminRoutes::test_admin_login_success PASSED                                                                                 [ 64%]
 tests/test_routes.py::TestAdminRoutes::test_admin_dashboard PASSED                                                                                     [ 67%]
@@ -39,276 +37,20 @@ tests/test_routes.py::TestAdminRoutes::test_admin_logout PASSED                 
 tests/test_utils.py::TestImportGuests::test_process_guest_csv_valid PASSED                                                                             [ 78%]
 tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_headers PASSED                                                                   [ 81%]
 tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_required_fields PASSED                                                           [ 83%]
-tests/test_utils.py::TestRSVPHelpers::test_process_allergens PASSED                                                                                    [ 86%]
+tests/test_utils.py::TestRSVPHelpers::test_process_allergens ERROR                                                                                     [ 86%]
 tests/test_utils.py::TestRSVPValidator::test_validate_attendance PASSED                                                                                [ 89%]
 tests/test_utils.py::TestRSVPValidator::test_validate_transport PASSED                                                                                 [ 91%]
 tests/test_utils.py::TestRSVPValidator::test_validate_family_members PASSED                                                                            [ 94%]
-tests/test_utils.py::TestRSVPProcessor::test_process_success PASSED                                                                                    [ 97%]
-tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure PASSED                                                                         [100%]
+tests/test_utils.py::TestRSVPProcessor::test_process_success ERROR                                                                                     [ 97%]
+tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure ERROR                                                                          [100%]
 
 =========================================================================== ERRORS ===========================================================================
-_______________________________________________ ERROR at teardown of TestRSVPProcess.test_rsvp_attending_flow ________________________________________________
+______________________________________________________ ERROR at setup of TestRSVPModel.test_create_rsvp ______________________________________________________
 
-self = <sqlalchemy.engine.base.Connection object at 0x1073fdf20>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x10737a5d0>
-context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x1074d5550>
-statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x1074260d0>, parameters = [(None, '2025-03-11 13:52:07.050094', 1)]
-
-    def _exec_single_context(
-        self,
-        dialect: Dialect,
-        context: ExecutionContext,
-        statement: Union[str, Compiled],
-        parameters: Optional[_AnyMultiExecuteParams],
-    ) -> CursorResult[Any]:
-        """continue the _execute_context() method for a single DBAPI
-        cursor.execute() or cursor.executemany() call.
-    
-        """
-        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
-            generic_setinputsizes = context._prepare_set_input_sizes()
-    
-            if generic_setinputsizes:
-                try:
-                    dialect.do_set_input_sizes(
-                        context.cursor, generic_setinputsizes, context
-                    )
-                except BaseException as e:
-                    self._handle_dbapi_exception(
-                        e, str(statement), parameters, None, context
-                    )
-    
-        cursor, str_statement, parameters = (
-            context.cursor,
-            context.statement,
-            context.parameters,
-        )
-    
-        effective_parameters: Optional[_AnyExecuteParams]
-    
-        if not context.executemany:
-            effective_parameters = parameters[0]
-        else:
-            effective_parameters = parameters
-    
-        if self._has_events or self.engine._has_events:
-            for fn in self.dispatch.before_cursor_execute:
-                str_statement, effective_parameters = fn(
-                    self,
-                    cursor,
-                    str_statement,
-                    effective_parameters,
-                    context,
-                    context.executemany,
-                )
-    
-        if self._echo:
-            self._log_info(str_statement)
-    
-            stats = context._get_cache_stats()
-    
-            if not self.engine.hide_parameters:
-                self._log_info(
-                    "[%s] %r",
-                    stats,
-                    sql_util._repr_params(
-                        effective_parameters,
-                        batches=10,
-                        ismulti=context.executemany,
-                    ),
-                )
-            else:
-                self._log_info(
-                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
-                    stats,
-                )
-    
-        evt_handled: bool = False
-        try:
-            if context.execute_style is ExecuteStyle.EXECUTEMANY:
-                effective_parameters = cast(
-                    "_CoreMultiExecuteParams", effective_parameters
-                )
-                if self.dialect._has_events:
-                    for fn in self.dialect.dispatch.do_executemany:
-                        if fn(
-                            cursor,
-                            str_statement,
-                            effective_parameters,
-                            context,
-                        ):
-                            evt_handled = True
-                            break
-                if not evt_handled:
-                    self.dialect.do_executemany(
-                        cursor,
-                        str_statement,
-                        effective_parameters,
-                        context,
-                    )
-            elif not effective_parameters and context.no_parameters:
-                if self.dialect._has_events:
-                    for fn in self.dialect.dispatch.do_execute_no_params:
-                        if fn(cursor, str_statement, context):
-                            evt_handled = True
-                            break
-                if not evt_handled:
-                    self.dialect.do_execute_no_params(
-                        cursor, str_statement, context
-                    )
-            else:
-                effective_parameters = cast(
-                    "_CoreSingleExecuteParams", effective_parameters
-                )
-                if self.dialect._has_events:
-                    for fn in self.dialect.dispatch.do_execute:
-                        if fn(
-                            cursor,
-                            str_statement,
-                            effective_parameters,
-                            context,
-                        ):
-                            evt_handled = True
-                            break
-                if not evt_handled:
->                   self.dialect.do_execute(
-                        cursor, str_statement, effective_parameters, context
-                    )
-
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x10737a5d0>, cursor = <sqlite3.Cursor object at 0x1074e09c0>
-statement = 'UPDATE rsvp SET guest_id=?, last_updated=? WHERE rsvp.id = ?', parameters = (None, '2025-03-11 13:52:07.050094', 1)
-context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x1074d5550>
-
-    def do_execute(self, cursor, statement, parameters, context=None):
->       cursor.execute(statement, parameters)
-E       sqlite3.IntegrityError: NOT NULL constraint failed: rsvp.guest_id
-
-venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
-
-The above exception was the direct cause of the following exception:
-
-self = <tests.test_functional.TestRSVPProcess object at 0x107216710>, app = <Flask 'app'>
-
-    @pytest.fixture
-    def rsvp_guest(self, app):
-        """Create a test guest for RSVP testing."""
-        from app import db
-        from app.models.guest import Guest
-        import secrets
-    
-        with app.app_context():
-            guest = Guest(
-                name='Functional Test Guest',
-                email='functional_test@example.com',
-                phone='555-123-4567',
-                token=secrets.token_urlsafe(32),
-                language_preference='en',
-                has_plus_one=True,
-                is_family=True
-            )
-            db.session.add(guest)
-            db.session.commit()
-            yield guest
-            # Clean up
-            db.session.delete(guest)
->           db.session.commit()
-
-tests/test_functional.py:57: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
-    return self._proxied.commit()
-venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
-    trans.commit(_to_root=True)
-<string>:2: in commit
-    ???
-venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
-    ret_value = fn(self, *arg, **kw)
-venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
-    self._prepare_impl()
-<string>:2: in _prepare_impl
-    ???
-venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
-    ret_value = fn(self, *arg, **kw)
-venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
-    self.session.flush()
-venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
-    self._flush(objects)
-venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
-    with util.safe_reraise():
-venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
-    raise exc_value.with_traceback(exc_tb)
-venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
-    flush_context.execute()
-venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
-    rec.execute(self)
-venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
-    util.preloaded.orm_persistence.save_obj(
-venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:85: in save_obj
-    _emit_update_statements(
-venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:912: in _emit_update_statements
-    c = connection.execute(
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
-    return meth(
-venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
-    return connection._execute_clauseelement(
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
-    ret = self._execute_context(
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
-    return self._exec_single_context(
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
-    self._handle_dbapi_exception(
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
-    self.dialect.do_execute(
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x10737a5d0>, cursor = <sqlite3.Cursor object at 0x1074e09c0>
-statement = 'UPDATE rsvp SET guest_id=?, last_updated=? WHERE rsvp.id = ?', parameters = (None, '2025-03-11 13:52:07.050094', 1)
-context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x1074d5550>
-
-    def do_execute(self, cursor, statement, parameters, context=None):
->       cursor.execute(statement, parameters)
-E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: rsvp.guest_id
-E       [SQL: UPDATE rsvp SET guest_id=?, last_updated=? WHERE rsvp.id = ?]
-E       [parameters: (None, '2025-03-11 13:52:07.050094', 1)]
-E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
-
-venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
-------------------------------------------------------------------- Captured stdout setup --------------------------------------------------------------------
-Creating Flask app...
-Registering blueprints...
-Blueprints registered!
-Available routes:
-static: /static/<path:filename>
-main.index: /
-main.schedule: /schedule
-main.venue: /venue
-main.accommodation: /accommodation
-main.activities: /activities
-main.gallery: /gallery
-auth.login: /auth/login
-rsvp.landing: /rsvp/
-rsvp.rsvp_form: /rsvp/<token>
-rsvp.cancel_rsvp: /rsvp/<token>/cancel
-rsvp.confirmation: /rsvp/confirmation
-admin.login: /admin/login
-admin.dashboard: /admin/dashboard
-admin.add_guest: /admin/guest/add
-admin.import_guests: /admin/guest/import
-admin.download_template: /admin/download-template
-admin.logout: /admin/logout
---------------------------------------------------------------------- Captured log setup ---------------------------------------------------------------------
-INFO     app:logging_config.py:42 Wedding application startup
---------------------------------------------------------------------- Captured log call ----------------------------------------------------------------------
-INFO     app.routes.rsvp:rsvp.py:167 RSVP submitted for: Additional Adult - Attending: True
-_____________________________________________ ERROR at teardown of TestRSVPProcess.test_rsvp_not_attending_flow ______________________________________________
-
-self = <sqlalchemy.engine.base.Connection object at 0x107513d90>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x1076f8a50>
-context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x1076ab5b0>
-statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x1076fad50>, parameters = [(None, '2025-03-11 13:52:07.590164', 1)]
+self = <sqlalchemy.engine.base.Connection object at 0x104e55cd0>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104e99d30>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
 
     def _exec_single_context(
         self,
@@ -434,58 +176,47 @@ statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x1076fad5
 venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x1076f8a50>, cursor = <sqlite3.Cursor object at 0x1087a2940>
-statement = 'UPDATE rsvp SET guest_id=?, last_updated=? WHERE rsvp.id = ?', parameters = (None, '2025-03-11 13:52:07.590164', 1)
-context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x1076ab5b0>
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x104ead7c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104e99d30>
 
     def do_execute(self, cursor, statement, parameters, context=None):
 >       cursor.execute(statement, parameters)
-E       sqlite3.IntegrityError: NOT NULL constraint failed: rsvp.guest_id
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
 
 venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
 
 The above exception was the direct cause of the following exception:
 
-self = <tests.test_functional.TestRSVPProcess object at 0x107216990>, app = <Flask 'app'>
+app = <Flask 'app'>
 
-    @pytest.fixture
-    def rsvp_guest(self, app):
-        """Create a test guest for RSVP testing."""
-        from app import db
-        from app.models.guest import Guest
-        import secrets
-    
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
         with app.app_context():
             guest = Guest(
-                name='Functional Test Guest',
-                email='functional_test@example.com',
-                phone='555-123-4567',
-                token=secrets.token_urlsafe(32),
-                language_preference='en',
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
                 has_plus_one=True,
-                is_family=True
+                is_family=False
             )
             db.session.add(guest)
-            db.session.commit()
-            yield guest
-            # Clean up
-            db.session.delete(guest)
 >           db.session.commit()
 
-tests/test_functional.py:57: 
+tests/conftest.py:56: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
     return self._proxied.commit()
 venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
     trans.commit(_to_root=True)
-<string>:2: in commit
-    ???
 venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
     ret_value = fn(self, *arg, **kw)
 venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
     self._prepare_impl()
-<string>:2: in _prepare_impl
-    ???
 venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
     ret_value = fn(self, *arg, **kw)
 venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
@@ -502,10 +233,10 @@ venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
     rec.execute(self)
 venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
     util.preloaded.orm_persistence.save_obj(
-venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:85: in save_obj
-    _emit_update_statements(
-venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:912: in _emit_update_statements
-    c = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
 venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
     return meth(
 venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
@@ -522,125 +253,2229 @@ venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_singl
     self.dialect.do_execute(
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x1076f8a50>, cursor = <sqlite3.Cursor object at 0x1087a2940>
-statement = 'UPDATE rsvp SET guest_id=?, last_updated=? WHERE rsvp.id = ?', parameters = (None, '2025-03-11 13:52:07.590164', 1)
-context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x1076ab5b0>
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x104ead7c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104e99d30>
 
     def do_execute(self, cursor, statement, parameters, context=None):
 >       cursor.execute(statement, parameters)
-E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: rsvp.guest_id
-E       [SQL: UPDATE rsvp SET guest_id=?, last_updated=? WHERE rsvp.id = ?]
-E       [parameters: (None, '2025-03-11 13:52:07.590164', 1)]
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:05.507681')]
 E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
 
 venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
-------------------------------------------------------------------- Captured stdout setup --------------------------------------------------------------------
-Creating Flask app...
-Registering blueprints...
-Blueprints registered!
-Available routes:
-static: /static/<path:filename>
-main.index: /
-main.schedule: /schedule
-main.venue: /venue
-main.accommodation: /accommodation
-main.activities: /activities
-main.gallery: /gallery
-auth.login: /auth/login
-rsvp.landing: /rsvp/
-rsvp.rsvp_form: /rsvp/<token>
-rsvp.cancel_rsvp: /rsvp/<token>/cancel
-rsvp.confirmation: /rsvp/confirmation
-admin.login: /admin/login
-admin.dashboard: /admin/dashboard
-admin.add_guest: /admin/guest/add
-admin.import_guests: /admin/guest/import
-admin.download_template: /admin/download-template
-admin.logout: /admin/logout
---------------------------------------------------------------------- Captured log setup ---------------------------------------------------------------------
-INFO     app:logging_config.py:42 Wedding application startup
---------------------------------------------------------------------- Captured log call ----------------------------------------------------------------------
-INFO     app.routes.rsvp:rsvp.py:167 RSVP submitted for: Functional Test Guest - Attending: False
-========================================================================== FAILURES ==========================================================================
-_____________________________________________________ TestAdminInterface.test_admin_login_and_dashboard ______________________________________________________
+_________________________________________________ ERROR at setup of TestRSVPModel.test_is_editable_property __________________________________________________
 
-self = <tests.test_functional.TestAdminInterface object at 0x107216490>, client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
+self = <sqlalchemy.engine.base.Connection object at 0x104e57710>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee0830>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
 
-    def test_admin_login_and_dashboard(self, client, app):
-        """Test logging into admin and viewing the dashboard."""
-        # Test the login page
-        response = client.get('/admin/login')
-        assert response.status_code == 200
-        assert b'Admin Login' in response.data
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
     
-        # Mock login
-        with app.test_request_context():
->           client.set_cookie('localhost', 'admin_authenticated', 'true')
-E           TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
 
-tests/test_functional.py:108: TypeError
-------------------------------------------------------------------- Captured stdout setup --------------------------------------------------------------------
-Creating Flask app...
-Registering blueprints...
-Blueprints registered!
-Available routes:
-static: /static/<path:filename>
-main.index: /
-main.schedule: /schedule
-main.venue: /venue
-main.accommodation: /accommodation
-main.activities: /activities
-main.gallery: /gallery
-auth.login: /auth/login
-rsvp.landing: /rsvp/
-rsvp.rsvp_form: /rsvp/<token>
-rsvp.cancel_rsvp: /rsvp/<token>/cancel
-rsvp.confirmation: /rsvp/confirmation
-admin.login: /admin/login
-admin.dashboard: /admin/dashboard
-admin.add_guest: /admin/guest/add
-admin.import_guests: /admin/guest/import
-admin.download_template: /admin/download-template
-admin.logout: /admin/logout
---------------------------------------------------------------------- Captured log setup ---------------------------------------------------------------------
-INFO     app:logging_config.py:42 Wedding application startup
-__________________________________________________________ TestAdminInterface.test_admin_add_guest ___________________________________________________________
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <tests.test_functional.TestAdminInterface object at 0x107216ad0>, client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1063989c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee0830>
 
-    def test_admin_add_guest(self, client, app):
-        """Test adding a guest through the admin interface."""
-        # Set authentication cookie
-        with app.test_request_context():
->           client.set_cookie('localhost', 'admin_authenticated', 'true')
-E           TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
 
-tests/test_functional.py:119: TypeError
-------------------------------------------------------------------- Captured stdout setup --------------------------------------------------------------------
-Creating Flask app...
-Registering blueprints...
-Blueprints registered!
-Available routes:
-static: /static/<path:filename>
-main.index: /
-main.schedule: /schedule
-main.venue: /venue
-main.accommodation: /accommodation
-main.activities: /activities
-main.gallery: /gallery
-auth.login: /auth/login
-rsvp.landing: /rsvp/
-rsvp.rsvp_form: /rsvp/<token>
-rsvp.cancel_rsvp: /rsvp/<token>/cancel
-rsvp.confirmation: /rsvp/confirmation
-admin.login: /admin/login
-admin.dashboard: /admin/dashboard
-admin.add_guest: /admin/guest/add
-admin.import_guests: /admin/guest/import
-admin.download_template: /admin/download-template
-admin.logout: /admin/logout
---------------------------------------------------------------------- Captured log setup ---------------------------------------------------------------------
-INFO     app:logging_config.py:42 Wedding application startup
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1063989c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee0830>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:05.895532')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+_____________________________________________________ ERROR at setup of TestRSVPModel.test_cancel_method _____________________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e57890>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee26d0>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x105c8c240>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee26d0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x105c8c240>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee26d0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:06.194380')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+_______________________________________________ ERROR at setup of TestAllergenModel.test_create_guest_allergen _______________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e57e90>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee2b30>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x10583b2c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee2b30>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x10583b2c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee2b30>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:06.504747')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+__________________________________________ ERROR at setup of TestAdditionalGuestModel.test_create_additional_guest ___________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e57050>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105ed9010>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x104d5b8c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105ed9010>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x104d5b8c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105ed9010>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:06.815509')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+______________________________________________ ERROR at setup of TestRSVPRoutes.test_rsvp_form_with_valid_token ______________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e571d0>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105edb930>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x105261140>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105edb930>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x105261140>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105edb930>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:07.146206')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+___________________________________________________ ERROR at setup of TestRSVPRoutes.test_rsvp_submission ____________________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e55550>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104e9b3f0>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1061c03c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104e9b3f0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1061c03c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104e9b3f0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:07.568170')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+_____________________________________________________ ERROR at setup of TestRSVPRoutes.test_rsvp_cancel ______________________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e57650>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee1470>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x104f32ec0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee1470>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x104f32ec0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee1470>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:07.914404')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+__________________________________________________ ERROR at setup of TestRSVPHelpers.test_process_allergens __________________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x105c3cc50>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105ed9a90>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1054e1ac0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105ed9a90>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1054e1ac0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x105ed9a90>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:08.242721')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+__________________________________________________ ERROR at setup of TestRSVPProcessor.test_process_success __________________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e57890>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee09f0>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x105688740>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee09f0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x105688740>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee09f0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:08.555588')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+____________________________________________ ERROR at setup of TestRSVPProcessor.test_process_validation_failure _____________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x104e57350>, dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee1ef0>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x104d3b110>
+parameters = [('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1054417c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee1ef0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: guest.token
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.fixture(scope='function')
+    def sample_guest(app):
+        """Create a sample guest."""
+        with app.app_context():
+            guest = Guest(
+                name="Test Guest",
+                email="test@example.com",
+                phone="1234567890",
+                token="test-token",
+                language_preference="en",
+                has_plus_one=True,
+                is_family=False
+            )
+            db.session.add(guest)
+>           db.session.commit()
+
+tests/conftest.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.13/site-packages/sqlalchemy/orm/scoping.py:599: in commit
+    return self._proxied.commit()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2032: in commit
+    trans.commit(_to_root=True)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1313: in commit
+    self._prepare_impl()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1288: in _prepare_impl
+    self.session.flush()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1416: in execute
+    return meth(
+venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:516: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1638: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1843: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1983: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2352: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1964: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x104c4aa50>, cursor = <sqlite3.Cursor object at 0x1054417c0>
+statement = 'INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+parameters = ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, ...)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x104ee1ef0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+E       [SQL: INSERT INTO guest (name, phone, email, token, language_preference, has_plus_one, plus_one_used, is_family, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: ('Test Guest', '1234567890', 'test@example.com', 'test-token', 'en', 1, 0, 0, '2025-03-11 14:11:08.865102')]
+E       (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:942: IntegrityError
 ====================================================================== warnings summary ======================================================================
 tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
   /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:40: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
@@ -648,9 +2483,15 @@ tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 ================================================================== short test summary info ===================================================================
-FAILED tests/test_functional.py::TestAdminInterface::test_admin_login_and_dashboard - TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
-FAILED tests/test_functional.py::TestAdminInterface::test_admin_add_guest - TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
-ERROR tests/test_functional.py::TestRSVPProcess::test_rsvp_attending_flow - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: rsvp.guest_id
-ERROR tests/test_functional.py::TestRSVPProcess::test_rsvp_not_attending_flow - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: rsvp.guest_id
-===================================================== 2 failed, 35 passed, 1 warning, 2 errors in 1.92s ======================================================
-(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % 
+ERROR tests/test_models.py::TestRSVPModel::test_create_rsvp - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_models.py::TestRSVPModel::test_is_editable_property - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_models.py::TestRSVPModel::test_cancel_method - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_models.py::TestAllergenModel::test_create_guest_allergen - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_utils.py::TestRSVPHelpers::test_process_allergens - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_utils.py::TestRSVPProcessor::test_process_success - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+ERROR tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: guest.token
+========================================================== 26 passed, 1 warning, 11 errors in 4.15s ==========================================================

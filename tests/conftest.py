@@ -11,16 +11,29 @@ from dotenv import load_dotenv
 # Load environment variables from .env file at the start of testing
 load_dotenv()
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='session')
 def app():
-    """Create and configure a new app instance for each test."""
-    app = create_app(TestConfig)
+    """Create and configure a Flask app for testing."""
+    # Create the app with the test config
+    app = create_app('app.config.TestConfig')
     
+    # Establish an application context
     with app.app_context():
+        # Create all tables
         db.create_all()
+        
+        # Add some test data (allergens)
+        allergens = ['Gluten', 'Dairy', 'Nuts']
+        for name in allergens:
+            allergen = Allergen.query.filter_by(name=name).first()
+            if not allergen:
+                db.session.add(Allergen(name=name))
+        db.session.commit()
+        
         yield app
+        
+        # Clean up (don't delete tables, as it can cause issues with SQLite in-memory DB)
         db.session.remove()
-        db.drop_all()
 
 @pytest.fixture(scope='function')
 def client(app):

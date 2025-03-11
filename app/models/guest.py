@@ -13,5 +13,5 @@ class Guest(db.Model):
     is_family = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
     
-    # Updated relationship with back_populates
-    rsvp = db.relationship('RSVP', back_populates='guest', uselist=False)
+    # Updated relationship with cascade delete
+    rsvp = db.relationship('RSVP', back_populates='guest', uselist=False, cascade='all, delete-orphan')
