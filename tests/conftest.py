@@ -52,7 +52,7 @@ def sample_rsvp(app, sample_guest):
             children_count=0,
             hotel_name="Test Hotel",
             transport_to_church=True,
-            created_at=datetime.utcnow()
+            created_at=datetime.now()
         )
         db.session.add(rsvp)
         db.session.commit()
@@ -80,5 +80,5 @@ def auth_client(client, app):
         session['admin_logged_in'] = True
     
     # Use the actual cookie that the application checks for
-    client.set_cookie('/', 'admin_authenticated', 'true')
+    client.set_cookie('admin_authenticated', 'true')
     return client

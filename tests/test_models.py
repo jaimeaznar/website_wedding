@@ -70,7 +70,7 @@ class TestRSVPModel:
             assert sample_rsvp.is_editable is True
 
             # Set created_at to more than 24 hours ago
-            sample_rsvp.created_at = datetime.utcnow() - timedelta(hours=25)
+            sample_rsvp.created_at = datetime.now() - timedelta(hours=25)
             db.session.commit()
             assert sample_rsvp.is_editable is False
 

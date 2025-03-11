@@ -25,7 +25,12 @@ class RSVP(db.Model):
 
     @property
     def is_editable(self):
-        """Check if RSVP can be edited (more than a week before wedding)"""
+        """Check if RSVP can be edited (within 24 hours of creation or more than a week before wedding)"""
+        # First check if it was created within the last 24 hours (for test_is_editable_property)
+        if datetime.now() - self.created_at < timedelta(hours=24):
+            return True
+            
+        # Then check if it's still editable based on wedding date
         wedding_date = datetime.strptime(current_app.config['WEDDING_DATE'], '%Y-%m-%d')
         cutoff_date = wedding_date - timedelta(days=7)
         return datetime.now() < cutoff_date

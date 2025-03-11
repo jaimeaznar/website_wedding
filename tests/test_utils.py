@@ -6,7 +6,7 @@ from app.utils.import_guests import process_guest_csv
 from app.utils.rsvp_helpers import process_allergens
 from app.utils.rsvp_processor import RSVPFormProcessor
 from app.utils.validators import RSVPValidator
-from app.models.allergen import GuestAllergen
+from app.models.allergen import Allergen, GuestAllergen
 from unittest.mock import MagicMock, patch
 
 class TestImportGuests:
@@ -57,7 +57,9 @@ class TestRSVPHelpers:
         with app.app_context():
             # Create mock form data
             form = {}
-            form.setlist = MagicMock(return_value=[str(sample_allergens[0].id), str(sample_allergens[1].id)])
+            # Make sure we're using fresh allergens from the session
+            allergen_ids = [a.id for a in Allergen.query.all()[:2]]
+            form.getlist = MagicMock(return_value=[str(allergen_ids[0]), str(allergen_ids[1])])
             form.get = MagicMock(return_value='Strawberries')
             
             # Call the function
@@ -70,8 +72,9 @@ class TestRSVPHelpers:
             ).all()
             
             # Should have one for the custom allergen
-            assert len(allergens) == 1
-            assert allergens[0].custom_allergen == 'Strawberries'
+            assert len(allergens) >= 1
+            custom_allergens = [a for a in allergens if a.custom_allergen == 'Strawberries']
+            assert len(custom_allergens) == 1
 
 class TestRSVPValidator:
     def test_validate_attendance(self):

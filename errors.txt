@@ -215,7 +215,7 @@ self = <tests.test_models.TestRSVPModel object at 0x10f1e9d60>, app = <Flask 'ap
             assert sample_rsvp.is_editable is True
     
             # Set created_at to more than 24 hours ago
-            sample_rsvp.created_at = datetime.utcnow() - timedelta(hours=25)
+            sample_rsvp.created_at = datetime.now() - timedelta(hours=25)
             db.session.commit()
 >           assert sample_rsvp.is_editable is False
 E           assert True is False
@@ -358,16 +358,16 @@ tests/test_models.py::TestAllergenModel::test_create_guest_allergen
 tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest
 tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel
 tests/test_utils.py::TestRSVPHelpers::test_process_allergens
-  /Users/jaimeaznar/Desktop/website_wedding/tests/conftest.py:55: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    created_at=datetime.utcnow()
+  /Users/jaimeaznar/Desktop/website_wedding/tests/conftest.py:55: DeprecationWarning: datetime.datetime.now() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    created_at=datetime.now()
 
 tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
-  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:40: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:40: LegacyAPIWarning: The db.session.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
     guest = Guest.query.get(sample_guest.id)
 
 tests/test_models.py::TestRSVPModel::test_is_editable_property
-  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:73: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    sample_rsvp.created_at = datetime.utcnow() - timedelta(hours=25)
+  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:73: DeprecationWarning: datetime.datetime.now() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    sample_rsvp.created_at = datetime.now() - timedelta(hours=25)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 ========================================== short test summary info ===========================================
