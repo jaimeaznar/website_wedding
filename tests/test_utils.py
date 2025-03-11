@@ -54,6 +54,8 @@ class TestImportGuests:
 class TestRSVPHelpers:
     def test_process_allergens(self, app, sample_rsvp):
         """Test processing allergens from form data."""
+        from app import db  # Add the import here to fix the NameError
+        
         with app.app_context():
             # Create sample allergens within this session
             allergen1 = Allergen(name="Peanuts")
@@ -82,7 +84,6 @@ class TestRSVPHelpers:
             # Verify the custom allergen
             custom_allergens = [a for a in allergens if a.custom_allergen == 'Strawberries']
             assert len(custom_allergens) == 1
-
 class TestRSVPValidator:
     def test_validate_attendance(self):
         """Test validating attendance."""

@@ -33,10 +33,10 @@ class RSVP(db.Model):
         # Then check if it's still editable based on wedding date
         try:
             wedding_date = datetime.strptime(current_app.config['WEDDING_DATE'], '%Y-%m-%d')
-            cutoff_date = wedding_date - timedelta(days=7)
+            cutoff_date = wedding_date - timedelta(days=current_app.config.get('WARNING_CUTOFF_DAYS', 7))
             return datetime.now() < cutoff_date
-        except:
-            # In case of testing, if wedding_date is not properly set, return False
+        except (ValueError, KeyError, TypeError):
+            # In case of config issue or testing environment, default to False for safety
             return False
 
     def cancel(self):
