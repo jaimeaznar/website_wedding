@@ -1,3 +1,4 @@
+import os
 import pytest
 from datetime import datetime
 from app import create_app, db
@@ -5,6 +6,10 @@ from app.models.guest import Guest
 from app.models.rsvp import RSVP
 from app.models.allergen import Allergen
 from app.config import TestConfig
+from dotenv import load_dotenv
+
+# Load environment variables from .env file at the start of testing
+load_dotenv()
 
 @pytest.fixture(scope='function')
 def app():

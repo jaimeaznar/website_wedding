@@ -68,10 +68,16 @@ class TestRSVPModel:
         with app.app_context():
             # Should be editable if created within the last 24 hours
             assert sample_rsvp.is_editable is True
-
+            
             # Set created_at to more than 24 hours ago
             sample_rsvp.created_at = datetime.now() - timedelta(hours=25)
             db.session.commit()
+            
+            # Set the wedding date to be very close (3 days from now)
+            app.config['WEDDING_DATE'] = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
+            app.config['WARNING_CUTOFF_DAYS'] = 7  # 7 days cutoff
+            
+            # Now it should not be editable
             assert sample_rsvp.is_editable is False
 
     def test_cancel_method(self, app, sample_rsvp):

@@ -2,12 +2,14 @@
 
 import pytest
 from io import BytesIO
+from app import db
 from app.utils.import_guests import process_guest_csv
 from app.utils.rsvp_helpers import process_allergens
 from app.utils.rsvp_processor import RSVPFormProcessor
 from app.utils.validators import RSVPValidator
 from app.models.allergen import Allergen, GuestAllergen
 from unittest.mock import MagicMock, patch
+
 
 class TestImportGuests:
     def test_process_guest_csv_valid(self):
@@ -52,9 +54,11 @@ class TestImportGuests:
         assert "Name and phone are required" in str(excinfo.value)
 
 class TestRSVPHelpers:
-    def test_process_allergens(self, app, sample_rsvp):
+   def test_process_allergens(self, app, sample_rsvp):
         """Test processing allergens from form data."""
-        from app import db  # Add the import here to fix the NameError
+        from app import db  # Import db here
+        from app.models.allergen import Allergen, GuestAllergen
+        from app.utils.rsvp_helpers import process_allergens
         
         with app.app_context():
             # Create sample allergens within this session
@@ -84,6 +88,7 @@ class TestRSVPHelpers:
             # Verify the custom allergen
             custom_allergens = [a for a in allergens if a.custom_allergen == 'Strawberries']
             assert len(custom_allergens) == 1
+
 class TestRSVPValidator:
     def test_validate_attendance(self):
         """Test validating attendance."""
