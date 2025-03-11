@@ -1,50 +1,51 @@
-                                        ============================================ test session starts =============================================
-platform darwin -- Python 3.12.9, pytest-7.4.3, pluggy-1.5.0 -- /Users/jaimeaznar/Desktop/website_wedding/venv/bin/python3.12
+(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % pytest -v
+========================================================== test session starts ==========================================================
+platform darwin -- Python 3.13.1, pytest-7.4.3, pluggy-1.5.0 -- /Users/jaimeaznar/Desktop/website_wedding/venv/bin/python3.13
 cachedir: .pytest_cache
 rootdir: /Users/jaimeaznar/Desktop/website_wedding
 plugins: flask-1.3.0, cov-4.1.0, mock-3.14.0, flask-sqlalchemy-1.1.0
-collected 37 items                                                                                           
+collected 37 items                                                                                                                      
 
-tests/test_functional.py::TestMainNavigation::test_home_page SKIPPED (Functional tests are disable...) [  2%]
-tests/test_functional.py::TestRSVPProcess::test_rsvp_attending_flow SKIPPED (Functional tests are ...) [  5%]
-tests/test_functional.py::TestRSVPProcess::test_rsvp_not_attending_flow SKIPPED (Functional tests ...) [  8%]
-tests/test_functional.py::TestAdminInterface::test_admin_login_and_dashboard SKIPPED (Functional t...) [ 10%]
-tests/test_functional.py::TestAdminInterface::test_admin_add_guest SKIPPED (Functional tests are d...) [ 13%]
-tests/test_models.py::TestGuestModel::test_create_guest PASSED                                         [ 16%]
-tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship PASSED                              [ 18%]
-tests/test_models.py::TestRSVPModel::test_create_rsvp PASSED                                           [ 21%]
-tests/test_models.py::TestRSVPModel::test_is_editable_property FAILED                                  [ 24%]
-tests/test_models.py::TestRSVPModel::test_cancel_method FAILED                                         [ 27%]
-tests/test_models.py::TestAllergenModel::test_create_allergen PASSED                                   [ 29%]
-tests/test_models.py::TestAllergenModel::test_create_guest_allergen PASSED                             [ 32%]
-tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest PASSED                    [ 35%]
-tests/test_routes.py::TestMainRoutes::test_index_route PASSED                                          [ 37%]
-tests/test_routes.py::TestMainRoutes::test_schedule_route PASSED                                       [ 40%]
-tests/test_routes.py::TestMainRoutes::test_venue_route PASSED                                          [ 43%]
-tests/test_routes.py::TestMainRoutes::test_language_switching PASSED                                   [ 45%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_landing PASSED                                         [ 48%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token PASSED                           [ 51%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_invalid_token PASSED                         [ 54%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission PASSED                                      [ 56%]
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel PASSED                                          [ 59%]
-tests/test_routes.py::TestAdminRoutes::test_admin_login_page PASSED                                    [ 62%]
-tests/test_routes.py::TestAdminRoutes::test_admin_login_success PASSED                                 [ 64%]
-tests/test_routes.py::TestAdminRoutes::test_admin_dashboard ERROR                                      [ 67%]
-tests/test_routes.py::TestAdminRoutes::test_admin_add_guest ERROR                                      [ 70%]
-tests/test_routes.py::TestAdminRoutes::test_admin_download_template ERROR                              [ 72%]
-tests/test_routes.py::TestAdminRoutes::test_admin_logout ERROR                                         [ 75%]
-tests/test_utils.py::TestImportGuests::test_process_guest_csv_valid PASSED                             [ 78%]
-tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_headers PASSED                   [ 81%]
-tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_required_fields PASSED           [ 83%]
-tests/test_utils.py::TestRSVPHelpers::test_process_allergens FAILED                                    [ 86%]
-tests/test_utils.py::TestRSVPValidator::test_validate_attendance PASSED                                [ 89%]
-tests/test_utils.py::TestRSVPValidator::test_validate_transport PASSED                                 [ 91%]
-tests/test_utils.py::TestRSVPValidator::test_validate_family_members PASSED                            [ 94%]
-tests/test_utils.py::TestRSVPProcessor::test_process_success PASSED                                    [ 97%]
-tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure PASSED                         [100%]
+tests/test_functional.py::TestMainNavigation::test_home_page SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONAL_TESTS...) [  2%]
+tests/test_functional.py::TestRSVPProcess::test_rsvp_attending_flow SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONA...) [  5%]
+tests/test_functional.py::TestRSVPProcess::test_rsvp_not_attending_flow SKIPPED (Functional tests are disabled. Set RUN_FUNCT...) [  8%]
+tests/test_functional.py::TestAdminInterface::test_admin_login_and_dashboard SKIPPED (Functional tests are disabled. Set RUN_...) [ 10%]
+tests/test_functional.py::TestAdminInterface::test_admin_add_guest SKIPPED (Functional tests are disabled. Set RUN_FUNCTIONAL...) [ 13%]
+tests/test_models.py::TestGuestModel::test_create_guest PASSED                                                                    [ 16%]
+tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship PASSED                                                         [ 18%]
+tests/test_models.py::TestRSVPModel::test_create_rsvp PASSED                                                                      [ 21%]
+tests/test_models.py::TestRSVPModel::test_is_editable_property FAILED                                                             [ 24%]
+tests/test_models.py::TestRSVPModel::test_cancel_method PASSED                                                                    [ 27%]
+tests/test_models.py::TestAllergenModel::test_create_allergen PASSED                                                              [ 29%]
+tests/test_models.py::TestAllergenModel::test_create_guest_allergen PASSED                                                        [ 32%]
+tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest PASSED                                               [ 35%]
+tests/test_routes.py::TestMainRoutes::test_index_route PASSED                                                                     [ 37%]
+tests/test_routes.py::TestMainRoutes::test_schedule_route PASSED                                                                  [ 40%]
+tests/test_routes.py::TestMainRoutes::test_venue_route PASSED                                                                     [ 43%]
+tests/test_routes.py::TestMainRoutes::test_language_switching PASSED                                                              [ 45%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_landing PASSED                                                                    [ 48%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_valid_token PASSED                                                      [ 51%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_form_with_invalid_token PASSED                                                    [ 54%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_submission PASSED                                                                 [ 56%]
+tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel PASSED                                                                     [ 59%]
+tests/test_routes.py::TestAdminRoutes::test_admin_login_page PASSED                                                               [ 62%]
+tests/test_routes.py::TestAdminRoutes::test_admin_login_success PASSED                                                            [ 64%]
+tests/test_routes.py::TestAdminRoutes::test_admin_dashboard ERROR                                                                 [ 67%]
+tests/test_routes.py::TestAdminRoutes::test_admin_add_guest ERROR                                                                 [ 70%]
+tests/test_routes.py::TestAdminRoutes::test_admin_download_template ERROR                                                         [ 72%]
+tests/test_routes.py::TestAdminRoutes::test_admin_logout ERROR                                                                    [ 75%]
+tests/test_utils.py::TestImportGuests::test_process_guest_csv_valid PASSED                                                        [ 78%]
+tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_headers PASSED                                              [ 81%]
+tests/test_utils.py::TestImportGuests::test_process_guest_csv_missing_required_fields PASSED                                      [ 83%]
+tests/test_utils.py::TestRSVPHelpers::test_process_allergens FAILED                                                               [ 86%]
+tests/test_utils.py::TestRSVPValidator::test_validate_attendance PASSED                                                           [ 89%]
+tests/test_utils.py::TestRSVPValidator::test_validate_transport PASSED                                                            [ 91%]
+tests/test_utils.py::TestRSVPValidator::test_validate_family_members PASSED                                                       [ 94%]
+tests/test_utils.py::TestRSVPProcessor::test_process_success PASSED                                                               [ 97%]
+tests/test_utils.py::TestRSVPProcessor::test_process_validation_failure PASSED                                                    [100%]
 
-=================================================== ERRORS ===================================================
-___________________________ ERROR at setup of TestAdminRoutes.test_admin_dashboard ___________________________
+================================================================ ERRORS =================================================================
+________________________________________ ERROR at setup of TestAdminRoutes.test_admin_dashboard _________________________________________
 
 client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
 
@@ -54,12 +55,12 @@ client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
         with client.session_transaction() as session:
             session['admin_logged_in'] = True
     
-        # Use the actual cookie that the application checks for
->       client.set_cookie('/', 'admin_authenticated', 'true')
+        # Fix: Use the correct signature for set_cookie
+>       client.set_cookie('127.0.0.1', 'admin_authenticated', 'true')
 E       TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 
 tests/conftest.py:83: TypeError
-------------------------------------------- Captured stdout setup --------------------------------------------
+--------------------------------------------------------- Captured stdout setup ---------------------------------------------------------
 Creating Flask app...
 Registering blueprints...
 Blueprints registered!
@@ -82,9 +83,9 @@ admin.add_guest: /admin/guest/add
 admin.import_guests: /admin/guest/import
 admin.download_template: /admin/download-template
 admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
+---------------------------------------------------------- Captured log setup -----------------------------------------------------------
 INFO     app:logging_config.py:42 Wedding application startup
-___________________________ ERROR at setup of TestAdminRoutes.test_admin_add_guest ___________________________
+________________________________________ ERROR at setup of TestAdminRoutes.test_admin_add_guest _________________________________________
 
 client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
 
@@ -94,12 +95,12 @@ client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
         with client.session_transaction() as session:
             session['admin_logged_in'] = True
     
-        # Use the actual cookie that the application checks for
->       client.set_cookie('/', 'admin_authenticated', 'true')
+        # Fix: Use the correct signature for set_cookie
+>       client.set_cookie('127.0.0.1', 'admin_authenticated', 'true')
 E       TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 
 tests/conftest.py:83: TypeError
-------------------------------------------- Captured stdout setup --------------------------------------------
+--------------------------------------------------------- Captured stdout setup ---------------------------------------------------------
 Creating Flask app...
 Registering blueprints...
 Blueprints registered!
@@ -122,9 +123,9 @@ admin.add_guest: /admin/guest/add
 admin.import_guests: /admin/guest/import
 admin.download_template: /admin/download-template
 admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
+---------------------------------------------------------- Captured log setup -----------------------------------------------------------
 INFO     app:logging_config.py:42 Wedding application startup
-_______________________ ERROR at setup of TestAdminRoutes.test_admin_download_template _______________________
+____________________________________ ERROR at setup of TestAdminRoutes.test_admin_download_template _____________________________________
 
 client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
 
@@ -134,12 +135,12 @@ client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
         with client.session_transaction() as session:
             session['admin_logged_in'] = True
     
-        # Use the actual cookie that the application checks for
->       client.set_cookie('/', 'admin_authenticated', 'true')
+        # Fix: Use the correct signature for set_cookie
+>       client.set_cookie('127.0.0.1', 'admin_authenticated', 'true')
 E       TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 
 tests/conftest.py:83: TypeError
-------------------------------------------- Captured stdout setup --------------------------------------------
+--------------------------------------------------------- Captured stdout setup ---------------------------------------------------------
 Creating Flask app...
 Registering blueprints...
 Blueprints registered!
@@ -162,9 +163,9 @@ admin.add_guest: /admin/guest/add
 admin.import_guests: /admin/guest/import
 admin.download_template: /admin/download-template
 admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
+---------------------------------------------------------- Captured log setup -----------------------------------------------------------
 INFO     app:logging_config.py:42 Wedding application startup
-____________________________ ERROR at setup of TestAdminRoutes.test_admin_logout _____________________________
+__________________________________________ ERROR at setup of TestAdminRoutes.test_admin_logout __________________________________________
 
 client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
 
@@ -174,12 +175,12 @@ client = <FlaskClient <Flask 'app'>>, app = <Flask 'app'>
         with client.session_transaction() as session:
             session['admin_logged_in'] = True
     
-        # Use the actual cookie that the application checks for
->       client.set_cookie('/', 'admin_authenticated', 'true')
+        # Fix: Use the correct signature for set_cookie
+>       client.set_cookie('127.0.0.1', 'admin_authenticated', 'true')
 E       TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 
 tests/conftest.py:83: TypeError
-------------------------------------------- Captured stdout setup --------------------------------------------
+--------------------------------------------------------- Captured stdout setup ---------------------------------------------------------
 Creating Flask app...
 Registering blueprints...
 Blueprints registered!
@@ -202,12 +203,12 @@ admin.add_guest: /admin/guest/add
 admin.import_guests: /admin/guest/import
 admin.download_template: /admin/download-template
 admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
+---------------------------------------------------------- Captured log setup -----------------------------------------------------------
 INFO     app:logging_config.py:42 Wedding application startup
-================================================== FAILURES ==================================================
-__________________________________ TestRSVPModel.test_is_editable_property ___________________________________
+=============================================================== FAILURES ================================================================
+________________________________________________ TestRSVPModel.test_is_editable_property ________________________________________________
 
-self = <tests.test_models.TestRSVPModel object at 0x10f1e9d60>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
+self = <tests.test_models.TestRSVPModel object at 0x11298ad50>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
 
     def test_is_editable_property(self, app, sample_rsvp):
         with app.app_context():
@@ -222,7 +223,7 @@ E           assert True is False
 E            +  where True = <RSVP 1>.is_editable
 
 tests/test_models.py:75: AssertionError
-------------------------------------------- Captured stdout setup --------------------------------------------
+--------------------------------------------------------- Captured stdout setup ---------------------------------------------------------
 Creating Flask app...
 Registering blueprints...
 Blueprints registered!
@@ -245,87 +246,23 @@ admin.add_guest: /admin/guest/add
 admin.import_guests: /admin/guest/import
 admin.download_template: /admin/download-template
 admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
+---------------------------------------------------------- Captured log setup -----------------------------------------------------------
 INFO     app:logging_config.py:42 Wedding application startup
-______________________________________ TestRSVPModel.test_cancel_method ______________________________________
+________________________________________________ TestRSVPHelpers.test_process_allergens _________________________________________________
 
-self = <tests.test_models.TestRSVPModel object at 0x10f1e9400>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
+self = <tests.test_utils.TestRSVPHelpers object at 0x112a44050>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
 
-    def test_cancel_method(self, app, sample_rsvp):
-        with app.app_context():
-            sample_rsvp.cancel()
-            db.session.commit()
-            assert sample_rsvp.is_cancelled is True
->           assert sample_rsvp.cancelled_at is not None
-E           AttributeError: 'RSVP' object has no attribute 'cancelled_at'
-
-tests/test_models.py:82: AttributeError
-------------------------------------------- Captured stdout setup --------------------------------------------
-Creating Flask app...
-Registering blueprints...
-Blueprints registered!
-Available routes:
-static: /static/<path:filename>
-main.index: /
-main.schedule: /schedule
-main.venue: /venue
-main.accommodation: /accommodation
-main.activities: /activities
-main.gallery: /gallery
-auth.login: /auth/login
-rsvp.landing: /rsvp/
-rsvp.rsvp_form: /rsvp/<token>
-rsvp.cancel_rsvp: /rsvp/<token>/cancel
-rsvp.confirmation: /rsvp/confirmation
-admin.login: /admin/login
-admin.dashboard: /admin/dashboard
-admin.add_guest: /admin/guest/add
-admin.import_guests: /admin/guest/import
-admin.download_template: /admin/download-template
-admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
-INFO     app:logging_config.py:42 Wedding application startup
-___________________________________ TestRSVPHelpers.test_process_allergens ___________________________________
-
-self = <tests.test_utils.TestRSVPHelpers object at 0x10f1fd880>, app = <Flask 'app'>, sample_rsvp = <RSVP 1>
-sample_allergens = [<Allergen 1>, <Allergen 2>, <Allergen 3>]
-
-    def test_process_allergens(self, app, sample_rsvp, sample_allergens):
+    def test_process_allergens(self, app, sample_rsvp):
         """Test processing allergens from form data."""
         with app.app_context():
-            # Create mock form data
-            form = {}
->           form.setlist = MagicMock(return_value=[str(sample_allergens[0].id), str(sample_allergens[1].id)])
+            # Create sample allergens within this session
+            allergen1 = Allergen(name="Peanuts")
+            allergen2 = Allergen(name="Gluten")
+>           db.session.add(allergen1)
+E           NameError: name 'db' is not defined
 
-tests/test_utils.py:60: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-venv/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py:566: in __get__
-    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
-venv/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py:1086: in get
-    value = self._fire_loader_callables(state, key, passive)
-venv/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py:1116: in _fire_loader_callables
-    return state._load_expired(state, passive)
-venv/lib/python3.12/site-packages/sqlalchemy/orm/state.py:803: in _load_expired
-    self.manager.expired_attribute_loader(self, toload, passive)
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-mapper = <Mapper at 0x10e19fa40; Allergen>, state = <sqlalchemy.orm.state.InstanceState object at 0x10f5165d0>
-attribute_names = {'guest_allergens', 'id', 'name'}, passive = symbol('PASSIVE_OFF')
-
-    def load_scalar_attributes(mapper, state, attribute_names, passive):
-        """initiate a column-based attribute refresh operation."""
-    
-        # assert mapper is _state_mapper(state)
-        session = state.session
-        if not session:
->           raise orm_exc.DetachedInstanceError(
-                "Instance %s is not bound to a Session; "
-                "attribute refresh operation cannot proceed" % (state_str(state))
-            )
-E           sqlalchemy.orm.exc.DetachedInstanceError: Instance <Allergen at 0x10f6c5040> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/20/bhk3)
-
-venv/lib/python3.12/site-packages/sqlalchemy/orm/loading.py:1603: DetachedInstanceError
-------------------------------------------- Captured stdout setup --------------------------------------------
+tests/test_utils.py:61: NameError
+--------------------------------------------------------- Captured stdout setup ---------------------------------------------------------
 Creating Flask app...
 Registering blueprints...
 Blueprints registered!
@@ -348,34 +285,20 @@ admin.add_guest: /admin/guest/add
 admin.import_guests: /admin/guest/import
 admin.download_template: /admin/download-template
 admin.logout: /admin/logout
---------------------------------------------- Captured log setup ---------------------------------------------
+---------------------------------------------------------- Captured log setup -----------------------------------------------------------
 INFO     app:logging_config.py:42 Wedding application startup
-============================================== warnings summary ==============================================
+=========================================================== warnings summary ============================================================
 tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
-tests/test_models.py::TestRSVPModel::test_is_editable_property
-tests/test_models.py::TestRSVPModel::test_cancel_method
-tests/test_models.py::TestAllergenModel::test_create_guest_allergen
-tests/test_models.py::TestAdditionalGuestModel::test_create_additional_guest
-tests/test_routes.py::TestRSVPRoutes::test_rsvp_cancel
-tests/test_utils.py::TestRSVPHelpers::test_process_allergens
-  /Users/jaimeaznar/Desktop/website_wedding/tests/conftest.py:55: DeprecationWarning: datetime.datetime.now() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    created_at=datetime.now()
-
-tests/test_models.py::TestGuestModel::test_guest_rsvp_relationship
-  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:40: LegacyAPIWarning: The db.session.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:40: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
     guest = Guest.query.get(sample_guest.id)
 
-tests/test_models.py::TestRSVPModel::test_is_editable_property
-  /Users/jaimeaznar/Desktop/website_wedding/tests/test_models.py:73: DeprecationWarning: datetime.datetime.now() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    sample_rsvp.created_at = datetime.now() - timedelta(hours=25)
-
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-========================================== short test summary info ===========================================
+======================================================== short test summary info ========================================================
 FAILED tests/test_models.py::TestRSVPModel::test_is_editable_property - assert True is False
-FAILED tests/test_models.py::TestRSVPModel::test_cancel_method - AttributeError: 'RSVP' object has no attribute 'cancelled_at'
-FAILED tests/test_utils.py::TestRSVPHelpers::test_process_allergens - sqlalchemy.orm.exc.DetachedInstanceError: Instance <Allergen at 0x10f6c5040> is not bound to a Session; a...
+FAILED tests/test_utils.py::TestRSVPHelpers::test_process_allergens - NameError: name 'db' is not defined
 ERROR tests/test_routes.py::TestAdminRoutes::test_admin_dashboard - TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 ERROR tests/test_routes.py::TestAdminRoutes::test_admin_add_guest - TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 ERROR tests/test_routes.py::TestAdminRoutes::test_admin_download_template - TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
 ERROR tests/test_routes.py::TestAdminRoutes::test_admin_logout - TypeError: Client.set_cookie() takes from 2 to 3 positional arguments but 4 were given
-======================= 3 failed, 25 passed, 5 skipped, 9 warnings, 4 errors in 1.23s ========================
+===================================== 2 failed, 26 passed, 5 skipped, 1 warning, 4 errors in 1.14s ======================================
+(venv) jaimeaznar@Jaimes-MacBook-Pro-2 website_wedding % 

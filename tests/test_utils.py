@@ -52,15 +52,20 @@ class TestImportGuests:
         assert "Name and phone are required" in str(excinfo.value)
 
 class TestRSVPHelpers:
-    def test_process_allergens(self, app, sample_rsvp, sample_allergens):
+    def test_process_allergens(self, app, sample_rsvp):
         """Test processing allergens from form data."""
         with app.app_context():
+            # Create sample allergens within this session
+            allergen1 = Allergen(name="Peanuts")
+            allergen2 = Allergen(name="Gluten")
+            db.session.add(allergen1)
+            db.session.add(allergen2)
+            db.session.commit()
+            
             # Create mock form data
-            form = {}
-            # Make sure we're using fresh allergens from the session
-            allergen_ids = [a.id for a in Allergen.query.all()[:2]]
-            form.getlist = MagicMock(return_value=[str(allergen_ids[0]), str(allergen_ids[1])])
-            form.get = MagicMock(return_value='Strawberries')
+            form = MagicMock()
+            form.getlist.return_value = [str(allergen1.id), str(allergen2.id)]
+            form.get.return_value = 'Strawberries'
             
             # Call the function
             process_allergens(form, sample_rsvp.id, 'Test Guest', 'main')
@@ -71,8 +76,10 @@ class TestRSVPHelpers:
                 guest_name='Test Guest'
             ).all()
             
-            # Should have one for the custom allergen
-            assert len(allergens) >= 1
+            # Should have 3 allergens (2 standard + 1 custom)
+            assert len(allergens) == 3
+            
+            # Verify the custom allergen
             custom_allergens = [a for a in allergens if a.custom_allergen == 'Strawberries']
             assert len(custom_allergens) == 1
 

@@ -79,6 +79,6 @@ def auth_client(client, app):
     with client.session_transaction() as session:
         session['admin_logged_in'] = True
     
-    # Use the actual cookie that the application checks for
-    client.set_cookie('admin_authenticated', 'true')
+    # Fix: Use the correct signature for set_cookie
+    client.set_cookie('127.0.0.1', 'admin_authenticated', 'true')
     return client
