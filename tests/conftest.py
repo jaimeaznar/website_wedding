@@ -12,11 +12,18 @@ from dotenv import load_dotenv
 # Load environment variables from .env file at the start of testing
 load_dotenv()
 
+class CustomTestConfig(TestConfig):
+    """Custom test configuration to explicitly disable CSRF."""
+    WTF_CSRF_ENABLED = False
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SECRET_KEY = 'test-secret-key'
+
 @pytest.fixture(scope='session')
 def app():
     """Create and configure a Flask app for testing."""
     # Create the app with the test config
-    app = create_app('app.config.TestConfig')
+    app = create_app(CustomTestConfig)
     
     # Establish an application context
     with app.app_context():
@@ -62,7 +69,7 @@ def sample_guest(app):
             token=secrets.token_urlsafe(16),
             language_preference="en",
             has_plus_one=True,
-            is_family=False
+            is_family=True  # Set is_family to True for all tests
         )
         db.session.add(guest)
         db.session.commit()

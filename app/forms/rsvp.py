@@ -33,9 +33,9 @@ class RSVPForm(FlaskForm):
     
     # Only required if attending
     hotel_name = StringField('Where are you staying?', validators=[Optional(), Length(max=200)])
-    transport_to_church = BooleanField('Transport to church')
-    transport_to_reception = BooleanField('Transport to reception')
-    transport_to_hotel = BooleanField('Transport to hotel')
+    transport_to_church = BooleanField('Transport to church', default=False)
+    transport_to_reception = BooleanField('Transport to reception', default=False)
+    transport_to_hotel = BooleanField('Transport to hotel', default=False)
     
     # For family guests
     adults_count = SelectField('Number of Additional Adults', coerce=int, default=0)

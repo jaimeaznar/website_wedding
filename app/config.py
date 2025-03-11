@@ -40,7 +40,9 @@ class Config:
 class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    WTF_CSRF_ENABLED = False
+    WTF_CSRF_ENABLED = False  # Make sure CSRF is explicitly disabled
+    WTF_CSRF_CHECK_DEFAULT = False  # Double-check with another setting
+    SECRET_KEY = 'test-secret-key'
     WEDDING_DATE = '2026-06-06'
     # Set accessible admin password for tests
     ADMIN_PASSWORD_HASH = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'  # 'your-secure-password'
