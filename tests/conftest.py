@@ -85,6 +85,12 @@ def sample_allergens(app):
     with app.app_context():
         allergens = []
         for name in ["Peanuts", "Gluten", "Dairy"]:
+            # Check if allergen already exists
+            existing = Allergen.query.filter_by(name=name).first()
+            if existing:
+                allergens.append(existing)
+                continue
+                
             allergen = Allergen(name=name)
             db.session.add(allergen)
             allergens.append(allergen)

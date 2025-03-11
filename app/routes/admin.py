@@ -6,7 +6,7 @@ from app.models.guest import Guest
 from app.models.rsvp import RSVP, AdditionalGuest
 from app.forms import LoginForm, GuestForm, ImportForm
 from app.security import verify_admin_password, rate_limit
-from app.admin_auth import ADMIN_PASSWORD_HASH
+from app.admin_auth import ADMIN_PASSWORD_HASH, get_admin_password_hash
 from functools import wraps
 import secrets
 import logging
@@ -30,7 +30,11 @@ def login():
     form = LoginForm()
     if request.method == 'POST' and form.validate_on_submit():
         password = form.password.data
-        if check_password_hash(current_app.config['ADMIN_PASSWORD_HASH'], password):
+        
+        # Get admin password hash from config or generate it
+        admin_password_hash = get_admin_password_hash()
+        
+        if check_password_hash(admin_password_hash, password):
             response = redirect(url_for('admin.dashboard'))
             response.set_cookie('admin_authenticated', 'true', httponly=True, secure=not current_app.debug)
             logger.info(f"Admin login successful: {request.remote_addr}")

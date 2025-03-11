@@ -54,18 +54,24 @@ class TestImportGuests:
         assert "Name and phone are required" in str(excinfo.value)
 
 class TestRSVPHelpers:
-   def test_process_allergens(self, app, sample_rsvp):
+    def test_process_allergens(self, app, sample_rsvp):
         """Test processing allergens from form data."""
-        from app import db  # Import db here
-        from app.models.allergen import Allergen, GuestAllergen
-        from app.utils.rsvp_helpers import process_allergens
-        
         with app.app_context():
+            # Clean up any existing allergens for this RSVP
+            GuestAllergen.query.filter_by(rsvp_id=sample_rsvp.id).delete()
+            db.session.commit()
+            
             # Create sample allergens within this session
-            allergen1 = Allergen(name="Peanuts")
-            allergen2 = Allergen(name="Gluten")
-            db.session.add(allergen1)
-            db.session.add(allergen2)
+            allergen1 = Allergen.query.filter_by(name="Peanuts").first()
+            if not allergen1:
+                allergen1 = Allergen(name="Peanuts")
+                db.session.add(allergen1)
+                
+            allergen2 = Allergen.query.filter_by(name="Gluten").first()
+            if not allergen2:
+                allergen2 = Allergen(name="Gluten")
+                db.session.add(allergen2)
+                
             db.session.commit()
             
             # Create mock form data
@@ -88,6 +94,11 @@ class TestRSVPHelpers:
             # Verify the custom allergen
             custom_allergens = [a for a in allergens if a.custom_allergen == 'Strawberries']
             assert len(custom_allergens) == 1
+            
+            # Clean up
+            for allergen in allergens:
+                db.session.delete(allergen)
+            db.session.commit()
 
 class TestRSVPValidator:
     def test_validate_attendance(self):
@@ -172,6 +183,11 @@ class TestRSVPProcessor:
     def test_process_success(self, mock_validator, app, sample_guest):
         """Test successful RSVP processing."""
         with app.app_context():
+            # First make sure there's no existing RSVP
+            from app.models.rsvp import RSVP
+            RSVP.query.filter_by(guest_id=sample_guest.id).delete()
+            db.session.commit()
+            
             # Mock the validator to pass validation
             mock_validator.return_value.validate.return_value = (True, [])
             
@@ -182,25 +198,24 @@ class TestRSVPProcessor:
                 'transport_to_church': 'on'
             }
             
-            # Create processor
+            # Create processor with actual guest instance
             processor = RSVPFormProcessor(form_data, sample_guest)
             
-            # Create a proper mock for the processor
-            processor._get_or_create_rsvp = MagicMock()
-            processor.rsvp = MagicMock()
-            processor._process_attendance = MagicMock()
-            processor._process_hotel_info = MagicMock()
-            processor._process_transport = MagicMock()
+            # Only mock specific internal methods that interact with DB
             processor._process_main_guest_allergens = MagicMock()
-            
             if hasattr(processor, '_process_additional_guests'):
                 processor._process_additional_guests = MagicMock()
             
             # Call process
-            success, message = processor.process()
-            
+            with patch.object(db.session, 'commit') as mock_commit:
+                success, message = processor.process()
+                
             # Check result
             assert success is True
+            
+            # Clean up any created RSVP
+            RSVP.query.filter_by(guest_id=sample_guest.id).delete()
+            db.session.commit()
 
     @patch('app.utils.rsvp_processor.RSVPValidator')
     def test_process_validation_failure(self, mock_validator, app, sample_guest):

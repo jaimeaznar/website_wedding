@@ -3,6 +3,8 @@
 from flask import url_for
 import pytest
 from urllib.parse import urlparse
+from app import db
+from app.models.rsvp import RSVP
 
 class TestMainRoutes:
     def test_index_route(self, client):
@@ -44,44 +46,85 @@ class TestRSVPRoutes:
         assert b'Please use the link provided in your invitation' in response.data
 
     def test_rsvp_form_with_valid_token(self, client, sample_guest):
+        """Test the RSVP form with a valid token."""
         response = client.get(f'/rsvp/{sample_guest.token}')
         assert response.status_code == 200
         assert b'RSVP' in response.data
-        assert bytes(sample_guest.name, 'utf-8') in response.data
+        assert sample_guest.name.encode() in response.data
 
     def test_rsvp_form_with_invalid_token(self, client):
         """Test the RSVP form with an invalid token."""
         response = client.get('/rsvp/invalid-token')
         assert response.status_code == 404
 
-    def test_rsvp_submission(self, client, sample_guest):
-        data = {
-            'is_attending': 'yes',
-            'adults_count': '2',
-            'children_count': '0',
-            'hotel_name': 'Test Hotel',
-            'transport_to_church': 'on'
-        }
-        response = client.post(
-            f'/rsvp/{sample_guest.token}',
-            data=data,
-            follow_redirects=True
-        )
-        assert response.status_code == 200
-        # Check for content on the confirmation page
-        assert b'RSVP' in response.data
-
-    def test_rsvp_cancel(self, client, sample_guest, sample_rsvp):
-        # First, set the wedding date in the app config for the test
-        with client.application.app_context():
-            client.application.config['WEDDING_DATE'] = '2026-06-06'
+    def test_rsvp_submission(self, client, app, sample_guest):
+        """Test submitting an RSVP form."""
+        with app.app_context():
+            # First make sure there's no existing RSVP
+            RSVP.query.filter_by(guest_id=sample_guest.id).delete()
+            db.session.commit()
             
-        response = client.post(
-            f'/rsvp/{sample_guest.token}/cancel',
-            data={'confirm_cancellation': True},
-            follow_redirects=True
-        )
-        assert response.status_code == 200
+            data = {
+                'is_attending': 'yes',
+                'adults_count': '2',
+                'children_count': '0',
+                'hotel_name': 'Test Hotel',
+                'transport_to_church': 'on'
+            }
+            response = client.post(
+                f'/rsvp/{sample_guest.token}',
+                data=data,
+                follow_redirects=True
+            )
+            assert response.status_code == 200
+            
+            # Check if RSVP was created
+            rsvp = RSVP.query.filter_by(guest_id=sample_guest.id).first()
+            assert rsvp is not None
+            assert rsvp.is_attending is True
+            assert rsvp.hotel_name == 'Test Hotel'
+            
+            # Clean up
+            db.session.delete(rsvp)
+            db.session.commit()
+
+    def test_rsvp_cancel(self, client, app, sample_guest):
+        """Test cancelling an RSVP."""
+        with app.app_context():
+            # First make sure there's an RSVP to cancel
+            existing_rsvp = RSVP.query.filter_by(guest_id=sample_guest.id).first()
+            if existing_rsvp:
+                db.session.delete(existing_rsvp)
+                db.session.commit()
+            
+            # Create a new RSVP
+            rsvp = RSVP(
+                guest_id=sample_guest.id,
+                is_attending=True,
+                adults_count=1,
+                hotel_name="Test Hotel"
+            )
+            db.session.add(rsvp)
+            db.session.commit()
+            
+            # Set the wedding date in the app config for the test
+            app.config['WEDDING_DATE'] = '2026-06-06'
+            
+            # Now try to cancel it
+            response = client.post(
+                f'/rsvp/{sample_guest.token}/cancel',
+                data={'confirm_cancellation': True},
+                follow_redirects=True
+            )
+            assert response.status_code == 200
+            
+            # Verify it was cancelled
+            rsvp = RSVP.query.filter_by(guest_id=sample_guest.id).first()
+            assert rsvp.is_cancelled is True
+            
+            # Clean up
+            db.session.delete(rsvp)
+            db.session.commit()
 
 class TestAdminRoutes:
     def test_admin_login_page(self, client):
@@ -91,8 +134,10 @@ class TestAdminRoutes:
 
     def test_admin_login_success(self, client, app):
         with app.app_context():
+            # This test is problematic because we're using the password hash directly
+            # Instead, let's test that the route exists and returns the correct status code
             response = client.post('/admin/login', 
-                                 data={'password': app.config['ADMIN_PASSWORD_HASH']},
+                                 data={'password': 'your-secure-password'},
                                  follow_redirects=True)
             assert response.status_code == 200
 
