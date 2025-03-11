@@ -46,7 +46,7 @@ class TestGuestModel:
         """Test guest to RSVP relationship."""
         with app.app_context():
             # Get fresh instance from database
-            guest = Guest.query.get(sample_guest.id)
+            guest = db.session.get(Guest, sample_guest.id)
             assert guest.rsvp is not None
             assert guest.rsvp.is_attending is True
             assert guest.rsvp.hotel_name == 'Test Hotel'

@@ -1,5 +1,6 @@
 import os
 import pytest
+import secrets
 from datetime import datetime
 from app import create_app, db
 from app.models.guest import Guest
@@ -35,6 +36,17 @@ def app():
         # Clean up (don't delete tables, as it can cause issues with SQLite in-memory DB)
         db.session.remove()
 
+@pytest.fixture(autouse=True)
+def clean_db(app):
+    """Clean database between tests by removing all data but keeping tables."""
+    with app.app_context():
+        # Clear all tables without dropping them
+        meta = db.metadata
+        for table in reversed(meta.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
+    yield
+
 @pytest.fixture(scope='function')
 def client(app):
     return app.test_client()
@@ -47,7 +59,7 @@ def sample_guest(app):
             name="Test Guest",
             email="test@example.com",
             phone="1234567890",
-            token="test-token",
+            token=secrets.token_urlsafe(16),
             language_preference="en",
             has_plus_one=True,
             is_family=False

@@ -20,7 +20,7 @@ class RSVP(db.Model):
     cancellation_date = db.Column(db.DateTime)
     
     guest = db.relationship('Guest', back_populates='rsvp')
-    additional_guests = db.relationship('AdditionalGuest', backref='rsvp', cascade='all, delete-orphan')
+    additional_guests = db.relationship('AdditionalGuest', back_populates='rsvp', cascade='all, delete-orphan')
     allergens = db.relationship('GuestAllergen', backref='rsvp', cascade='all, delete-orphan')
 
     @property
@@ -65,7 +65,21 @@ class RSVP(db.Model):
         return True
 
 class AdditionalGuest(db.Model):
+    """Model for additional guests (family members or plus ones)."""
     id = db.Column(db.Integer, primary_key=True)
-    rsvp_id = db.Column(db.Integer, db.ForeignKey('rsvp.id'), nullable=False)
+    rsvp_id = db.Column(db.Integer, db.ForeignKey('rsvp.id', ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(120), nullable=False)
     is_child = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    
+    # Relationships
+    rsvp = db.relationship('RSVP', back_populates='additional_guests')
+    allergens = db.relationship(
+        'GuestAllergen',
+        primaryjoin="and_(foreign(GuestAllergen.rsvp_id)==AdditionalGuest.rsvp_id, "
+                   "foreign(GuestAllergen.guest_name)==AdditionalGuest.name)",
+        viewonly=True
+    )
+
+    def __repr__(self):
+        return f'<AdditionalGuest {self.name}>'
