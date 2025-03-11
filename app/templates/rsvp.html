@@ -52,7 +52,8 @@
                                 form.is_attending.label.text }}*</label>
                             {% for subfield in form.is_attending %}
                             <div class="form-check">
-                                {{ subfield(class="form-check-input") }}
+                                {{ subfield(class="form-check-input",
+                                id="is_attending_" ~ loop.index0) }}
                                 {{ subfield.label(class="form-check-label") }}
                             </div>
                             {% endfor %}
@@ -72,7 +73,7 @@
                                 {{ form.hotel_name.label(class="form-label") }}
                                 {{ form.hotel_name(class="form-control",
                                 placeholder="Enter hotel name or leave blank if
-                                undecided", readonly=readonly) }}
+                                undecided") }}
                                 {% if form.hotel_name.errors %}
                                 <div class="invalid-feedback d-block">
                                     {% for error in form.hotel_name.errors %}
@@ -140,38 +141,89 @@
                                 </div>
                             </div>
 
-                            <!-- Additional Guests Section -->
+                            <!-- Family Guests Section -->
                             {% if guest.is_family %}
-                            <div class="mb-3">
-                                {{ form.adults_count.label(class="form-label")
-                                }}
-                                {{ form.adults_count(class="form-select",
-                                id="adults_count", ) }}
-                                {% if form.adults_count.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {% for error in form.adults_count.errors %}
-                                    {{ error }}
-                                    {% endfor %}
+                            <div class="mb-4">
+                                <h5>Family Members</h5>
+                                <div class="mb-3">
+                                    {{
+                                    form.adults_count.label(class="form-label")
+                                    }}
+                                    {{ form.adults_count(class="form-select",
+                                    id="adults_count") }}
+                                    {% if form.adults_count.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.adults_count.errors
+                                        %}
+                                        {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
                                 </div>
-                                {% endif %}
-                            </div>
-                            <div id="additional_adults_container"></div>
+                                <div id="additional_adults_container"></div>
 
-                            <div class="mb-3">
-                                {{ form.children_count.label(class="form-label")
-                                }}
-                                {{ form.children_count(class="form-select",
-                                id="children_count", ) }}
-                                {% if form.children_count.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {% for error in form.children_count.errors
-                                    %}
-                                    {{ error }}
-                                    {% endfor %}
+                                <div class="mb-3">
+                                    {{
+                                    form.children_count.label(class="form-label")
+                                    }}
+                                    {{ form.children_count(class="form-select",
+                                    id="children_count") }}
+                                    {% if form.children_count.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in
+                                        form.children_count.errors %}
+                                        {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
                                 </div>
-                                {% endif %}
+                                <div id="children_container"></div>
                             </div>
-                            <div id="children_container"></div>
+                            {% endif %}
+
+                            <!-- Plus One Section -->
+                            {% if guest.has_plus_one and not guest.is_family %}
+                            <div class="mb-4">
+                                <h5>Plus One</h5>
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label
+                                                class="form-label">Name*</label>
+                                            <input type="text"
+                                                class="form-control"
+                                                name="plus_one_name"
+                                                value="{{ rsvp.plus_one_name if rsvp else '' }}"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6>Dietary Restrictions</h6>
+                                            {% for allergen in allergens %}
+                                            <div class="form-check">
+                                                <input class="form-check-input"
+                                                    type="checkbox"
+                                                    name="allergens_plus_one"
+                                                    value="{{ allergen.id }}"
+                                                    id="allergen_plus_one_{{ allergen.id }}"
+                                                    {% if readonly %}disabled{%
+                                                    endif %}>
+                                                <label class="form-check-label"
+                                                    for="allergen_plus_one_{{ allergen.id }}">
+                                                    {{ allergen.name }}
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                            <div class="mt-2">
+                                                <label class="form-label">Other
+                                                    Dietary Restrictions</label>
+                                                <input type="text"
+                                                    class="form-control"
+                                                    name="custom_allergen_plus_one">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {% endif %}
                         </div>
 
@@ -208,92 +260,8 @@
     </div>
 </template>
 
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('rsvpForm');
-        const attendingRadios = document.querySelectorAll('input[name="is_attending"]');
-        const attendanceDetails = document.getElementById('attendance_details');
-        const transportCheckboxes = document.querySelectorAll('.transport-checkbox');
-        const hotelInput = document.getElementById('hotel_name');
-
-        // Show/hide attendance details based on selection
-        attendingRadios.forEach(radio => {
-            radio.addEventListener('change', function () {
-                attendanceDetails.style.display = this.value === 'yes' ? 'block' : 'none';
-            });
-        });
-
-        // Set initial state if form has data
-        const initialAttendance = document.querySelector('input[name="is_attending"]:checked');
-        if (initialAttendance) {
-            attendanceDetails.style.display = initialAttendance.value === 'yes' ? 'block' : 'none';
-        }
-
-        // Handle additional guests
-        function createGuestInput(type, index) {
-            const card = document.createElement('div');
-            card.className = 'card mb-3';
-
-            // Get allergen template content and replace placeholder
-            const template = document.getElementById('allergen-template');
-            const allergenContent = template.innerHTML
-                .replaceAll('PLACEHOLDER', `${type}_${index}`);
-
-            card.innerHTML = `
-                <div class="card-body">
-                    <h5 class="card-title">${type === 'adult' ? 'Additional Adult' : 'Child'} #${index + 1}</h5>
-                    <div class="mb-3">
-                        <label class="form-label">Name*</label>
-                        <input type="text" class="form-control" name="${type}_name_${index}" required>
-                    </div>
-                    <div class="mb-3">
-                        <h6>Dietary Restrictions</h6>
-                        ${allergenContent}
-                    </div>
-                </div>
-            `;
-            return card;
-        }
-
-        // Handle adults count change
-        const adultsSelect = document.getElementById('adults_count');
-        if (adultsSelect) {
-            const adultsContainer = document.getElementById('additional_adults_container');
-            adultsSelect.addEventListener('change', function () {
-                adultsContainer.innerHTML = '';
-                const count = parseInt(this.value) || 0;
-                for (let i = 0; i < count; i++) {
-                    adultsContainer.appendChild(createGuestInput('adult', i));
-                }
-            });
-
-            // Trigger once to initialize if needed
-            if (adultsSelect.value > 0) {
-                const event = new Event('change');
-                adultsSelect.dispatchEvent(event);
-            }
-        }
-
-        // Handle children count change
-        const childrenSelect = document.getElementById('children_count');
-        if (childrenSelect) {
-            const childrenContainer = document.getElementById('children_container');
-            childrenSelect.addEventListener('change', function () {
-                childrenContainer.innerHTML = '';
-                const count = parseInt(this.value) || 0;
-                for (let i = 0; i < count; i++) {
-                    childrenContainer.appendChild(createGuestInput('child', i));
-                }
-            });
-
-            // Trigger once to initialize if needed
-            if (childrenSelect.value > 0) {
-                const event = new Event('change');
-                childrenSelect.dispatchEvent(event);
-            }
-        }
-    });
-</script>
 {% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/rsvp.js') }}"></script>
 {% endblock %}
