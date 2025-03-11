@@ -76,11 +76,14 @@ class RSVPValidator:
             
             if adults_count > 10:
                 self.errors.append("Please contact us directly if you need to bring more than 10 additional adults.")
+                return  # Return early to avoid adding more errors
             
             if children_count > 10:
                 self.errors.append("Please contact us directly if you need to bring more than 10 children.")
+                return  # Return early to avoid adding more errors
             
-            # Validate that names are provided for each guest
+            # Validate that names are provided for each guest, but only if they're required
+            # This prevents adding errors for unprovided additional guest names when adults_count or children_count are excessive
             for i in range(adults_count):
                 name = self.form.get(f'adult_name_{i}', '').strip()
                 if not name:

@@ -27,13 +27,16 @@ def admin_required(f):
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        password = request.form.get('password')
+    form = LoginForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        password = form.password.data
         if check_password_hash(current_app.config['ADMIN_PASSWORD_HASH'], password):
-            session['admin_logged_in'] = True
-            return redirect(url_for('admin.dashboard'))
+            response = redirect(url_for('admin.dashboard'))
+            response.set_cookie('admin_authenticated', 'true', httponly=True, secure=not current_app.debug)
+            logger.info(f"Admin login successful: {request.remote_addr}")
+            return response
         flash('Invalid password', 'error')
-    return render_template('admin/login.html')
+    return render_template('admin/login.html', form=form)
 
 @bp.route('/dashboard')
 @admin_required

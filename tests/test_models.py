@@ -4,8 +4,8 @@ import pytest
 import secrets
 from datetime import datetime, timedelta
 from app.models.guest import Guest
-from app.models.rsvp import RSVP
-from app.models.allergen import Allergen
+from app.models.rsvp import RSVP, AdditionalGuest
+from app.models.allergen import Allergen, GuestAllergen
 from app import db
 
 class TestGuestModel:
@@ -92,17 +92,26 @@ class TestAllergenModel:
             assert allergen.id is not None
             assert allergen.name == 'Peanuts'
 
-    def test_create_guest_allergen(self, app, sample_guest):
+    def test_create_guest_allergen(self, app, sample_guest, sample_rsvp):
         """Test creating a guest allergen relationship."""
         with app.app_context():
             allergen = Allergen(name='Shellfish')
             db.session.add(allergen)
             db.session.commit()
 
-            sample_guest.allergens.append(allergen)
+            # Create a GuestAllergen record instead of using a direct relationship
+            guest_allergen = GuestAllergen(
+                rsvp_id=sample_rsvp.id,
+                guest_name=sample_guest.name,
+                allergen_id=allergen.id
+            )
+            db.session.add(guest_allergen)
             db.session.commit()
 
-            assert allergen in sample_guest.allergens
+            # Verify the guest allergen was created
+            allergens = GuestAllergen.query.filter_by(guest_name=sample_guest.name).all()
+            assert len(allergens) == 1
+            assert allergens[0].allergen_id == allergen.id
 
 class TestAdditionalGuestModel:
     def test_create_additional_guest(self, app, sample_rsvp):

@@ -39,3 +39,4 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     WTF_CSRF_ENABLED = False
     ADMIN_PASSWORD_HASH = 'test-hash'
+    WEDDING_DATE = '2026-06-06'
