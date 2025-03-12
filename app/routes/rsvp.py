@@ -7,7 +7,7 @@ from app.models.allergen import Allergen, GuestAllergen
 from app.utils.email import send_cancellation_notification
 from app.forms import RSVPForm, RSVPCancellationForm
 from app.security import rate_limit
-from datetime import datetime
+from datetime import datetime, date
 import logging
 
 # Set up logger
@@ -18,8 +18,6 @@ bp = Blueprint('rsvp', __name__, url_prefix='/rsvp')
 def display_warning(message, admin_phone):
     flash(f'{message} Please contact {admin_phone} for assistance.', 'warning')
     return True
-
-# Modify the process_guest_allergens function in app/routes/rsvp.py:
 
 def process_guest_allergens(rsvp_id, guest_name, form, prefix):
     """Process allergens for a specific guest."""
@@ -55,6 +53,32 @@ def process_guest_allergens(rsvp_id, guest_name, form, prefix):
         )
         db.session.add(guest_allergen)
 
+def is_rsvp_deadline_passed():
+    """Check if the RSVP deadline has passed"""
+    rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE')
+    if not rsvp_deadline_str:
+        return False  # If no deadline is set, assume it hasn't passed
+    
+    try:
+        rsvp_deadline = datetime.strptime(rsvp_deadline_str, '%Y-%m-%d').date()
+        today = date.today()
+        return today > rsvp_deadline
+    except (ValueError, TypeError):
+        logger.error(f"Invalid RSVP_DEADLINE format: {rsvp_deadline_str}")
+        return False  # If there's an error, default to allowing RSVPs
+
+def get_rsvp_deadline_formatted():
+    """Get formatted RSVP deadline for display"""
+    rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE')
+    if not rsvp_deadline_str:
+        return "Not specified"
+    
+    try:
+        rsvp_deadline = datetime.strptime(rsvp_deadline_str, '%Y-%m-%d').date()
+        return rsvp_deadline.strftime('%B %d, %Y')  # e.g. "April 15, 2026"
+    except (ValueError, TypeError):
+        return rsvp_deadline_str  # Return as-is if there's a parsing error
+
 @bp.route('/')
 def landing():
     return render_template('rsvp_landing.html')
@@ -75,7 +99,31 @@ def rsvp_form(token):
         logger.info("No existing RSVP found")
     
     admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
-    show_warning = False
+    rsvp_deadline = get_rsvp_deadline_formatted()
+    
+    # Check if RSVP deadline has passed
+    if is_rsvp_deadline_passed():
+        logger.info("RSVP deadline has passed")
+        return render_template('rsvp_deadline_passed.html', 
+                             guest=guest,
+                             rsvp=rsvp,
+                             admin_phone=admin_phone,
+                             rsvp_deadline=rsvp_deadline)
+    
+    # Handle previously declined or cancelled RSVPs
+    if rsvp:
+        if rsvp.is_cancelled:
+            logger.info("Previously cancelled RSVP")
+            return render_template('rsvp_previously_cancelled.html', 
+                                 guest=guest,
+                                 admin_phone=admin_phone,
+                                 rsvp_deadline=rsvp_deadline)
+        elif not rsvp.is_attending and not rsvp.is_cancelled:
+            logger.info("Previously declined RSVP")
+            return render_template('rsvp_previously_declined.html', 
+                                 guest=guest,
+                                 admin_phone=admin_phone,
+                                 rsvp_deadline=rsvp_deadline)
     
     # Check editability
     if rsvp and not rsvp.is_editable:
@@ -260,10 +308,15 @@ def rsvp_form(token):
             logger.info("Committing changes to database")
             db.session.commit()
             
-            status = "attendance" if rsvp.is_attending else "decline"
-            logger.info(f"RSVP {status} submitted successfully for: {guest.name}")
-            flash('Your RSVP has been submitted successfully!', 'success')
-            return redirect(url_for('rsvp.confirmation'))
+            # Redirect to appropriate confirmation page
+            if rsvp.is_attending:
+                logger.info(f"RSVP acceptance submitted successfully for: {guest.name}")
+                flash('Your RSVP has been submitted successfully!', 'success')
+                return redirect(url_for('rsvp.confirmation_accepted'))
+            else:
+                logger.info(f"RSVP decline submitted successfully for: {guest.name}")
+                flash('Your response has been recorded.', 'info')
+                return redirect(url_for('rsvp.confirmation_declined'))
             
         except Exception as e:
             db.session.rollback()
@@ -277,10 +330,7 @@ def rsvp_form(token):
                          form=form,
                          allergens=allergens,
                          admin_phone=admin_phone,
-                         show_warning=show_warning)
-
-
-# app/routes/rsvp.py - Final revised cancel_rsvp function
+                         show_warning=False)
 
 @bp.route('/<token>/cancel', methods=['GET', 'POST'])
 def cancel_rsvp(token):
@@ -292,6 +342,12 @@ def cancel_rsvp(token):
         # For debugging purposes
         logger.info(f"Cancel RSVP for guest: {guest.name}, RSVP ID: {rsvp.id}")
         logger.info(f"Current RSVP state - attending: {rsvp.is_attending}, cancelled: {rsvp.is_cancelled}")
+        
+        # Check if RSVP deadline has passed
+        if is_rsvp_deadline_passed():
+            logger.info("RSVP deadline has passed - cannot cancel")
+            flash('The RSVP deadline has passed. Please contact the wedding administrators for assistance.', 'warning')
+            return redirect(url_for('rsvp.rsvp_form', token=token))
         
         # Check if cancellation is allowed
         if not rsvp.is_editable:
@@ -317,13 +373,13 @@ def cancel_rsvp(token):
             try:
                 db.session.commit()
                 logger.info("Successfully committed cancellation")
-                flash('Your RSVP has been cancelled successfully.', 'success')
+                flash('Your RSVP has been cancelled.', 'info')
+                return redirect(url_for('rsvp.confirmation_cancelled'))
             except Exception as e:
                 db.session.rollback()
                 logger.error(f"Error committing cancellation: {str(e)}", exc_info=True)
                 flash(f'Error cancelling RSVP: {str(e)}', 'danger')
-            
-            return redirect(url_for('rsvp.rsvp_form', token=token))
+                return redirect(url_for('rsvp.rsvp_form', token=token))
         
         # GET request - show a simpler cancellation page
         return render_template('rsvp_cancel.html', 
@@ -336,6 +392,21 @@ def cancel_rsvp(token):
         flash(f'An unexpected error occurred: {str(e)}', 'danger')
         return redirect(url_for('main.index'))
 
+@bp.route('/confirmation/accepted')
+def confirmation_accepted():
+    return render_template('rsvp_accepted.html')
+
+@bp.route('/confirmation/declined')
+def confirmation_declined():
+    admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
+    return render_template('rsvp_declined.html', admin_phone=admin_phone)
+
+@bp.route('/confirmation/cancelled')
+def confirmation_cancelled():
+    admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
+    return render_template('rsvp_cancelled.html', admin_phone=admin_phone)
+
 @bp.route('/confirmation')
 def confirmation():
-    return render_template('rsvp_confirmation.html')
+    # Kept for backward compatibility, now redirects to accepted confirmation
+    return redirect(url_for('rsvp.confirmation_accepted'))

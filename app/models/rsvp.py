@@ -1,5 +1,5 @@
 # app/models/rsvp.py
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from app import db
 from flask import current_app
 from app.models.allergen import GuestAllergen
@@ -24,10 +24,14 @@ class RSVP(db.Model):
     additional_guests = db.relationship('AdditionalGuest', back_populates='rsvp', cascade='all, delete-orphan')
     allergens = db.relationship('GuestAllergen', backref='rsvp', lazy='joined', cascade='all, delete-orphan')
 
-
     @property
     def is_editable(self):
-        """Check if RSVP can be edited (within 24 hours of creation or more than a week before wedding)"""
+        """
+        Check if RSVP can be edited. An RSVP is editable if:
+        1. It was created within the last 24 hours, OR
+        2. The RSVP deadline has not passed, AND
+        3. It's more than the cutoff period before the wedding
+        """
         # For testing: if testing_24h_check is set, we're explicitly testing the 24h rule
         if hasattr(self, 'testing_24h_check') and self.testing_24h_check:
             return datetime.now() - self.created_at < timedelta(hours=24)
@@ -36,6 +40,17 @@ class RSVP(db.Model):
         if datetime.now() - self.created_at < timedelta(hours=24):
             return True
                 
+        # Check if RSVP deadline has passed
+        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE') if current_app else None
+        if rsvp_deadline_str:
+            try:
+                rsvp_deadline = datetime.strptime(rsvp_deadline_str, '%Y-%m-%d').date()
+                if date.today() > rsvp_deadline:
+                    return False  # RSVP deadline has passed
+            except (ValueError, TypeError):
+                # If there's a problem with the deadline, fall back to wedding date check
+                pass
+        
         # Then check if it's still editable based on wedding date
         try:
             # Get the wedding date from the config
@@ -54,6 +69,7 @@ class RSVP(db.Model):
         except (ValueError, KeyError, TypeError):
             # In case of config issue or testing environment, default to True for safety
             return True
+
     # Properties to add to the RSVP class in app/models/rsvp.py
 
     @property
@@ -74,7 +90,6 @@ class RSVP(db.Model):
             allergen_id=None
         ).first()
         return allergen_record.custom_allergen if allergen_record else ""
-
 
     def cancel(self):
         """Cancel RSVP if within allowed timeframe"""
