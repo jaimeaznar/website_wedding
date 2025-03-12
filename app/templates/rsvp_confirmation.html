@@ -1,15 +1,21 @@
 {% extends "base.html" %}
+{% block title %}RSVP Confirmation{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-body text-center">
-                    <h2>Thank You!</h2>
-                    <p class="lead">Your RSVP has been successfully submitted.
-                    </p>
-                    <p>You can return to this link at any time to view or update
-                        your response.</p>
+                    <h2>RSVP Submitted</h2>
+                    <p class="lead">Your RSVP has been recorded.</p>
+                    <p>This page will redirect you momentarily...</p>
+
+                    <script>
+                        // Redirect to appropriate confirmation page after 2 seconds
+                        setTimeout(function () {
+                            window.location.href = "{{ url_for('rsvp.confirmation_accepted') }}";
+                        }, 2000);
+                    </script>
                 </div>
             </div>
         </div>
