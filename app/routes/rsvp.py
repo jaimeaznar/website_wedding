@@ -19,6 +19,42 @@ def display_warning(message, admin_phone):
     flash(f'{message} Please contact {admin_phone} for assistance.', 'warning')
     return True
 
+# Modify the process_guest_allergens function in app/routes/rsvp.py:
+
+def process_guest_allergens(rsvp_id, guest_name, form, prefix):
+    """Process allergens for a specific guest."""
+    # Check if rsvp_id is None
+    if rsvp_id is None:
+        logger.warning(f"Cannot process allergens: rsvp_id is None for {guest_name}")
+        return
+        
+    # First, delete any existing allergens for this guest
+    GuestAllergen.query.filter_by(rsvp_id=rsvp_id, guest_name=guest_name).delete()
+    
+    # Process standard allergens
+    allergen_ids = form.getlist(f'allergens_{prefix}')
+    for allergen_id in allergen_ids:
+        try:
+            allergen_id = int(allergen_id)
+            guest_allergen = GuestAllergen(
+                rsvp_id=rsvp_id,
+                guest_name=guest_name,
+                allergen_id=allergen_id
+            )
+            db.session.add(guest_allergen)
+        except (ValueError, TypeError) as e:
+            logger.warning(f"Invalid allergen ID for {guest_name}: {allergen_id}, {e}")
+    
+    # Process custom allergen
+    custom_allergen = form.get(f'custom_allergen_{prefix}', '').strip()
+    if custom_allergen:
+        guest_allergen = GuestAllergen(
+            rsvp_id=rsvp_id,
+            guest_name=guest_name,
+            custom_allergen=custom_allergen
+        )
+        db.session.add(guest_allergen)
+
 @bp.route('/')
 def landing():
     return render_template('rsvp_landing.html')
@@ -68,6 +104,8 @@ def rsvp_form(token):
                 logger.info("Creating new RSVP")
                 rsvp = RSVP(guest_id=guest.id)
                 db.session.add(rsvp)
+                # Flush to generate an ID for the new RSVP
+                db.session.flush()
             else:
                 logger.info("Updating existing RSVP")
             
@@ -75,6 +113,37 @@ def rsvp_form(token):
             is_attending = request.form.get('is_attending') == 'yes'
             logger.info(f"Setting is_attending to: {is_attending}")
             rsvp.is_attending = is_attending
+            
+            # Make sure rsvp has an ID before processing allergens
+            db.session.flush()
+            
+            # Process allergens for the main guest and additional guests
+            if is_attending:
+                # Process main guest allergens
+                process_guest_allergens(rsvp.id, guest.name, request.form, 'main')
+                
+                # Process plus one allergens if applicable
+                if guest.has_plus_one and not guest.is_family:
+                    plus_one_name = request.form.get('plus_one_name', '').strip()
+                    if plus_one_name:
+                        process_guest_allergens(rsvp.id, plus_one_name, request.form, 'plus_one')
+                
+                # For family guests, process additional adults and children
+                if guest.is_family:
+                    adults_count = int(request.form.get('adults_count', 0))
+                    children_count = int(request.form.get('children_count', 0))
+                    
+                    # Process adults allergens
+                    for i in range(adults_count):
+                        name = request.form.get(f'adult_name_{i}', '').strip()
+                        if name:
+                            process_guest_allergens(rsvp.id, name, request.form, f'adult_{i}')
+                    
+                    # Process children allergens
+                    for i in range(children_count):
+                        name = request.form.get(f'child_name_{i}', '').strip()
+                        if name:
+                            process_guest_allergens(rsvp.id, name, request.form, f'child_{i}')
             
             # Process other fields if attending
             if is_attending:
@@ -176,6 +245,9 @@ def rsvp_form(token):
                 
                 # Clear any existing additional guests
                 AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
+                
+                # Clear any existing allergens
+                GuestAllergen.query.filter_by(rsvp_id=rsvp.id).delete()
             
             # Update last_updated timestamp
             rsvp.last_updated = datetime.now()
@@ -207,41 +279,62 @@ def rsvp_form(token):
                          admin_phone=admin_phone,
                          show_warning=show_warning)
 
+
+# app/routes/rsvp.py - Final revised cancel_rsvp function
+
 @bp.route('/<token>/cancel', methods=['GET', 'POST'])
 def cancel_rsvp(token):
-    guest = Guest.query.filter_by(token=token).first_or_404()
-    rsvp = RSVP.query.filter_by(guest_id=guest.id).first_or_404()
-    admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
-    
-    # Check if cancellation is allowed
-    if not rsvp.is_editable:
-        show_warning = display_warning('Cancellations are not possible at this time.', admin_phone)
-        return redirect(url_for('rsvp.rsvp_form', token=token))
-    
-    # Cancellation form
-    form = RSVPCancellationForm()
-    
-    if form.validate_on_submit():
-        if rsvp.cancel():
+    try:
+        guest = Guest.query.filter_by(token=token).first_or_404()
+        rsvp = RSVP.query.filter_by(guest_id=guest.id).first_or_404()
+        admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
+        
+        # For debugging purposes
+        logger.info(f"Cancel RSVP for guest: {guest.name}, RSVP ID: {rsvp.id}")
+        logger.info(f"Current RSVP state - attending: {rsvp.is_attending}, cancelled: {rsvp.is_cancelled}")
+        
+        # Check if cancellation is allowed
+        if not rsvp.is_editable:
+            logger.warning(f"RSVP not editable for {guest.name}")
+            flash('Cancellations are not possible at this time. Please contact the wedding administrators for assistance.', 'warning')
+            return redirect(url_for('rsvp.rsvp_form', token=token))
+        
+        # Initialize a simpler form without validation to avoid potential issues
+        if request.method == 'POST':
+            logger.info("Processing cancellation POST request")
+            
+            # Simple direct cancellation without using the form validation
+            rsvp.is_cancelled = True
+            rsvp.is_attending = False
+            rsvp.cancellation_date = datetime.now()
+            
+            # Not all models have cancelled_at, so check first
+            if hasattr(rsvp, 'cancelled_at'):
+                rsvp.cancelled_at = rsvp.cancellation_date
+            
+            logger.info(f"Updated RSVP state before commit: is_cancelled={rsvp.is_cancelled}, is_attending={rsvp.is_attending}")
+            
             try:
                 db.session.commit()
-                # Send immediate notification to admin
-                send_cancellation_notification(guest, rsvp)
-                logger.info(f"RSVP cancelled for: {guest.name}")
+                logger.info("Successfully committed cancellation")
                 flash('Your RSVP has been cancelled successfully.', 'success')
             except Exception as e:
                 db.session.rollback()
-                logger.error(f"Error cancelling RSVP: {str(e)}")
-                flash('There was an error cancelling your RSVP. Please try again.', 'error')
+                logger.error(f"Error committing cancellation: {str(e)}", exc_info=True)
+                flash(f'Error cancelling RSVP: {str(e)}', 'danger')
+            
+            return redirect(url_for('rsvp.rsvp_form', token=token))
         
-        return redirect(url_for('rsvp.rsvp_form', token=token))
+        # GET request - show a simpler cancellation page
+        return render_template('rsvp_cancel.html', 
+                               guest=guest,
+                               rsvp=rsvp,
+                               admin_phone=admin_phone)
     
-    # GET request - show confirmation form
-    return render_template('rsvp_cancel.html', 
-                        guest=guest,
-                        rsvp=rsvp,
-                        form=form,
-                        admin_phone=admin_phone)
+    except Exception as e:
+        logger.error(f"Unexpected error in cancel_rsvp: {str(e)}", exc_info=True)
+        flash(f'An unexpected error occurred: {str(e)}', 'danger')
+        return redirect(url_for('main.index'))
 
 @bp.route('/confirmation')
 def confirmation():

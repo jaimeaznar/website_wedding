@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from werkzeug.security import check_password_hash
 from app import db
 from app.models.guest import Guest
+from app.models.allergen import GuestAllergen, Allergen
 from app.models.rsvp import RSVP, AdditionalGuest
 from app.forms import LoginForm, GuestForm, ImportForm
 from app.security import verify_admin_password, rate_limit
@@ -42,11 +43,19 @@ def login():
         flash('Invalid password', 'error')
     return render_template('admin/login.html', form=form)
 
+# Add this to app/routes/admin.py in the dashboard route function
+# This ensures the allergens are explicitly loaded for each RSVP
+
+# Update app/routes/admin.py
+
 @bp.route('/dashboard')
 @admin_required
 def dashboard():
     guests = Guest.query.all()
     rsvps = RSVP.query.all()
+    
+    # Make allergen model available to the template
+    from app.models.allergen import GuestAllergen, Allergen
     
     # Calculate statistics
     total_guests = len(guests)
@@ -87,6 +96,8 @@ def dashboard():
     return render_template('admin/dashboard.html',
                          guests=guests,
                          rsvps=rsvps,
+                         GuestAllergen=GuestAllergen,  # Make available to template
+                         Allergen=Allergen,  # Make available to template
                          total_guests=total_guests,
                          total_attending=total_people_attending,
                          responses_received=responses_received,
@@ -165,3 +176,51 @@ def logout():
     response = redirect(url_for('admin.login'))
     response.delete_cookie('admin_authenticated')
     return response
+
+
+# Add this route to app/routes/admin.py for debugging purposes
+# You can remove it after fixing the issue
+
+@bp.route('/debug/allergens')
+@admin_required
+def debug_allergens():
+    """Debug route to check allergens in the database"""
+    from flask import jsonify
+    
+    # Get all RSVPs
+    rsvps = RSVP.query.all()
+    
+    result = []
+    for rsvp in rsvps:
+        guest = Guest.query.get(rsvp.guest_id)
+        
+        # Get allergens directly from the database
+        allergens = GuestAllergen.query.filter_by(rsvp_id=rsvp.id).all()
+        
+        allergen_data = []
+        for allergen in allergens:
+            allergen_info = {
+                'guest_name': allergen.guest_name,
+                'allergen_id': allergen.allergen_id,
+                'custom_allergen': allergen.custom_allergen
+            }
+            
+            if allergen.allergen_id:
+                allergen_obj = Allergen.query.get(allergen.allergen_id)
+                if allergen_obj:
+                    allergen_info['allergen_name'] = allergen_obj.name
+            
+            allergen_data.append(allergen_info)
+        
+        rsvp_info = {
+            'rsvp_id': rsvp.id,
+            'guest_name': guest.name if guest else 'Unknown',
+            'is_attending': rsvp.is_attending,
+            'is_cancelled': rsvp.is_cancelled,
+            'allergen_count': len(allergens),
+            'allergens': allergen_data
+        }
+        
+        result.append(rsvp_info)
+    
+    return jsonify(result)

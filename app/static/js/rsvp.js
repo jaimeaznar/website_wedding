@@ -24,22 +24,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Show/hide based on selection
-        attendanceDetails.style.display = showDetails ? 'block' : 'none';
-        console.log("Toggled attendance details:", showDetails ? "showing" : "hidden");
+        if (attendanceDetails) {
+            attendanceDetails.style.display = showDetails ? 'block' : 'none';
+            console.log("Toggled attendance details:", showDetails ? "showing" : "hidden");
+        }
     }
 
-    // Add event listeners to radio buttons
-    attendingRadios.forEach(radio => {
-        console.log("Adding listener to radio:", radio.value);
-        radio.addEventListener('change', function () {
-            console.log("Radio changed:", this.value);
-            toggleAttendanceDetails();
+    // Check if we have radio buttons (they might not be present for existing RSVPs)
+    if (attendingRadios.length > 0) {
+        // Add event listeners to radio buttons
+        attendingRadios.forEach(radio => {
+            console.log("Adding listener to radio:", radio.value);
+            radio.addEventListener('change', function () {
+                console.log("Radio changed:", this.value);
+                toggleAttendanceDetails();
+            });
         });
-    });
 
-    // Check initial state
-    console.log("Setting initial state");
-    toggleAttendanceDetails();
+        // Check initial state
+        console.log("Setting initial state");
+        toggleAttendanceDetails();
+    } else {
+        console.log("No radio buttons found, already RSVP'd");
+    }
 
     // Handle additional guests
     function createGuestInput(type, index) {
@@ -111,6 +118,35 @@ document.addEventListener('DOMContentLoaded', function () {
             childrenSelect.dispatchEvent(event);
         }
     }
+
+    // Prefill allergens for additional guests based on existing data
+    function prefillAllergens() {
+        console.log("Prefilling allergens if available");
+        const existingAllergens = document.querySelectorAll('[data-allergen-guest]');
+        existingAllergens.forEach(element => {
+            const guestName = element.getAttribute('data-allergen-guest');
+            const allergenId = element.getAttribute('data-allergen-id');
+            const customAllergen = element.getAttribute('data-custom-allergen');
+
+            // Find the corresponding checkbox or input in the form
+            if (guestName && allergenId) {
+                const checkbox = document.querySelector(`input[name="allergens_${guestName}"][value="${allergenId}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            }
+
+            if (guestName && customAllergen) {
+                const input = document.querySelector(`input[name="custom_allergen_${guestName}"]`);
+                if (input) {
+                    input.value = customAllergen;
+                }
+            }
+        });
+    }
+
+    // Call prefill function
+    prefillAllergens();
 
     console.log("RSVP form script initialization complete");
 });

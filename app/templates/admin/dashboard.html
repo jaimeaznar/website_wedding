@@ -57,11 +57,17 @@
                             {% if guest.rsvp %}
                             {% if guest.rsvp.is_cancelled %}
                             <span class="badge bg-danger">Cancelled</span>
+                            <small class="d-block text-muted">{{
+                                guest.rsvp.cancellation_date.strftime('%Y-%m-%d')
+                                }}</small>
+                            {% elif guest.rsvp.is_attending %}
+                            <span class="badge bg-success">Attending</span>
                             {% else %}
-                            <span class="badge bg-success">Responded</span>
+                            <span
+                                class="badge bg-warning text-dark">Declined</span>
                             {% endif %}
                             {% else %}
-                            <span class="badge bg-warning">Pending</span>
+                            <span class="badge bg-secondary">Pending</span>
                             {% endif %}
                         </td>
                         <td>
@@ -272,7 +278,11 @@
                                 {% if rsvp.is_cancelled %}
                                 -
                                 {% else %}
-                                {% if rsvp.is_attending and rsvp.allergens %}
+                                {% if rsvp.is_attending %}
+                                {% set allergens =
+                                GuestAllergen.query.filter_by(rsvp_id=rsvp.id).all()
+                                %}
+                                {% if allergens and allergens|length > 0 %}
                                 <div class="accordion"
                                     id="allergenAccordion{{ rsvp.id }}">
                                     <div class="accordion-item">
@@ -282,14 +292,14 @@
                                                 type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#allergenCollapse{{ rsvp.id }}">
-                                                View Dietary Restrictions
+                                                View Dietary Restrictions ({{
+                                                allergens|length }})
                                             </button>
                                         </h2>
                                         <div id="allergenCollapse{{ rsvp.id }}"
                                             class="accordion-collapse collapse">
                                             <div class="accordion-body">
-                                                {% for allergen in
-                                                rsvp.allergens %}
+                                                {% for allergen in allergens %}
                                                 <div class="mb-2">
                                                     <strong>{{
                                                         allergen.guest_name
@@ -309,7 +319,10 @@
                                     </div>
                                 </div>
                                 {% else %}
-                                None
+                                <span class="text-muted">None specified</span>
+                                {% endif %}
+                                {% else %}
+                                <span class="text-muted">Not attending</span>
                                 {% endif %}
                                 {% endif %}
                             </td>

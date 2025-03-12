@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta
 from app import db
 from flask import current_app
+from app.models.allergen import GuestAllergen
 
 class RSVP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,7 +22,8 @@ class RSVP(db.Model):
     
     guest = db.relationship('Guest', back_populates='rsvp')
     additional_guests = db.relationship('AdditionalGuest', back_populates='rsvp', cascade='all, delete-orphan')
-    allergens = db.relationship('GuestAllergen', backref='rsvp', cascade='all, delete-orphan')
+    allergens = db.relationship('GuestAllergen', backref='rsvp', lazy='joined', cascade='all, delete-orphan')
+
 
     @property
     def is_editable(self):
@@ -52,6 +54,27 @@ class RSVP(db.Model):
         except (ValueError, KeyError, TypeError):
             # In case of config issue or testing environment, default to True for safety
             return True
+    # Properties to add to the RSVP class in app/models/rsvp.py
+
+    @property
+    def allergen_ids(self):
+        """Return a list of allergen IDs associated with this RSVP's main guest"""
+        allergen_records = GuestAllergen.query.filter_by(
+            rsvp_id=self.id, 
+            guest_name=self.guest.name
+        ).all()
+        return [record.allergen_id for record in allergen_records if record.allergen_id is not None]
+
+    @property
+    def custom_allergen(self):
+        """Return the custom allergen string for this RSVP's main guest, if any"""
+        allergen_record = GuestAllergen.query.filter_by(
+            rsvp_id=self.id, 
+            guest_name=self.guest.name,
+            allergen_id=None
+        ).first()
+        return allergen_record.custom_allergen if allergen_record else ""
+
 
     def cancel(self):
         """Cancel RSVP if within allowed timeframe"""

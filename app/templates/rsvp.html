@@ -46,7 +46,9 @@
                         %}class="form-readonly" {% endif %}>
                         {{ form.csrf_token }}
 
-                        <!-- Attendance Radio Buttons -->
+                        <!-- Attendance Radio Buttons - Only show if not already attending OR canceled -->
+                        {% if not rsvp or rsvp.is_cancelled or not
+                        rsvp.is_attending %}
                         <div class="mb-4">
                             <label class="form-label">{{
                                 form.is_attending.label.text }}*</label>
@@ -65,9 +67,11 @@
                             </div>
                             {% endif %}
                         </div>
+                        {% endif %}
 
                         <div id="attendance_details" class="attendance-section"
-                            style="display: none;">
+                            {% if not rsvp or not rsvp.is_attending
+                            %}style="display: none;" {% endif %}>
                             <!-- Hotel Information -->
                             <div class="mb-3">
                                 {{ form.hotel_name.label(class="form-label") }}
@@ -259,6 +263,15 @@
             name="custom_allergen_PLACEHOLDER">
     </div>
 </template>
+
+<!-- Hidden data elements to store allergen information for JavaScript -->
+{% if rsvp and rsvp.allergens %}
+{% for allergen in rsvp.allergens %}
+<div class="d-none" data-allergen-guest="{{ allergen.guest_name }}"
+    data-allergen-id="{{ allergen.allergen_id }}"
+    data-custom-allergen="{{ allergen.custom_allergen }}"></div>
+{% endfor %}
+{% endif %}
 
 {% endblock %}
 
