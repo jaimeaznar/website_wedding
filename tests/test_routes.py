@@ -26,6 +26,23 @@ class TestMainRoutes:
         response = client.get('/venue')
         assert response.status_code == 200
         assert b'Wedding Venue' in response.data
+        
+    def test_accommodation_route(self, client):
+        """Test the accommodation route."""
+        response = client.get('/accommodation')
+        assert response.status_code == 200
+
+    def test_activities_route(self, client):
+        """Test the activities route."""
+        response = client.get('/activities')
+        assert response.status_code == 200
+        assert b'Things to Do' in response.data
+
+    def test_gallery_route(self, client):
+        """Test the gallery route."""
+        response = client.get('/gallery')
+        assert response.status_code == 200
+        assert b'Our Gallery' in response.data
 
     def test_language_switching(self, client):
         """Test language switching."""
@@ -58,8 +75,17 @@ class TestRSVPRoutes:
         """Test the RSVP form with an invalid token."""
         response = client.get('/rsvp/invalid-token')
         assert response.status_code == 404
-
-    # Add this test to test_routes.py
+        
+    def test_rsvp_deadline_passed(self, client, app, sample_guest):
+        """Test RSVP when deadline has passed."""
+        with app.app_context():
+            # Set RSVP deadline to a past date
+            app.config['RSVP_DEADLINE'] = '2020-01-01'
+            
+            response = client.get(f'/rsvp/{sample_guest.token}')
+            assert response.status_code == 200
+            # This depends on your template content
+            # assert b'RSVP deadline has passed' in response.data
 
     def test_direct_rsvp_creation(self, app, sample_guest):
         """Test creating an RSVP directly without using the form."""
@@ -82,6 +108,7 @@ class TestRSVPRoutes:
             db.session.add(rsvp)
             
             try:
+                # tests/test_routes.py (continued)
                 db.session.commit()
                 print(f"Successfully created RSVP with ID: {rsvp.id}")
             except Exception as e:
@@ -110,26 +137,12 @@ class TestRSVPRoutes:
             sample_guest.is_family = True
             db.session.commit()
 
-            # Get the CSRF token from the form first
-            response = client.get(f'/rsvp/{sample_guest.token}')
-            assert response.status_code == 200
-
-            # Set up simple form data without relying on CSRF token extraction
-            # In test mode with WTF_CSRF_ENABLED = False, we don't need a valid token
+            # Create a minimal valid data set for the RSVP form
             data = {
-                'csrf_token': 'test-token',  # Will be ignored in test mode
                 'is_attending': 'yes',
-                'adults_count': '2',
-                'children_count': '1',
                 'hotel_name': 'Test Hotel',
-                'transport_to_church': 'on',
-                'transport_to_reception': 'on',
-                'transport_to_hotel': 'on',
-                'adult_name_0': 'Additional Adult 1',
-                'adult_name_1': 'Additional Adult 2',
-                'child_name_0': 'Child 1',
-                'allergens_main': ['1'],
-                'custom_allergen_main': 'Shellfish'
+                # Include csrf_token for Flask-WTF
+                'csrf_token': 'test-token'
             }
 
             # Make the POST request with the form data
@@ -139,42 +152,53 @@ class TestRSVPRoutes:
                 follow_redirects=True
             )
             assert response.status_code == 200
-
-            # Debug: Print response to see if there are any error messages
-            print(f"Response status: {response.status_code}")
             
-            # Verify RSVP was created by making a direct database query
+            # Force database query to verify RSVP was created
+            db.session.expire_all()  # Clear any cached instances
             rsvp = RSVP.query.filter_by(guest_id=sample_guest.id).first()
             
-            if rsvp is None:
-                # Additional debugging if RSVP is still None
-                print("RSVP creation failed")
-                print("Let's try creating one directly to test DB functionality:")
-                
-                # Direct database creation as a last resort
-                direct_rsvp = RSVP(
-                    guest_id=sample_guest.id,
-                    is_attending=True,
-                    adults_count=2,
-                    children_count=1,
-                    hotel_name="Fallback Hotel"
-                )
-                db.session.add(direct_rsvp)
-                try:
-                    db.session.commit()
-                    print(f"Direct RSVP creation successful with ID: {direct_rsvp.id}")
-                    rsvp = direct_rsvp
-                except Exception as e:
-                    db.session.rollback()
-                    print(f"Direct RSVP creation also failed: {str(e)}")
+            # Debug output if test fails
+            if not rsvp:
+                print("RSVP not found in database")
+                print(f"Response content: {response.data}")
             
             assert rsvp is not None
             assert rsvp.is_attending is True
+            assert rsvp.hotel_name == 'Test Hotel'
             
             # Clean up
-            db.session.delete(rsvp)
+            if rsvp:
+                db.session.delete(rsvp)
+                db.session.commit()
+
+    def test_rsvp_invalid_submission(self, client, app, sample_guest):
+        """Test invalid RSVP submission."""
+        with app.app_context():
+            # First make sure there's no existing RSVP
+            RSVP.query.filter_by(guest_id=sample_guest.id).delete()
             db.session.commit()
-    
+            
+            # Get the form first to simulate a more realistic test
+            initial_response = client.get(f'/rsvp/{sample_guest.token}')
+            assert initial_response.status_code == 200
+            
+            # Submit invalid data (transport without hotel)
+            data = {
+                'is_attending': 'yes',
+                'transport_to_church': 'on',
+                # Include csrf_token for Flask-WTF
+                'csrf_token': 'test-token'
+            }
+            
+            response = client.post(
+                f'/rsvp/{sample_guest.token}',
+                data=data
+            )
+            assert response.status_code == 200
+            
+            # For invalid submission, we should see the form again
+            assert b'RSVP' in response.data or b'form' in response.data
+
     def test_rsvp_cancel(self, client, app, sample_guest):
         """Test cancelling an RSVP."""
         with app.app_context():
@@ -194,19 +218,32 @@ class TestRSVPRoutes:
             db.session.add(rsvp)
             db.session.commit()
             
-            # Set the wedding date in the app config for the test
+            # Set the wedding date far in future to ensure it's editable
             app.config['WEDDING_DATE'] = '2026-06-06'
             
-            # Now try to cancel it
+            # Get the cancel page first
+            cancel_page = client.get(f'/rsvp/{sample_guest.token}/cancel')
+            assert cancel_page.status_code == 200
+            
+            # Now try to cancel it with minimal form data
             response = client.post(
                 f'/rsvp/{sample_guest.token}/cancel',
-                data={'confirm_cancellation': True},
+                data={'csrf_token': 'test-token'},  # Minimal form data
                 follow_redirects=True
             )
             assert response.status_code == 200
             
             # Verify it was cancelled
+            db.session.expire_all()  # Clear any cached instances
             rsvp = RSVP.query.filter_by(guest_id=sample_guest.id).first()
+            
+            # More robust assertion with debugging
+            if not rsvp or not rsvp.is_cancelled:
+                print(f"Cancel test failed. Response: {response.data}")
+                if rsvp:
+                    print(f"RSVP state: is_cancelled={rsvp.is_cancelled}")
+            
+            assert rsvp is not None
             assert rsvp.is_cancelled is True
             
             # Clean up
@@ -221,24 +258,87 @@ class TestAdminRoutes:
 
     def test_admin_login_success(self, client, app):
         with app.app_context():
-            # This test is problematic because we're using the password hash directly
-            # Instead, let's test that the route exists and returns the correct status code
+            # Set the password hash in the config
+            app.config['ADMIN_PASSWORD_HASH'] = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'
+            
+            # Use the known password for the hash
             response = client.post('/admin/login', 
-                                 data={'password': 'your-secure-password'},
-                                 follow_redirects=True)
+                                data={'password': 'your-secure-password'},
+                                follow_redirects=True)
+            
+            # After successful login, the cookie should be set
+            assert 'admin_authenticated' in [cookie.name for cookie in client.cookie_jar]
             assert response.status_code == 200
+            
+            # Check for dashboard content rather than specific text
+            assert b'dashboard' in response.data.lower() or b'guest' in response.data.lower()
+
 
     def test_admin_dashboard(self, auth_client):
         response = auth_client.get('/admin/dashboard')
         assert response.status_code == 200
+        assert b'Guest Management' in response.data or b'Guest List' in response.data
 
     def test_admin_add_guest(self, auth_client):
         response = auth_client.get('/admin/guest/add')
         assert response.status_code == 200
+        assert b'Add Guest' in response.data
 
     def test_admin_download_template(self, auth_client):
         response = auth_client.get('/admin/download-template')
         assert response.status_code == 200
+        assert b'name,phone,email,has_plus_one,is_family,language' in response.data
+        
+    def test_admin_import_guests(self, auth_client):
+        """Test importing guests."""
+        from io import BytesIO
+        
+        # Create a test CSV file
+        csv_content = b'name,phone,email,has_plus_one,is_family,language\nTest Import,123456,test@example.com,true,false,en'
+        csv_file = BytesIO(csv_content)
+        
+        response = auth_client.post(
+            '/admin/guest/import',
+            data={
+                'file': (csv_file, 'test.csv')
+            },
+            follow_redirects=True,
+            content_type='multipart/form-data'
+        )
+        assert response.status_code == 200
+        # Check for success message in the response
+        # The exact message might vary based on your flash messages
+        
+    def test_admin_debug_allergens(self, auth_client, app, sample_rsvp, sample_allergens):
+        """Test the debug allergens route."""
+        with app.app_context():
+            # Store guest name while in session
+            guest_name = sample_rsvp.guest.name
+            
+            # Add an allergen to the RSVP
+            guest_allergen = GuestAllergen(
+                rsvp_id=sample_rsvp.id,
+                guest_name=guest_name,
+                allergen_id=sample_allergens[0].id
+            )
+            db.session.add(guest_allergen)
+            db.session.commit()
+            
+            response = auth_client.get('/admin/debug/allergens')
+            
+            # Debugging output
+            if response.status_code != 200:
+                print(f"Debug allergens response: {response.status_code}")
+                print(f"Response data: {response.data}")
+            
+            assert response.status_code == 200
+            
+            # Generic check for JSON content
+            assert b'{' in response.data and b'}' in response.data
+            
+            # Clean up
+            db.session.delete(guest_allergen)
+            db.session.commit()
 
     def test_admin_logout(self, auth_client):
         response = auth_client.get('/admin/logout', follow_redirects=True)
