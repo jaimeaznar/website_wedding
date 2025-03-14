@@ -43,11 +43,6 @@ def login():
         flash('Invalid password', 'error')
     return render_template('admin/login.html', form=form)
 
-# Add this to app/routes/admin.py in the dashboard route function
-# This ensures the allergens are explicitly loaded for each RSVP
-
-# Update app/routes/admin.py
-
 @bp.route('/dashboard')
 @admin_required
 def dashboard():
@@ -66,30 +61,39 @@ def dashboard():
         'to_hotel': 0,
         'hotels': set()
     }
-    responses_received = 0
+    responses_received = 0  # This counts both attending and declined RSVPs
+    attending_count = 0
+    declined_count = 0
     cancelled_count = 0
     
     for rsvp in rsvps:
         if rsvp.is_cancelled:
             cancelled_count += 1
-        elif rsvp.is_attending:
+        else:
+            # Count as a response received whether attending or not
             responses_received += 1
-            # Count main guest
-            total_people_attending += 1
-            # Count additional guests
-            total_people_attending += len(rsvp.additional_guests)
             
-            # Count transport needs
-            if rsvp.transport_to_church:
-                transport_stats['to_church'] += 1
-            if rsvp.transport_to_reception:
-                transport_stats['to_reception'] += 1
-            if rsvp.transport_to_hotel:
-                transport_stats['to_hotel'] += 1
-            
-            # Add hotel to set if specified
-            if rsvp.hotel_name:
-                transport_stats['hotels'].add(rsvp.hotel_name)
+            if rsvp.is_attending:
+                attending_count += 1
+                # Count main guest
+                total_people_attending += 1
+                # Count additional guests
+                total_people_attending += len(rsvp.additional_guests)
+                
+                # Count transport needs
+                if rsvp.transport_to_church:
+                    transport_stats['to_church'] += 1
+                if rsvp.transport_to_reception:
+                    transport_stats['to_reception'] += 1
+                if rsvp.transport_to_hotel:
+                    transport_stats['to_hotel'] += 1
+                
+                # Add hotel to set if specified
+                if rsvp.hotel_name:
+                    transport_stats['hotels'].add(rsvp.hotel_name)
+            else:
+                # This is a declined RSVP
+                declined_count += 1
     
     pending_count = total_guests - responses_received - cancelled_count
     
@@ -101,6 +105,8 @@ def dashboard():
                          total_guests=total_guests,
                          total_attending=total_people_attending,
                          responses_received=responses_received,
+                         attending_count=attending_count,
+                         declined_count=declined_count,
                          pending_count=pending_count,
                          cancelled_count=cancelled_count,
                          transport_stats=transport_stats)

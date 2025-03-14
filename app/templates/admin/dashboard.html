@@ -94,7 +94,7 @@
 
             <!-- Summary Cards -->
             <div class="row mb-4">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Total Invitations</h5>
@@ -103,18 +103,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Attending</h5>
-                            <p class="card-text display-6">{{ total_attending }}
+                            <p class="card-text display-6">{{ attending_count }}
                             </p>
-                            <small class="text-muted">Including additional
-                                guests</small>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Declined</h5>
+                            <p class="card-text display-6">{{ declined_count }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Cancelled</h5>
@@ -123,12 +130,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Pending</h5>
                             <p class="card-text display-6">{{ pending_count }}
                             </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Guests</h5>
+                            <p class="card-text display-6">{{ total_attending }}
+                            </p>
+                            <small class="text-muted">Including additional
+                                guests</small>
                         </div>
                     </div>
                 </div>
@@ -203,8 +221,11 @@
                             <td>
                                 {% if rsvp.is_cancelled %}
                                 Cancelled
+                                {% elif rsvp.is_attending %}
+                                <span class="badge bg-success">Attending</span>
                                 {% else %}
-                                {{ 'Yes' if rsvp.is_attending else 'No' }}
+                                <span
+                                    class="badge bg-warning text-dark">Declined</span>
                                 {% endif %}
                             </td>
                             <td>
