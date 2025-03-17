@@ -111,56 +111,85 @@ class TestRSVPModel:
             assert sample_rsvp.is_cancelled is True
             assert sample_rsvp.cancellation_date is not None
             
-    def test_allergen_ids_property(self, app, sample_rsvp, sample_allergens):
+    def test_allergen_ids_property(self, app, sample_allergens):
         """Test the allergen_ids property."""
         with app.app_context():
-            # Store guest name while in session
-            guest_name = sample_rsvp.guest.name
+            # Create a fresh sample guest and RSVP
+            guest = Guest(
+                name='Allergen Test Guest',
+                email='allergen@example.com',
+                phone='1234567890',
+                token=secrets.token_urlsafe(16),
+                language_preference='en'
+            )
+            db.session.add(guest)
+            db.session.commit()
             
-            # Add a GuestAllergen record
+            rsvp = RSVP(
+                guest_id=guest.id,
+                is_attending=True,
+                hotel_name="Test Hotel"
+            )
+            db.session.add(rsvp)
+            db.session.commit()
+            
+            # Add an allergen
             guest_allergen = GuestAllergen(
-                rsvp_id=sample_rsvp.id,
-                guest_name=guest_name,
+                rsvp_id=rsvp.id,
+                guest_name=guest.name,
                 allergen_id=sample_allergens[0].id
             )
             db.session.add(guest_allergen)
             db.session.commit()
             
-            # Get a fresh instance from the database
-            fresh_rsvp = RSVP.query.get(sample_rsvp.id)
-            
-            # Test the property
+            # Get a fresh instance and test
+            fresh_rsvp = RSVP.query.get(rsvp.id)
             assert sample_allergens[0].id in fresh_rsvp.allergen_ids
             
             # Clean up
             db.session.delete(guest_allergen)
+            db.session.delete(rsvp)
+            db.session.delete(guest)
             db.session.commit()
 
-    def test_custom_allergen_property(self, app, sample_rsvp):
+    def test_custom_allergen_property(self, app):
         """Test the custom_allergen property."""
         with app.app_context():
-            # Store guest name while in session
-            guest_name = sample_rsvp.guest.name
+            # Create a fresh test setup
+            guest = Guest(
+                name='Custom Allergen Guest',
+                email='custom@example.com',
+                phone='1234567890',
+                token=secrets.token_urlsafe(16)
+            )
+            db.session.add(guest)
+            db.session.commit()
+            
+            rsvp = RSVP(
+                guest_id=guest.id,
+                is_attending=True
+            )
+            db.session.add(rsvp)
+            db.session.commit()
             
             # Add a custom allergen
             custom_allergen = "Test allergen text"
             guest_allergen = GuestAllergen(
-                rsvp_id=sample_rsvp.id,
-                guest_name=guest_name,
-                allergen_id=None,
+                rsvp_id=rsvp.id,
+                guest_name=guest.name,
                 custom_allergen=custom_allergen
             )
             db.session.add(guest_allergen)
             db.session.commit()
             
-            # Get a fresh instance from the database
-            fresh_rsvp = RSVP.query.get(sample_rsvp.id)
-            
             # Test the property
+            fresh_rsvp = RSVP.query.get(rsvp.id)
             assert fresh_rsvp.custom_allergen == custom_allergen
             
             # Clean up
             db.session.delete(guest_allergen)
+            db.session.delete(rsvp)
+            db.session.delete(guest)
             db.session.commit()
 
     def test_cascade_delete(self, app, sample_guest):
@@ -252,20 +281,30 @@ class TestAllergenModel:
             db.session.delete(guest_allergen)
             db.session.commit()
             
-    def test_custom_guest_allergen(self, app, sample_rsvp):
+    def test_custom_guest_allergen(self, app):
         """Test creating a custom guest allergen."""
         with app.app_context():
-            # Store guest name while in session
-            guest_name = sample_rsvp.guest.name
+            # Create a fresh test setup
+            guest = Guest(
+                name='Custom Allergen Test',
+                email='cust@example.com',
+                phone='123123123',
+                token=secrets.token_urlsafe(16)
+            )
+            db.session.add(guest)
+            db.session.commit()
             
-            # Delete any existing guest allergens for this RSVP
-            GuestAllergen.query.filter_by(rsvp_id=sample_rsvp.id).delete()
+            rsvp = RSVP(
+                guest_id=guest.id,
+                is_attending=True
+            )
+            db.session.add(rsvp)
             db.session.commit()
             
             # Create a custom allergen
             guest_allergen = GuestAllergen(
-                rsvp_id=sample_rsvp.id,
-                guest_name=guest_name,
+                rsvp_id=rsvp.id,
+                guest_name=guest.name,
                 custom_allergen="Exotic Fruit"
             )
             db.session.add(guest_allergen)
@@ -273,8 +312,8 @@ class TestAllergenModel:
             
             # Verify the custom allergen
             allergens = GuestAllergen.query.filter_by(
-                rsvp_id=sample_rsvp.id,
-                guest_name=guest_name
+                rsvp_id=rsvp.id,
+                guest_name=guest.name
             ).all()
             assert len(allergens) == 1
             assert allergens[0].custom_allergen == "Exotic Fruit"
@@ -282,6 +321,8 @@ class TestAllergenModel:
             
             # Clean up
             db.session.delete(guest_allergen)
+            db.session.delete(rsvp)
+            db.session.delete(guest)
             db.session.commit()
 
 class TestAdditionalGuestModel:
@@ -322,29 +363,45 @@ class TestAdditionalGuestModel:
             db.session.delete(child_guest)
             db.session.commit()
             
-    def test_additional_guest_allergen_relationship(self, app, sample_rsvp, sample_allergens):
+    def test_additional_guest_allergen_relationship(self, app):
         """Test the relationship between additional guests and allergens."""
         with app.app_context():
-            # Clear any existing additional guests and allergens
-            AdditionalGuest.query.filter_by(rsvp_id=sample_rsvp.id).delete()
-            GuestAllergen.query.filter_by(rsvp_id=sample_rsvp.id).delete()
+            # Create everything from scratch
+            guest = Guest(
+                name='Add Guest Test',
+                email='add@example.com',
+                phone='888999000',
+                token=secrets.token_urlsafe(16)
+            )
+            db.session.add(guest)
+            db.session.commit()
+            
+            rsvp = RSVP(
+                guest_id=guest.id,
+                is_attending=True
+            )
+            db.session.add(rsvp)
             db.session.commit()
             
             # Create additional guest
-            additional_guest = AdditionalGuest(
-                rsvp_id=sample_rsvp.id,
+            add_guest = AdditionalGuest(
+                rsvp_id=rsvp.id,
                 name='Allergic Guest',
                 is_child=False
             )
-            db.session.add(additional_guest)
+            db.session.add(add_guest)
             db.session.commit()
             
-            # Get the allergen from the database to ensure it's attached
-            allergen = Allergen.query.get(sample_allergens[0].id)
+            # Create an allergen if needed
+            allergen = Allergen.query.filter_by(name='Peanuts').first()
+            if not allergen:
+                allergen = Allergen(name='Peanuts')
+                db.session.add(allergen)
+                db.session.commit()
             
             # Add allergen for this guest
             guest_allergen = GuestAllergen(
-                rsvp_id=sample_rsvp.id,
+                rsvp_id=rsvp.id,
                 guest_name='Allergic Guest',
                 allergen_id=allergen.id
             )
@@ -352,9 +409,8 @@ class TestAdditionalGuestModel:
             db.session.commit()
             
             # Query the database directly to check the relationship
-            # instead of using the allergens property
             allergens = GuestAllergen.query.filter_by(
-                rsvp_id=sample_rsvp.id,
+                rsvp_id=rsvp.id,
                 guest_name='Allergic Guest'
             ).all()
             
@@ -364,5 +420,7 @@ class TestAdditionalGuestModel:
             
             # Clean up
             db.session.delete(guest_allergen)
-            db.session.delete(additional_guest)
+            db.session.delete(add_guest)
+            db.session.delete(rsvp)
+            db.session.delete(guest)
             db.session.commit()

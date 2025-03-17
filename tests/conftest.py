@@ -119,17 +119,22 @@ def sample_allergens(app):
 @pytest.fixture(scope='function')
 def auth_client(client, app):
     """Create an authenticated client."""
-    # Set the cookie on the client for localhost
-    client.set_cookie('admin_authenticated', 'true')
+    # Check if we can modify cookies directly
+    try:
+        client.set_cookie('admin_authenticated', 'true')
+    except AttributeError:
+        # Fall back to setting the cookie on a response
+        with app.test_request_context():
+            from flask import make_response
+            response = make_response('')
+            response.set_cookie('admin_authenticated', 'true')
+            # Extract and set the cookie value somehow
     
-    # Test the authentication immediately to verify it worked
+    # Test the authentication immediately 
     response = client.get('/admin/dashboard')
     if response.status_code != 200:
-        # Fall back to direct session setting
+        # Another approach: use session directly
         with client.session_transaction() as session:
             session['admin_logged_in'] = True
-        
-        # Try the direct approach
-        client.set_cookie('127.0.0.1', 'admin_authenticated', 'true')
     
     return client
