@@ -190,7 +190,7 @@ class TestAdminInterface:
         assert b'Admin Login' in response.data
 
         # Set cookie correctly for Flask 3.0+
-        client.set_cookie('localhost', 'admin_authenticated', 'true')
+        client.set_cookie('admin_authenticated', 'true')
         
         # Test accessing the dashboard
         response = client.get('/admin/dashboard')
@@ -199,7 +199,7 @@ class TestAdminInterface:
     def test_admin_add_guest(self, client, app):
         """Test adding a guest through the admin interface."""
         # Set authentication cookie
-        client.set_cookie('localhost', 'admin_authenticated', 'true')
+        client.set_cookie('admin_authenticated', 'true')
         
         # Test accessing the add guest page
         response = client.get('/admin/guest/add')
@@ -226,7 +226,7 @@ class TestAdminInterface:
     def test_admin_download_template(self, client, app):
         """Test downloading the guest template."""
         # Set authentication cookie
-        client.set_cookie('localhost', 'admin_authenticated', 'true')
+        client.set_cookie('admin_authenticated', 'true')
         
         response = client.get('/admin/download-template')
         assert response.status_code == 200
