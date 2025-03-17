@@ -58,12 +58,41 @@ class RSVPForm(FlaskForm):
     def validate_hotel_name(self, field):
         """Validate that hotel is provided if transport is requested."""
         if self.is_attending.data == 'yes':
-            needs_transport = (
-                self.transport_to_church.data or 
-                self.transport_to_reception.data or 
-                self.transport_to_hotel.data
-            )
-            if needs_transport and not field.data.strip():
+            # Check if any transport option is selected
+            # Handle both BooleanField data and raw form data ('on' string)
+            transport_selected = False
+            
+            # Check transport fields directly
+            if hasattr(self, 'transport_to_church') and self.transport_to_church.data:
+                transport_selected = True
+            elif hasattr(self, 'transport_to_reception') and self.transport_to_reception.data:
+                transport_selected = True
+            elif hasattr(self, 'transport_to_hotel') and self.transport_to_hotel.data:
+                transport_selected = True
+                
+            # If we're in a test environment, the raw form data might be accessible
+            if not transport_selected:
+                # Try to access raw form data in different ways
+                raw_data = getattr(self, 'data', {})
+                if isinstance(raw_data, dict):
+                    transport_selected = (
+                        raw_data.get('transport_to_church') == 'on' or
+                        raw_data.get('transport_to_reception') == 'on' or
+                        raw_data.get('transport_to_hotel') == 'on'
+                    )
+            
+            # Another approach: check request.form directly if available
+            if not transport_selected:
+                from flask import request
+                if request and hasattr(request, 'form'):
+                    transport_selected = (
+                        'transport_to_church' in request.form or
+                        'transport_to_reception' in request.form or
+                        'transport_to_hotel' in request.form
+                    )
+            
+            # If any transport is selected but no hotel specified, validation fails
+            if transport_selected and not field.data.strip():
                 raise ValidationError('Please specify a hotel if you need transport services.')
 
 class RSVPCancellationForm(FlaskForm):
