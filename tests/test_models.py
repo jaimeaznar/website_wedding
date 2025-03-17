@@ -124,7 +124,7 @@ class TestRSVPModel:
             )
             db.session.add(guest)
             db.session.commit()
-            
+
             rsvp = RSVP(
                 guest_id=guest.id,
                 is_attending=True,
@@ -132,19 +132,28 @@ class TestRSVPModel:
             )
             db.session.add(rsvp)
             db.session.commit()
-            
+
+            # Create a fresh allergen within this session
+            allergen = Allergen.query.first()
+            if not allergen:
+                allergen = Allergen(name="Test Allergen")
+                db.session.add(allergen)
+                db.session.commit()
+
             # Add an allergen
             guest_allergen = GuestAllergen(
                 rsvp_id=rsvp.id,
                 guest_name=guest.name,
-                allergen_id=sample_allergens[0].id
+                allergen_id=allergen.id
             )
             db.session.add(guest_allergen)
             db.session.commit()
+
+            # Refresh to ensure everything is attached
+            db.session.refresh(rsvp)
             
-            # Get a fresh instance and test
-            fresh_rsvp = RSVP.query.get(rsvp.id)
-            assert sample_allergens[0].id in fresh_rsvp.allergen_ids
+            # Test the property
+            assert allergen.id in rsvp.allergen_ids
             
             # Clean up
             db.session.delete(guest_allergen)
