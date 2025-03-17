@@ -35,6 +35,7 @@ def create_app(config_class=Config):
     babel.init_app(app, locale_selector=get_locale)
     migrate.init_app(app, db)
     csrf.init_app(app)
+
     
     # Configure logging
     from app.logging_config import configure_logging

@@ -38,6 +38,23 @@ fi
 
 success "Virtual environment is activated: $(python --version)"
 
+# In setup_app.sh
+
+section "Admin Account Setup"
+echo "Setting up admin account..."
+read -sp "Enter admin password (will not be displayed): " ADMIN_PASSWORD
+echo
+
+if [ -n "$ADMIN_PASSWORD" ]; then
+    # Generate password hash using Python and update .env file
+    HASH=$(python -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('$ADMIN_PASSWORD'))")
+    grep -q "ADMIN_PASSWORD_HASH" .env || echo "ADMIN_PASSWORD_HASH=$HASH" >> .env
+    sed -i "s/ADMIN_PASSWORD_HASH=.*/ADMIN_PASSWORD_HASH=$HASH/" .env
+    success "Admin password has been set to: $HASH and $ADMIN_PASSWORD"
+else
+    warning "No password provided. Admin login may not work until you set ADMIN_PASSWORD_HASH in .env"
+fi
+
 section "Checking required files"
 
 # Check if requirements.txt exists

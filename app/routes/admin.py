@@ -7,10 +7,12 @@ from app.models.allergen import GuestAllergen, Allergen
 from app.models.rsvp import RSVP, AdditionalGuest
 from app.forms import LoginForm, GuestForm, ImportForm
 from app.security import verify_admin_password, rate_limit
-from app.admin_auth import ADMIN_PASSWORD_HASH, get_admin_password_hash
+from app.admin_auth import get_admin_password_hash
 from functools import wraps
 import secrets
 import logging
+
+
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -26,21 +28,41 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# In app/routes/admin.py, modify the login route
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    # For debugging CSRF issues
+    if request.method == 'POST':
+        logger.debug(f"CSRF Token in form: {request.form.get('csrf_token')}")
+        logger.debug(f"CSRF Token in session: {session.get('_csrf_token')}")
+    
     form = LoginForm()
     if request.method == 'POST' and form.validate_on_submit():
         password = form.password.data
         
-        # Get admin password hash from config or generate it
-        admin_password_hash = get_admin_password_hash()
-        
-        if check_password_hash(admin_password_hash, password):
-            response = redirect(url_for('admin.dashboard'))
-            response.set_cookie('admin_authenticated', 'true', httponly=True, secure=not current_app.debug)
-            logger.info(f"Admin login successful: {request.remote_addr}")
-            return response
-        flash('Invalid password', 'error')
+        try:
+            # Get admin password hash from our improved function
+            admin_password_hash = get_admin_password_hash()
+            
+            if check_password_hash(admin_password_hash, password):
+                response = redirect(url_for('admin.dashboard'))
+                # Set secure cookie attributes
+                secure = not current_app.debug
+                response.set_cookie(
+                    'admin_authenticated', 
+                    'true', 
+                    httponly=True, 
+                    secure=secure,
+                    samesite='Lax'  # Prevents CSRF attacks
+                )
+                logger.info(f"Admin login successful: {request.remote_addr}")
+                return response
+            flash('Invalid password', 'error')
+        except ValueError as e:
+            logger.error(f"Admin password configuration error: {str(e)}")
+            flash('Admin login is not configured properly. Please contact the site administrator.', 'error')
+            
     return render_template('admin/login.html', form=form)
 
 # Add this to app/routes/admin.py in the dashboard route function

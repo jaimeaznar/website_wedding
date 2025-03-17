@@ -12,6 +12,10 @@ class Config:
     # Database - directly specify the URL
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://jaimeaznar@localhost/wedding_db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # CSRF settings
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_SECRET_KEY = os.getenv('WTF_CSRF_SECRET_KEY', SECRET_KEY)
     
     # Email configuration
     MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
@@ -35,7 +39,8 @@ class Config:
     WARNING_CUTOFF_DAYS = 7     # days before wedding for warnings
     
     # For tests - set a default admin password hash
-    ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH', 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01')
+    ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH') 
+    os.getenv('ADMIN_PASSWORD_HASH', 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01')
 
 class TestConfig(Config):
     TESTING = True

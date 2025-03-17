@@ -1,13 +1,14 @@
 import os
 import pytest
 import secrets
-from datetime import datetime
 from app import create_app, db
 from app.models.guest import Guest
 from app.models.rsvp import RSVP
 from app.models.allergen import Allergen
 from app.config import TestConfig
 from dotenv import load_dotenv
+from tests.utils import get_test_config  # Import the test config function
+from datetime import datetime, timedelta
 
 # Load environment variables from .env file at the start of testing
 load_dotenv()
@@ -18,12 +19,17 @@ class CustomTestConfig(TestConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SECRET_KEY = 'test-secret-key'
+    
+    def __init__(self):
+        # Apply test config overrides
+        for key, value in get_test_config().items():
+            setattr(self, key, value)
 
 @pytest.fixture(scope='session')
 def app():
     """Create and configure a Flask app for testing."""
     # Create the app with the test config
-    app = create_app(CustomTestConfig)
+    app = create_app(CustomTestConfig())  # Create an instance of CustomTestConfig
     
     # Establish an application context
     with app.app_context():
