@@ -147,8 +147,20 @@ def rsvp_form(token):
     if request.method == 'POST':
         logger.info(f"Processing POST request for RSVP form, guest: {guest.name}")
         
-        # Log form data for debugging
-        logger.debug(f"Form data keys: {list(request.form.keys())}")
+        # Validate the form data
+        form = RSVPForm(request.form, guest=guest)
+        
+        # Check if form validates (this is the key change)
+        if not form.validate():
+            logger.warning("Form validation failed")
+            flash('Please check your submission and try again.', 'danger')
+            return render_template('rsvp.html',
+                                guest=guest,
+                                rsvp=rsvp,
+                                form=form,
+                                allergens=allergens,
+                                admin_phone=admin_phone,
+                                show_warning=False)
         
         try:
             # Create or get existing RSVP

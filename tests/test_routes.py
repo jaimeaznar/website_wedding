@@ -216,17 +216,24 @@ class TestRSVPRoutes:
             db.session.commit()
             
             try:
-                # Get the form first
+                # Get the form first to retrieve any CSRF token
                 initial_response = client.get(f'/rsvp/{test_guest.token}')
                 assert initial_response.status_code == 200
                 
-                # Deliberately submit invalid data - we'll skip trying to perform validation
-                # and instead just check that we get a 200 OK response (not redirect)
+                # Deliberately submit invalid data that triggers form validation
                 data = {
                     'is_attending': 'yes',
                     'transport_to_church': 'on',
-                    # Missing hotel_name
+                    'hotel_name': '',  # Empty hotel name with transport selected should fail validation
                 }
+                
+                # Get CSRF token if needed (not needed in test mode, but for completeness)
+                if 'csrf_token' in initial_response.data.decode():
+                    # Extract csrf_token from the form
+                    import re
+                    match = re.search(r'name="csrf_token" value="([^"]+)"', initial_response.data.decode())
+                    if match:
+                        data['csrf_token'] = match.group(1)
                 
                 response = client.post(
                     f'/rsvp/{test_guest.token}',
@@ -238,13 +245,19 @@ class TestRSVPRoutes:
                 # rather than a redirect to a confirmation page
                 assert response.status_code == 200
                 
-                # If validation is working, we should NOT have an RSVP created
-                # or it should be incomplete
+                # Also check that an error message is present
+                assert b'Please specify a hotel' in response.data or b'validation failed' in response.data or b'danger' in response.data
+                
+                # Verify no RSVP was created
                 db.session.expire_all()
                 rsvp = RSVP.query.filter_by(guest_id=test_guest.id).first()
                 
-                # Skip the assertion for now since we're just checking the response
-                # and not validation behavior
+                # For truly invalid submissions, no RSVP should be created
+                # However, if partial RSVP creation happens in your app logic, 
+                # this assertion may need to be adjusted
+                if rsvp:
+                    # If an RSVP was created, it shouldn't be marked as attending since validation failed
+                    assert not (rsvp.is_attending and rsvp.transport_to_church and not rsvp.hotel_name)
                 
             finally:
                 # Clean up - delete any RSVP first
@@ -255,7 +268,7 @@ class TestRSVPRoutes:
                 # Then delete the test guest
                 db.session.delete(test_guest)
                 db.session.commit()
-    
+
     def test_rsvp_cancel(self, client, app):
         """Test cancelling an RSVP."""
         with app.app_context():
