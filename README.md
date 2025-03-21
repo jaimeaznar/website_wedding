@@ -15,8 +15,13 @@ The tests are organized as follows:
 ### 1. Install Testing Dependencies
 
 ```bash
-pip install pytest pytest-flask pytest-cov pytest-flask-sqlalchemy selenium
+pip install -r requirements.txt
 ```
+
+This will install all required packages including:
+- pytest and related plugins
+- Code quality tools (flake8, black, isort, mypy, pylint)
+- Testing tools (coverage, tox)
 
 ### 2. Test Configuration
 
@@ -62,6 +67,35 @@ pytest --cov=app --cov-report=html tests/
 
 This will create a `htmlcov` directory with coverage reports.
 
+## Code Quality Tools
+
+The project uses several tools to maintain code quality:
+
+### Linting and Formatting
+
+```bash
+# Run flake8 for PEP 8 compliance
+flake8 app tests
+
+# Run black for code formatting
+black app tests
+
+# Run isort for import sorting
+isort app tests
+
+# Run mypy for type checking
+mypy app tests
+
+# Run pylint for code analysis
+pylint app tests
+```
+
+### Running All Code Quality Checks
+
+```bash
+tox -e lint
+```
+
 ## Functional Tests
 
 Functional tests use Selenium to automate browser-based testing. These tests are disabled by default.
@@ -86,12 +120,11 @@ Note: Functional tests might be brittle if your web interface changes. They're p
 
 ## Continuous Integration
 
-For CI/CD pipelines (like GitHub Actions, GitLab CI, etc.), create a workflow that:
-
-1. Sets up Python
-2. Installs dependencies  
-3. Runs tests
-4. Generates coverage reports
+The project uses GitHub Actions for CI/CD. The workflow:
+1. Runs tests against Python 3.9, 3.10, and 3.11
+2. Generates and uploads coverage reports to Codecov
+3. Runs all code quality checks
+4. Triggers on push to main/develop and pull requests
 
 ## Best Practices
 
@@ -100,5 +133,7 @@ For CI/CD pipelines (like GitHub Actions, GitLab CI, etc.), create a workflow th
 3. **Fixtures**: Use fixtures for setting up test data
 4. **Mocking**: Use mocking for external services (email, etc.)
 5. **Maintenance**: Update tests when your application changes
+6. **Code Quality**: Run all linting tools before committing changes
+7. **Type Hints**: Use type hints and run mypy to catch type-related issues
 
 Happy testing!
