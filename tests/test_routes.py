@@ -442,3 +442,39 @@ class TestAdminRoutes:
         response = auth_client.get('/admin/logout', follow_redirects=True)
         assert response.status_code == 200
         assert b'Admin Login' in response.data
+
+class TestErrorHandlers:
+    def test_404_error(self, client):
+        """Test the 404 error handler."""
+        response = client.get('/nonexistent-page')
+        assert response.status_code == 404
+        assert b'Page Not Found' in response.data
+
+    def test_403_error(self, client):
+        """Test the 403 error handler."""
+        # Access admin page without authentication
+        response = client.get('/admin/dashboard')
+        assert response.status_code == 403
+        assert b'Forbidden' in response.data
+
+    def test_500_error(self, client, app):
+        """Test the 500 error handler."""
+        # Create a route that will raise an exception
+        @app.route('/test-500')
+        def test_500():
+            raise Exception("Test 500 error")
+        
+        response = client.get('/test-500')
+        assert response.status_code == 500
+        assert b'Internal Server Error' in response.data
+
+    def test_generic_exception(self, client, app):
+        """Test the generic exception handler."""
+        # Create a route that will raise a custom exception
+        @app.route('/test-exception')
+        def test_exception():
+            raise ValueError("Test exception")
+        
+        response = client.get('/test-exception')
+        assert response.status_code == 500
+        assert b'Internal Server Error' in response.data

@@ -8,6 +8,10 @@ from app.utils.rsvp_helpers import process_allergens
 from app.utils.validators import RSVPValidator
 from app.models.allergen import Allergen, GuestAllergen
 from unittest.mock import MagicMock, patch
+import logging
+from app.security import rate_limit
+import time
+
 
 class TestImportGuests:
     def test_process_guest_csv_valid(self):
@@ -356,3 +360,115 @@ class TestEmailUtils:
             except Exception as e:
                 # Just make sure some attempt to access mail was made
                 assert mock_mail.send.called or "MAIL" in str(e)
+
+class TestSecurityHeaders:
+    def test_security_headers_in_production(self, client, app):
+        """Test security headers in production environment."""
+        app.config['TESTING'] = False
+        app.config['DEBUG'] = False
+        
+        response = client.get('/')
+        
+        # Check for security headers
+        assert response.headers.get('X-Content-Type-Options') == 'nosniff'
+        assert response.headers.get('X-Frame-Options') == 'SAMEORIGIN'
+        assert response.headers.get('X-XSS-Protection') == '1; mode=block'
+        assert response.headers.get('Strict-Transport-Security') == 'max-age=31536000; includeSubDomains'
+
+    def test_security_headers_in_testing(self, client, app):
+        """Test that security headers are not set in testing environment."""
+        app.config['TESTING'] = True
+        app.config['DEBUG'] = True
+        
+        response = client.get('/')
+        
+        # Check that security headers are not set in testing
+        assert 'X-Content-Type-Options' not in response.headers
+        assert 'X-Frame-Options' not in response.headers
+        assert 'X-XSS-Protection' not in response.headers
+        assert 'Strict-Transport-Security' not in response.headers
+
+class TestLoggingConfig:
+    @patch('logging.basicConfig')
+    def test_logging_config_debug(self, mock_basic_config, app):
+        """Test logging configuration in debug mode."""
+        app.debug = True
+        from app.logging_config import configure_logging
+        
+        configure_logging(app)
+        
+        mock_basic_config.assert_called_once_with(
+            level=logging.DEBUG,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+
+    @patch('logging.handlers.RotatingFileHandler')
+    @patch('os.makedirs')
+    @patch('os.path.join')
+    def test_logging_config_production(self, mock_path_join, mock_makedirs, 
+                                     mock_rotating_handler, app):
+        """Test logging configuration in production mode."""
+        app.debug = False
+        from app.logging_config import configure_logging
+        
+        # Mock the file handler
+        mock_handler = MagicMock()
+        mock_rotating_handler.return_value = mock_handler
+        
+        configure_logging(app)
+        
+        # Verify directory creation
+        mock_makedirs.assert_called_once()
+        
+        # Verify file handler configuration
+        mock_rotating_handler.assert_called_once()
+        mock_handler.setLevel.assert_called_once_with(logging.INFO)
+        mock_handler.setFormatter.assert_called_once()
+        
+        # Verify handler was added to app logger
+        app.logger.addHandler.assert_called_once_with(mock_handler)
+        app.logger.setLevel.assert_called_once_with(logging.INFO)
+
+class TestRateLimiting:
+    def test_rate_limit_decorator(self, client, app):
+        """Test the rate limit decorator."""
+        from app.security import rate_limit
+        
+        # Create a test route with rate limiting
+        @app.route('/test-rate-limit')
+        @rate_limit(max_requests=2, window=60)
+        def test_rate_limit():
+            return 'OK'
+        
+        # Make requests up to the limit
+        for _ in range(2):
+            response = client.get('/test-rate-limit')
+            assert response.status_code == 200
+        
+        # Next request should be rate limited
+        response = client.get('/test-rate-limit')
+        assert response.status_code == 429
+        assert b'Too Many Requests' in response.data
+
+    def test_rate_limit_reset(self, client, app):
+        """Test that rate limit resets after window."""
+        from app.security import rate_limit
+        import time
+        
+        # Create a test route with a short window
+        @app.route('/test-rate-limit-reset')
+        @rate_limit(max_requests=2, window=1)  # 1 second window
+        def test_rate_limit_reset():
+            return 'OK'
+        
+        # Make requests up to the limit
+        for _ in range(2):
+            response = client.get('/test-rate-limit-reset')
+            assert response.status_code == 200
+        
+        # Wait for the window to expire
+        time.sleep(1.1)
+        
+        # Should be able to make requests again
+        response = client.get('/test-rate-limit-reset')
+        assert response.status_code == 200
