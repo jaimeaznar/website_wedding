@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}RSVP Deadline Passed{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center p-5">
+                    <i
+                        class="fas fa-calendar-times confirmation-icon warning"></i>
+                    <h1 class="mb-4">RSVP Deadline Has Passed</h1>
+                    <p class="lead mb-4">We're sorry, but the RSVP deadline ({{
+                        rsvp_deadline }}) has passed.</p>
+
+                    {% if rsvp %}
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading">Your Current RSVP Status:</h5>
+                        {% if rsvp.is_attending %}
+                        <p class="mb-0">You have confirmed your attendance.
+                            Thank you!</p>
+                        {% else %}
+                        <p class="mb-0">You have declined the invitation.</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <p class="mb-4">If you need to make changes to your RSVP,
+                        please contact us directly.</p>
+
+                    <div
+                        class="d-flex align-items-center justify-content-center mt-4">
+                        <i class="fas fa-phone me-3 text-primary"></i>
+                        <span>{{ admin_phone }}</span>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{{ url_for('main.index') }}"
+                            class="btn btn-primary">
+                            Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% endblock %}

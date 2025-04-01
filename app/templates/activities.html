@@ -1,29 +1,153 @@
 {% extends "base.html" %}
 {% block title %}Activities{% endblock %}
+
 {% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Things to Do</h1>
+        <p class="lead">Explore the area during your stay</p>
+    </div>
+</div>
+
 <div class="container">
-    <h1 class="text-center mb-5">Things to Do</h1>
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            {% for category in activities %}
-            <div class="category mb-5">
-                <h2>{{ category.name }}</h2>
-                {% for activity in category.items %}
-                <div class="activity mb-4">
-                    <h3>{{ activity.name }}</h3>
-                    <p>{{ activity.description }}</p>
-                    <p><strong>Location:</strong> {{ activity.location }}</p>
-                    <p><strong>Cost:</strong> {{ activity.cost }}</p>
-                    {% if activity.website %}
-                    <a href="{{ activity.website }}"
-                        class="btn btn-sm btn-outline-primary"
-                        target="_blank">Learn More</a>
+    {% for category in activities %}
+    <div class="category mb-5">
+        <h2 class="section-title">{{ category.name }}</h2>
+        <div class="row">
+            {% for activity in category.items %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="activity-card">
+                    {% if activity.image %}
+                    <img src="{{ activity.image }}" alt="{{ activity.name }}"
+                        class="activity-img w-100">
+                    {% else %}
+                    <img src="https://via.placeholder.com/600x300"
+                        alt="{{ activity.name }}" class="activity-img w-100">
                     {% endif %}
+                    <div class="card-body">
+                        <h3 class="activity-name">{{ activity.name }}</h3>
+                        <p>{{ activity.description }}</p>
+                        <p><span class="info-label">Location:</span> {{
+                            activity.location }}</p>
+                        <p><span class="info-label">Cost:</span> {{
+                            activity.cost }}</p>
+                        {% if activity.website %}
+                        <a href="{{ activity.website }}"
+                            class="btn btn-outline-primary"
+                            target="_blank">Learn More</a>
+                        {% endif %}
+                    </div>
                 </div>
-                {% endfor %}
             </div>
             {% endfor %}
         </div>
     </div>
+    {% endfor %}
+
+    <!-- If no activities data is provided, show some example content -->
+    {% if not activities or activities|length == 0 %}
+    <div class="category mb-5">
+        <h2 class="section-title">Local Attractions</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="activity-card">
+                    <img src="https://via.placeholder.com/600x300"
+                        alt="Local Museum" class="activity-img w-100">
+                    <div class="card-body">
+                        <h3 class="activity-name">Local Museum</h3>
+                        <p>Explore the history and culture of the region through
+                            interactive exhibits.</p>
+                        <p><span class="info-label">Location:</span> 123 Museum
+                            Street</p>
+                        <p><span class="info-label">Cost:</span> $10 per person
+                        </p>
+                        <a href="#" class="btn btn-outline-primary"
+                            target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="activity-card">
+                    <img src="https://via.placeholder.com/600x300"
+                        alt="Hiking Trails" class="activity-img w-100">
+                    <div class="card-body">
+                        <h3 class="activity-name">Hiking Trails</h3>
+                        <p>Beautiful scenic trails with stunning views of the
+                            surrounding landscape.</p>
+                        <p><span class="info-label">Location:</span> Mountain
+                            View Park</p>
+                        <p><span class="info-label">Cost:</span> Free</p>
+                        <a href="#" class="btn btn-outline-primary"
+                            target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="activity-card">
+                    <img src="https://via.placeholder.com/600x300"
+                        alt="Local Winery" class="activity-img w-100">
+                    <div class="card-body">
+                        <h3 class="activity-name">Local Winery</h3>
+                        <p>Taste award-winning wines and tour the beautiful
+                            vineyards.</p>
+                        <p><span class="info-label">Location:</span> 789
+                            Vineyard Road</p>
+                        <p><span class="info-label">Cost:</span> $25 for tasting
+                            tour</p>
+                        <a href="#" class="btn btn-outline-primary"
+                            target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category mb-5">
+        <h2 class="section-title">Dining Experiences</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="activity-card">
+                    <img src="https://via.placeholder.com/600x300"
+                        alt="Farm-to-Table Restaurant"
+                        class="activity-img w-100">
+                    <div class="card-body">
+                        <h3 class="activity-name">Farm-to-Table Restaurant</h3>
+                        <p>Experience fresh, locally-sourced cuisine in a
+                            charming setting.</p>
+                        <p><span class="info-label">Location:</span> 456 Main
+                            Street</p>
+                        <p><span class="info-label">Cost:</span> $$$</p>
+                        <a href="#" class="btn btn-outline-primary"
+                            target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="activity-card">
+                    <img src="https://via.placeholder.com/600x300"
+                        alt="Historic Café" class="activity-img w-100">
+                    <div class="card-body">
+                        <h3 class="activity-name">Historic Café</h3>
+                        <p>A cozy café located in a historic building with
+                            delicious pastries and coffee.</p>
+                        <p><span class="info-label">Location:</span> 789 Oak
+                            Street</p>
+                        <p><span class="info-label">Cost:</span> $</p>
+                        <a href="#" class="btn btn-outline-primary"
+                            target="_blank">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock %}

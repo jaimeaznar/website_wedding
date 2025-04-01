@@ -1,26 +1,77 @@
 {% extends "base.html" %}
 {% block title %}Schedule{% endblock %}
+
 {% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Wedding Schedule</h1>
+        <p class="lead">The timeline for our special day</p>
+    </div>
+</div>
+
 <div class="container">
-    <h1 class="text-center mb-5">Wedding Schedule</h1>
-    <div class="row">
+    <div class="timeline clearfix">
+        <div class="event">
+            <h3>Ceremony</h3>
+            <p><i class="far fa-clock me-2"></i> [Time]</p>
+            <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+            <p>[Description of ceremony]</p>
+        </div>
+        <div class="event">
+            <h3>Cocktail Hour</h3>
+            <p><i class="far fa-clock me-2"></i> [Time]</p>
+            <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+            <p>[Description of cocktail hour]</p>
+        </div>
+        <div class="event">
+            <h3>Reception</h3>
+            <p><i class="far fa-clock me-2"></i> [Time]</p>
+            <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+            <p>[Description of reception]</p>
+        </div>
+        <div class="event">
+            <h3>Dinner</h3>
+            <p><i class="far fa-clock me-2"></i> [Time]</p>
+            <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+            <p>[Description of dinner]</p>
+        </div>
+        <div class="event">
+            <h3>Dancing</h3>
+            <p><i class="far fa-clock me-2"></i> [Time]</p>
+            <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+            <p>[Description of dancing and celebration]</p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
         <div class="col-md-8 offset-md-2">
-            <div class="timeline">
-                <div class="event mb-4">
-                    <h3>Ceremony</h3>
-                    <p>Time: [Time]</p>
-                    <p>Location: [Location]</p>
-                    <p>[Description]</p>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Important Notes</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-clock me-2 text-primary"></i>
+                            Please arrive at least 20 minutes before the
+                            ceremony.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-car me-2 text-primary"></i> Parking
+                            is available at the venue.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-map me-2 text-primary"></i>
+                            Detailed directions will be provided in your
+                            invitation packet.
+                        </li>
+                    </ul>
                 </div>
-                <div class="event mb-4">
-                    <h3>Reception</h3>
-                    <p>Time: [Time]</p>
-                    <p>Location: [Location]</p>
-                    <p>[Description]</p>
-                </div>
-                <!-- Add more events as needed -->
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock %}

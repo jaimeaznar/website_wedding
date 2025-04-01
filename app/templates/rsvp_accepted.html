@@ -1,17 +1,30 @@
 {% extends "base.html" %}
 {% block title %}RSVP Accepted{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
             <div class="card">
-                <div class="card-body text-center">
-                    <h2>Thank You!</h2>
-                    <p class="lead">We're excited that you'll be joining us for
-                        our special day!</p>
-                    <p>Your RSVP has been successfully submitted.</p>
-                    <p>You can return to this link at any time before the RSVP
-                        deadline to update your response.</p>
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success"
+                            style="font-size: 4rem;"></i>
+                    </div>
+                    <h1 class="mb-3">Thank You!</h1>
+                    <p class="lead mb-4">We're excited that you'll be joining us
+                        for our special day!</p>
+                    <p class="mb-4">Your RSVP has been successfully submitted.
+                    </p>
+                    <p class="text-muted mb-4">You can return to this link at
+                        any time before the RSVP deadline to update your
+                        response.</p>
+
+                    <div class="mt-4">
+                        <a href="{{ url_for('main.index') }}"
+                            class="btn btn-primary">
+                            Return to Home
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,20 +1,44 @@
 {% extends "base.html" %}
 {% block title %}RSVP Status{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <div class="card">
-                <div class="card-body text-center">
-                    <h2>You've Declined This Invitation</h2>
-                    <p class="lead">We previously received your response
+                <div class="card-body text-center p-5">
+                    <i
+                        class="fas fa-calendar-times confirmation-icon warning"></i>
+                    <h1 class="mb-4">You've Declined This Invitation</h1>
+                    <p class="lead mb-4">We previously received your response
                         indicating you won't be able to attend.</p>
-                    <p>If you've changed your mind and would like to attend,
-                        please contact us directly at {{ admin_phone }} before
-                        the RSVP deadline ({{ rsvp_deadline }}).</p>
+
+                    <div class="alert alert-info mb-4">
+                        <p class="mb-0">If you've changed your mind and would
+                            like to attend, please contact us directly before
+                            the RSVP deadline ({{ rsvp_deadline }}).</p>
+                    </div>
+
+                    <div
+                        class="d-flex align-items-center justify-content-center mt-4">
+                        <i class="fas fa-phone me-3 text-primary"></i>
+                        <span>{{ admin_phone }}</span>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{{ url_for('main.index') }}"
+                            class="btn btn-primary">
+                            Return to Home
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock %}
