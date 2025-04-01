@@ -444,6 +444,32 @@ class TestAdminRoutes:
         assert b'Admin Login' in response.data
 
 class TestErrorHandlers:
+    @pytest.fixture(scope="class", autouse=True)
+    def setup_error_routes(self, app):
+        """Setup test routes for error handling tests."""
+        # Create a new blueprint for test routes
+        from flask import Blueprint, abort
+        
+        test_bp = Blueprint('test', __name__)
+        
+        @test_bp.route('/test-403')
+        def test_403():
+            abort(403)
+        
+        @test_bp.route('/test-500')
+        def test_500():
+            raise Exception("Test 500 error")
+        
+        @test_bp.route('/test-exception')
+        def test_exception():
+            raise ValueError("Test exception")
+        
+        # Register the blueprint before any requests
+        app.register_blueprint(test_bp)
+        
+        # Reset the app's _got_first_request flag
+        app._got_first_request = False
+
     def test_404_error(self, client):
         """Test the 404 error handler."""
         response = client.get('/nonexistent-page')
@@ -452,29 +478,18 @@ class TestErrorHandlers:
 
     def test_403_error(self, client):
         """Test the 403 error handler."""
-        # Access admin page without authentication
-        response = client.get('/admin/dashboard')
+        response = client.get('/test-403')
         assert response.status_code == 403
         assert b'Forbidden' in response.data
 
-    def test_500_error(self, client, app):
+    def test_500_error(self, client):
         """Test the 500 error handler."""
-        # Create a route that will raise an exception
-        @app.route('/test-500')
-        def test_500():
-            raise Exception("Test 500 error")
-        
         response = client.get('/test-500')
         assert response.status_code == 500
         assert b'Internal Server Error' in response.data
 
-    def test_generic_exception(self, client, app):
+    def test_generic_exception(self, client):
         """Test the generic exception handler."""
-        # Create a route that will raise a custom exception
-        @app.route('/test-exception')
-        def test_exception():
-            raise ValueError("Test exception")
-        
         response = client.get('/test-exception')
         assert response.status_code == 500
         assert b'Internal Server Error' in response.data
