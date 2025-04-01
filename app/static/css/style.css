@@ -1,9 +1,9 @@
-/* Keep your existing color scheme */
+/* Base variables for consistent styling */
 :root {
     --primary-color: #7a6fac;
-    /* Keep original purple/lilac */
+    /* Purple/lilac */
     --secondary-color: #9b91c1;
-    /* Keep medium purple */
+    /* Medium purple */
     --accent-color: #f5f3fa;
     /* Very light purple - for backgrounds */
     --text-color: #4A4A4A;
@@ -21,6 +21,134 @@
     --card-shadow: 0 4px 20px rgba(122, 111, 172, 0.1);
     /* Subtle purple shadow */
     --transition-speed: 0.3s;
+    --font-primary: 'Cormorant Garamond', serif;
+    --font-secondary: 'Montserrat', sans-serif;
+}
+
+/* Global styles */
+body {
+    font-family: var(--font-secondary);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-primary);
+    color: var(--primary-color);
+}
+
+a {
+    color: var(--primary-color);
+    transition: color var(--transition-speed) ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.nav-link {
+    color: var(--text-color);
+    font-weight: 400;
+    padding: 0.5rem 1rem;
+    transition: color var(--transition-speed) ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Footer styling */
+.footer {
+    background-color: var(--accent-color);
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    margin-top: 4rem;
+}
+
+/* Home page specific */
+.home-page {
+    background-color: var(--muted-color);
+}
+
+.wedding-header {
+    text-align: center;
+    padding: 4rem 0;
+    background-color: var(--accent-color);
+    margin-bottom: 3rem;
+}
+
+.wedding-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.wedding-date {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.language-switcher {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+}
+
+.lang-btn {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin-left: 0.5rem;
+    color: var(--text-color);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all var(--transition-speed) ease;
+}
+
+.lang-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
 }
 
 /* Card Grid for home page */
@@ -166,7 +294,7 @@
 /* Gallery styles */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 3rem;
 }
@@ -316,6 +444,7 @@
     box-shadow: var(--card-shadow);
     transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
     margin-bottom: 2rem;
+    height: 100%;
 }
 
 .activity-card:hover {
@@ -430,10 +559,101 @@
     color: var(--danger-color);
 }
 
+/* RSVP Form Styles - Moved from inline to external CSS */
+.form-section {
+    background-color: var(--light-color);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+}
+
+.form-section-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.form-section-body {
+    padding: 1.5rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.attendance-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.attendance-option {
+    flex: 1;
+    min-width: 180px;
+    position: relative;
+}
+
+.attendance-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.attendance-option label {
+    display: block;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.attendance-option input:checked+label {
+    border-color: var(--primary-color);
+    background-color: rgba(84, 110, 122, 0.1);
+}
+
+.attendance-option label i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    display: block;
+}
+
+.guest-card {
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
 /* Responsive adjustments */
+@media (max-width: 992px) {
+    .wedding-header h1 {
+        font-size: 3rem;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
+    .wedding-header {
+        padding: 3rem 0;
+    }
+
+    .wedding-header h1 {
+        font-size: 2.5rem;
+    }
+
     .card-grid {
         grid-template-columns: 1fr;
+        padding: 1rem;
     }
 
     .gallery-grid {
@@ -446,20 +666,62 @@
 
     .event {
         width: auto;
-        float: none;
+        float: none !important;
         margin-bottom: 1.5rem;
     }
 
     .event:nth-child(odd),
     .event:nth-child(even) {
-        padding-left: 60px;
-        padding-right: 20px;
+        padding-left: 60px !important;
+        padding-right: 20px !important;
         float: none;
     }
 
     .event:nth-child(odd)::after,
     .event:nth-child(even)::after {
-        left: 20px;
-        right: auto;
+        left: 20px !important;
+        right: auto !important;
+    }
+
+    .attendance-options {
+        flex-direction: column;
+    }
+
+    .attendance-option {
+        width: 100%;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .gallery-modal .modal-content {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 576px) {
+    .wedding-header h1 {
+        font-size: 2rem;
+    }
+
+    .wedding-date {
+        font-size: 1.2rem;
+    }
+
+    .page-header {
+        padding: 2rem 0;
+    }
+
+    .hotel-img {
+        height: 150px;
+    }
+
+    .activity-img {
+        height: 150px;
+    }
+
+    .form-section-body {
+        padding: 1rem;
     }
 }

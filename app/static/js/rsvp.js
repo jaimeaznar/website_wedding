@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createGuestInput(type, index) {
         console.log(`Creating ${type} input for index ${index}`);
         const card = document.createElement('div');
-        card.className = 'card mb-3';
+        card.className = 'guest-card';
 
         // Get allergen template content and replace placeholder
         const template = document.getElementById('allergen-template');
@@ -60,16 +60,14 @@ document.addEventListener('DOMContentLoaded', function () {
             .replaceAll('PLACEHOLDER', `${type}_${index}`);
 
         card.innerHTML = `
-            <div class="card-body">
-                <h5 class="card-title">${type === 'adult' ? 'Additional Adult' : 'Child'} #${index + 1}</h5>
-                <div class="mb-3">
-                    <label class="form-label">Name*</label>
-                    <input type="text" class="form-control" name="${type}_name_${index}" required>
-                </div>
-                <div class="mb-3">
-                    <h6>Dietary Restrictions</h6>
-                    ${allergenContent}
-                </div>
+            <h5 class="mb-3">${type === 'adult' ? 'Additional Adult' : 'Child'} #${index + 1}</h5>
+            <div class="mb-3">
+                <label class="form-label">Name*</label>
+                <input type="text" class="form-control" name="${type}_name_${index}" required>
+            </div>
+            <div class="mb-3">
+                <h6 class="mb-3">Dietary Restrictions</h6>
+                ${allergenContent}
             </div>
         `;
         return card;
@@ -147,6 +145,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Call prefill function
     prefillAllergens();
+
+    // Validate transport and hotel inputs
+    function validateTransportHotel() {
+        let needsHotel = false;
+
+        transportCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                needsHotel = true;
+            }
+        });
+
+        if (needsHotel && hotelInput) {
+            hotelInput.required = true;
+            const hotelFormGroup = hotelInput.closest('.mb-3');
+            if (hotelFormGroup) {
+                const label = hotelFormGroup.querySelector('label');
+                if (label) {
+                    if (!label.innerHTML.includes('*')) {
+                        label.innerHTML += '*';
+                    }
+                }
+            }
+        } else if (hotelInput) {
+            hotelInput.required = false;
+            const hotelFormGroup = hotelInput.closest('.mb-3');
+            if (hotelFormGroup) {
+                const label = hotelFormGroup.querySelector('label');
+                if (label && label.innerHTML.includes('*')) {
+                    label.innerHTML = label.innerHTML.replace('*', '');
+                }
+            }
+        }
+    }
+
+    // Add event listeners to transport checkboxes
+    transportCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', validateTransportHotel);
+    });
+
+    // Initialize validation
+    if (transportCheckboxes.length > 0 && hotelInput) {
+        validateTransportHotel();
+    }
 
     console.log("RSVP form script initialization complete");
 });

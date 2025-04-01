@@ -3,15 +3,6 @@
 
 {% block title %}Irene & Jaime's Wedding{% endblock %}
 
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-{% endblock %}
-
 {% block content %}
 <div class="language-switcher">
     <a href="?lang=en"
@@ -101,14 +92,14 @@
             <div class="timeline clearfix">
                 <div class="event">
                     <h3>Ceremony</h3>
-                    <p>Time: [Time]</p>
-                    <p>Location: [Location]</p>
+                    <p><i class="far fa-clock me-2"></i> [Time]</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
                     <p>[Description]</p>
                 </div>
                 <div class="event">
                     <h3>Reception</h3>
-                    <p>Time: [Time]</p>
-                    <p>Location: [Location]</p>
+                    <p><i class="far fa-clock me-2"></i> [Time]</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
                     <p>[Description]</p>
                 </div>
                 <!-- Add more events as needed -->
@@ -128,7 +119,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <img src="{{ url_for('static', filename='img/venue.jpg') }}"
-                        class="img-fluid rounded mb-3" alt="Venue">
+                        class="img-fluid rounded mb-3" alt="Venue"
+                        onerror="this.src='?text=Venue+Image'">
                 </div>
                 <div class="col-md-6">
                     <h3>[Venue Name]</h3>
@@ -137,12 +129,16 @@
                     <p>[Address]</p>
                     <h4>Getting There</h4>
                     <p>[Directions]</p>
-                    <div id="map" style="height: 300px;" class="mb-3"></div>
+                    <div id="map" style="height: 300px;"
+                        class="mb-3 bg-light rounded d-flex align-items-center justify-content-center">
+                        <p class="mb-0">Map will be embedded here</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
 <!-- Gallery Modal -->
 <div id="gallery-modal" class="fullscreen-modal">
@@ -154,43 +150,37 @@
         <div class="modal-body">
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="https://via.placeholder.com/400x300"
-                        alt="Gallery Image 1">
+                    <img src="" alt="Gallery Image 1">
                     <div class="gallery-caption">
                         <p>First time we met</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://via.placeholder.com/400x300"
-                        alt="Gallery Image 2">
+                    <img src="" alt="Gallery Image 2">
                     <div class="gallery-caption">
                         <p>Our engagement day</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://via.placeholder.com/400x300"
-                        alt="Gallery Image 3">
+                    <img src="" alt="Gallery Image 3">
                     <div class="gallery-caption">
                         <p>Traveling together</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://via.placeholder.com/400x300"
-                        alt="Gallery Image 4">
+                    <img src="" alt="Gallery Image 4">
                     <div class="gallery-caption">
                         <p>Special moments</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://via.placeholder.com/400x300"
-                        alt="Gallery Image 5">
+                    <img src="" alt="Gallery Image 5">
                     <div class="gallery-caption">
                         <p>Holiday memories</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://via.placeholder.com/400x300"
-                        alt="Gallery Image 6">
+                    <img src="" alt="Gallery Image 6">
                     <div class="gallery-caption">
                         <p>Celebrating together</p>
                     </div>
@@ -213,8 +203,9 @@
                     <div class="hotel-card mb-4">
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img src="https://via.placeholder.com/400x300"
-                                    alt="Hotel 1" class="hotel-img w-100 h-100">
+                                <img src="" alt="Hotel 2"
+                                    class="hotel-img w-100 h-100">com/400x300"
+                                alt="Hotel 1" class="hotel-img w-100 h-100">
                             </div>
                             <div class="col-md-8">
                                 <div class="hotel-info">
@@ -246,96 +237,4 @@
                     <div class="hotel-card">
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img src="https://via.placeholder.com/400x300"
-                                    alt="Hotel 2" class="hotel-img w-100 h-100">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="hotel-info">
-                                    <h3 class="hotel-name">Hotel Name 2</h3>
-                                    <div class="info-row">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <div>456 Oak Avenue, City, Country</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-phone"></i>
-                                        <div>+1 234 567 891</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-globe"></i>
-                                        <div><a href="#"
-                                                target="_blank">www.hotel2.com</a>
-                                        </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-tag"></i>
-                                        <div>Special rate: $120/night</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Activities Modal -->
-<div id="activities-modal" class="fullscreen-modal">
-    <div class="modal-content-wrapper">
-        <div class="modal-header">
-            <h2>Things to Do</h2>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="activity-card">
-                        <img src="https://via.placeholder.com/400x300"
-                            alt="Activity 1" class="activity-img w-100">
-                        <div class="card-body">
-                            <h3 class="activity-name">Local Museum</h3>
-                            <p>Explore the history and culture of the region
-                                through interactive exhibits.</p>
-                            <p><span class="info-label">Location:</span> 123
-                                Museum Street</p>
-                            <p><span class="info-label">Cost:</span> $10 per
-                                person</p>
-                            <a href="#" class="btn btn-outline-primary"
-                                target="_blank">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="activity-card">
-                        <img src="https://via.placeholder.com/400x300"
-                            alt="Activity 2" class="activity-img w-100">
-                        <div class="card-body">
-                            <h3 class="activity-name">Hiking Trails</h3>
-                            <p>Beautiful scenic trails with stunning views of
-                                the surrounding landscape.</p>
-                            <p><span class="info-label">Location:</span>
-                                Mountain View Park</p>
-                            <p><span class="info-label">Cost:</span> Free</p>
-                            <a href="#" class="btn btn-outline-primary"
-                                target="_blank">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="activity-card">
-                        <img src="https://via.placeholder.com/400x300"
-                            alt="Activity 3" class="activity-img w-100">
-                        <div class="card-body">
-                            <h3 class="activity-name">Local Winery</h3>
-                            <p>Taste award-winning wines and tour the beautiful
-                                vineyards.</p>
-                            <p><span class="info-label">Location:</span> 789
-                                Vineyard Road</p>
-                            <p><span class="info-label">Cost:</span> $25 for
-                                tasting tour</p>
-                            <a href="#" class="btn btn-outline-primary"
-                                target="_blank">Learn More</a>
-                        </div>
-                    </div>
-                </div>
+                                <img src="https://via.placeholder.
