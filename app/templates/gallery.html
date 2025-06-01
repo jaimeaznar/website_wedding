@@ -1,18 +1,88 @@
 {% extends "base.html" %}
 {% block title %}Gallery{% endblock %}
+
 {% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Our Gallery</h1>
+        <p class="lead">Special moments we'd like to share</p>
+    </div>
+</div>
+
 <div class="container">
-    <h1 class="text-center mb-5">Our Gallery</h1>
-    <div class="row">
+    <div class="gallery-grid">
         {% for image in images %}
-        <div class="col-md-4 gallery-item">
-            <img src="{{ image.url }}" alt="{{ image.caption }}"
-                class="img-fluid">
+        <div class="gallery-item" data-id="{{ loop.index0 }}">
+            <img src="{{ image.url }}" alt="{{ image.caption }}">
             {% if image.caption %}
-            <p class="text-center mt-2">{{ image.caption }}</p>
+            <div class="gallery-caption">
+                <p>{{ image.caption }}</p>
+            </div>
             {% endif %}
+        </div>
+        {% else %}
+        <!-- Example images if none are provided -->
+        <div class="gallery-item" data-id="0">
+            <img src="" alt="Gallery image 1">
+            <div class="gallery-caption">
+                <p>First time we met</p>
+            </div>
+        </div>
+        <div class="gallery-item" data-id="1">
+            <img src="" alt="Gallery image 2">
+            <div class="gallery-caption">
+                <p>Our engagement day</p>
+            </div>
+        </div>
+        <div class="gallery-item" data-id="2">
+            <img src="" alt="Gallery image 3">
+            <div class="gallery-caption">
+                <p>Traveling together</p>
+            </div>
+        </div>
+        <div class="gallery-item" data-id="3">
+            <img src="" alt="Gallery image 4">
+            <div class="gallery-caption">
+                <p>Special moments</p>
+            </div>
+        </div>
+        <div class="gallery-item" data-id="4">
+            <img src="" alt="Gallery image 5">
+            <div class="gallery-caption">
+                <p>Holiday memories</p>
+            </div>
+        </div>
+        <div class="gallery-item" data-id="5">
+            <img src="" alt="Gallery image 6">
+            <div class="gallery-caption">
+                <p>Celebrating together</p>
+            </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Image Modal -->
+<div class="gallery-modal">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content">
+        <img id="modal-image" src="" alt="Gallery image">
+    </div>
+    <div class="modal-nav">
+        <button id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+        <button id="next-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="modal-caption">
+        <p id="modal-caption-text"></p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

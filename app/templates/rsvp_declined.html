@@ -1,15 +1,30 @@
 {% extends "base.html" %}
 {% block title %}RSVP Declined{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
             <div class="card">
-                <div class="card-body text-center">
-                    <h2>We're Sorry You Can't Make It</h2>
-                    <p class="lead">Your RSVP has been recorded as declined.</p>
-                    <p>If you change your mind before the RSVP deadline, please
-                        contact us directly at {{ admin_phone }}.</p>
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-heart-broken text-secondary"
+                            style="font-size: 4rem;"></i>
+                    </div>
+                    <h1 class="mb-3">We'll Miss You</h1>
+                    <p class="lead mb-4">Your RSVP has been recorded as
+                        declined.</p>
+                    <p class="mb-4">We're sorry you can't make it to our
+                        celebration.</p>
+                    <p class="text-muted mb-4">If you change your mind before
+                        the RSVP deadline, please contact us directly at {{
+                        admin_phone }}.</p>
+
+                    <div class="mt-4">
+                        <a href="{{ url_for('main.index') }}"
+                            class="btn btn-primary">
+                            Return to Home
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

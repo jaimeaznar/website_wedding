@@ -12,42 +12,33 @@ RATE_LIMIT_RESET_TIME = 3600  # 1 hour in seconds
 # Update the security.py file to modify the CSP
 
 def configure_security(app):
-    """Configure security features for the application."""
+    pass
+    # """Configure security features for the application."""
     
-    # Set security headers
-    @app.after_request
-    def add_security_headers(response):
-        # Skip security headers for testing
-        if app.config.get('TESTING'):
-            return response
+    # # Set security headers
+    # @app.after_request
+    # def add_security_headers(response):
+    #     # Skip security headers for testing
+    #     if app.config.get('TESTING'):
+    #         return response
             
-        # Content Security Policy - Option 1: Allow 'unsafe-inline' for development
-        if app.debug:
-            # More permissive CSP for development
-            response.headers['Content-Security-Policy'] = "default-src 'self'; \
-                script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
-                style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; \
-                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; \
-                img-src 'self' data:; \
-                frame-ancestors 'none'"
-        else:
-            # Stricter CSP for production
-            response.headers['Content-Security-Policy'] = "default-src 'self'; \
-                script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
-                style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com 'unsafe-inline'; \
-                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; \
-                img-src 'self' data:; \
-                frame-ancestors 'none'"
-        
-        # Other security headers remain the same
-        response.headers['X-Content-Type-Options'] = 'nosniff'
-        response.headers['X-Frame-Options'] = 'DENY'
-        response.headers['X-XSS-Protection'] = '1; mode=block'
-        
-        if not app.debug and not app.testing:
-            response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-        
-        return response
+    #     # Content Security Policy - Option 1: Allow 'unsafe-inline' for development
+    #     if app.debug:
+    #         # More permissive CSP for development
+    #         response.headers['Content-Security-Policy'] = "default-src 'self'; \
+    #             script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
+    #             style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; \
+    #             font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
+    #             img-src 'self' data: https://via.placeholder.com; \
+    #             frame-ancestors 'none'"
+    #     else:
+    #         # Stricter CSP for production
+    #         response.headers['Content-Security-Policy'] = "default-src 'self'; \
+    #             script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
+    #             style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com 'unsafe-inline'; \
+    #             font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
+    #             img-src 'self' data: https://via.placeholder.com; \
+    #             frame-ancestors 'none'"
 
 # Rate limiting decorator
 def rate_limit(max_requests=20, window=60):

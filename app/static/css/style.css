@@ -1,335 +1,940 @@
-/* app/static/css/style.css */
+/* Base variables for consistent styling - UPDATED COLOR PALETTE */
+/* :root {
+    --primary-color: #AD7BE9;
+--secondary-color: #3E54AC;
+--accent-color: #BFDCE5;
+--background-color: #EEEEEE;
+--text-color: #4A4A4A;
+--light-color: #ffffff;
+--muted-color: #f8f9fa;
+
+--success-color: #28a745;
+--warning-color: #ffc107;
+--danger-color: #dc3545;
+--info-color: #17a2b8;
+
+--card-shadow: 0 4px 20px rgba(173, 123, 233, 0.1);
+--transition-speed: 0.3s;
+--font-primary: 'Cormorant Garamond',
+serif;
+--font-secondary: 'Montserrat',
+sans-serif;
+
+--primary-light: #C8B1ED;
+--primary-dark: #8A5FD1;
+--secondary-light: #6B7BC7;
+--secondary-dark: #2A3E82;
+}*/
 
 :root {
     --primary-color: #7a6fac;
-    /* Deep purple */
     --secondary-color: #9b91c1;
-    /* Medium purple */
-    --accent-color: #bcb5d7;
-    /* Light purple */
+    --accent-color: #f5f3fa;
     --text-color: #4A4A4A;
-    /* Dark grey for text */
     --light-color: #ffffff;
-    /* Pure white */
+    --muted-color: #f9f8fc;
+    --success-color: #66bb6a;
+    --warning-color: #ffa726;
+    --danger-color: #ef5350;
+    --card-shadow: 0 4px 20px rgba(122, 111, 172, 0.1);
+    --transition-speed: 0.3s;
     --font-primary: 'Cormorant Garamond', serif;
     --font-secondary: 'Montserrat', sans-serif;
+
+    --primary-light: #b4acce;
+    --primary-dark: #5d5381;
 }
 
+/* Global styles - works with Bootstrap */
 body {
     font-family: var(--font-secondary);
     color: var(--text-color);
-    background-color: var(--light-color);
     line-height: 1.6;
+    background-color: var(--background-color);
+    font-size: 16px;
 }
 
-/* Navigation */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+a {
+    color: var(--primary-color);
+    transition: color var(--transition-speed) ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+/* Bootstrap button overrides */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(173, 123, 233, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(173, 123, 233, 0.3) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    transform: translateY(-2px);
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+    background-color: var(--secondary-dark) !important;
+    border-color: var(--secondary-dark) !important;
+    transform: translateY(-2px);
+    color: white !important;
+}
+
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info {
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover,
+.btn-danger:hover,
+.btn-warning:hover,
+.btn-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar styling - extends Bootstrap */
 .navbar {
-    background-color: var(--light-color) !important;
-    padding: 1rem 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(173, 123, 233, 0.1);
+    padding: 1rem;
 }
 
 .navbar-brand {
     font-family: var(--font-primary);
     font-size: 1.8rem;
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
+    font-weight: 700;
 }
 
 .nav-link {
-    font-family: var(--font-secondary);
-    color: var(--primary-color) !important;
-    margin: 0 1rem;
-    transition: color 0.3s ease;
+    color: var(--secondary-color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color var(--transition-speed) ease;
 }
 
 .nav-link:hover {
-    color: var(--secondary-color) !important;
-}
-
-/* Headers */
-h1,
-h2,
-h3,
-h4,
-h5 {
-    font-family: var(--font-primary);
     color: var(--primary-color);
 }
 
-/* Buttons */
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 30px;
-    font-family: var(--font-secondary);
-    transition: all 0.3s ease;
+/* Language Selector */
+.language-switcher {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
 }
 
-.btn-primary:hover {
+.lang-btn {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    margin-left: 0.5rem;
+    color: var(--secondary-color);
+    background-color: white;
+    border: 1px solid var(--accent-color);
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all var(--transition-speed) ease;
+    font-weight: 600;
+}
+
+.lang-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.lang-btn:hover {
     background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-}
-
-.btn-outline-secondary {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-    border-radius: 30px;
-}
-
-.btn-outline-secondary:hover {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
     color: white;
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    text-decoration: none;
 }
 
-/* Cards */
+/* Alert Styles - extends Bootstrap with semantic colors */
+.alert {
+    border-radius: 15px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    border-left-width: 5px;
+    border-color: transparent;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left-color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left-color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left-color: var(--success-color);
+}
+
+.alert-info {
+    background-color: rgba(191, 220, 229, 0.3);
+    color: var(--secondary-color);
+    border-left-color: var(--accent-color);
+}
+
+.alert-heading {
+    color: inherit;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Cards - extends Bootstrap */
 .card {
     border: none;
     border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-    background-color: white;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    margin-bottom: 1.5rem;
 }
 
 .card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(173, 123, 233, 0.2);
 }
 
-/* Hero Section */
-.hero {
-    height: 80vh;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
+.card-header {
+    background-color: var(--primary-color);
     color: white;
-    background-color: var(--accent-color);
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+    border-bottom: none;
 }
 
-.hero-content {
-    position: relative;
-    z-index: 1;
+.card-header.bg-danger,
+.card-header.bg-success,
+.card-header.bg-warning,
+.card-header.bg-info {
+    font-weight: 600;
 }
 
-.hero h1 {
-    font-size: 4rem;
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
     color: var(--primary-color);
+    font-weight: 700;
     margin-bottom: 1rem;
 }
 
-/* Forms */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Form controls - extends Bootstrap */
 .form-control {
-    border: 1px solid var(--accent-color);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 0.75rem 1rem;
+    border: 1px solid var(--accent-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-control:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(122, 111, 172, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(173, 123, 233, 0.25);
 }
 
-/* Tables */
-.table {
-    background-color: white;
+.form-select {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    height: auto;
+    border: 1px solid var(--accent-color);
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(173, 123, 233, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Home page specific */
+.home-page {
+    background-color: var(--background-color);
+}
+
+.wedding-header {
+    text-align: center;
+    padding: 4rem 0;
+    background-color: var(--primary-color);
+    margin-bottom: 3rem;
+    position: relative;
+    box-shadow: 0 2px 15px rgba(173, 123, 233, 0.2);
+}
+
+.wedding-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.wedding-date {
+    font-size: 1.5rem;
+    color: white;
+}
+
+/* Card Grid for home page */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* Feature Card */
+.feature-card {
+    position: relative;
+    background-color: var(--light-color);
     border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 3px 15px rgba(173, 123, 233, 0.1);
+    border: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(173, 123, 233, 0.2);
+}
+
+.feature-card-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: block;
+    text-align: center;
+}
+
+.feature-card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-card-title {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+.feature-card-text {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Page Headers */
+.page-header {
+    background-color: var(--primary-color);
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 15px rgba(173, 123, 233, 0.2);
+}
+
+.page-header h1 {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.page-header .lead {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Section Titles */
+.section-title {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+/* Fullscreen Modal with Dropdown Effect */
+.fullscreen-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    transition: opacity 0.3s ease;
+}
+
+.fullscreen-modal.active {
+    opacity: 1;
+}
+
+.modal-content-wrapper {
+    background-color: var(--light-color);
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--accent-color);
+    position: sticky;
+    top: 0;
+    background-color: var(--light-color);
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+    background-color: rgba(173, 123, 233, 0.1);
+}
+
+/* Gallery styles */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.gallery-item {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+    transition: transform var(--transition-speed) ease;
+    height: 100%;
+}
+
+.gallery-item:hover {
+    transform: scale(1.03);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-caption {
+    padding: 1rem;
+    background-color: white;
+    text-align: center;
+}
+
+/* Gallery Modal */
+.gallery-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-modal .modal-content {
+    max-width: 80%;
+    max-height: 80vh;
+}
+
+.gallery-modal .modal-content img {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.gallery-modal .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    opacity: 0.8;
+}
+
+/* Schedule timeline */
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: var(--accent-color);
+    transform: translateX(-50%);
+}
+
+.event {
+    position: relative;
+    margin-bottom: 2rem;
+    width: 45%;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+}
+
+.event::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--accent-color);
+}
+
+.event:nth-child(odd) {
+    float: left;
+    clear: right;
+    padding-right: 30px;
+}
+
+.event:nth-child(even) {
+    float: right;
+    clear: left;
+    padding-left: 30px;
+}
+
+.event:nth-child(odd)::after {
+    right: -10px;
+}
+
+.event:nth-child(even)::after {
+    left: -10px;
+}
+
+.event h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* RSVP Form Styles */
+.form-section {
+    background-color: var(--light-color);
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
     overflow: hidden;
 }
 
-.table thead th {
+.form-section-header {
     background-color: var(--primary-color);
     color: white;
-    font-family: var(--font-primary);
-    border-bottom: none;
+    padding: 1rem 1.5rem;
+    border-radius: 15px 15px 0 0;
 }
 
-/* Admin Dashboard Specific */
-.admin-dashboard .card {
+.form-section-body {
     padding: 1.5rem;
+}
+
+.attendance-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin-bottom: 1.5rem;
-    border-left: 4px solid var(--primary-color);
 }
 
-.nav-tabs .nav-link {
-    color: var(--primary-color);
-    border: none;
-    padding: 1rem 2rem;
-    font-family: var(--font-secondary);
+.attendance-option {
+    flex: 1;
+    min-width: 180px;
+    position: relative;
 }
 
-.nav-tabs .nav-link.active {
-    color: var(--primary-color) !important;
-    border-bottom: 2px solid var(--primary-color);
-    background: transparent;
+.attendance-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
-/* Alerts */
-.alert {
+.attendance-option label {
+    display: block;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border: 2px solid var(--accent-color);
     border-radius: 15px;
-    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.alert-success {
-    background-color: var(--accent-color);
+.attendance-option input:checked+label {
+    border-color: var(--primary-color);
+    background-color: rgba(173, 123, 233, 0.1);
+}
+
+.attendance-option label i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
     color: var(--primary-color);
+    display: block;
+}
+
+.guest-card {
+    border: 1px solid var(--accent-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+/* Confirmation styles */
+.confirmation-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.confirmation-icon.success {
+    color: var(--success-color);
+}
+
+.confirmation-icon.warning {
+    color: var(--warning-color);
+}
+
+.confirmation-icon.danger {
+    color: var(--danger-color);
+}
+
+/* Hotel and activity cards */
+.hotel-card,
+.activity-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    margin-bottom: 2rem;
+    height: 100%;
+}
+
+.hotel-card:hover,
+.activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(173, 123, 233, 0.2);
+}
+
+.hotel-img,
+.activity-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.hotel-info,
+.activity-info {
+    padding: 1.5rem;
+}
+
+.hotel-name,
+.activity-name {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-family: var(--font-primary);
+    font-weight: 700;
+}
+
+.info-row {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.info-row i {
+    color: var(--secondary-color);
+    margin-right: 10px;
+    margin-top: 5px;
+    width: 20px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-right: 0.5rem;
+}
+
+/* List group customization */
+.list-group-item {
+    border-color: rgba(173, 123, 233, 0.1);
+    padding: 1rem 1.25rem;
+}
+
+.list-group-flush .list-group-item {
+    border-right-width: 0;
+    border-left-width: 0;
 }
 
 /* Footer */
 .footer {
     background-color: var(--primary-color);
     color: white;
-    padding: 2rem 0;
-    margin-top: 3rem;
+    padding: 3rem 0;
+    margin-top: 4rem;
 }
 
-/* Add to app/static/css/style.css */
-
-/* Language Switcher */
-.language-switcher {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    background-color: var(--light-color);
-    padding: 8px;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.lang-btn {
-    padding: 5px 10px;
-    text-decoration: none;
-    color: var(--primary-color);
-    border-radius: 15px;
-    transition: all 0.3s ease;
-}
-
-.lang-btn.active {
-    background-color: var(--primary-color);
+.footer h3 {
     color: white;
+    margin-bottom: 1rem;
 }
 
-/* Wedding Header */
-.wedding-header {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: var(--light-color);
+.footer p {
+    color: rgba(255, 255, 255, 0.8);
 }
 
-.wedding-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-.wedding-date {
-    color: var(--secondary-color);
-    font-family: var(--font-secondary);
-    font-size: 1.2rem;
-}
-
-/* Tiles Container */
-.tiles-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    background-color: #f5f5f5;
-}
-
-/* Individual Tiles */
-.tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+.footer a {
+    color: white;
     text-decoration: none;
-    background-color: var(--light-color);
-    transition: all 0.3s ease;
-    min-height: 200px;
 }
 
-.tile:nth-child(odd) {
-    background-color: var(--accent-color);
+.footer a:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: underline;
 }
 
-.tile:hover {
-    transform: translateX(10px);
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .wedding-header h1 {
+        font-size: 3rem;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
 }
 
-.tile i {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.tile h2 {
-    color: var(--primary-color);
-    margin: 10px 0;
-    font-size: 1.5rem;
-}
-
-.tile p {
-    color: var(--text-color);
-    margin: 0;
-    text-align: center;
-    font-size: 1rem;
-}
-
-/* Responsive Adjustments */
 @media (max-width: 768px) {
+    .wedding-header {
+        padding: 3rem 0;
+    }
+
+    .wedding-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .timeline::before {
+        left: 30px;
+    }
+
+    .event {
+        width: auto;
+        float: none !important;
+        margin-bottom: 1.5rem;
+    }
+
+    .event:nth-child(odd),
+    .event:nth-child(even) {
+        padding-left: 60px !important;
+        padding-right: 20px !important;
+        float: none;
+    }
+
+    .event:nth-child(odd)::after,
+    .event:nth-child(even)::after {
+        left: 20px !important;
+        right: auto !important;
+    }
+
+    .attendance-options {
+        flex-direction: column;
+    }
+
+    .attendance-option {
+        width: 100%;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .gallery-modal .modal-content {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 576px) {
     .wedding-header h1 {
         font-size: 2rem;
     }
 
-    .tile {
-        min-height: 180px;
+    .wedding-date {
+        font-size: 1.2rem;
     }
 
-    .tile i {
-        font-size: 2rem;
+    .page-header {
+        padding: 2rem 0;
     }
 
-    .tile h2 {
-        font-size: 1.3rem;
-    }
-}
-
-/* Remove default navbar styles for home page */
-body.home-page .navbar {
-    display: none;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
+    .hotel-img,
+    .activity-img {
+        height: 150px;
     }
 
-    .navbar-collapse {
-        background-color: var(--light-color);
+    .form-section-body {
         padding: 1rem;
-        border-radius: 15px;
-    }
-}
-
-/* Animations */
-.fade-in {
-    animation: fadeIn 1s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .d-flex {
+        flex-direction: column;
     }
 }

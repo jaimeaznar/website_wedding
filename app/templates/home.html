@@ -1,10 +1,7 @@
 {# app/templates/home.html #}
 {% extends "base.html" %}
 
-{% block extra_css %}
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-{% endblock %}
+{% block title %}Irene & Jaime's Wedding{% endblock %}
 
 {% block content %}
 <div class="language-switcher">
@@ -19,41 +16,224 @@
     <p class="wedding-date">6 Junio, 2026</p>
 </div>
 
-<div class="tiles-container">
-    <a href="{{ url_for('rsvp.landing') }}" class="tile">
-        <i class="fas fa-envelope"></i>
-        <h2>RSVP</h2>
-        <p>Confirm your attendance</p>
-    </a>
+<div class="container">
+    <div class="card-grid">
+        <div class="feature-card" data-target="rsvp">
+            <div class="feature-card-content">
+                <i class="fas fa-envelope feature-card-icon"></i>
+                <h3 class="feature-card-title">RSVP</h3>
+                <p class="feature-card-text">Confirm your attendance</p>
+                <a href="{{ url_for('rsvp.landing') }}"
+                    class="btn btn-primary mt-auto stretched-link">Confirm</a>
+            </div>
+        </div>
 
-    <a href="{{ url_for('main.schedule') }}" class="tile">
-        <i class="fas fa-clock"></i>
-        <h2>Schedule</h2>
-        <p>View the wedding day timeline</p>
-    </a>
+        <div class="feature-card" data-target="schedule">
+            <div class="feature-card-content">
+                <i class="fas fa-clock feature-card-icon"></i>
+                <h3 class="feature-card-title">Schedule</h3>
+                <p class="feature-card-text">View the wedding day timeline</p>
+                <button class="btn btn-outline-secondary mt-auto show-modal"
+                    data-target="schedule-modal">View Details</button>
+            </div>
+        </div>
 
-    <a href="{{ url_for('main.venue') }}" class="tile">
-        <i class="fas fa-map-marker-alt"></i>
-        <h2>Venue</h2>
-        <p>Location and directions</p>
-    </a>
+        <div class="feature-card" data-target="venue">
+            <div class="feature-card-content">
+                <i class="fas fa-map-marker-alt feature-card-icon"></i>
+                <h3 class="feature-card-title">Venue</h3>
+                <p class="feature-card-text">Location and directions</p>
+                <button class="btn btn-outline-secondary mt-auto show-modal"
+                    data-target="venue-modal">View Details</button>
+            </div>
+        </div>
 
-    <a href="{{ url_for('main.accommodation') }}" class="tile">
-        <i class="fas fa-bed"></i>
-        <h2>Accommodation</h2>
-        <p>Where to stay</p>
-    </a>
+        <div class="feature-card" data-target="accommodation">
+            <div class="feature-card-content">
+                <i class="fas fa-bed feature-card-icon"></i>
+                <h3 class="feature-card-title">Accommodation</h3>
+                <p class="feature-card-text">Where to stay</p>
+                <button class="btn btn-outline-secondary mt-auto show-modal"
+                    data-target="accommodation-modal">View Details</button>
+            </div>
+        </div>
 
-    <a href="{{ url_for('main.activities') }}" class="tile">
-        <i class="fas fa-umbrella-beach"></i>
-        <h2>Activities</h2>
-        <p>Things to do</p>
-    </a>
+        <div class="feature-card" data-target="activities">
+            <div class="feature-card-content">
+                <i class="fas fa-umbrella-beach feature-card-icon"></i>
+                <h3 class="feature-card-title">Activities</h3>
+                <p class="feature-card-text">Things to do</p>
+                <button class="btn btn-outline-secondary mt-auto show-modal"
+                    data-target="activities-modal">View Details</button>
+            </div>
+        </div>
 
-    <a href="{{ url_for('main.gallery') }}" class="tile">
-        <i class="fas fa-images"></i>
-        <h2>Gallery</h2>
-        <p>Our photos</p>
-    </a>
+        <div class="feature-card" data-target="gallery">
+            <div class="feature-card-content">
+                <i class="fas fa-images feature-card-icon"></i>
+                <h3 class="feature-card-title">Gallery</h3>
+                <p class="feature-card-text">Our photos</p>
+                <button class="btn btn-outline-secondary mt-auto show-modal"
+                    data-target="gallery-modal">View Details</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fullscreen Modals -->
+<!-- Schedule Modal -->
+<div id="schedule-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2>Wedding Schedule</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="timeline clearfix">
+                <div class="event">
+                    <h3>Ceremony</h3>
+                    <p><i class="far fa-clock me-2"></i> [Time]</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+                    <p>[Description]</p>
+                </div>
+                <div class="event">
+                    <h3>Reception</h3>
+                    <p><i class="far fa-clock me-2"></i> [Time]</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
+                    <p>[Description]</p>
+                </div>
+                <!-- Add more events as needed -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Venue Modal -->
+<div id="venue-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2>Wedding Venue</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{ url_for('static', filename='img/venue.jpg') }}"
+                        class="img-fluid rounded mb-3" alt="Venue">
+                </div>
+                <div class="col-md-6">
+                    <h3>[Venue Name]</h3>
+                    <p>[Venue description]</p>
+                    <h4>Location</h4>
+                    <p>[Address]</p>
+                    <h4>Getting There</h4>
+                    <p>[Directions]</p>
+                    <div id="map" style="height: 300px;"
+                        class="mb-3 bg-light rounded d-flex align-items-center justify-content-center">
+                        <p class="mb-0">Map will be embedded here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
+
+<!-- Gallery Modal -->
+<div id="gallery-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2>Our Gallery</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="" alt="Gallery Image 1">
+                    <div class="gallery-caption">
+                        <p>First time we met</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Gallery Image 2">
+                    <div class="gallery-caption">
+                        <p>Our engagement day</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Gallery Image 3">
+                    <div class="gallery-caption">
+                        <p>Traveling together</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Gallery Image 4">
+                    <div class="gallery-caption">
+                        <p>Special moments</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Gallery Image 5">
+                    <div class="gallery-caption">
+                        <p>Holiday memories</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Gallery Image 6">
+                    <div class="gallery-caption">
+                        <p>Celebrating together</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accommodation Modal -->
+<div id="accommodation-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2>Accommodation</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="hotel-card mb-4">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="" alt="Hotel 2"
+                                    class="hotel-img w-100 h-100">com/400x300"
+                                alt="Hotel 1" class="hotel-img w-100 h-100">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="hotel-info">
+                                    <h3 class="hotel-name">Hotel Name 1</h3>
+                                    <div class="info-row">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <div>123 Main Street, City, Country
+                                        </div>
+                                    </div>
+                                    <div class="info-row">
+                                        <i class="fas fa-phone"></i>
+                                        <div>+1 234 567 890</div>
+                                    </div>
+                                    <div class="info-row">
+                                        <i class="fas fa-globe"></i>
+                                        <div><a href="#"
+                                                target="_blank">www.hotel1.com</a>
+                                        </div>
+                                    </div>
+                                    <div class="info-row">
+                                        <i class="fas fa-tag"></i>
+                                        <div>Special rate: $150/night</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hotel-card">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="https://via.placeholder.
