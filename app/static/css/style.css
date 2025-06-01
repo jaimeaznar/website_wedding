@@ -1,35 +1,57 @@
-/* Base variables for consistent styling */
+/* Base variables for consistent styling - UPDATED COLOR PALETTE */
+/* :root {
+    --primary-color: #AD7BE9;
+--secondary-color: #3E54AC;
+--accent-color: #BFDCE5;
+--background-color: #EEEEEE;
+--text-color: #4A4A4A;
+--light-color: #ffffff;
+--muted-color: #f8f9fa;
+
+--success-color: #28a745;
+--warning-color: #ffc107;
+--danger-color: #dc3545;
+--info-color: #17a2b8;
+
+--card-shadow: 0 4px 20px rgba(173, 123, 233, 0.1);
+--transition-speed: 0.3s;
+--font-primary: 'Cormorant Garamond',
+serif;
+--font-secondary: 'Montserrat',
+sans-serif;
+
+--primary-light: #C8B1ED;
+--primary-dark: #8A5FD1;
+--secondary-light: #6B7BC7;
+--secondary-dark: #2A3E82;
+}*/
+
 :root {
     --primary-color: #7a6fac;
-    /* Purple/lilac */
     --secondary-color: #9b91c1;
-    /* Medium purple */
     --accent-color: #f5f3fa;
-    /* Very light purple - for backgrounds */
     --text-color: #4A4A4A;
-    /* Dark grey for text */
     --light-color: #ffffff;
-    /* White */
     --muted-color: #f9f8fc;
-    /* Off-white with slight purple tint */
     --success-color: #66bb6a;
-    /* Green for success messages */
     --warning-color: #ffa726;
-    /* Orange for warnings */
     --danger-color: #ef5350;
-    /* Red for errors */
     --card-shadow: 0 4px 20px rgba(122, 111, 172, 0.1);
-    /* Subtle purple shadow */
     --transition-speed: 0.3s;
     --font-primary: 'Cormorant Garamond', serif;
     --font-secondary: 'Montserrat', sans-serif;
+
+    --primary-light: #b4acce;
+    --primary-dark: #5d5381;
 }
 
-/* Global styles */
+/* Global styles - works with Bootstrap */
 body {
     font-family: var(--font-secondary);
     color: var(--text-color);
     line-height: 1.6;
+    background-color: var(--background-color);
+    font-size: 16px;
 }
 
 h1,
@@ -39,6 +61,7 @@ h4,
 h5,
 h6 {
     font-family: var(--font-primary);
+    font-weight: 700;
     color: var(--primary-color);
 }
 
@@ -52,41 +75,100 @@ a:hover {
     text-decoration: none;
 }
 
+/* Bootstrap button overrides */
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+    color: white;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(173, 123, 233, 0.2);
+    transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(173, 123, 233, 0.3) !important;
 }
 
 .btn-outline-primary {
     color: var(--primary-color);
     border-color: var(--primary-color);
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.btn-outline-primary:hover {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    transform: translateY(-2px);
+    color: white !important;
 }
 
-/* Navbar styling */
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+    background-color: var(--secondary-dark) !important;
+    border-color: var(--secondary-dark) !important;
+    transform: translateY(-2px);
+    color: white !important;
+}
+
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info {
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover,
+.btn-danger:hover,
+.btn-warning:hover,
+.btn-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar styling - extends Bootstrap */
 .navbar {
     background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(173, 123, 233, 0.1);
+    padding: 1rem;
 }
 
 .navbar-brand {
     font-family: var(--font-primary);
     font-size: 1.8rem;
     color: var(--primary-color);
+    font-weight: 700;
 }
 
 .nav-link {
-    color: var(--text-color);
-    font-weight: 400;
+    color: var(--secondary-color);
+    font-weight: 500;
     padding: 0.5rem 1rem;
     transition: color var(--transition-speed) ease;
 }
@@ -95,37 +177,7 @@ a:hover {
     color: var(--primary-color);
 }
 
-/* Footer styling */
-.footer {
-    background-color: var(--accent-color);
-    padding-top: 3rem;
-    padding-bottom: 2rem;
-    margin-top: 4rem;
-}
-
-/* Home page specific */
-.home-page {
-    background-color: var(--muted-color);
-}
-
-.wedding-header {
-    text-align: center;
-    padding: 4rem 0;
-    background-color: var(--accent-color);
-    margin-bottom: 3rem;
-}
-
-.wedding-header h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-}
-
-.wedding-date {
-    font-size: 1.5rem;
-    color: var(--secondary-color);
-}
-
+/* Language Selector */
 .language-switcher {
     position: absolute;
     top: 1rem;
@@ -135,20 +187,176 @@ a:hover {
 
 .lang-btn {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 1.2rem;
     margin-left: 0.5rem;
-    color: var(--text-color);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+    color: var(--secondary-color);
+    background-color: white;
+    border: 1px solid var(--accent-color);
+    border-radius: 30px;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     transition: all var(--transition-speed) ease;
+    font-weight: 600;
 }
 
 .lang-btn.active {
     background-color: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
+}
+
+.lang-btn:hover {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Alert Styles - extends Bootstrap with semantic colors */
+.alert {
+    border-radius: 15px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    border-left-width: 5px;
+    border-color: transparent;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left-color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left-color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left-color: var(--success-color);
+}
+
+.alert-info {
+    background-color: rgba(191, 220, 229, 0.3);
+    color: var(--secondary-color);
+    border-left-color: var(--accent-color);
+}
+
+.alert-heading {
+    color: inherit;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Cards - extends Bootstrap */
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(173, 123, 233, 0.2);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+    border-bottom: none;
+}
+
+.card-header.bg-danger,
+.card-header.bg-success,
+.card-header.bg-warning,
+.card-header.bg-info {
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Form controls - extends Bootstrap */
+.form-control {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--accent-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(173, 123, 233, 0.25);
+}
+
+.form-select {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    height: auto;
+    border: 1px solid var(--accent-color);
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(173, 123, 233, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Home page specific */
+.home-page {
+    background-color: var(--background-color);
+}
+
+.wedding-header {
+    text-align: center;
+    padding: 4rem 0;
+    background-color: var(--primary-color);
+    margin-bottom: 3rem;
+    position: relative;
+    box-shadow: 0 2px 15px rgba(173, 123, 233, 0.2);
+}
+
+.wedding-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.wedding-date {
+    font-size: 1.5rem;
+    color: white;
 }
 
 /* Card Grid for home page */
@@ -163,19 +371,20 @@ a:hover {
 .feature-card {
     position: relative;
     background-color: var(--light-color);
-    border-radius: 8px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    box-shadow: 0 3px 15px rgba(173, 123, 233, 0.1);
+    border: none;
     height: 100%;
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(122, 111, 172, 0.2);
+    box-shadow: 0 8px 25px rgba(173, 123, 233, 0.2);
 }
 
 .feature-card-icon {
@@ -200,12 +409,40 @@ a:hover {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
     text-align: center;
+    font-weight: 700;
 }
 
 .feature-card-text {
     color: var(--text-color);
     text-align: center;
     margin-bottom: 1.5rem;
+}
+
+/* Page Headers */
+.page-header {
+    background-color: var(--primary-color);
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 15px rgba(173, 123, 233, 0.2);
+}
+
+.page-header h1 {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.page-header .lead {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Section Titles */
+.section-title {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-color);
 }
 
 /* Fullscreen Modal with Dropdown Effect */
@@ -272,23 +509,7 @@ a:hover {
 }
 
 .modal-close:hover {
-    background-color: rgba(122, 111, 172, 0.1);
-}
-
-/* Page Header */
-.page-header {
-    background-color: var(--accent-color);
-    padding: 3rem 0;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-/* Section Titles */
-.section-title {
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--secondary-color);
+    background-color: rgba(173, 123, 233, 0.1);
 }
 
 /* Gallery styles */
@@ -300,7 +521,7 @@ a:hover {
 }
 
 .gallery-item {
-    border-radius: 8px;
+    border-radius: 15px;
     overflow: hidden;
     box-shadow: var(--card-shadow);
     cursor: pointer;
@@ -364,111 +585,6 @@ a:hover {
     opacity: 0.8;
 }
 
-.gallery-modal .modal-nav {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-    transform: translateY(-50%);
-    z-index: 1001;
-}
-
-.gallery-modal .modal-nav button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 30px;
-    cursor: pointer;
-    opacity: 0.8;
-}
-
-.gallery-modal .modal-caption {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-    color: white;
-    padding: 0 20px;
-}
-
-/* Accommodation styles */
-.hotel-card {
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-    margin-bottom: 2rem;
-    border: none;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-}
-
-.hotel-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(122, 111, 172, 0.2);
-}
-
-.hotel-img {
-    height: 200px;
-    object-fit: cover;
-}
-
-.hotel-info {
-    padding: 1.5rem;
-}
-
-.hotel-name {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-family: var(--font-primary);
-}
-
-.info-row {
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: flex-start;
-}
-
-.info-row i {
-    color: var(--secondary-color);
-    margin-right: 10px;
-    margin-top: 5px;
-    width: 20px;
-}
-
-/* Activities styles */
-.activity-card {
-    border: none;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-    margin-bottom: 2rem;
-    height: 100%;
-}
-
-.activity-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(122, 111, 172, 0.2);
-}
-
-.activity-img {
-    height: 200px;
-    object-fit: cover;
-}
-
-.activity-name {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-family: var(--font-primary);
-}
-
-.info-label {
-    font-weight: 600;
-    color: var(--text-color);
-    margin-right: 0.5rem;
-}
-
 /* Schedule timeline */
 .timeline {
     position: relative;
@@ -484,7 +600,7 @@ a:hover {
     bottom: 0;
     left: 50%;
     width: 2px;
-    background: var(--secondary-color);
+    background: var(--accent-color);
     transform: translateX(-50%);
 }
 
@@ -494,7 +610,7 @@ a:hover {
     width: 45%;
     background-color: white;
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: var(--card-shadow);
 }
 
@@ -540,47 +656,24 @@ a:hover {
     clear: both;
 }
 
-/* RSVP Confirmation styles */
-.confirmation-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-    display: block;
-}
-
-.confirmation-icon.success {
-    color: var(--success-color);
-}
-
-.confirmation-icon.warning {
-    color: var(--warning-color);
-}
-
-.confirmation-icon.danger {
-    color: var(--danger-color);
-}
-
-/* RSVP Form Styles - Moved from inline to external CSS */
+/* RSVP Form Styles */
 .form-section {
     background-color: var(--light-color);
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: var(--card-shadow);
     margin-bottom: 2rem;
+    overflow: hidden;
 }
 
 .form-section-header {
     background-color: var(--primary-color);
     color: white;
     padding: 1rem 1.5rem;
-    border-radius: 8px 8px 0 0;
+    border-radius: 15px 15px 0 0;
 }
 
 .form-section-body {
     padding: 1.5rem;
-}
-
-.form-check-input:checked {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
 }
 
 .attendance-options {
@@ -607,14 +700,14 @@ a:hover {
     padding: 1.5rem 1rem;
     text-align: center;
     border: 2px solid var(--accent-color);
-    border-radius: 8px;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .attendance-option input:checked+label {
     border-color: var(--primary-color);
-    background-color: rgba(84, 110, 122, 0.1);
+    background-color: rgba(173, 123, 233, 0.1);
 }
 
 .attendance-option label i {
@@ -626,9 +719,123 @@ a:hover {
 
 .guest-card {
     border: 1px solid var(--accent-color);
-    border-radius: 8px;
+    border-radius: 15px;
     padding: 1.5rem;
     margin-bottom: 1rem;
+    background-color: white;
+}
+
+/* Confirmation styles */
+.confirmation-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.confirmation-icon.success {
+    color: var(--success-color);
+}
+
+.confirmation-icon.warning {
+    color: var(--warning-color);
+}
+
+.confirmation-icon.danger {
+    color: var(--danger-color);
+}
+
+/* Hotel and activity cards */
+.hotel-card,
+.activity-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    margin-bottom: 2rem;
+    height: 100%;
+}
+
+.hotel-card:hover,
+.activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(173, 123, 233, 0.2);
+}
+
+.hotel-img,
+.activity-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.hotel-info,
+.activity-info {
+    padding: 1.5rem;
+}
+
+.hotel-name,
+.activity-name {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-family: var(--font-primary);
+    font-weight: 700;
+}
+
+.info-row {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.info-row i {
+    color: var(--secondary-color);
+    margin-right: 10px;
+    margin-top: 5px;
+    width: 20px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-right: 0.5rem;
+}
+
+/* List group customization */
+.list-group-item {
+    border-color: rgba(173, 123, 233, 0.1);
+    padding: 1rem 1.25rem;
+}
+
+.list-group-flush .list-group-item {
+    border-right-width: 0;
+    border-left-width: 0;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 3rem 0;
+    margin-top: 4rem;
+}
+
+.footer h3 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.footer p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: underline;
 }
 
 /* Responsive adjustments */
@@ -713,15 +920,21 @@ a:hover {
         padding: 2rem 0;
     }
 
-    .hotel-img {
-        height: 150px;
-    }
-
+    .hotel-img,
     .activity-img {
         height: 150px;
     }
 
     .form-section-body {
         padding: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .d-flex {
+        flex-direction: column;
     }
 }
