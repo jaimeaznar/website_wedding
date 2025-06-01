@@ -1,4 +1,4 @@
-{# app/templates/rsvp.html #}
+{# app/templates/rsvp.html - FIXED VERSION #}
 {% extends "base.html" %}
 {% block title %}RSVP{% endblock %}
 
@@ -167,7 +167,8 @@
                                 <input type="text" class="form-control"
                                     name="custom_allergen_main"
                                     value="{{ rsvp.custom_allergen if rsvp else '' }}"
-                                    {% if readonly %}readonly{% endif %}>
+                                    {% if readonly %}readonly{% endif %}
+                                    placeholder="Please specify any other dietary restrictions">
                             </div>
                         </div>
                     </div>
@@ -254,7 +255,8 @@
                                         <label class="form-label">Other Dietary
                                             Restrictions</label>
                                         <input type="text" class="form-control"
-                                            name="custom_allergen_plus_one">
+                                            name="custom_allergen_plus_one"
+                                            placeholder="Please specify any other dietary restrictions">
                                     </div>
                                 </div>
                             </div>
@@ -297,7 +299,8 @@
     <div class="mt-3">
         <label class="form-label">Other Dietary Restrictions</label>
         <input type="text" class="form-control"
-            name="custom_allergen_PLACEHOLDER">
+            name="custom_allergen_PLACEHOLDER"
+            placeholder="Please specify any other dietary restrictions">
     </div>
 </template>
 
@@ -305,8 +308,9 @@
 {% if rsvp and rsvp.allergens %}
 {% for allergen in rsvp.allergens %}
 <div class="d-none" data-allergen-guest="{{ allergen.guest_name }}"
-    data-allergen-id="{{ allergen.allergen_id }}"
-    data-custom-allergen="{{ allergen.custom_allergen }}"></div>
+    data-allergen-id="{{ allergen.allergen_id if allergen.allergen_id else 'None' }}"
+    data-custom-allergen="{{ allergen.custom_allergen if allergen.custom_allergen else 'None' }}">
+</div>
 {% endfor %}
 {% endif %}
 {% endblock %}
