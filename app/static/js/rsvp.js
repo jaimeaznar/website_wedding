@@ -1,4 +1,4 @@
-// app/static/js/rsvp.js
+// app/static/js/rsvp.js - IMPROVED VERSION
 document.addEventListener('DOMContentLoaded', function () {
     console.log("RSVP form script loaded");
 
@@ -56,8 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Get allergen template content and replace placeholder
         const template = document.getElementById('allergen-template');
-        const allergenContent = template.innerHTML
-            .replaceAll('PLACEHOLDER', `${type}_${index}`);
+        let allergenContent = '';
+
+        if (template) {
+            allergenContent = template.innerHTML
+                .replaceAll('PLACEHOLDER', `${type}_${index}`);
+        } else {
+            console.warn("Allergen template not found");
+        }
 
         card.innerHTML = `
             <h5 class="mb-3">${type === 'adult' ? 'Additional Adult' : 'Child'} #${index + 1}</h5>
@@ -117,34 +123,74 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Prefill allergens for additional guests based on existing data
+    // Improved allergen prefilling function
     function prefillAllergens() {
         console.log("Prefilling allergens if available");
         const existingAllergens = document.querySelectorAll('[data-allergen-guest]');
+        console.log("Found", existingAllergens.length, "existing allergen records");
+
         existingAllergens.forEach(element => {
             const guestName = element.getAttribute('data-allergen-guest');
             const allergenId = element.getAttribute('data-allergen-id');
             const customAllergen = element.getAttribute('data-custom-allergen');
 
+            console.log("Processing allergen for guest:", guestName, "allergenId:", allergenId, "custom:", customAllergen);
+
             // Find the corresponding checkbox or input in the form
-            if (guestName && allergenId) {
-                const checkbox = document.querySelector(`input[name="allergens_${guestName}"][value="${allergenId}"]`);
-                if (checkbox) {
-                    checkbox.checked = true;
+            if (guestName && allergenId && allergenId !== 'None') {
+                // Try different possible field name formats
+                const possibleNames = [
+                    `allergens_${guestName.toLowerCase().replace(' ', '_')}`,
+                    `allergens_main`,
+                    `allergens_plus_one`
+                ];
+
+                let found = false;
+                possibleNames.forEach(name => {
+                    if (!found) {
+                        const checkbox = document.querySelector(`input[name="${name}"][value="${allergenId}"]`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            console.log("Checked allergen checkbox:", name, allergenId);
+                            found = true;
+                        }
+                    }
+                });
+
+                if (!found) {
+                    console.warn("Could not find checkbox for allergen:", allergenId, "guest:", guestName);
                 }
             }
 
-            if (guestName && customAllergen) {
-                const input = document.querySelector(`input[name="custom_allergen_${guestName}"]`);
-                if (input) {
-                    input.value = customAllergen;
+            if (guestName && customAllergen && customAllergen !== 'None') {
+                // Try different possible field name formats for custom allergens
+                const possibleCustomNames = [
+                    `custom_allergen_${guestName.toLowerCase().replace(' ', '_')}`,
+                    `custom_allergen_main`,
+                    `custom_allergen_plus_one`
+                ];
+
+                let found = false;
+                possibleCustomNames.forEach(name => {
+                    if (!found) {
+                        const input = document.querySelector(`input[name="${name}"]`);
+                        if (input) {
+                            input.value = customAllergen;
+                            console.log("Set custom allergen:", name, customAllergen);
+                            found = true;
+                        }
+                    }
+                });
+
+                if (!found) {
+                    console.warn("Could not find custom allergen input for guest:", guestName);
                 }
             }
         });
     }
 
-    // Call prefill function
-    prefillAllergens();
+    // Call prefill function with a slight delay to ensure all elements are rendered
+    setTimeout(prefillAllergens, 100);
 
     // Validate transport and hotel inputs
     function validateTransportHotel() {
@@ -187,6 +233,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize validation
     if (transportCheckboxes.length > 0 && hotelInput) {
         validateTransportHotel();
+    }
+
+    // Form submission debugging
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            console.log("Form being submitted");
+
+            // Log all form data for debugging
+            const formData = new FormData(form);
+            console.log("Form data being submitted:");
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // Check for allergen data specifically
+            const allergenInputs = form.querySelectorAll('input[name^="allergens_"], input[name^="custom_allergen_"]');
+            console.log("Allergen inputs found:", allergenInputs.length);
+            allergenInputs.forEach(input => {
+                if (input.type === 'checkbox' && input.checked) {
+                    console.log(`Checked allergen: ${input.name} = ${input.value}`);
+                } else if (input.type === 'text' && input.value.trim()) {
+                    console.log(`Custom allergen: ${input.name} = ${input.value}`);
+                }
+            });
+        });
     }
 
     console.log("RSVP form script initialization complete");

@@ -1,4 +1,4 @@
-# app/routes/rsvp.py
+# app/routes/rsvp.py - FIXED VERSION
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, abort
 from app import db
 from app.models.guest import Guest
@@ -20,31 +20,49 @@ def display_warning(message, admin_phone):
     return True
 
 def process_guest_allergens(rsvp_id, guest_name, form, prefix):
-    """Process allergens for a specific guest."""
+    """Process allergens for a specific guest - FIXED VERSION."""
     # Check if rsvp_id is None
     if rsvp_id is None:
         logger.warning(f"Cannot process allergens: rsvp_id is None for {guest_name}")
         return
         
+    logger.debug(f"Processing allergens for guest: {guest_name}, prefix: {prefix}, rsvp_id: {rsvp_id}")
+    
     # First, delete any existing allergens for this guest
+    existing_count = GuestAllergen.query.filter_by(rsvp_id=rsvp_id, guest_name=guest_name).count()
+    logger.debug(f"Deleting {existing_count} existing allergens for {guest_name}")
     GuestAllergen.query.filter_by(rsvp_id=rsvp_id, guest_name=guest_name).delete()
     
     # Process standard allergens
-    allergen_ids = form.getlist(f'allergens_{prefix}')
+    allergen_field_name = f'allergens_{prefix}'
+    allergen_ids = form.getlist(allergen_field_name)
+    logger.debug(f"Found allergen IDs for {allergen_field_name}: {allergen_ids}")
+    
+    allergens_added = 0
     for allergen_id in allergen_ids:
         try:
             allergen_id = int(allergen_id)
-            guest_allergen = GuestAllergen(
-                rsvp_id=rsvp_id,
-                guest_name=guest_name,
-                allergen_id=allergen_id
-            )
-            db.session.add(guest_allergen)
+            # Verify the allergen exists
+            allergen = Allergen.query.get(allergen_id)
+            if allergen:
+                guest_allergen = GuestAllergen(
+                    rsvp_id=rsvp_id,
+                    guest_name=guest_name,
+                    allergen_id=allergen_id
+                )
+                db.session.add(guest_allergen)
+                allergens_added += 1
+                logger.debug(f"Added allergen {allergen.name} for {guest_name}")
+            else:
+                logger.warning(f"Allergen with ID {allergen_id} not found")
         except (ValueError, TypeError) as e:
             logger.warning(f"Invalid allergen ID for {guest_name}: {allergen_id}, {e}")
     
     # Process custom allergen
-    custom_allergen = form.get(f'custom_allergen_{prefix}', '').strip()
+    custom_field_name = f'custom_allergen_{prefix}'
+    custom_allergen = form.get(custom_field_name, '').strip()
+    logger.debug(f"Custom allergen for {custom_field_name}: '{custom_allergen}'")
+    
     if custom_allergen:
         guest_allergen = GuestAllergen(
             rsvp_id=rsvp_id,
@@ -52,6 +70,10 @@ def process_guest_allergens(rsvp_id, guest_name, form, prefix):
             custom_allergen=custom_allergen
         )
         db.session.add(guest_allergen)
+        allergens_added += 1
+        logger.debug(f"Added custom allergen '{custom_allergen}' for {guest_name}")
+    
+    logger.info(f"Total allergens added for {guest_name}: {allergens_added}")
 
 def is_rsvp_deadline_passed():
     """Check if the RSVP deadline has passed"""
@@ -91,6 +113,8 @@ def rsvp_form(token):
     logger.info(f"Guest found: {guest.name} (ID: {guest.id})")
     
     allergens = Allergen.query.all()
+    logger.debug(f"Available allergens: {[a.name for a in allergens]}")
+    
     rsvp = RSVP.query.filter_by(guest_id=guest.id).first()
     
     if rsvp:
@@ -145,6 +169,7 @@ def rsvp_form(token):
         
         # Log form data for debugging
         logger.debug(f"Form data keys: {list(request.form.keys())}")
+        logger.debug(f"Form data: {dict(request.form)}")
         
         try:
             # Create or get existing RSVP
@@ -154,8 +179,9 @@ def rsvp_form(token):
                 db.session.add(rsvp)
                 # Flush to generate an ID for the new RSVP
                 db.session.flush()
+                logger.debug(f"New RSVP created with ID: {rsvp.id}")
             else:
-                logger.info("Updating existing RSVP")
+                logger.info(f"Updating existing RSVP with ID: {rsvp.id}")
             
             # Basic info - handle both 'yes' and 'no' responses
             is_attending = request.form.get('is_attending') == 'yes'
@@ -163,46 +189,32 @@ def rsvp_form(token):
             rsvp.is_attending = is_attending
             
             # Make sure rsvp has an ID before processing allergens
-            db.session.flush()
+            if rsvp.id is None:
+                db.session.flush()
+                logger.debug(f"RSVP ID after flush: {rsvp.id}")
             
-            # Process allergens for the main guest and additional guests
-            if is_attending:
-                # Process main guest allergens
-                process_guest_allergens(rsvp.id, guest.name, request.form, 'main')
-                
-                # Process plus one allergens if applicable
-                if guest.has_plus_one and not guest.is_family:
-                    plus_one_name = request.form.get('plus_one_name', '').strip()
-                    if plus_one_name:
-                        process_guest_allergens(rsvp.id, plus_one_name, request.form, 'plus_one')
-                
-                # For family guests, process additional adults and children
-                if guest.is_family:
-                    adults_count = int(request.form.get('adults_count', 0))
-                    children_count = int(request.form.get('children_count', 0))
-                    
-                    # Process adults allergens
-                    for i in range(adults_count):
-                        name = request.form.get(f'adult_name_{i}', '').strip()
-                        if name:
-                            process_guest_allergens(rsvp.id, name, request.form, f'adult_{i}')
-                    
-                    # Process children allergens
-                    for i in range(children_count):
-                        name = request.form.get(f'child_name_{i}', '').strip()
-                        if name:
-                            process_guest_allergens(rsvp.id, name, request.form, f'child_{i}')
+            # Clear existing allergens and additional guests first
+            if rsvp.id:
+                logger.debug("Clearing existing allergens and additional guests")
+                GuestAllergen.query.filter_by(rsvp_id=rsvp.id).delete()
+                AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
             
-            # Process other fields if attending
+            # Process allergens and additional info only if attending
             if is_attending:
                 logger.info("Processing attendance details")
-                rsvp.hotel_name = request.form.get('hotel_name', '')
+                
+                # Basic attendance details
+                rsvp.hotel_name = request.form.get('hotel_name', '').strip() or None
                 rsvp.transport_to_church = 'transport_to_church' in request.form
                 rsvp.transport_to_reception = 'transport_to_reception' in request.form
                 rsvp.transport_to_hotel = 'transport_to_hotel' in request.form
                 
                 logger.debug(f"Hotel: {rsvp.hotel_name}")
                 logger.debug(f"Transport - Church: {rsvp.transport_to_church}, Reception: {rsvp.transport_to_reception}, Hotel: {rsvp.transport_to_hotel}")
+                
+                # Process main guest allergens
+                logger.debug("Processing main guest allergens")
+                process_guest_allergens(rsvp.id, guest.name, request.form, 'main')
                 
                 # Process plus one if guest has plus one but is not family
                 if guest.has_plus_one and not guest.is_family:
@@ -214,22 +226,21 @@ def rsvp_form(token):
                         guest.plus_one_used = True
                         
                         # Create an additional guest entry for the plus one
-                        existing_plus_one = AdditionalGuest.query.filter_by(
+                        plus_one = AdditionalGuest(
                             rsvp_id=rsvp.id,
-                            name=plus_one_name
-                        ).first()
+                            name=plus_one_name,
+                            is_child=False
+                        )
+                        db.session.add(plus_one)
+                        logger.debug(f"Added plus one as additional guest: {plus_one_name}")
                         
-                        if not existing_plus_one:
-                            plus_one = AdditionalGuest(
-                                rsvp_id=rsvp.id,
-                                name=plus_one_name,
-                                is_child=False
-                            )
-                            db.session.add(plus_one)
-                            logger.debug(f"Added plus one as additional guest: {plus_one_name}")
+                        # Process plus one allergens
+                        process_guest_allergens(rsvp.id, plus_one_name, request.form, 'plus_one')
                 
-                # Process adults count and children count for family guests
+                # Process family guests
                 if guest.is_family:
+                    logger.info("Processing family additional guests")
+                    
                     try:
                         rsvp.adults_count = int(request.form.get('adults_count', 0))
                         logger.debug(f"Adults count: {rsvp.adults_count}")
@@ -244,14 +255,6 @@ def rsvp_form(token):
                         logger.warning(f"Error parsing children_count: {e}")
                         rsvp.children_count = 0
                     
-                    # Handle family additional guests
-                    logger.info("Processing family additional guests")
-                    # Clear existing additional guests
-                    existing_guests = AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).all()
-                    for g in existing_guests:
-                        logger.debug(f"Removing existing additional guest: {g.name}")
-                        db.session.delete(g)
-                    
                     # Process adults
                     for i in range(rsvp.adults_count):
                         name_key = f'adult_name_{i}'
@@ -264,6 +267,9 @@ def rsvp_form(token):
                                 is_child=False
                             )
                             db.session.add(guest_obj)
+                            
+                            # Process allergens for this adult
+                            process_guest_allergens(rsvp.id, name, request.form, f'adult_{i}')
                         else:
                             logger.warning(f"Missing name for adult #{i}")
                     
@@ -279,6 +285,9 @@ def rsvp_form(token):
                                 is_child=True
                             )
                             db.session.add(guest_obj)
+                            
+                            # Process allergens for this child
+                            process_guest_allergens(rsvp.id, name, request.form, f'child_{i}')
                         else:
                             logger.warning(f"Missing name for child #{i}")
             else:
@@ -290,12 +299,6 @@ def rsvp_form(token):
                 rsvp.transport_to_hotel = False
                 rsvp.adults_count = 0
                 rsvp.children_count = 0
-                
-                # Clear any existing additional guests
-                AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
-                
-                # Clear any existing allergens
-                GuestAllergen.query.filter_by(rsvp_id=rsvp.id).delete()
             
             # Update last_updated timestamp
             rsvp.last_updated = datetime.now()
@@ -303,6 +306,17 @@ def rsvp_form(token):
             # Flush to detect errors early
             logger.debug("Flushing session to detect errors")
             db.session.flush()
+            
+            # Verify allergens were added correctly
+            if is_attending:
+                allergen_count = GuestAllergen.query.filter_by(rsvp_id=rsvp.id).count()
+                logger.info(f"Total allergens saved for RSVP {rsvp.id}: {allergen_count}")
+                
+                # Log detailed allergen info for debugging
+                saved_allergens = GuestAllergen.query.filter_by(rsvp_id=rsvp.id).all()
+                for sa in saved_allergens:
+                    allergen_name = sa.allergen.name if sa.allergen else "Custom"
+                    logger.debug(f"Saved allergen for {sa.guest_name}: {allergen_name} / {sa.custom_allergen}")
             
             # Then commit
             logger.info("Committing changes to database")

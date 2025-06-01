@@ -1,4 +1,4 @@
-{# app/templates/admin/dashboard.html #}
+{# app/templates/admin/dashboard.html - FIXED VERSION #}
 {% extends "base.html" %}
 
 {% block content %}
@@ -300,10 +300,11 @@
                                 -
                                 {% else %}
                                 {% if rsvp.is_attending %}
-                                {% set allergens =
-                                GuestAllergen.query.filter_by(rsvp_id=rsvp.id).all()
+                                {# FIXED: Get allergens directly from the
+                                relationship #}
+                                {% set all_allergens = rsvp.allergens %}
+                                {% if all_allergens and all_allergens|length > 0
                                 %}
-                                {% if allergens and allergens|length > 0 %}
                                 <div class="accordion"
                                     id="allergenAccordion{{ rsvp.id }}">
                                     <div class="accordion-item">
@@ -314,25 +315,51 @@
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#allergenCollapse{{ rsvp.id }}">
                                                 View Dietary Restrictions ({{
-                                                allergens|length }})
+                                                all_allergens|length }})
                                             </button>
                                         </h2>
                                         <div id="allergenCollapse{{ rsvp.id }}"
                                             class="accordion-collapse collapse">
                                             <div class="accordion-body">
-                                                {% for allergen in allergens %}
-                                                <div class="mb-2">
-                                                    <strong>{{
-                                                        allergen.guest_name
+                                                {# Group allergens by guest name
+                                                #}
+                                                {% set guest_allergens = {} %}
+                                                {% for allergen in all_allergens
+                                                %}
+                                                {% if
+                                                guest_allergens.update({allergen.guest_name:
+                                                guest_allergens.get(allergen.guest_name,
+                                                []) + [allergen]}) %}{% endif %}
+                                                {% endfor %}
+
+                                                {% for guest_name, allergen_list
+                                                in guest_allergens.items() %}
+                                                <div class="mb-3">
+                                                    <strong>{{ guest_name
                                                         }}:</strong>
-                                                    {% if allergen.allergen %}
-                                                    {{ allergen.allergen.name }}
-                                                    {% endif %}
-                                                    {% if
-                                                    allergen.custom_allergen %}
-                                                    {{ allergen.custom_allergen
-                                                    }}
-                                                    {% endif %}
+                                                    <ul
+                                                        class="list-unstyled ms-3">
+                                                        {% for allergen in
+                                                        allergen_list %}
+                                                        <li>
+                                                            {% if
+                                                            allergen.allergen %}
+                                                            <span
+                                                                class="badge bg-warning text-dark me-1">{{
+                                                                allergen.allergen.name
+                                                                }}</span>
+                                                            {% endif %}
+                                                            {% if
+                                                            allergen.custom_allergen
+                                                            %}
+                                                            <span
+                                                                class="badge bg-info me-1">{{
+                                                                allergen.custom_allergen
+                                                                }}</span>
+                                                            {% endif %}
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
                                                 </div>
                                                 {% endfor %}
                                             </div>
