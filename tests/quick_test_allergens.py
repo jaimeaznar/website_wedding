@@ -127,8 +127,8 @@ def test_allergen_functionality():
                     print(f"   RSVP {test_rsvp.id} has no allergen records")
         
         print(f"\n🎉 Test completed successfully!")
-        print(f"📍 Test RSVP URL: http://localhost:5000/rsvp/{guest.token}")
-        print(f"🔗 Admin dashboard: http://localhost:5000/admin/dashboard")
+        print(f"📍 Test RSVP URL: http://localhost:5001/rsvp/{guest.token}")
+        print(f"🔗 Admin dashboard: http://localhost:5001/admin/dashboard")
         
         return True
 

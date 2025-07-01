@@ -22,7 +22,7 @@ def create_app(config_class=Config):
     CORS(app, 
          resources={
     r"/*": {
-        "origins": ["http://localhost:5000", "http://127.0.0.1:5000"],  # Specify your frontend URL(s)
+        "origins": ["http://localhost:5001", "http://127.0.0.1:5001"],  # Specify your frontend URL(s)
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
     }

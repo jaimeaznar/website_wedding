@@ -1,43 +1,19 @@
 // Save this as app/static/js/main.js
 document.addEventListener('DOMContentLoaded', function () {
     // Modal functionality for home page cards
-    const cardButtons = document.querySelectorAll('.show-modal');
     const modals = document.querySelectorAll('.fullscreen-modal');
     const closeButtons = document.querySelectorAll('.modal-close');
 
-    // Open modal with dropdown effect
-    cardButtons.forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Get the target modal ID
-            const targetId = this.getAttribute('data-target');
-            const modal = document.getElementById(targetId);
-
-            if (modal) {
-                // Get the content wrapper
-                const contentWrapper = modal.querySelector('.modal-content-wrapper');
-
-                // First set the initial state of the content wrapper
-                contentWrapper.style.transform = 'translateY(-100%)';
-                modal.style.display = 'flex';
-
-                // Force reflow to ensure the initial state is applied
-                void modal.offsetWidth;
-
-                // Then animate the dropdown
-                modal.classList.add('active');
-                contentWrapper.style.transform = 'translateY(0)';
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
-            }
-        });
-    });
-
-    // Add click events to all feature cards for opening their modals
-    document.querySelectorAll('.feature-card').forEach(card => {
-        // Exclude cards that already have a direct link or button
-        if (!card.querySelector('.show-modal') && !card.querySelector('a.stretched-link')) {
-            card.addEventListener('click', function () {
+    // Handle clickable cards
+    document.querySelectorAll('.clickable-card').forEach(card => {
+        card.addEventListener('click', function () {
+            // Check if this card has a data-href attribute (for RSVP card)
+            const href = this.getAttribute('data-href');
+            if (href) {
+                // Navigate to the URL
+                window.location.href = href;
+            } else {
+                // Open the modal
                 const targetId = this.getAttribute('data-target') + '-modal';
                 const modal = document.getElementById(targetId);
 
@@ -50,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     contentWrapper.style.transform = 'translateY(0)';
                     document.body.style.overflow = 'hidden';
                 }
-            });
-        }
+            }
+        });
     });
 
     // Close buttons
