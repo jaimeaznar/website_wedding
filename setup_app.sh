@@ -101,7 +101,7 @@ fi
 section "Setup complete"
 echo -e "Your wedding website is now set up!"
 echo -e "To run the application, use: ${GREEN}python run.py${NC}"
-echo -e "Access the website at: ${GREEN}http://localhost:5000${NC}"
-echo -e "Admin panel available at: ${GREEN}http://localhost:5000/admin${NC}"
+echo -e "Access the website at: ${GREEN}http://localhost:5001${NC}"
+echo -e "Admin panel available at: ${GREEN}http://localhost:5001/admin${NC}"
 
 echo -e "\nEnjoy your wedding website! 💍 👰 🤵"

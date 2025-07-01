@@ -73,7 +73,7 @@ def seed_test_guest():
     db.session.commit()
     
     print(f"Created test guest: {test_guest.name}")
-    print(f"RSVP URL: http://localhost:5000/rsvp/{test_guest.token}")
+    print(f"RSVP URL: http://localhost:5001/rsvp/{test_guest.token}")
     
     return test_guest
 
@@ -120,8 +120,8 @@ def main():
         print("\nDatabase seeding complete!")
         print("\nNext steps:")
         print("1. Run the application: python run.py")
-        print("2. Visit the admin panel: http://localhost:5000/admin/login")
-        print("3. Test RSVP form: http://localhost:5000/rsvp/{test_guest.token}")
+        print("2. Visit the admin panel: http://localhost:5001/admin/login")
+        print("3. Test RSVP form: http://localhost:5001/rsvp/{test_guest.token}")
         print("4. Admin password: 'your-secure-password' (change this in production!)")
 
 if __name__ == '__main__':

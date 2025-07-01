@@ -26,6 +26,7 @@ sans-serif;
 --secondary-dark: #2A3E82;
 }*/
 
+/* Base variables for consistent styling - UPDATED COLOR PALETTE */
 :root {
     --primary-color: #7a6fac;
     --secondary-color: #9b91c1;
@@ -388,7 +389,7 @@ a:hover {
 }
 
 .feature-card-icon {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 1rem;
     display: block;
@@ -396,26 +397,37 @@ a:hover {
 }
 
 .feature-card-content {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .feature-card-title {
     font-family: var(--font-primary);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: var(--primary-color);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     text-align: center;
     font-weight: 700;
 }
 
-.feature-card-text {
-    color: var(--text-color);
-    text-align: center;
-    margin-bottom: 1.5rem;
+/* Clickable card styles */
+.clickable-card {
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+}
+
+.clickable-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(122, 111, 172, 0.3);
+}
+
+.clickable-card:active {
+    transform: translateY(-4px);
+    transition: transform 0.1s ease;
 }
 
 /* Page Headers */
