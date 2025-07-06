@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ g.lang_code }}">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -30,48 +30,8 @@
 <body class="{% if request.endpoint == 'main.index' %}home-page{% endif %}">
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Our
-                Wedding</a>
-            <!-- <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button> -->
-            <!-- <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ url_for('main.schedule') }}">Schedule</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ url_for('main.venue') }}">Venue</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ url_for('main.accommodation') }}">Accommodation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ url_for('main.activities') }}">Activities</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ url_for('main.gallery') }}">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ url_for('rsvp.landing') }}">RSVP</a>
-                    </li>
-                </ul>
-                <div class="ms-3">
-                    <a href="?lang=en"
-                        class="btn btn-sm btn-outline-secondary">EN</a>
-                    <a href="?lang=es"
-                        class="btn btn-sm btn-outline-secondary">ES</a>
-                </div>
-            </div> -->
+            <a class="navbar-brand" href="{{ url_for('main.index') }}"
+                data-translate="our.wedding">Our Wedding</a>
         </div>
     </nav>
 
@@ -99,10 +59,12 @@
             <div class="row">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h3 class="mb-3">Irene & Jaime</h3>
-                    <p class="mb-0">We can't wait to celebrate with you!</p>
+                    <p class="mb-0" data-translate="footer.message">We can't
+                        wait to celebrate with you!</p>
                 </div>
                 <div class="col-md-6">
-                    <h3 class="mb-3">Contact</h3>
+                    <h3 class="mb-3" data-translate="footer.contact">Contact
+                    </h3>
                     <p><i class="fas fa-envelope me-2"></i> {{
                         config.ADMIN_EMAIL|default('contact@ireneandjaime.com')
                         }}</p>
@@ -112,7 +74,8 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2026 Irene & Jaime Wedding</p>
+                    <p class="mb-0" data-translate="footer.copyright">&copy;
+                        2026 Irene & Jaime Wedding</p>
                 </div>
             </div>
         </div>
@@ -121,6 +84,10 @@
     <!-- Bootstrap JS -->
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Translation System - Load before other scripts -->
+    <script
+        src="{{ url_for('static', filename='js/translations.js') }}"></script>
 
     <!-- Main JS -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
@@ -135,7 +102,7 @@
                     setTimeout(function () {
                         alert.remove();
                     }, 150);
-                }, 5001);
+                }, 5000);
             });
         });
     </script>

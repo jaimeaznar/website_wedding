@@ -5,15 +5,13 @@
 
 {% block content %}
 <div class="language-switcher">
-    <a href="?lang=en"
-        class="lang-btn {% if g.lang_code == 'en' %}active{% endif %}">EN</a>
-    <a href="?lang=es"
-        class="lang-btn {% if g.lang_code == 'es' %}active{% endif %}">ES</a>
+    <a href="#" class="lang-btn" data-lang="en">EN</a>
+    <a href="#" class="lang-btn" data-lang="es">ES</a>
 </div>
 
 <div class="wedding-header">
     <h1>Irene & Jaime</h1>
-    <p class="wedding-date">6 Junio, 2026</p>
+    <p class="wedding-date" data-translate="wedding.date">June 6, 2026</p>
 </div>
 
 <div class="container">
@@ -22,42 +20,48 @@
             data-href="{{ url_for('rsvp.landing') }}">
             <div class="feature-card-content">
                 <i class="fas fa-envelope feature-card-icon"></i>
-                <h3 class="feature-card-title">RSVP</h3>
+                <h3 class="feature-card-title" data-translate="card.rsvp">RSVP
+                </h3>
             </div>
         </div>
 
         <div class="feature-card clickable-card" data-target="schedule">
             <div class="feature-card-content">
                 <i class="fas fa-clock feature-card-icon"></i>
-                <h3 class="feature-card-title">Schedule</h3>
+                <h3 class="feature-card-title" data-translate="card.schedule">
+                    Schedule</h3>
             </div>
         </div>
 
         <div class="feature-card clickable-card" data-target="venue">
             <div class="feature-card-content">
                 <i class="fas fa-map-marker-alt feature-card-icon"></i>
-                <h3 class="feature-card-title">Venue</h3>
+                <h3 class="feature-card-title" data-translate="card.venue">Venue
+                </h3>
             </div>
         </div>
 
         <div class="feature-card clickable-card" data-target="accommodation">
             <div class="feature-card-content">
                 <i class="fas fa-bed feature-card-icon"></i>
-                <h3 class="feature-card-title">Accommodation</h3>
+                <h3 class="feature-card-title"
+                    data-translate="card.accommodation">Accommodation</h3>
             </div>
         </div>
 
         <div class="feature-card clickable-card" data-target="activities">
             <div class="feature-card-content">
                 <i class="fas fa-umbrella-beach feature-card-icon"></i>
-                <h3 class="feature-card-title">Activities</h3>
+                <h3 class="feature-card-title" data-translate="card.activities">
+                    Activities</h3>
             </div>
         </div>
 
         <div class="feature-card clickable-card" data-target="gallery">
             <div class="feature-card-content">
                 <i class="fas fa-images feature-card-icon"></i>
-                <h3 class="feature-card-title">Gallery</h3>
+                <h3 class="feature-card-title" data-translate="card.gallery">
+                    Gallery</h3>
             </div>
         </div>
     </div>
@@ -68,19 +72,19 @@
 <div id="schedule-modal" class="fullscreen-modal">
     <div class="modal-content-wrapper">
         <div class="modal-header">
-            <h2>Wedding Schedule</h2>
+            <h2 data-translate="schedule.title">Wedding Schedule</h2>
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
             <div class="timeline clearfix">
                 <div class="event">
-                    <h3>Ceremony</h3>
+                    <h3 data-translate="schedule.ceremony">Ceremony</h3>
                     <p><i class="far fa-clock me-2"></i> [Time]</p>
                     <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
                     <p>[Description]</p>
                 </div>
                 <div class="event">
-                    <h3>Reception</h3>
+                    <h3 data-translate="schedule.reception">Reception</h3>
                     <p><i class="far fa-clock me-2"></i> [Time]</p>
                     <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
                     <p>[Description]</p>
@@ -95,7 +99,7 @@
 <div id="venue-modal" class="fullscreen-modal">
     <div class="modal-content-wrapper">
         <div class="modal-header">
-            <h2>Wedding Venue</h2>
+            <h2 data-translate="venue.title">Wedding Venue</h2>
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
@@ -107,9 +111,9 @@
                 <div class="col-md-6">
                     <h3>[Venue Name]</h3>
                     <p>[Venue description]</p>
-                    <h4>Location</h4>
+                    <h4 data-translate="venue.location">Location</h4>
                     <p>[Address]</p>
-                    <h4>Getting There</h4>
+                    <h4 data-translate="venue.getting.there">Getting There</h4>
                     <p>[Directions]</p>
                     <div id="map" style="height: 300px;"
                         class="mb-3 bg-light rounded d-flex align-items-center justify-content-center">
@@ -125,7 +129,7 @@
 <div id="gallery-modal" class="fullscreen-modal">
     <div class="modal-content-wrapper">
         <div class="modal-header">
-            <h2>Our Gallery</h2>
+            <h2 data-translate="gallery.title">Our Gallery</h2>
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
@@ -133,37 +137,41 @@
                 <div class="gallery-item">
                     <img src="" alt="Gallery Image 1">
                     <div class="gallery-caption">
-                        <p>First time we met</p>
+                        <p data-translate="gallery.first.meet">First time we met
+                        </p>
                     </div>
                 </div>
                 <div class="gallery-item">
                     <img src="" alt="Gallery Image 2">
                     <div class="gallery-caption">
-                        <p>Our engagement day</p>
+                        <p data-translate="gallery.engagement">Our engagement
+                            day</p>
                     </div>
                 </div>
                 <div class="gallery-item">
                     <img src="" alt="Gallery Image 3">
                     <div class="gallery-caption">
-                        <p>Traveling together</p>
+                        <p data-translate="gallery.traveling">Traveling together
+                        </p>
                     </div>
                 </div>
                 <div class="gallery-item">
                     <img src="" alt="Gallery Image 4">
                     <div class="gallery-caption">
-                        <p>Special moments</p>
+                        <p data-translate="gallery.special">Special moments</p>
                     </div>
                 </div>
                 <div class="gallery-item">
                     <img src="" alt="Gallery Image 5">
                     <div class="gallery-caption">
-                        <p>Holiday memories</p>
+                        <p data-translate="gallery.holiday">Holiday memories</p>
                     </div>
                 </div>
                 <div class="gallery-item">
                     <img src="" alt="Gallery Image 6">
                     <div class="gallery-caption">
-                        <p>Celebrating together</p>
+                        <p data-translate="gallery.celebrating">Celebrating
+                            together</p>
                     </div>
                 </div>
             </div>
@@ -175,7 +183,7 @@
 <div id="accommodation-modal" class="fullscreen-modal">
     <div class="modal-content-wrapper">
         <div class="modal-header">
-            <h2>Accommodation</h2>
+            <h2 data-translate="accommodation.title">Accommodation</h2>
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
