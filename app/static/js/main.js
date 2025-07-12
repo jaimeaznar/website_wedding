@@ -1,5 +1,10 @@
 // Save this as app/static/js/main.js
 document.addEventListener('DOMContentLoaded', function () {
+    // Listen for language changes to update dynamic content
+    document.addEventListener('languageChanged', function (e) {
+        // Any dynamic content that needs updating can be handled here
+        console.log('Language changed to:', e.detail.language);
+    });
     // Modal functionality for home page cards
     const modals = document.querySelectorAll('.fullscreen-modal');
     const closeButtons = document.querySelectorAll('.modal-close');

@@ -1,14 +1,10 @@
 # app/routes/main.py
-from flask import Blueprint, render_template, request, g
+from flask import Blueprint, render_template
 from app import db
 import logging
 
 logger = logging.getLogger(__name__)
 bp = Blueprint('main', __name__)
-
-@bp.before_request
-def before_request():
-    g.lang_code = request.args.get('lang', 'en')
 
 @bp.route('/')
 def index():
