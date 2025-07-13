@@ -18,6 +18,7 @@ class CustomTestConfig(TestConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SECRET_KEY = 'test-secret-key'
+    ADMIN_PASSWORD_HASH = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'  # 'your-secure-password'
 
 @pytest.fixture(scope='session')
 def app():
@@ -84,3 +85,48 @@ def auth_client(client, app):
     # Set the authentication cookie
     client.set_cookie('admin_authenticated', 'true')
     return client
+
+@pytest.fixture
+def sample_guest(app):
+    """Create a sample guest for testing."""
+    with app.app_context():
+        guest = Guest(
+            name='Test Guest',
+            email='test@example.com',
+            phone='555-0123',
+            token=secrets.token_urlsafe(32),
+            language_preference='en',
+            has_plus_one=True,
+            is_family=False
+        )
+        db.session.add(guest)
+        db.session.commit()
+        
+        yield guest
+        
+        # Clean up
+        if Guest.query.get(guest.id):
+            db.session.delete(guest)
+            db.session.commit()
+
+@pytest.fixture
+def sample_rsvp(app, sample_guest):
+    """Create a sample RSVP for testing."""
+    with app.app_context():
+        rsvp = RSVP(
+            guest_id=sample_guest.id,
+            is_attending=True,
+            hotel_name='Test Hotel',
+            transport_to_church=True,
+            transport_to_reception=False,
+            transport_to_hotel=False
+        )
+        db.session.add(rsvp)
+        db.session.commit()
+        
+        yield rsvp
+        
+        # Clean up
+        if RSVP.query.get(rsvp.id):
+            db.session.delete(rsvp)
+            db.session.commit()
