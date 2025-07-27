@@ -1,8 +1,9 @@
-# app/models/rsvp.py
+# app/models/rsvp.py - UPDATED WITH CONSTANTS
 from datetime import datetime, timedelta, date
 from app import db
 from flask import current_app
 from app.models.allergen import GuestAllergen
+from app.constants import TimeLimit, DEFAULT_CONFIG, DateFormat
 
 class RSVP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -34,17 +35,17 @@ class RSVP(db.Model):
         """
         # For testing: if testing_24h_check is set, we're explicitly testing the 24h rule
         if hasattr(self, 'testing_24h_check') and self.testing_24h_check:
-            return datetime.now() - self.created_at < timedelta(hours=24)
+            return datetime.now() - self.created_at < timedelta(hours=TimeLimit.RSVP_EDIT_HOURS)
         
         # First check if it was created within the last 24 hours
-        if datetime.now() - self.created_at < timedelta(hours=24):
+        if datetime.now() - self.created_at < timedelta(hours=TimeLimit.RSVP_EDIT_HOURS):
             return True
                 
         # Check if RSVP deadline has passed
-        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE') if current_app else None
+        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE', DEFAULT_CONFIG['RSVP_DEADLINE']) if current_app else None
         if rsvp_deadline_str:
             try:
-                rsvp_deadline = datetime.strptime(rsvp_deadline_str, '%Y-%m-%d').date()
+                rsvp_deadline = datetime.strptime(rsvp_deadline_str, DateFormat.DATABASE).date()
                 if date.today() > rsvp_deadline:
                     return False  # RSVP deadline has passed
             except (ValueError, TypeError):
@@ -57,20 +58,18 @@ class RSVP(db.Model):
             if not current_app:
                 return True  # Default to editable if no app context
                 
-            wedding_date_str = current_app.config.get('WEDDING_DATE')
+            wedding_date_str = current_app.config.get('WEDDING_DATE', DEFAULT_CONFIG['WEDDING_DATE'])
             if not wedding_date_str:
                 return True  # Default to editable if no wedding date is set
                 
-            wedding_date = datetime.strptime(wedding_date_str, '%Y-%m-%d')
-            cutoff_days = current_app.config.get('WARNING_CUTOFF_DAYS', 7)
+            wedding_date = datetime.strptime(wedding_date_str, DateFormat.DATABASE)
+            cutoff_days = current_app.config.get('WARNING_CUTOFF_DAYS', DEFAULT_CONFIG['WARNING_CUTOFF_DAYS'])
             cutoff_date = wedding_date - timedelta(days=cutoff_days)
             
             return datetime.now() < cutoff_date
         except (ValueError, KeyError, TypeError):
             # In case of config issue or testing environment, default to True for safety
             return True
-
-    # Properties to add to the RSVP class in app/models/rsvp.py
 
     @property
     def allergen_ids(self):

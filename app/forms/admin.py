@@ -1,8 +1,9 @@
-# app/forms/admin.py
+# app/forms/admin.py - UPDATED WITH CONSTANTS
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, BooleanField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Email, Optional, Length
+from app.constants import GuestLimit, Language, FileUpload
 
 class LoginForm(FlaskForm):
     """Admin login form."""
@@ -10,15 +11,25 @@ class LoginForm(FlaskForm):
 
 class GuestForm(FlaskForm):
     """Form for adding/editing guests."""
-    name = StringField('Name', validators=[DataRequired(), Length(max=120)])
-    phone = StringField('Phone Number', validators=[DataRequired(), Length(max=20)])
-    email = StringField('Email', validators=[Optional(), Email(), Length(max=120)])
+    name = StringField('Name', validators=[
+        DataRequired(), 
+        Length(max=GuestLimit.MAX_NAME_LENGTH)
+    ])
+    phone = StringField('Phone Number', validators=[
+        DataRequired(), 
+        Length(max=GuestLimit.MAX_PHONE_LENGTH)
+    ])
+    email = StringField('Email', validators=[
+        Optional(), 
+        Email(), 
+        Length(max=GuestLimit.MAX_EMAIL_LENGTH)
+    ])
     has_plus_one = BooleanField('Has Plus One')
     is_family = BooleanField('Is Family')
     language_preference = SelectField(
         'Preferred Language',
-        choices=[('en', 'English'), ('es', 'Spanish')],
-        default='en'
+        choices=[(Language.ENGLISH, 'English'), (Language.SPANISH, 'Spanish')],
+        default=Language.DEFAULT
     )
 
 class ImportForm(FlaskForm):
@@ -27,6 +38,6 @@ class ImportForm(FlaskForm):
         'CSV File',
         validators=[
             FileRequired(),
-            FileAllowed(['csv'], 'CSV files only!')
+            FileAllowed(FileUpload.ALLOWED_EXTENSIONS, 'CSV files only!')
         ]
     )

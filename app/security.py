@@ -1,47 +1,21 @@
-# app/security.py
+# app/security.py - UPDATED WITH CONSTANTS
 from flask import request, abort, current_app
 from functools import wraps
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from app.constants import HttpStatus, TimeLimit, LogMessage
 
 # Simple rate limiting implementation
 request_history = {}
-RATE_LIMIT_RESET_TIME = 3600  # 1 hour in seconds
-
-# Update the security.py file to modify the CSP
 
 def configure_security(app):
+    """Configure security features for the application."""
     pass
-    # """Configure security features for the application."""
-    
-    # # Set security headers
-    # @app.after_request
-    # def add_security_headers(response):
-    #     # Skip security headers for testing
-    #     if app.config.get('TESTING'):
-    #         return response
-            
-    #     # Content Security Policy - Option 1: Allow 'unsafe-inline' for development
-    #     if app.debug:
-    #         # More permissive CSP for development
-    #         response.headers['Content-Security-Policy'] = "default-src 'self'; \
-    #             script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
-    #             style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; \
-    #             font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
-    #             img-src 'self' data: https://via.placeholder.com; \
-    #             frame-ancestors 'none'"
-    #     else:
-    #         # Stricter CSP for production
-    #         response.headers['Content-Security-Policy'] = "default-src 'self'; \
-    #             script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
-    #             style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com 'unsafe-inline'; \
-    #             font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
-    #             img-src 'self' data: https://via.placeholder.com; \
-    #             frame-ancestors 'none'"
+    # Security headers can be configured here if needed
 
 # Rate limiting decorator
-def rate_limit(max_requests=20, window=60):
+def rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW):
     """
     Limit requests to max_requests per window seconds
     """
@@ -57,9 +31,9 @@ def rate_limit(max_requests=20, window=60):
             
             # Initialize or reset if needed
             if ip not in request_history:
-                request_history[ip] = {'count': 0, 'reset_time': now + RATE_LIMIT_RESET_TIME}
+                request_history[ip] = {'count': 0, 'reset_time': now + TimeLimit.CACHE_TIMEOUT}
             elif now > request_history[ip]['reset_time']:
-                request_history[ip] = {'count': 0, 'reset_time': now + RATE_LIMIT_RESET_TIME}
+                request_history[ip] = {'count': 0, 'reset_time': now + TimeLimit.CACHE_TIMEOUT}
             
             # Track request
             request_window = request_history.setdefault(ip, {}).setdefault(window, {'count': 0, 'start_time': now})
@@ -71,8 +45,11 @@ def rate_limit(max_requests=20, window=60):
             
             # Check if rate limit exceeded
             if request_window['count'] >= max_requests:
-                current_app.logger.warning(f"Rate limit exceeded for IP: {ip}")
-                abort(429)  # Too Many Requests
+                current_app.logger.warning(LogMessage.ERROR_GENERIC.format(
+                    operation="Rate limit check",
+                    error=f"Rate limit exceeded for IP: {ip}"
+                ))
+                abort(HttpStatus.TOO_MANY_REQUESTS)
             
             # Increment counter and proceed
             request_window['count'] += 1

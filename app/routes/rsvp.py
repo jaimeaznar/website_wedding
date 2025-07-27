@@ -5,6 +5,10 @@ from app.services.rsvp_service import RSVPService
 from app.services.allergen_service import AllergenService
 from app.forms import RSVPForm, RSVPCancellationForm
 from app.security import rate_limit
+from app.constants import (
+    LogMessage, ErrorMessage, SuccessMessage, FlashCategory,
+    HttpStatus, TimeLimit, Template, DEFAULT_CONFIG
+)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,22 +19,22 @@ bp = Blueprint('rsvp', __name__, url_prefix='/rsvp')
 @bp.route('/')
 def landing():
     """Landing page for RSVP without token."""
-    return render_template('rsvp_landing.html')
+    return render_template(Template.RSVP_LANDING)
 
 
 @bp.route('/<token>', methods=['GET', 'POST'])
-@rate_limit(max_requests=30, window=300)
+@rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
 def rsvp_form(token):
     """Handle RSVP form display and submission."""
-    logger.info(f"RSVP form accessed with token: {token}")
+    logger.info(LogMessage.RSVP_ACCESS.format(token=token))
     
     # Get guest by token
     guest = GuestService.get_guest_by_token(token)
     if not guest:
         logger.warning(f"Invalid token attempted: {token}")
-        abort(404)
+        abort(HttpStatus.NOT_FOUND)
     
-    logger.info(f"Guest found: {guest.name} (ID: {guest.id})")
+    logger.info(LogMessage.RSVP_GUEST_FOUND.format(name=guest.name, id=guest.id))
     
     # Get allergens for form
     allergens = AllergenService.get_all_allergens()

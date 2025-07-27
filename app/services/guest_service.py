@@ -7,6 +7,10 @@ from app import db
 from app.models.guest import Guest
 from app.models.rsvp import RSVP
 from app.utils.import_guests import process_guest_csv
+from app.constants import (
+    GuestLimit, Language, LogMessage, ErrorMessage, 
+    SuccessMessage, RSVPStatus
+)
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +25,7 @@ class GuestService:
         email: Optional[str] = None,
         has_plus_one: bool = False,
         is_family: bool = False,
-        language_preference: str = 'en'
+        language_preference: str = Language.DEFAULT
     ) -> Guest:
         """
         Create a new guest with a unique token.
@@ -42,14 +46,14 @@ class GuestService:
             IntegrityError: If guest with same email/phone exists
         """
         if not name or not phone:
-            raise ValueError("Name and phone are required fields")
+            raise ValueError(ErrorMessage.MISSING_REQUIRED_FIELDS)
         
         # Generate unique token
-        token = secrets.token_urlsafe(32)
+        token = secrets.token_urlsafe(GuestLimit.TOKEN_LENGTH)
         
         # Ensure token is unique
         while Guest.query.filter_by(token=token).first():
-            token = secrets.token_urlsafe(32)
+            token = secrets.token_urlsafe(GuestLimit.TOKEN_LENGTH)
         
         guest = Guest(
             name=name.strip(),
@@ -64,11 +68,11 @@ class GuestService:
         try:
             db.session.add(guest)
             db.session.commit()
-            logger.info(f"Created guest: {guest.name} (ID: {guest.id})")
+            logger.info(LogMessage.GUEST_CREATED.format(name=guest.name, id=guest.id))
             return guest
         except IntegrityError as e:
             db.session.rollback()
-            logger.error(f"Failed to create guest {name}: {str(e)}")
+            logger.error(LogMessage.ERROR_DATABASE.format(error=str(e)))
             raise
     
     @staticmethod

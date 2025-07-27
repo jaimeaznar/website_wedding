@@ -5,6 +5,10 @@ from app.services.guest_service import GuestService
 from app.services.rsvp_service import RSVPService
 from app.forms import LoginForm, GuestForm, ImportForm
 from app.security import rate_limit
+from app.constants import (
+    LogMessage, ErrorMessage, SuccessMessage, FlashCategory,
+    HttpStatus, TimeLimit, Template, Security
+)
 from functools import wraps
 import logging
 
@@ -17,15 +21,15 @@ def admin_required(f):
     """Decorator to require admin authentication."""
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not request.cookies.get('admin_authenticated'):
-            logger.warning(f"Unauthorized admin access attempt: {request.remote_addr}")
+        if not request.cookies.get(Security.ADMIN_COOKIE_NAME):
+            logger.warning(LogMessage.ADMIN_UNAUTHORIZED.format(ip=request.remote_addr))
             return redirect(url_for('admin.login'))
         return f(*args, **kwargs)
     return decorated_function
 
 
 @bp.route('/login', methods=['GET', 'POST'])
-@rate_limit(max_requests=5, window=300)  # 5 attempts per 5 minutes
+@rate_limit(max_requests=TimeLimit.ADMIN_RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
 def login():
     """Handle admin login."""
     form = LoginForm()
@@ -37,19 +41,19 @@ def login():
         if AdminService.verify_admin_password(password):
             response = redirect(url_for('admin.dashboard'))
             response.set_cookie(
-                'admin_authenticated', 
-                'true', 
-                httponly=True, 
-                secure=not current_app.debug,
-                max_age=1800  # 30 minutes
+                Security.ADMIN_COOKIE_NAME,
+                'true',
+                httponly=Security.COOKIE_HTTPONLY,
+                secure=Security.COOKIE_SECURE if not current_app.debug else False,
+                max_age=TimeLimit.ADMIN_SESSION_TIMEOUT
             )
-            logger.info(f"Admin login successful: {request.remote_addr}")
+            logger.info(LogMessage.ADMIN_LOGIN_SUCCESS.format(ip=request.remote_addr))
             return response
         else:
-            logger.warning(f"Failed admin login attempt: {request.remote_addr}")
-            flash('Invalid password', 'error')
+            logger.warning(LogMessage.ADMIN_LOGIN_FAILED.format(ip=request.remote_addr))
+            flash(ErrorMessage.INVALID_PASSWORD, FlashCategory.ERROR)
     
-    return render_template('admin/login.html', form=form)
+    return render_template(Template.ADMIN_LOGIN, form=form)
 
 
 @bp.route('/dashboard')
