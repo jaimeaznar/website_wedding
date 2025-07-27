@@ -9,6 +9,10 @@ from app.models.rsvp import RSVP, AdditionalGuest
 from app.models.allergen import GuestAllergen
 from app.services.allergen_service import AllergenService
 from app.utils.email import send_cancellation_notification
+from app.constants import (
+    DateFormat, RSVPStatus, LogMessage, ErrorMessage,
+    SuccessMessage, DEFAULT_CONFIG
+)
 
 logger = logging.getLogger(__name__)
 
@@ -24,28 +28,28 @@ class RSVPService:
     @staticmethod
     def is_rsvp_deadline_passed() -> bool:
         """Check if the RSVP deadline has passed."""
-        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE')
+        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE', DEFAULT_CONFIG['RSVP_DEADLINE'])
         if not rsvp_deadline_str:
             return False
         
         try:
-            rsvp_deadline = datetime.strptime(rsvp_deadline_str, '%Y-%m-%d').date()
+            rsvp_deadline = datetime.strptime(rsvp_deadline_str, DateFormat.DATABASE).date()
             today = date.today()
             return today > rsvp_deadline
         except (ValueError, TypeError):
-            logger.error(f"Invalid RSVP_DEADLINE format: {rsvp_deadline_str}")
+            logger.error(LogMessage.ERROR_VALIDATION.format(error=f"Invalid RSVP_DEADLINE format: {rsvp_deadline_str}"))
             return False
     
     @staticmethod
     def get_rsvp_deadline_formatted() -> str:
         """Get formatted RSVP deadline for display."""
-        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE')
+        rsvp_deadline_str = current_app.config.get('RSVP_DEADLINE', DEFAULT_CONFIG['RSVP_DEADLINE'])
         if not rsvp_deadline_str:
             return "Not specified"
         
         try:
-            rsvp_deadline = datetime.strptime(rsvp_deadline_str, '%Y-%m-%d').date()
-            return rsvp_deadline.strftime('%B %d, %Y')
+            rsvp_deadline = datetime.strptime(rsvp_deadline_str, DateFormat.DATABASE).date()
+            return rsvp_deadline.strftime(DateFormat.DISPLAY)
         except (ValueError, TypeError):
             return rsvp_deadline_str
     

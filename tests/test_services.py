@@ -48,7 +48,7 @@ class TestGuestService:
                     name="",
                     phone="555-1234"
                 )
-            assert "Name and phone are required" in str(excinfo.value)
+            assert "Please fill in all required fields" in str(excinfo.value)
     
     def test_get_guest_by_token(self, app):
         """Test retrieving a guest by token."""

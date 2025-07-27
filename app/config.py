@@ -1,6 +1,9 @@
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+from app.constants import (
+    Language, DEFAULT_CONFIG, TimeLimit, DateFormat
+)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -22,17 +25,17 @@ class Config:
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
     
     # Languages
-    LANGUAGES = ['en', 'es']
-    BABEL_DEFAULT_LOCALE = 'en'
+    LANGUAGES = Language.SUPPORTED
+    BABEL_DEFAULT_LOCALE = Language.DEFAULT
     
-    # Custom config
-    ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'your@email.com')
-    ADMIN_PHONE = os.getenv('ADMIN_PHONE', '123456789')
-    RSVP_DEADLINE = os.getenv('RSVP_DEADLINE', '2026-05-06')  # Default 1 month before wedding
-    WEDDING_DATE = os.getenv('WEDDING_DATE', '2026-06-06')
-    REMINDER_DAYS_BEFORE = 30  # Send reminder 30 days before deadline
-    WARNING_MESSAGE_TIMEOUT = 0  # 0 means no auto-dismiss
-    WARNING_CUTOFF_DAYS = 7     # days before wedding for warnings
+    # Custom config with defaults from constants
+    ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', DEFAULT_CONFIG['ADMIN_EMAIL'])
+    ADMIN_PHONE = os.getenv('ADMIN_PHONE', DEFAULT_CONFIG['ADMIN_PHONE'])
+    RSVP_DEADLINE = os.getenv('RSVP_DEADLINE', DEFAULT_CONFIG['RSVP_DEADLINE'])
+    WEDDING_DATE = os.getenv('WEDDING_DATE', DEFAULT_CONFIG['WEDDING_DATE'])
+    REMINDER_DAYS_BEFORE = int(os.getenv('REMINDER_DAYS_BEFORE', DEFAULT_CONFIG['REMINDER_DAYS_BEFORE']))
+    WARNING_MESSAGE_TIMEOUT = int(os.getenv('WARNING_MESSAGE_TIMEOUT', DEFAULT_CONFIG['WARNING_MESSAGE_TIMEOUT']))
+    WARNING_CUTOFF_DAYS = int(os.getenv('WARNING_CUTOFF_DAYS', DEFAULT_CONFIG['WARNING_CUTOFF_DAYS']))
     
     # For tests - set a default admin password hash
     ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH', 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01')
@@ -43,7 +46,7 @@ class TestConfig(Config):
     WTF_CSRF_ENABLED = False  # Make sure CSRF is explicitly disabled
     WTF_CSRF_CHECK_DEFAULT = False  # Double-check with another setting
     SECRET_KEY = 'test-secret-key'
-    WEDDING_DATE = '2026-06-06'
-    RSVP_DEADLINE = '2026-05-06'  # 1 month before wedding
+    WEDDING_DATE = DEFAULT_CONFIG['WEDDING_DATE']
+    RSVP_DEADLINE = DEFAULT_CONFIG['RSVP_DEADLINE']
     # Set accessible admin password for tests
     ADMIN_PASSWORD_HASH = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'  # 'your-secure-password'
