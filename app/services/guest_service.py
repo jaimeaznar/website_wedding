@@ -48,6 +48,13 @@ class GuestService:
         if not name or not phone:
             raise ValueError(ErrorMessage.MISSING_REQUIRED_FIELDS)
         
+        if len(name) > GuestLimit.MAX_NAME_LENGTH:
+            raise ValueError(f"Name exceeds maximum length of {GuestLimit.MAX_NAME_LENGTH} characters")
+        if len(phone) > GuestLimit.MAX_PHONE_LENGTH:
+            raise ValueError(f"Phone exceeds maximum length of {GuestLimit.MAX_PHONE_LENGTH} characters")
+        if email and len(email) > GuestLimit.MAX_EMAIL_LENGTH:
+            raise ValueError(f"Email exceeds maximum length of {GuestLimit.MAX_EMAIL_LENGTH} characters")
+        
         # Generate unique token
         token = secrets.token_urlsafe(GuestLimit.TOKEN_LENGTH)
         

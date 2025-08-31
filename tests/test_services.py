@@ -298,7 +298,11 @@ class TestAdminService:
     def test_verify_admin_password(self, app):
         """Test admin password verification."""
         with app.app_context():
-            # Test with correct password (from test config)
+            # First ensure the config has the correct hash
+            # This hash is for 'your-secure-password'
+            app.config['ADMIN_PASSWORD_HASH'] = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'
+            
+            # Test with correct password
             assert AdminService.verify_admin_password('your-secure-password') is True
             
             # Test with incorrect password
