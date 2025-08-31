@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Dietary Report{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Dietary Restrictions Report</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Summary</h5>
+            <p>Total guests with restrictions: {{ total_guests_with_restrictions }}</p>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Standard Allergens</h5>
+            {% for allergen, guests in standard_allergens.items() %}
+                <h6>{{ allergen }} ({{ guests|length }} guests)</h6>
+                <ul>
+                    {% for guest in guests %}
+                        <li>{{ guest }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No standard allergens reported.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Custom Allergens</h5>
+            {% for allergen, guests in custom_allergens.items() %}
+                <h6>{{ allergen }} ({{ guests|length }} guests)</h6>
+                <ul>
+                    {% for guest in guests %}
+                        <li>{{ guest }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No custom allergens reported.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Create `app/templates/admin/transport_report.html`:
+
+```html
+{% extends "base.html" %}
+{% block title %}Transport Report{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Transport Requirements Report</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Summary</h5>
+            <ul>
+                <li>To Church: {{ summary.to_church }} guests</li>
+                <li>To Reception: {{ summary.to_reception }} guests</li>
+                <li>To Hotel: {{ summary.to_hotel }} guests</li>
+                <li>Total requiring transport: {{ summary.total_requiring_transport }} guests</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Transport to Church</h5>
+            <ul>
+                {% for guest in to_church %}
+                    <li>{{ guest.name }} - {{ guest.phone }} ({{ guest.guest_count }} people)</li>
+                {% else %}
+                    <li>No transport to church requested.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Transport to Reception</h5>
+            <ul>
+                {% for guest in to_reception %}
+                    <li>{{ guest.name }} - {{ guest.phone }} ({{ guest.guest_count }} people)</li>
+                {% else %}
+                    <li>No transport to reception requested.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Transport to Hotel</h5>
+            <ul>
+                {% for guest in to_hotel %}
+                    <li>{{ guest.name }} - {{ guest.phone }} ({{ guest.guest_count }} people)</li>
+                {% else %}
+                    <li>No transport to hotel requested.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Hotels</h5>
+            {% for hotel, guests in hotels.items() %}
+                <h6>{{ hotel }}</h6>
+                <ul>
+                    {% for guest in guests %}
+                        <li>{{ guest.name }} - {{ guest.phone }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hotel information provided.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

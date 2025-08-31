@@ -39,7 +39,7 @@ def send_cancellation_notification(guest, rsvp):
     - Hotel: {rsvp.hotel_name or 'Not specified'}
     - Transport Needed: {any([rsvp.transport_to_church, rsvp.transport_to_reception, rsvp.transport_to_hotel])}
     
-    Cancellation Time: {rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M')}
+    Cancellation Time: {rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M') if rsvp.cancellation_date else 'Not specified'}
     """
     
     try:

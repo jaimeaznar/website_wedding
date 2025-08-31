@@ -192,8 +192,12 @@ class TestRSVPServicePerformance(PerformanceBenchmark):
             print(f"  Mean: {stats['mean']*1000:.2f}ms")
             print(f"  Max: {stats['max']*1000:.2f}ms")
     
+
     def test_concurrent_rsvp_submissions(self, app_with_data):
         """Test concurrent RSVP submissions."""
+        import time
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        
         with app_with_data.app_context():
             # Create multiple guests
             guests = []
@@ -202,35 +206,59 @@ class TestRSVPServicePerformance(PerformanceBenchmark):
                     name=f"Concurrent Test {i}",
                     phone=f"555-{3000+i:04d}"
                 )
-                guests.append(guest)
+                guests.append({'id': guest.id, 'name': guest.name})
             
-            def submit_rsvp_for_guest(guest):
-                """Submit RSVP in app context."""
-                with app_with_data.app_context():
-                    form_data = {
-                        'is_attending': 'yes',
-                        'hotel_name': f'Hotel {guest.id}'
-                    }
-                    return RSVPService.create_or_update_rsvp(guest, form_data)
+            def submit_rsvp_for_guest(guest_data):
+                """Submit RSVP in separate app context."""
+                try:
+                    # Create a new app context for each thread
+                    with app_with_data.app_context():
+                        # Import db inside the function to avoid sharing across threads
+                        from app import db
+                        from app.models.guest import Guest
+                        
+                        # Create a new session for this thread
+                        db.session.remove()
+                        
+                        # Re-fetch the guest in this context
+                        guest = db.session.get(Guest, guest_data['id'])
+                        if not guest:
+                            return (False, f"Guest {guest_data['id']} not found")
+                        
+                        form_data = {
+                            'is_attending': 'yes',
+                            'hotel_name': f'Hotel {guest_data["id"]}'
+                        }
+                        
+                        try:
+                            result = RSVPService.create_or_update_rsvp(guest, form_data)
+                            db.session.commit()
+                            return result
+                        except Exception as e:
+                            db.session.rollback()
+                            return (False, str(e))
+                except Exception as e:
+                    return (False, f"Thread error: {str(e)}")
             
             # Submit RSVPs concurrently
             start = time.perf_counter()
             with ThreadPoolExecutor(max_workers=5) as executor:
-                futures = [executor.submit(submit_rsvp_for_guest, guest) for guest in guests]
+                futures = [executor.submit(submit_rsvp_for_guest, gd) for gd in guests]
                 results = []
                 for future in as_completed(futures):
                     try:
                         result = future.result()
                         results.append(result)
                     except Exception as e:
-                        pytest.fail(f"Concurrent submission failed: {e}")
+                        results.append((False, str(e)))
             
             end = time.perf_counter()
             duration = end - start
             
             # Verify all submissions succeeded
+            failed = [r for r in results if not r[0]]
             assert len(results) == 10, "Not all concurrent submissions completed"
-            assert all(r[0] for r in results), "Some submissions failed"
+            assert len(failed) == 0, f"Some submissions failed: {failed}"
             
             print(f"\nConcurrent RSVP Submission Performance (10 guests, 5 workers):")
             print(f"  Total time: {duration:.2f}s")
