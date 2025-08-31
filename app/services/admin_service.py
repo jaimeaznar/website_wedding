@@ -29,19 +29,20 @@ class AdminService:
         Returns:
             True if password matches, False otherwise
         """
-        # Get admin password hash from config
+        # Get admin password hash from config - this should always be set
         admin_password_hash = current_app.config.get('ADMIN_PASSWORD_HASH')
         
         if not admin_password_hash:
-            # Try to get from admin_auth module for backward compatibility
-            try:
-                from app.admin_auth import get_admin_password_hash
-                admin_password_hash = get_admin_password_hash()
-            except ImportError:
-                logger.error("No admin password hash configured")
-                return False
+            logger.error("No admin password hash configured in application config")
+            return False
         
-        return check_password_hash(admin_password_hash, password)
+        # Verify the password against the hash
+        try:
+            result = check_password_hash(admin_password_hash, password)
+            return result
+        except Exception as e:
+            logger.error(f"Error verifying password: {str(e)}")
+            return False
     
     @staticmethod
     def get_dashboard_data() -> Dict[str, Any]:

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Dietary Report{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Dietary Restrictions Report</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Summary</h5>
+            <p>Total guests with restrictions: {{ total_guests_with_restrictions }}</p>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Standard Allergens</h5>
+            {% for allergen, guests in standard_allergens.items() %}
+                <h6>{{ allergen }} ({{ guests|length }} guests)</h6>
+                <ul>
+                    {% for guest in guests %}
+                        <li>{{ guest }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No standard allergens reported.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Custom Allergens</h5>
+            {% for allergen, guests in custom_allergens.items() %}
+                <h6>{{ allergen }} ({{ guests|length }} guests)</h6>
+                <ul>
+                    {% for guest in guests %}
+                        <li>{{ guest }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No custom allergens reported.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

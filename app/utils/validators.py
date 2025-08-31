@@ -58,7 +58,17 @@ class RSVPValidator:
 
     def _validate_allergens(self):
         """Validate allergen information"""
-        allergens = self.form.getlist('allergens_main')
+        # Handle both dict and request-like objects
+        if hasattr(self.form, 'getlist'):
+            allergens = self.form.getlist('allergens_main')
+        else:
+            # It's a dict - handle as dict
+            allergen_value = self.form.get('allergens_main', [])
+            if isinstance(allergen_value, list):
+                allergens = allergen_value
+            else:
+                allergens = [allergen_value] if allergen_value else []
+        
         custom_allergen = self.form.get('custom_allergen_main', '').strip()
         
         if allergens and not isinstance(allergens, list):

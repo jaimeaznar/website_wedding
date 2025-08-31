@@ -298,15 +298,29 @@ class TestAdminService:
     def test_verify_admin_password(self, app):
         """Test admin password verification."""
         with app.app_context():
-            # Test with correct password (from test config)
-            assert AdminService.verify_admin_password('your-secure-password') is True
+            from app.services.admin_service import AdminService
+            from werkzeug.security import generate_password_hash
+            
+            # Generate a fresh hash for testing using pbkdf2 (compatible with Python 3.9)
+            test_password = 'test-password-123'
+            test_hash = generate_password_hash(test_password, method='pbkdf2:sha256')
+            
+            # Set it in the config
+            app.config['ADMIN_PASSWORD_HASH'] = test_hash
+            
+            # Test with correct password
+            result = AdminService.verify_admin_password(test_password)
+            assert result is True, "Password verification failed with correct password"
             
             # Test with incorrect password
-            assert AdminService.verify_admin_password('wrong-password') is False
+            result = AdminService.verify_admin_password('wrong-password')
+            assert result is False, "Password verification succeeded with wrong password"
     
     def test_get_dashboard_data(self, app):
         """Test getting dashboard data."""
         with app.app_context():
+            from app.services.admin_service import AdminService
+            
             # Get dashboard data
             data = AdminService.get_dashboard_data()
             
@@ -325,6 +339,11 @@ class TestAdminService:
     def test_get_pending_rsvps(self, app):
         """Test getting pending RSVPs."""
         with app.app_context():
+            from app.services.guest_service import GuestService
+            from app.services.admin_service import AdminService
+            from app.models.rsvp import RSVP
+            from app import db
+            
             # Create guest without RSVP
             guest_no_rsvp = GuestService.create_guest("No RSVP Guest", "555-NORSVP")
             
