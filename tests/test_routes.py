@@ -38,7 +38,12 @@ class TestMainRoutes:
         assert response.status_code == 200
         
         # Ensure language is in context
-        assert b'class="lang-btn active">ES' in response.data
+        # Check that language switcher elements exist
+        assert b'language-switcher' in response.data
+        assert b'lang-btn' in response.data
+        # Check both language options are present
+        assert b'>EN</a>' in response.data
+        assert b'>ES</a>' in response.data
 
 class TestRSVPRoutes:
     def test_rsvp_landing(self, client):

@@ -298,19 +298,23 @@ class TestAdminService:
     def test_verify_admin_password(self, app):
         """Test admin password verification."""
         with app.app_context():
-            # First ensure the config has the correct hash
-            # This hash is for 'your-secure-password'
-            app.config['ADMIN_PASSWORD_HASH'] = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'
+            # The app already has the correct hash from CustomTestConfig
+            # Just test with the known password
+            from app.services.admin_service import AdminService
             
             # Test with correct password
-            assert AdminService.verify_admin_password('your-secure-password') is True
+            result = AdminService.verify_admin_password('your-secure-password')
+            assert result is True, "Password verification failed with correct password"
             
             # Test with incorrect password
-            assert AdminService.verify_admin_password('wrong-password') is False
+            result = AdminService.verify_admin_password('wrong-password')
+            assert result is False, "Password verification succeeded with wrong password"
     
     def test_get_dashboard_data(self, app):
         """Test getting dashboard data."""
         with app.app_context():
+            from app.services.admin_service import AdminService
+            
             # Get dashboard data
             data = AdminService.get_dashboard_data()
             
@@ -329,6 +333,11 @@ class TestAdminService:
     def test_get_pending_rsvps(self, app):
         """Test getting pending RSVPs."""
         with app.app_context():
+            from app.services.guest_service import GuestService
+            from app.services.admin_service import AdminService
+            from app.models.rsvp import RSVP
+            from app import db
+            
             # Create guest without RSVP
             guest_no_rsvp = GuestService.create_guest("No RSVP Guest", "555-NORSVP")
             
