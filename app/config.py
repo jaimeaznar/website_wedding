@@ -1,5 +1,6 @@
 import os
 import sys
+import secrets
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
@@ -10,7 +11,89 @@ from app.constants import (
 basedir = Path(__file__).parent.parent.absolute()
 load_dotenv(basedir / '.env')
 
-# Validation function for required environment variables
+# List of known weak/default secret keys to reject
+WEAK_SECRET_KEYS = [
+    'your-secret-key-here',
+    'change-this-secret-key',
+    'dev-secret-key',
+    'test-secret-key',
+    'secret',
+    'changeme',
+    'your-secret-key-here-generate-a-new-one',
+    'test-secret-key-for-testing-only'
+]
+
+# List of weak passwords to reject
+WEAK_PASSWORDS = [
+    'your-secure-password',
+    'changeme',
+    'password',
+    'admin',
+    'test-password',
+    'your-admin-password'
+]
+
+def validate_secret_key(secret_key: str, is_production: bool = False) -> bool:
+    """
+    Validate that a secret key is secure enough.
+    
+    Args:
+        secret_key: The secret key to validate
+        is_production: Whether running in production (stricter validation)
+        
+    Returns:
+        bool: True if valid, False otherwise
+    """
+    if not secret_key:
+        return False
+    
+    # Check against known weak keys
+    if secret_key.lower() in [k.lower() for k in WEAK_SECRET_KEYS]:
+        return False
+    
+    # Check minimum length (32 chars for production, 16 for dev)
+    min_length = 32 if is_production else 16
+    if len(secret_key) < min_length:
+        return False
+    
+    # In production, ensure it looks like a proper random key
+    if is_production:
+        # Check if it has enough entropy (mix of chars)
+        unique_chars = len(set(secret_key))
+        if unique_chars < 10:  # Too few unique characters
+            return False
+    
+    return True
+
+def validate_admin_password(password: str, is_production: bool = False) -> bool:
+    """
+    Validate that an admin password is secure enough.
+    
+    Args:
+        password: The password to validate
+        is_production: Whether running in production (stricter validation)
+        
+    Returns:
+        bool: True if valid, False otherwise
+    """
+    if not password:
+        return False
+    
+    # Check against known weak passwords
+    if password.lower() in [p.lower() for p in WEAK_PASSWORDS]:
+        return False
+    
+    # Check minimum length
+    min_length = 12 if is_production else 8
+    if len(password) < min_length:
+        return False
+    
+    return True
+
+def generate_secure_secret_key(length: int = 32) -> str:
+    """Generate a cryptographically secure secret key."""
+    return secrets.token_hex(length)
+
 def get_env_variable(var_name, default=None, required=False):
     """Get environment variable with validation."""
     value = os.getenv(var_name, default)
@@ -121,16 +204,40 @@ class Config:
     
     def __init__(self):
         """Validate configuration on initialization."""
+        # Validate SECRET_KEY
+        if not validate_secret_key(self.SECRET_KEY, self.is_production):
+            if self.is_production:
+                print("❌ ERROR: SECRET_KEY is not secure enough for production!")
+                print("   - Must be at least 32 characters long")
+                print("   - Must not be a known default value")
+                print("   - Must have sufficient entropy")
+                print("\n   Generate a secure key with: python generate_secrets.py")
+                sys.exit(1)
+            else:
+                print("⚠️  WARNING: Using weak SECRET_KEY in development.")
+                print("   For production, generate a secure key with: python generate_secrets.py")
+        
+        # Validate ADMIN_PASSWORD
+        if not validate_admin_password(self.ADMIN_PASSWORD, self.is_production):
+            if self.is_production:
+                print("❌ ERROR: ADMIN_PASSWORD is not secure enough for production!")
+                print("   - Must be at least 12 characters long")
+                print("   - Must not be a known default value")
+                print("\n   Generate a secure password with: python generate_secrets.py")
+                sys.exit(1)
+            else:
+                print("⚠️  WARNING: Using weak ADMIN_PASSWORD in development.")
+        
+        # Additional production validations
         if self.is_production:
-            # Additional production checks
-            if 'your-secret-key' in self.SECRET_KEY.lower():
-                print("❌ ERROR: Using default SECRET_KEY in production!")
-                sys.exit(1)
-            if 'your-secure-password' in self.ADMIN_PASSWORD.lower():
-                print("❌ ERROR: Using default ADMIN_PASSWORD in production!")
-                sys.exit(1)
             # Ensure HTTPS in production
             self.SESSION_COOKIE_SECURE = True
+            
+            # Validate email configuration
+            if not self.MAIL_USERNAME or not self.MAIL_PASSWORD:
+                print("⚠️  WARNING: Email not configured properly for production!")
+                print("   Some features (invitations, confirmations) will not work.")
+            
             print("✅ Production configuration validated")
         else:
             print("✅ Development configuration loaded")
@@ -142,8 +249,9 @@ class DevelopmentConfig(Config):
     TESTING = False
     
     def __init__(self):
+        # Skip production-level validation for development
+        # But still validate basic requirements
         super().__init__()
-        # Development-specific overrides
         self.SESSION_COOKIE_SECURE = False  # Allow HTTP in development
 
 
@@ -158,9 +266,14 @@ class ProductionConfig(Config):
         self.SESSION_COOKIE_SECURE = True
         self.WTF_CSRF_ENABLED = True
         
-        # Ensure email is configured for production
+        # Additional production validations
         if not self.MAIL_USERNAME or not self.MAIL_PASSWORD:
             print("⚠️  WARNING: Email not configured properly for production!")
+            print("   Invitations and confirmations will not be sent.")
+        
+        # Ensure we're not using any development values
+        if 'localhost' in self.SQLALCHEMY_DATABASE_URI or '127.0.0.1' in self.SQLALCHEMY_DATABASE_URI:
+            print("⚠️  WARNING: Using local database in production!")
 
 
 class TestConfig(Config):
@@ -173,7 +286,7 @@ class TestConfig(Config):
         pass
     
     # Override with test values
-    SECRET_KEY = 'test-secret-key'
+    SECRET_KEY = 'test-secret-key-for-automated-testing-only'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     WTF_CSRF_ENABLED = False
     ADMIN_PASSWORD = 'test-password'
