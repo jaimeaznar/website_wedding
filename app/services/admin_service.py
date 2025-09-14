@@ -21,7 +21,7 @@ class AdminService:
     @staticmethod
     def verify_admin_password(password: str) -> bool:
         """
-        Verify admin password against stored hash.
+        Verify admin password against stored configuration.
         
         Args:
             password: Plain text password to verify
@@ -29,19 +29,13 @@ class AdminService:
         Returns:
             True if password matches, False otherwise
         """
-        # Get admin password hash from config - this should always be set
-        admin_password_hash = current_app.config.get('ADMIN_PASSWORD_HASH')
+        from app.admin_auth import verify_admin_password as auth_verify
         
-        if not admin_password_hash:
-            logger.error("No admin password hash configured in application config")
-            return False
-        
-        # Verify the password against the hash
         try:
-            result = check_password_hash(admin_password_hash, password)
-            return result
+            # Use the centralized admin auth module
+            return auth_verify(password)
         except Exception as e:
-            logger.error(f"Error verifying password: {str(e)}")
+            logger.error(f"Error verifying admin password: {str(e)}")
             return False
     
     @staticmethod

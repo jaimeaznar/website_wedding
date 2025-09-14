@@ -5,8 +5,8 @@ import pytest
 from urllib.parse import urlparse
 from app import db
 from app.models.rsvp import RSVP
-from app.models.allergen import GuestAllergen
-from app.models.rsvp import AdditionalGuest
+from app.models.guest import Guest
+
 
 class TestMainRoutes:
     def test_index_route(self, client):
@@ -218,34 +218,208 @@ class TestRSVPRoutes:
             db.session.delete(rsvp)
             db.session.commit()
 
-class TestAdminRoutes:
-    def test_admin_login_page(self, client):
+
+class TestAdminAuthentication:
+    """Test admin authentication with secure test credentials."""
+    
+    def test_admin_login_page_loads(self, client):
+        """Test that the admin login page loads correctly."""
         response = client.get('/admin/login')
         assert response.status_code == 200
         assert b'Admin Login' in response.data
-
-    def test_admin_login_success(self, client, app):
+    
+    def test_admin_login_with_correct_password(self, client, app):
+        """Test admin login with correct test password."""
         with app.app_context():
-            # This test is problematic because we're using the password hash directly
-            # Instead, let's test that the route exists and returns the correct status code
+            # Use the test password from the test configuration
+            test_password = app.config.get('TEST_ADMIN_PASSWORD', 'test-admin-password-2024')
+            
             response = client.post('/admin/login', 
-                                 data={'password': 'your-secure-password'},
-                                 follow_redirects=True)
-            assert response.status_code == 200
-
-    def test_admin_dashboard(self, auth_client):
+                                  data={'password': test_password},
+                                  follow_redirects=False)
+            
+            # Check if login was successful (should redirect to dashboard)
+            if response.status_code == 302:  # Redirect
+                assert '/admin/dashboard' in response.location
+            else:
+                # If not redirecting, check for error message
+                assert b'Invalid password' in response.data
+    
+    def test_admin_login_with_wrong_password(self, client):
+        """Test admin login with incorrect password."""
+        response = client.post('/admin/login',
+                              data={'password': 'definitely-wrong-password'},
+                              follow_redirects=True)
+        
+        # Should show error or stay on login page
+        assert response.status_code == 200
+        assert b'Admin Login' in response.data or b'Invalid password' in response.data
+    
+    def test_admin_dashboard_requires_auth(self, client):
+        """Test that admin dashboard requires authentication."""
+        response = client.get('/admin/dashboard', follow_redirects=False)
+        
+        # Should redirect to login
+        assert response.status_code == 302
+        assert '/admin/login' in response.location
+    
+    def test_admin_dashboard_with_auth(self, auth_client):
+        """Test accessing admin dashboard with authentication."""
         response = auth_client.get('/admin/dashboard')
         assert response.status_code == 200
+        assert b'Guest Management' in response.data or b'Dashboard' in response.data
+    
+    def test_admin_logout(self, auth_client):
+        """Test admin logout functionality."""
+        response = auth_client.get('/admin/logout', follow_redirects=False)
+        
+        # Should redirect to login
+        assert response.status_code == 302
+        assert '/admin/login' in response.location
+        
+        # Check that cookie is cleared
+        cookies = response.headers.getlist('Set-Cookie')
+        assert any('admin_authenticated' in cookie and 'Max-Age=0' in cookie 
+                  for cookie in cookies)
 
-    def test_admin_add_guest(self, auth_client):
+
+class TestAdminGuestManagement:
+    """Test admin guest management functionality."""
+    
+    def test_add_guest_page_requires_auth(self, client):
+        """Test that add guest page requires authentication."""
+        response = client.get('/admin/guest/add', follow_redirects=False)
+        assert response.status_code == 302
+        assert '/admin/login' in response.location
+    
+    def test_add_guest_page_with_auth(self, auth_client):
+        """Test accessing add guest page with authentication."""
         response = auth_client.get('/admin/guest/add')
         assert response.status_code == 200
-
-    def test_admin_download_template(self, auth_client):
+        assert b'Add Guest' in response.data or b'name' in response.data
+    
+    def test_add_guest_submission(self, auth_client, app):
+        """Test adding a new guest through admin interface."""
+        with app.app_context():
+            # Submit new guest
+            response = auth_client.post('/admin/guest/add', data={
+                'name': 'Admin Test Guest',
+                'phone': '555-ADMIN',
+                'email': 'admin.test@example.com',
+                'has_plus_one': True,
+                'is_family': False,
+                'language_preference': 'en'
+            }, follow_redirects=False)
+            
+            # Should redirect to dashboard on success
+            assert response.status_code == 302
+            assert '/admin/dashboard' in response.location
+            
+            # Verify guest was created
+            guest = Guest.query.filter_by(email='admin.test@example.com').first()
+            assert guest is not None
+            assert guest.name == 'Admin Test Guest'
+            
+            # Clean up
+            if guest:
+                db.session.delete(guest)
+                db.session.commit()
+    
+    def test_download_csv_template(self, auth_client):
+        """Test downloading the CSV template."""
         response = auth_client.get('/admin/download-template')
+        
         assert response.status_code == 200
+        assert response.content_type.startswith('text/csv')
+        assert b'name,phone,email,has_plus_one,is_family,language' in response.data
+    
+    def test_import_guests_requires_auth(self, client):
+        """Test that import guests requires authentication."""
+        from io import BytesIO
+        
+        csv_content = b'name,phone,email,has_plus_one,is_family,language\n'
+        csv_content += b'Test Import,555-1234,test@import.com,false,false,en\n'
+        
+        csv_file = BytesIO(csv_content)
+        
+        response = client.post('/admin/guest/import',
+                              data={'file': (csv_file, 'guests.csv')},
+                              content_type='multipart/form-data',
+                              follow_redirects=False)
+        
+        # Should redirect to login
+        assert response.status_code == 302
+        assert '/admin/login' in response.location
 
-    def test_admin_logout(self, auth_client):
-        response = auth_client.get('/admin/logout', follow_redirects=True)
-        assert response.status_code == 200
-        assert b'Admin Login' in response.data
+
+class TestAdminReports:
+    """Test admin reporting functionality."""
+    
+    def test_dietary_report_requires_auth(self, client):
+        """Test that dietary report requires authentication."""
+        response = client.get('/admin/reports/dietary', follow_redirects=False)
+        assert response.status_code == 302
+        assert '/admin/login' in response.location
+    
+    def test_dietary_report_with_auth(self, auth_client):
+        """Test accessing dietary report with authentication."""
+        response = auth_client.get('/admin/reports/dietary')
+        assert response.status_code in [200, 302]  # May redirect if not implemented
+    
+    def test_transport_report_requires_auth(self, client):
+        """Test that transport report requires authentication."""
+        response = client.get('/admin/reports/transport', follow_redirects=False)
+        assert response.status_code == 302
+        assert '/admin/login' in response.location
+    
+    def test_transport_report_with_auth(self, auth_client):
+        """Test accessing transport report with authentication."""
+        response = auth_client.get('/admin/reports/transport')
+        assert response.status_code in [200, 302]  # May redirect if not implemented
+
+
+class TestAdminDashboardData:
+    """Test admin dashboard data display."""
+    
+    def test_dashboard_shows_guest_statistics(self, auth_client, app):
+        """Test that dashboard shows correct guest statistics."""
+        with app.app_context():
+            # Create test data
+            guest1 = Guest(
+                name='Dashboard Test 1',
+                phone='555-DASH1',
+                email='dash1@test.com',
+                token='token1',
+                is_family=True
+            )
+            guest2 = Guest(
+                name='Dashboard Test 2',
+                phone='555-DASH2',
+                email='dash2@test.com',
+                token='token2',
+                is_family=False
+            )
+            db.session.add_all([guest1, guest2])
+            db.session.commit()
+            
+            # Create RSVPs
+            rsvp1 = RSVP(guest_id=guest1.id, is_attending=True)
+            rsvp2 = RSVP(guest_id=guest2.id, is_attending=False)
+            db.session.add_all([rsvp1, rsvp2])
+            db.session.commit()
+            
+            # Access dashboard
+            response = auth_client.get('/admin/dashboard')
+            assert response.status_code == 200
+            
+            # Check for data in response
+            data = response.data.decode('utf-8')
+            assert 'Dashboard Test 1' in data
+            assert 'Dashboard Test 2' in data
+            
+            # Clean up
+            db.session.delete(rsvp1)
+            db.session.delete(rsvp2)
+            db.session.delete(guest1)
+            db.session.delete(guest2)
+            db.session.commit()

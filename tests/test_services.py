@@ -1,4 +1,4 @@
-# tests/test_services.py
+# tests/test_services.py - Fixed TestAdminService class
 import pytest
 import secrets
 from datetime import datetime, timedelta
@@ -298,15 +298,20 @@ class TestAdminService:
     def test_verify_admin_password(self, app):
         """Test admin password verification."""
         with app.app_context():
-            from app.services.admin_service import AdminService
+            from app.admin_auth import reset_password_cache
             from werkzeug.security import generate_password_hash
             
-            # Generate a fresh hash for testing using pbkdf2 (compatible with Python 3.9)
+            # IMPORTANT: Reset the password cache before the test
+            reset_password_cache()
+            
+            # Generate a fresh hash for testing
             test_password = 'test-password-123'
             test_hash = generate_password_hash(test_password, method='pbkdf2:sha256')
             
             # Set it in the config
             app.config['ADMIN_PASSWORD_HASH'] = test_hash
+            # Remove ADMIN_PASSWORD to ensure we use the hash
+            app.config.pop('ADMIN_PASSWORD', None)
             
             # Test with correct password
             result = AdminService.verify_admin_password(test_password)
@@ -315,6 +320,9 @@ class TestAdminService:
             # Test with incorrect password
             result = AdminService.verify_admin_password('wrong-password')
             assert result is False, "Password verification succeeded with wrong password"
+            
+            # Clean up: reset cache after test
+            reset_password_cache()
     
     def test_get_dashboard_data(self, app):
         """Test getting dashboard data."""
