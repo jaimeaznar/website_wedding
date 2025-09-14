@@ -1,44 +1,132 @@
-# Python bytecode
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Virtual environment
+# Virtual Environment
 venv/
 env/
 ENV/
 .venv/
 
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
-.installed.cfg
-*.egg
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
 
-# Flask environment
-.env
+# Flask
 instance/
 .webassets-cache
 
-# Flask database files
-migrations/
-
-# SQLite databases
+# Database
+*.db
 *.sqlite
 *.sqlite3
-*.db
+wedding_db
+test_*.db
+
+# Environment Variables - CRITICAL FOR SECURITY
+.env
+.env.*
+*.env
+!.env.example
+.env.local
+.env.production
+.env.development
+.env.test
+secrets/
+config/secrets/
+
+# Sensitive Backups
+.env.backup*
+*.backup
+backup/
+backups/
+
+# Security Keys and Certificates
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
 
 # Logs
-logs/
 *.log
+logs/
+log/
+
+# Testing
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.hypothesis/
+
+# Migrations (keep structure, ignore local files)
+migrations/versions/*.pyc
+migrations/__pycache__/
+
+# Static files (if generated)
+static/dist/
+static/uploads/
+
+# Node (if using any JS build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Documentation builds
+docs/_build/
+site/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# OS Files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor backups
+*~
+.*.swp
+.*.swo
+
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
 .tox/
-.nox/
 .coverage
 .coverage.*
 .cache
@@ -46,71 +134,49 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
-.pytest_cache/
 
-# Web frontend
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# macOS 
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
+# pyenv
+.python-version
 
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msm
-*.msp
-*.lnk
-
-# Linux
-*~
-.fuse_hidden*
-.directory
-.Trash-*
-.nfs*
-
-# Editor files
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-.project
-.pydevproject
-.settings/
-
-# Development files
-.development.env
-.development.sqlite
-
-# Celery
+# celery beat schedule file
 celerybeat-schedule
-celerybeat.pid
 
-# File uploads (if applicable)
-media/uploads/
-uploads/
+# SageMath parsed files
+*.sage.py
 
-# Cache files
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Local configuration
-local_settings.py
-settings_local.py
+# Pyre type checker
+.pyre/
 
-# For wedding site specifically
-wedding_db
-
-# CSV backups of any data
+# Custom
+*.xlsx
 *.csv
+!guest_template.csv
+uploads/
+downloads/
