@@ -8,17 +8,32 @@ from app.models.rsvp import RSVP
 from app.models.allergen import Allergen
 from app.config import TestConfig
 from dotenv import load_dotenv
+from werkzeug.security import generate_password_hash
 
 # Load environment variables from .env file at the start of testing
 load_dotenv()
 
 class CustomTestConfig(TestConfig):
-    """Custom test configuration to explicitly disable CSRF."""
+    """Custom test configuration with secure test credentials."""
     WTF_CSRF_ENABLED = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    SECRET_KEY = 'test-secret-key'
-    ADMIN_PASSWORD_HASH = 'pbkdf2:sha256:600000$MlXi8Xcgp3y5$d17a4d3dce0a3d5be306beb47fddee0fc7d8c6ba51f7a9c7ea3e4fea4f33ad01'  # 'your-secure-password'
+    SECRET_KEY = 'test-secret-key-for-testing-only'
+    
+    # Generate a test password hash dynamically for testing
+    # This ensures we're not committing actual password hashes
+    TEST_ADMIN_PASSWORD = 'test-admin-password-2024'
+    ADMIN_PASSWORD = TEST_ADMIN_PASSWORD
+    
+    def __init__(self):
+        """Initialize test configuration with dynamic password hash."""
+        super().__init__()
+        # Generate password hash at runtime for tests
+        # This avoids committing any real password hashes
+        self.ADMIN_PASSWORD_HASH = generate_password_hash(
+            self.TEST_ADMIN_PASSWORD,
+            method='pbkdf2:sha256'
+        )
 
 @pytest.fixture(scope='session')
 def app():
