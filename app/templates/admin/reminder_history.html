@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block title %}Reminder History{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Reminder History</h1>
+        <a href="{{ url_for('admin.reminders') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Reminders
+        </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-3">
+                    <label for="type" class="form-label">Reminder Type</label>
+                    <select class="form-select" id="type" name="type">
+                        <option value="">All Types</option>
+                        <option value="initial" {% if request.args.get('type') == 'initial' %}selected{% endif %}>Initial</option>
+                        <option value="first" {% if request.args.get('type') == 'first' %}selected{% endif %}>First Follow-up</option>
+                        <option value="second" {% if request.args.get('type') == 'second' %}selected{% endif %}>Second Follow-up</option>
+                        <option value="final" {% if request.args.get('type') == 'final' %}selected{% endif %}>Final</option>
+                        <option value="manual" {% if request.args.get('type') == 'manual' %}selected{% endif %}>Manual</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">All Statuses</option>
+                        <option value="pending" {% if request.args.get('status') == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="sent" {% if request.args.get('status') == 'sent' %}selected{% endif %}>Sent</option>
+                        <option value="failed" {% if request.args.get('status') == 'failed' %}selected{% endif %}>Failed</option>
+                        <option value="skipped" {% if request.args.get('status') == 'skipped' %}selected{% endif %}>Skipped</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="guest_id" class="form-label">Guest ID</label>
+                    <input type="number" class="form-control" id="guest_id" name="guest_id" 
+                           value="{{ request.args.get('guest_id', '') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">&nbsp;</label>
+                    <div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter me-2"></i>Filter
+                        </button>
+                        <a href="{{ url_for('admin.reminder_history') }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Clear
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- History Table -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-history me-2"></i>Reminder History (Last 100)</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date/Time</th>
+                            <th>Guest</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Email To</th>
+                            <th>Sent By</th>
+                            <th>Error</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reminder in history %}
+                        <tr class="{% if reminder.status == 'failed' %}table-danger{% elif reminder.status == 'sent' %}table-success{% elif reminder.status == 'skipped' %}table-warning{% endif %}">
+                            <td>
+                                <small>
+                                    {{ reminder.created_at.strftime('%Y-%m-%d') }}<br>
+                                    {{ reminder.created_at.strftime('%H:%M:%S') }}
+                                </small>
+                            </td>
+                            <td>
+                                {% if reminder.guest %}
+                                    <strong>{{ reminder.guest.name }}</strong><br>
+                                    <small class="text-muted">ID: {{ reminder.guest.id }}</small>
+                                {% else %}
+                                    <span class="text-muted">Guest deleted</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ reminder.reminder_type|title }}</span>
+                            </td>
+                            <td>
+                                {% if reminder.status == 'sent' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check me-1"></i>Sent
+                                    </span>
+                                    {% if reminder.sent_at %}
+                                        <br><small>{{ reminder.sent_at.strftime('%H:%M') }}</small>
+                                    {% endif %}
+                                {% elif reminder.status == 'failed' %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times me-1"></i>Failed
+                                    </span>
+                                {% elif reminder.status == 'pending' %}
+                                    <span class="badge bg-warning">
+                                        <i class="fas fa-clock me-1"></i>Pending
+                                    </span>
+                                {% elif reminder.status == 'skipped' %}
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-forward me-1"></i>Skipped
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reminder.email_sent_to %}
+                                    <small>{{ reminder.email_sent_to }}</small>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small>{{ reminder.sent_by }}</small>
+                            </td>
+                            <td>
+                                {% if reminder.error_message %}
+                                    <button class="btn btn-sm btn-outline-danger" 
+                                            data-bs-toggle="popover" 
+                                            data-bs-trigger="hover"
+                                            data-bs-content="{{ reminder.error_message }}">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reminder.can_retry %}
+                                    <button class="btn btn-sm btn-primary retry-btn"
+                                            data-reminder-id="{{ reminder.id }}"
+                                            title="Retry sending">
+                                        <i class="fas fa-redo"></i>
+                                    </button>
+                                {% endif %}
+                                {% if reminder.notes %}
+                                    <button class="btn btn-sm btn-info"
+                                            data-bs-toggle="popover"
+                                            data-bs-trigger="hover"
+                                            data-bs-title="Notes"
+                                            data-bs-content="{{ reminder.notes }}">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">
+                                No reminder history found
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Initialize popovers
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+});
+
+// Handle retry button clicks
+document.querySelectorAll('.retry-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const reminderId = this.dataset.reminderId;
+        
+        if (confirm('Retry sending this reminder?')) {
+            // Implementation for retrying reminder
+            // This would need a new endpoint to retry a specific reminder
+            console.log('Retry reminder:', reminderId);
+        }
+    });
+});
+</script>
+{% endblock %}

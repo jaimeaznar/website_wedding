@@ -1,8 +1,8 @@
-"""Initial migration
+"""Add reminder system tables
 
-Revision ID: 29609dd7c9da
+Revision ID: 5b89fecfa20b
 Revises: 
-Create Date: 2025-04-01 15:09:38.981185
+Create Date: 2025-09-23 13:42:55.904915
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '29609dd7c9da'
+revision = '5b89fecfa20b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,6 +37,50 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('token')
+    )
+    op.create_table('reminder_batch',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('batch_type', sa.String(length=20), nullable=False),
+    sa.Column('reminder_type', sa.String(length=20), nullable=False),
+    sa.Column('total_guests', sa.Integer(), nullable=True),
+    sa.Column('sent_count', sa.Integer(), nullable=True),
+    sa.Column('failed_count', sa.Integer(), nullable=True),
+    sa.Column('skipped_count', sa.Integer(), nullable=True),
+    sa.Column('started_at', sa.DateTime(), nullable=True),
+    sa.Column('completed_at', sa.DateTime(), nullable=True),
+    sa.Column('executed_by', sa.String(length=100), nullable=True),
+    sa.Column('days_before_deadline', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('guest_reminder_preference',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('guest_id', sa.Integer(), nullable=False),
+    sa.Column('opt_out', sa.Boolean(), nullable=True),
+    sa.Column('preferred_language', sa.String(length=2), nullable=True),
+    sa.Column('max_reminders', sa.Integer(), nullable=True),
+    sa.Column('total_sent', sa.Integer(), nullable=True),
+    sa.Column('last_reminder_sent', sa.DateTime(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['guest_id'], ['guest.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('guest_id')
+    )
+    op.create_table('reminder_history',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('guest_id', sa.Integer(), nullable=False),
+    sa.Column('reminder_type', sa.String(length=20), nullable=False),
+    sa.Column('status', sa.String(length=20), nullable=False),
+    sa.Column('email_sent_to', sa.String(length=120), nullable=True),
+    sa.Column('email_subject', sa.String(length=200), nullable=True),
+    sa.Column('scheduled_for', sa.DateTime(), nullable=True),
+    sa.Column('sent_at', sa.DateTime(), nullable=True),
+    sa.Column('error_message', sa.Text(), nullable=True),
+    sa.Column('sent_by', sa.String(length=100), nullable=True),
+    sa.Column('notes', sa.Text(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['guest_id'], ['guest.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('rsvp',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -83,6 +127,9 @@ def downgrade():
     op.drop_table('guest_allergen')
     op.drop_table('additional_guest')
     op.drop_table('rsvp')
+    op.drop_table('reminder_history')
+    op.drop_table('guest_reminder_preference')
+    op.drop_table('reminder_batch')
     op.drop_table('guest')
     op.drop_table('allergen')
     # ### end Alembic commands ###
