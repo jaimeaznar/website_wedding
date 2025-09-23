@@ -117,12 +117,6 @@
             <p style="margin-bottom: 0;">Please take just 2 minutes to let us know if you can make it.</p>
         </div>
         
-        {% if custom_message %}
-        <div class="info-box" style="background-color: #fff; border: 1px solid #bcb5d7;">
-            <p><em>{{ custom_message }}</em></p>
-        </div>
-        {% endif %}
-        
         <div style="text-align: center;">
             <a href="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}" class="button">
                 📝 RSVP NOW - It Only Takes 2 Minutes!

@@ -105,11 +105,6 @@
         
         <p>We need to finalize our guest list for catering and seating arrangements. <strong>If we don't hear from you by the deadline, we'll unfortunately have to assume you won't be able to attend.</strong></p>
         
-        {% if custom_message %}
-        <div class="info-box" style="background-color: #fff; border: 1px solid #bcb5d7;">
-            <p><em>{{ custom_message }}</em></p>
-        </div>
-        {% endif %}
         
         <div style="text-align: center;">
             <a href="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}" class="button">

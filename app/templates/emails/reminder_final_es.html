@@ -105,12 +105,6 @@
         
         <p>Necesitamos finalizar nuestra lista de invitados para el catering y la organización de las mesas. <strong>Si no recibimos tu respuesta antes de la fecha límite, lamentablemente tendremos que asumir que no podrás asistir.</strong></p>
         
-        {% if custom_message %}
-        <div class="info-box" style="background-color: #fff; border: 1px solid #bcb5d7;">
-            <p><em>{{ custom_message }}</em></p>
-        </div>
-        {% endif %}
-        
         <div style="text-align: center;">
             <a href="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}" class="button">
                 🎉 CONFIRMAR AHORA - ¡ÚLTIMA OPORTUNIDAD!
