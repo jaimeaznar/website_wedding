@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding RSVP Reminder</title>
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #4A4A4A;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #f9f8fc;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #7a6fac;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .divider {
+            border-top: 1px solid #bcb5d7;
+            margin: 20px 0;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #7a6fac;
+            color: white !important;
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 0.5px;
+        }
+        .button:hover {
+            background-color: #5d5381;
+        }
+        .info-box {
+            background-color: #f5f3fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #9b91c1;
+            margin-top: 30px;
+        }
+        .deadline-warning {
+            color: #7a6fac;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Save the Date Reminder</h1>
+        <p style="color: #9b91c1; font-size: 18px;">Irene & Jaime's Wedding</p>
+    </div>
+
+    <div class="content">
+        <p>Dear {{ guest.name }},</p>
+        
+        <p>We hope this message finds you well! We wanted to remind you that we would love to have you join us for our wedding celebration.</p>
+        
+        <div class="info-box">
+            <p><strong>Wedding Date:</strong> June 6, 2026</p>
+            <p><strong>RSVP Deadline:</strong> <span class="deadline-warning">{{ rsvp_deadline }}</span></p>
+            <p><strong>Days Remaining:</strong> 30 days</p>
+        </div>
+        
+        <p>We haven't received your RSVP yet, and we'd love to know if you'll be able to join us for our special day. Please take a moment to let us know your plans.</p>
+        
+        <div style="text-align: center;">
+            <a href="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}" class="button">
+                RSVP Now
+            </a>
+        </div>
+        
+        <p>If you have any questions or need assistance with your RSVP, please don't hesitate to contact us.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+        <p><strong>Irene & Jaime</strong></p>
+        <p>June 6, 2026</p>
+        <p style="margin-top: 20px; font-size: 12px;">
+            If you're having trouble with the button above, you can copy and paste this link into your browser:<br>
+            {{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}
+        </p>
+    </div>
+</body>
+</html>

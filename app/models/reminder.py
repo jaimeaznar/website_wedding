@@ -10,9 +10,8 @@ class ReminderType:
     FIRST_FOLLOWUP = 'first'     # 14 days before deadline
     SECOND_FOLLOWUP = 'second'   # 7 days before deadline
     FINAL = 'final'              # 3 days before deadline
-    MANUAL = 'manual'            # Manual reminder from admin
     
-    ALL_TYPES = [INITIAL, FIRST_FOLLOWUP, SECOND_FOLLOWUP, FINAL, MANUAL]
+    ALL_TYPES = [INITIAL, FIRST_FOLLOWUP, SECOND_FOLLOWUP, FINAL]
     
     @classmethod
     def get_days_before(cls, reminder_type):
@@ -21,8 +20,7 @@ class ReminderType:
             cls.INITIAL: 30,
             cls.FIRST_FOLLOWUP: 14,
             cls.SECOND_FOLLOWUP: 7,
-            cls.FINAL: 3,
-            cls.MANUAL: None  # Can be sent anytime
+            cls.FINAL: 3        
         }
         return mapping.get(reminder_type)
 

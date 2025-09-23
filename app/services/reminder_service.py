@@ -74,8 +74,6 @@ class ReminderService:
         Returns:
             True if reminder should be sent today
         """
-        if reminder_type == ReminderType.MANUAL:
-            return False  # Manual reminders are sent on demand
         
         # Get RSVP deadline
         deadline_str = current_app.config.get('RSVP_DEADLINE', DEFAULT_CONFIG['RSVP_DEADLINE'])
@@ -102,7 +100,6 @@ class ReminderService:
     def send_reminder(
         guest: Guest,
         reminder_type: str = ReminderType.INITIAL,
-        custom_message: Optional[str] = None,
         sent_by: str = 'system'
     ) -> Tuple[bool, str]:
         """
@@ -111,7 +108,6 @@ class ReminderService:
         Args:
             guest: Guest to send reminder to
             reminder_type: Type of reminder
-            custom_message: Optional custom message for manual reminders
             sent_by: Who is sending (system or admin email)
             
         Returns:
@@ -141,9 +137,6 @@ class ReminderService:
             status=ReminderStatus.PENDING
         )
         
-        if custom_message:
-            reminder.notes = custom_message
-        
         db.session.add(reminder)
         db.session.flush()
         
@@ -172,7 +165,6 @@ class ReminderService:
                 template,
                 guest=guest,
                 rsvp_deadline=deadline_formatted,
-                custom_message=custom_message,
                 reminder_type=reminder_type
             )
             
@@ -219,7 +211,7 @@ class ReminderService:
         """
         # Create batch record
         batch = ReminderBatch(
-            batch_type='scheduled' if executed_by == 'scheduler' else 'manual',
+            batch_type='scheduled',
             reminder_type=reminder_type,
             executed_by=executed_by,
             days_before_deadline=ReminderType.get_days_before(reminder_type)
@@ -281,61 +273,6 @@ class ReminderService:
         db.session.commit()
         
         logger.info(f"Batch reminder {reminder_type} completed: {results['sent']}/{results['total']} sent")
-        
-        return results
-    
-    @staticmethod
-    def send_manual_reminder(
-        guest_ids: List[int],
-        message: Optional[str] = None,
-        sent_by: str = 'admin'
-    ) -> Dict[str, Any]:
-        """
-        Send manual reminders to specific guests.
-        
-        Args:
-            guest_ids: List of guest IDs to send reminders to
-            message: Optional custom message
-            sent_by: Admin email or identifier
-            
-        Returns:
-            Dictionary with results
-        """
-        results = {
-            'total': len(guest_ids),
-            'sent': 0,
-            'failed': 0,
-            'details': []
-        }
-        
-        for guest_id in guest_ids:
-            guest = Guest.query.get(guest_id)
-            if not guest:
-                results['failed'] += 1
-                results['details'].append({
-                    'guest_id': guest_id,
-                    'status': 'failed',
-                    'message': 'Guest not found'
-                })
-                continue
-            
-            success, message_result = ReminderService.send_reminder(
-                guest,
-                ReminderType.MANUAL,
-                custom_message=message,
-                sent_by=sent_by
-            )
-            
-            if success:
-                results['sent'] += 1
-            else:
-                results['failed'] += 1
-            
-            results['details'].append({
-                'guest': guest.name,
-                'status': 'sent' if success else 'failed',
-                'message': message_result
-            })
         
         return results
     
@@ -423,10 +360,6 @@ class ReminderService:
             ReminderType.FINAL: {
                 'en': ('Final RSVP Reminder - 3 Days Left!', 'emails/reminder_final_en.html'),
                 'es': ('Recordatorio Final RSVP - ¡3 Días Restantes!', 'emails/reminder_final_es.html')
-            },
-            ReminderType.MANUAL: {
-                'en': ('RSVP Reminder for Our Wedding', 'emails/reminder_manual_en.html'),
-                'es': ('Recordatorio RSVP para Nuestra Boda', 'emails/reminder_manual_es.html')
             }
         }
         

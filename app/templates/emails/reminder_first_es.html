@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordatorio RSVP - 2 Semanas Restantes</title>
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #4A4A4A;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #f9f8fc;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #7a6fac;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .time-banner {
+            background-color: #66bb6a;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        .divider {
+            border-top: 1px solid #bcb5d7;
+            margin: 20px 0;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #7a6fac;
+            color: white !important;
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 0.5px;
+        }
+        .button:hover {
+            background-color: #5d5381;
+        }
+        .info-box {
+            background-color: #f5f3fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #9b91c1;
+            margin-top: 30px;
+        }
+        .deadline-warning {
+            color: #7a6fac;
+            font-weight: 600;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffa726;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Recordatorio RSVP</h1>
+        <p style="color: #9b91c1; font-size: 18px;">Boda de Irene y Jaime</p>
+    </div>
+
+    <div class="time-banner">
+        📅 2 SEMANAS RESTANTES PARA CONFIRMAR
+    </div>
+
+    <div class="content">
+        <p>Estimado/a {{ guest.name }},</p>
+        
+        <p>¡Esperamos que estés bien! Este es un recordatorio amistoso de que todavía estamos esperando tu respuesta sobre nuestra boda.</p>
+        
+        <div class="info-box">
+            <p><strong>Fecha de la Boda:</strong> 6 de Junio, 2026</p>
+            <p><strong>Fecha Límite RSVP:</strong> <span class="deadline-warning">{{ rsvp_deadline }}</span></p>
+            <p><strong>Tiempo Restante:</strong> 14 días</p>
+        </div>
+        
+        <div class="highlight">
+            <p style="margin: 0;"><strong>Por qué necesitamos tu respuesta pronto:</strong></p>
+            <ul style="margin-bottom: 0;">
+                <li>Finalizar los números de catering</li>
+                <li>Organizar la distribución de mesas</li>
+                <li>Coordinar el transporte si es necesario</li>
+            </ul>
+        </div>
+        
+        <p>Entendemos que la vida puede ser ajetreada, pero realmente apreciaríamos saber si puedes acompañarnos. ¡Solo toma un minuto completar el formulario RSVP!</p>
+    
+        
+        <div style="text-align: center;">
+            <a href="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}" class="button">
+                Completar Tu RSVP
+            </a>
+        </div>
+        
+        <p>Si tienes alguna pregunta sobre la boda, el alojamiento o cualquier otra cosa, ¡no dudes en contactarnos!</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+        <p><strong>¡Esperamos saber de ti pronto!</strong></p>
+        <p><strong>Irene y Jaime</strong></p>
+        <p>6 de Junio, 2026</p>
+        <p style="margin-top: 20px; font-size: 12px;">
+            Si tienes problemas con el botón de arriba, puedes copiar y pegar este enlace en tu navegador:<br>
+            {{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}
+        </p>
+    </div>
+</body>
+</html>
