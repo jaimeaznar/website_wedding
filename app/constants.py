@@ -19,7 +19,7 @@ class Language:
     """Supported languages."""
     ENGLISH = 'en'
     SPANISH = 'es'
-    DEFAULT = ENGLISH
+    DEFAULT = SPANISH
     SUPPORTED = [ENGLISH, SPANISH]
 
 

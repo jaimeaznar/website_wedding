@@ -1,5 +1,35 @@
 // Save this as app/static/js/main.js
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Check for test date in URL (for automated testing)
+    const urlParams = new URLSearchParams(window.location.search);
+    const testDate = urlParams.get('_test_date');
+    
+    const today = testDate ? new Date(testDate) : new Date();
+    const rsvpDeadline = new Date('2026-05-06'); // RSVP deadline
+    const weddingDay = new Date('2026-06-06');   // Wedding day
+
+    // Reset time to compare dates only
+    today.setHours(0, 0, 0, 0);
+    rsvpDeadline.setHours(0, 0, 0, 0);
+    weddingDay.setHours(0, 0, 0, 0);
+
+    // Hide RSVP card after RSVP deadline
+    if (today >= rsvpDeadline) {
+        const rsvpCard = document.querySelector('[data-href*="rsvp"]');
+        if (rsvpCard) rsvpCard.style.display = 'none';
+    }
+
+    // Hide RSVP and Accommodation on wedding day
+    if (today >= weddingDay) {
+        const rsvpCard = document.querySelector('[data-href*="rsvp"]');
+        const accommodationCard = document.querySelector('[data-target="accommodation"]');
+        const accommodationModal = document.getElementById('accommodation-modal');
+        
+        if (rsvpCard) rsvpCard.style.display = 'none';
+        if (accommodationCard) accommodationCard.style.display = 'none';
+        if (accommodationModal) accommodationModal.remove();
+    }
     // Listen for language changes to update dynamic content
     document.addEventListener('languageChanged', function (e) {
         // Any dynamic content that needs updating can be handled here
@@ -18,17 +48,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Navigate to the URL
                 window.location.href = href;
             } else {
-                // Open the modal
+                // Open the modal (instant, no animation)
                 const targetId = this.getAttribute('data-target') + '-modal';
                 const modal = document.getElementById(targetId);
 
                 if (modal) {
-                    const contentWrapper = modal.querySelector('.modal-content-wrapper');
-                    contentWrapper.style.transform = 'translateY(-100%)';
                     modal.style.display = 'flex';
-                    void modal.offsetWidth;
                     modal.classList.add('active');
-                    contentWrapper.style.transform = 'translateY(0)';
                     document.body.style.overflow = 'hidden';
                 }
             }
@@ -59,23 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Close modal function with slide-up animation
+    // Close modal function (instant, no animation)
     function closeModal() {
         const modal = this.closest('.fullscreen-modal');
-        const contentWrapper = modal.querySelector('.modal-content-wrapper');
-
-        // Animate slide up
-        contentWrapper.style.transform = 'translateY(-100%)';
-
-        // After animation completes, hide modal
-        setTimeout(() => {
-            modal.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-            setTimeout(() => {
-                modal.style.display = 'none';
-                contentWrapper.style.transform = ''; // Reset for next opening
-            }, 300);
-        }, 300);
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
     }
 
     // Gallery functionality if gallery page is loaded
@@ -155,4 +170,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+
+    // Hide language switcher on scroll
+    const languageSwitcher = document.querySelector('.language-switcher');
+    if (languageSwitcher) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                languageSwitcher.style.opacity = '0';
+                languageSwitcher.style.pointerEvents = 'none';
+            } else {
+                languageSwitcher.style.opacity = '1';
+                languageSwitcher.style.pointerEvents = 'auto';
+            }
+        });
+    }
+
 });

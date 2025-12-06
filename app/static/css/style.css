@@ -28,22 +28,22 @@ sans-serif;
 
 /* Base variables for consistent styling - UPDATED COLOR PALETTE */
 :root {
-    --primary-color: #7a6fac;
-    --secondary-color: #9b91c1;
-    --accent-color: #f5f3fa;
+    --primary-color: #66397e;        /* Your wedding purple */
+    --secondary-color: #8b6ba1;      /* Lighter purple shade */
+    --accent-color: #f3eef6;         /* Very light purple/lavender */
     --text-color: #4A4A4A;
     --light-color: #ffffff;
-    --muted-color: #f9f8fc;
+    --muted-color: #f9f7fb;
     --success-color: #66bb6a;
     --warning-color: #ffa726;
     --danger-color: #ef5350;
-    --card-shadow: 0 4px 20px rgba(122, 111, 172, 0.1);
+    --card-shadow: 0 4px 20px rgba(102, 57, 126, 0.15);
     --transition-speed: 0.3s;
     --font-primary: 'Cormorant Garamond', serif;
     --font-secondary: 'Montserrat', sans-serif;
 
-    --primary-light: #b4acce;
-    --primary-dark: #5d5381;
+    --primary-light: #9d7ab5;        /* Light purple */
+    --primary-dark: #4d2a60;         /* Dark purple */
 }
 
 /* Global styles - works with Bootstrap */
@@ -180,10 +180,11 @@ a:hover {
 
 /* Language Selector */
 .language-switcher {
-    position: absolute;
+    position: fixed;
     top: 1rem;
     right: 1rem;
-    z-index: 1000;
+    z-index: 3000;
+    transition: opacity 0.3s ease;
 }
 
 .lang-btn {
@@ -338,10 +339,14 @@ a:hover {
     background-color: var(--background-color);
 }
 
+.home-page .navbar {
+    display: none;
+}
+
 .wedding-header {
     text-align: center;
-    padding: 4rem 0;
-    background-color: var(--primary-color);
+    padding: 6rem 0 4rem 0;
+    background-color: var(--accent-color);
     margin-bottom: 3rem;
     position: relative;
     box-shadow: 0 2px 15px rgba(173, 123, 233, 0.2);
@@ -350,14 +355,14 @@ a:hover {
 .wedding-header h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
-    color: white;
+    color:var(--primary-color);
     font-weight: 700;
     letter-spacing: 2px;
 }
 
 .wedding-date {
     font-size: 1.5rem;
-    color: white;
+    color: var(--text-color);
 }
 
 /* Card Grid for home page */
@@ -465,7 +470,7 @@ a:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 2000;
+    z-index: 4000;
     display: none;
     align-items: flex-start;
     justify-content: center;
@@ -484,7 +489,6 @@ a:hover {
     min-height: 100vh;
     overflow-y: auto;
     position: relative;
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .modal-header {
@@ -598,6 +602,24 @@ a:hover {
 }
 
 /* Schedule timeline */
+/* ========================================
+   SCHEDULE MODAL ENHANCEMENTS
+   ======================================== */
+
+.schedule-date-banner {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(102, 57, 126, 0.3);
+    margin-bottom: 3rem;
+}
+
+/* Timeline Container */
 .timeline {
     position: relative;
     max-width: 900px;
@@ -605,67 +627,222 @@ a:hover {
     padding: 20px 0;
 }
 
+/* Desktop: Vertical line in center */
 .timeline::before {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
     left: 50%;
-    width: 2px;
-    background: var(--accent-color);
+    width: 3px;
+    background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
     transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(102, 57, 126, 0.3);
 }
 
+/* Event Card */
 .event {
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     width: 45%;
     background-color: white;
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 4px 20px rgba(102, 57, 126, 0.1);
+    transition: all 0.3s ease;
 }
 
+.event:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(102, 57, 126, 0.2);
+}
+
+/* Dot on the timeline */
 .event::after {
     content: '';
     position: absolute;
-    top: 20px;
-    width: 20px;
-    height: 20px;
+    top: 30px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: var(--primary-color);
-    box-shadow: 0 0 0 4px var(--accent-color);
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 0 0 4px var(--primary-color);
+    z-index: 1;
 }
 
+/* Left side events (odd) */
 .event:nth-child(odd) {
     float: left;
     clear: right;
     padding-right: 30px;
 }
 
+.event:nth-child(odd)::after {
+    right: -12px;
+}
+
+/* Right side events (even) */
 .event:nth-child(even) {
     float: right;
     clear: left;
     padding-left: 30px;
 }
 
-.event:nth-child(odd)::after {
-    right: -10px;
-}
-
 .event:nth-child(even)::after {
-    left: -10px;
+    left: -12px;
 }
 
+/* Event Content Styling */
 .event h3 {
     margin-top: 0;
     color: var(--primary-color);
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
+.event p {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.event p:last-child {
+    margin-bottom: 0;
+}
+
+.event p strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.event i {
+    color: var(--secondary-color);
+    margin-right: 8px;
+}
+
+/* Location Links */
+.location-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.location-link:hover {
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--primary-dark);
+    text-decoration: none;
+}
+
+/* Schedule Note */
+.schedule-note {
+    background-color: var(--accent-color);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border-left: 4px solid var(--primary-color);
+    margin-top: 3rem;
+}
+
+.schedule-note i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.schedule-note strong {
+    color: var(--primary-color);
+}
+
+/* Clear floats */
 .clearfix::after {
     content: "";
     display: table;
     clear: both;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE - TIMELINE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .schedule-date-banner {
+        font-size: 1.2rem;
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Move timeline to left side on mobile */
+    .timeline::before {
+        left: 30px;
+        transform: none;
+    }
+
+    /* Full width cards on mobile */
+    .event {
+        width: auto;
+        float: none !important;
+        margin-bottom: 2rem;
+        padding-left: 70px !important;
+        padding-right: 20px !important;
+    }
+
+    /* All dots on left side */
+    .event::after {
+        left: 18px !important;
+        right: auto !important;
+        top: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .event h3 {
+        font-size: 1.3rem;
+    }
+
+    .schedule-note {
+        padding: 1rem;
+        font-size: 0.9rem;
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .timeline::before {
+        left: 20px;
+    }
+
+    .event {
+        padding-left: 55px !important;
+        padding-right: 15px !important;
+    }
+
+    .event::after {
+        left: 13px !important;
+        width: 16px;
+        height: 16px;
+    }
+
+    .event h3 {
+        font-size: 1.2rem;
+    }
+
+    .event p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .schedule-date-banner {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
+    
+    .schedule-note {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
 }
 
 /* RSVP Form Styles */
@@ -826,22 +1003,22 @@ a:hover {
 /* Footer */
 .footer {
     background-color: var(--primary-color);
-    color: white;
+    color:var(--text-color);
     padding: 3rem 0;
     margin-top: 4rem;
 }
 
 .footer h3 {
-    color: white;
+    color:var(--primary-color);
     margin-bottom: 1rem;
 }
 
 .footer p {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-color);
 }
 
 .footer a {
-    color: white;
+    color: var(--text-color);
     text-decoration: none;
 }
 
@@ -850,8 +1027,16 @@ a:hover {
     text-decoration: underline;
 }
 
+.footer.bg-light {
+    background: var(--accent-color) !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 992px) {
+    .wedding-header {
+        padding: 5rem 0 3rem 0;
+    }
+    
     .wedding-header h1 {
         font-size: 3rem;
     }
@@ -863,7 +1048,7 @@ a:hover {
 
 @media (max-width: 768px) {
     .wedding-header {
-        padding: 3rem 0;
+        padding: 5rem 0 2.5rem 0;
     }
 
     .wedding-header h1 {
@@ -948,5 +1133,785 @@ a:hover {
 
     .d-flex {
         flex-direction: column;
+    }
+}
+
+/* ========================================
+   COUNTDOWN TIMER CARD STYLES
+   ======================================== */
+
+.countdown-card {
+    cursor: default;
+}
+
+.countdown-card:hover {
+    transform: translateY(-5px);
+}
+
+.countdown-card .feature-card-content {
+    padding: 1.5rem 1rem;
+}
+
+.countdown-timer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    min-width: 0; /* Important for text wrapping */
+}
+
+.countdown-item:hover {
+    background-color: rgba(122, 111, 172, 0.2);
+    transform: scale(1.05);
+}
+
+.countdown-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: var(--font-primary);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.countdown-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    text-align: center;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Tablet adjustments */
+@media (max-width: 992px) {
+    .countdown-timer {
+        gap: 0.6rem;
+    }
+    
+    .countdown-value {
+        font-size: 1.75rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.65rem;
+    }
+    
+    .countdown-item {
+        padding: 0.6rem 0.4rem;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .countdown-timer {
+        gap: 0.5rem;
+    }
+    
+    .countdown-item {
+        padding: 0.5rem 0.3rem;
+    }
+    
+    .countdown-value {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.2px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 576px) {
+    .countdown-timer {
+        gap: 0.4rem;
+    }
+    
+    .countdown-value {
+        font-size: 1.3rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.55rem;
+        letter-spacing: 0.1px;
+    }
+    
+    .countdown-item {
+        padding: 0.4rem 0.2rem;
+    }
+}
+
+/* Very small screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+    .countdown-value {
+        font-size: 1.1rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.5rem;
+        letter-spacing: 0;
+    }
+    
+    .countdown-item {
+        padding: 0.35rem 0.15rem;
+    }
+}
+
+/* ========================================
+   ACTIVITIES SECTION ENHANCEMENTS
+   ======================================== */
+
+.activity-section {
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 2rem;
+}
+
+.activity-day-title {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.activity-day-title i {
+    color: var(--secondary-color);
+}
+
+.tips-section {
+    background-color: var(--accent-color);
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.tips-section h3 {
+    color: var(--primary-color);
+    font-family: var(--font-primary);
+}
+
+.tips-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tips-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.tips-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.tips-list strong {
+    color: var(--primary-color);
+}
+
+/* Mobile adjustments for activities */
+@media (max-width: 768px) {
+    .activity-day-title {
+        font-size: 1.4rem;
+    }
+    
+    .tips-section {
+        padding: 1.5rem;
+    }
+}
+
+/* ========================================
+   GIFTS MODAL STYLES
+   ======================================== */
+
+.gifts-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.gifts-heart-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    display: block;
+}
+
+/* Bank Card */
+.bank-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(102, 57, 126, 0.15);
+    border: 2px solid var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.bank-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(102, 57, 126, 0.25);
+}
+
+.bank-card-header {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.bank-card-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-family: var(--font-primary);
+}
+
+.bank-card-header i {
+    font-size: 1.5rem;
+}
+
+.bank-card-body {
+    padding: 2rem;
+}
+
+.bank-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.bank-info-row:last-of-type {
+    border-bottom: none;
+}
+
+.bank-label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.bank-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* IBAN Container with Copy Button */
+.iban-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.iban-number {
+    letter-spacing: 1px;
+}
+
+.btn-copy {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-copy:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.btn-copy:active {
+    transform: scale(0.95);
+}
+
+/* Copy Success Message */
+.copy-success {
+    background-color: var(--success-color);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.copy-success.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Thank You Message */
+.gifts-thank-you {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    font-style: italic;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .bank-card-body {
+        padding: 1.5rem;
+    }
+    
+    .bank-info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .iban-container {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .iban-number {
+        font-size: 0.95rem;
+        word-break: break-all;
+    }
+    
+    .btn-copy {
+        width: 100%;
+        padding: 0.75rem;
+    }
+    
+    .bank-value {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .gifts-heart-icon {
+        font-size: 2.5rem;
+    }
+    
+    .bank-card-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .bank-label {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* ========================================
+   ACCOMMODATION MODAL ENHANCED STYLES
+   ======================================== */
+
+.accommodation-section {
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+}
+
+.accommodation-tier-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-family: var(--font-primary);
+    margin-bottom: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.accommodation-tier-title i.fa-star {
+    color: #ffd700;
+    font-size: 1rem;
+}
+
+.accommodation-tier-title span {
+    margin-left: 0.5rem;
+}
+
+/* Hotel Card Enhanced */
+.hotel-card {
+    position: relative;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(102, 57, 126, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    background: white;
+}
+
+.hotel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(102, 57, 126, 0.2);
+}
+
+.hotel-card-ribbon {
+    position: absolute;
+    top: 15px;
+    right: -35px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: var(--primary-dark);
+    padding: 0.4rem 2.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.hotel-card-ribbon i {
+    font-size: 0.8rem;
+}
+
+.hotel-card-ribbon.ribbon-special {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.hotel-card-ribbon.ribbon-boutique {
+    background: linear-gradient(135deg, #e91e63, #f06292);
+    color: white;
+}
+
+.hotel-info {
+    padding: 2rem;
+}
+
+.hotel-name {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-family: var(--font-primary);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.hotel-badge {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.hotel-badge i {
+    color: var(--secondary-color);
+}
+
+.hotel-distances {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.distance-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.distance-badge.walking {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.distance-badge.driving {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.distance-badge i {
+    font-size: 1rem;
+}
+
+.hotel-description {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.hotel-actions {
+    border-top: 1px solid var(--accent-color);
+    padding-top: 1rem;
+}
+
+.alternative-accommodation {
+    background: linear-gradient(135deg, var(--accent-color), white);
+    border: 2px solid var(--primary-color);
+}
+
+.alternative-accommodation .section-title {
+    color: var(--primary-color);
+    font-family: var(--font-primary);
+    margin-bottom: 1.5rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .accommodation-tier-title {
+        font-size: 1.2rem;
+        flex-wrap: wrap;
+    }
+    
+    .hotel-info {
+        padding: 1.5rem;
+    }
+    
+    .hotel-name {
+        font-size: 1.2rem;
+    }
+    
+    .hotel-distances {
+        flex-direction: column;
+    }
+    
+    .distance-badge {
+        width: fit-content;
+    }
+}
+
+@media (max-width: 576px) {
+    .hotel-card-ribbon {
+        font-size: 0.75rem;
+        padding: 0.3rem 2rem;
+    }
+    
+    .accommodation-tier-title {
+        font-size: 1.1rem;
+    }
+    
+    .accommodation-tier-title i.fa-star {
+        font-size: 0.9rem;
+    }
+}
+
+/* Booking.com Section */
+.booking-icon-wrapper {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.booking-icon-wrapper i {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.alternative-accommodation .alert-info {
+    background-color: rgba(102, 57, 126, 0.05);
+    border-left: 3px solid var(--primary-color);
+    color: var(--text-color);
+}
+
+.alternative-accommodation .btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 576px) {
+    .booking-icon-wrapper {
+        font-size: 2rem;
+    }
+    
+    .alternative-accommodation .btn-lg {
+        width: 100%;
+        font-size: 1rem;
+    }
+}
+
+
+/* ========================================
+   DRESS CODE MODAL STYLES
+   ======================================== */
+
+.dresscode-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.dresscode-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    display: block;
+}
+
+/* Dress Code Card */
+.dresscode-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(102, 57, 126, 0.15);
+    border: 2px solid var(--accent-color);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.dresscode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(102, 57, 126, 0.25);
+}
+
+.dresscode-card-header {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.dresscode-card-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-family: var(--font-primary);
+}
+
+.dresscode-card-header i {
+    font-size: 1.5rem;
+}
+
+.dresscode-card-body {
+    padding: 2rem;
+}
+
+.dresscode-recommendation {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+.dresscode-recommendation i {
+    font-size: 1.3rem;
+}
+
+.dresscode-restrictions {
+    margin-top: 1.5rem;
+}
+
+.restrictions-title {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.restrictions-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.restrictions-list li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+}
+
+.restrictions-list li i {
+    font-size: 1rem;
+}
+
+/* Thank You Message */
+.dresscode-thanks {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    font-style: italic;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .dresscode-card-body {
+        padding: 1.5rem;
+    }
+    
+    .dresscode-card-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .dresscode-recommendation {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dresscode-icon {
+        font-size: 2.5rem;
+    }
+    
+    .dresscode-card-header {
+        padding: 1rem;
+    }
+    
+    .dresscode-card-header h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Celebration message for wedding day */
+.celebration-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+}
+
+.celebration-emoji {
+    font-size: 2.5rem;
+    animation: bounce 1s infinite;
+}
+
+.celebration-text {
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 576px) {
+    .celebration-emoji {
+        font-size: 1.8rem;
+    }
+    
+    .celebration-text {
+        font-size: 1.3rem;
     }
 }

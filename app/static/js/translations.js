@@ -22,11 +22,17 @@ const translations = {
         'card.accommodation': 'Accommodation',
         'card.activities': 'Activities',
         'card.gallery': 'Gallery',
+        'card.countdown': 'Countdown',
+        
+        // Countdown
+        'countdown.days': 'Days',
+        'countdown.hours': 'Hours',
+        'countdown.minutes': 'Minutes',
+        'countdown.seconds': 'Seconds',
 
         // Footer
         'footer.contact': 'Contact',
-        'footer.message': 'We can\'t wait to celebrate with you!',
-        'footer.copyright': '© 2026 Irene & Jaime Wedding',
+        'footer.copyright': '© 2026 aznarroa',
 
         // RSVP Landing
         'rsvp.title': 'Wedding RSVP',
@@ -76,11 +82,25 @@ const translations = {
 
         // Schedule Modal
         'schedule.title': 'Wedding Schedule',
-        'schedule.ceremony': 'Ceremony',
+        'schedule.arrival': 'Guest Arrival & Seating',
+        'schedule.arrival.description': 'Please arrive early to be seated before the bride and groom make their entrance.',
+        'schedule.ceremony': 'Wedding Ceremony',
+        'schedule.ceremony.description': 'Join us as we exchange our vows in the beautiful historic cathedral of Cáceres.',
+        'schedule.cathedral': 'Concatedral de Santa María',
+        'schedule.travel': 'Travel to Reception',
+        'schedule.travel.description': 'Transportation provided',
+        'schedule.travel.details': 'Bus transportation will be available for guests traveling from the cathedral to the reception venue.',
+        'schedule.reception': 'Reception & Celebration',
+        'schedule.reception.description': 'Enjoy an evening of dinner, drinks, and dancing as we celebrate our marriage!',
+        'schedule.venue.name': 'Dehesa la Torrecilla, Trujillo',
         'schedule.cocktail': 'Cocktail Hour',
-        'schedule.reception': 'Reception',
+        'schedule.cocktail.description': 'Drinks and appetizers',
         'schedule.dinner': 'Dinner',
-        'schedule.dancing': 'Dancing',
+        'schedule.dinner.description': 'Traditional Spanish wedding feast',
+        'schedule.dancing': 'Dancing & Celebration',
+        'schedule.dancing.description': 'Dance the night away!',
+        'schedule.note.title': 'Important:',
+        'schedule.note.text': 'Transportation will be provided between the cathedral and reception venue. Please let us know if you need transportation when completing your RSVP.',
 
         // Venue Modal
         'venue.title': 'Wedding Venue',
@@ -91,10 +111,54 @@ const translations = {
         'accommodation.title': 'Accommodation',
         'accommodation.special.rate': 'Special rate',
 
+        // Accommodation Modal
+        'accommodation.intro': 'We\'ve compiled a list of recommended hotels near the ceremony venue. All distances shown are from the Concatedral de Santa María in Cáceres.',
+        'accommodation.five.star': 'Luxury Hotels',
+        'accommodation.four.star': 'Premium Hotels',
+        'accommodation.three.star': 'Comfortable Hotels',
+        'accommodation.min': 'min',
+        'accommodation.visit': 'Visit Website',
+        'accommodation.historic': 'Historic Building',
+        'accommodation.boutique': 'Boutique Hotel',
+        'accommodation.other.options': 'Other Accommodation Options',
+        'accommodation.airbnb.title': 'Airbnb & Vacation Rentals',
+        'accommodation.airbnb.text': 'Many beautiful apartments and houses available in Cáceres old town.',
+        'accommodation.search': 'Search Airbnb',
+        'accommodation.bb.title': 'Bed & Breakfasts',
+        'accommodation.bb.text': 'Charming B&Bs throughout the historic center offer authentic local experiences.',
+        // Accommodation - Booking.com
+        'accommodation.booking.title': 'Search More Hotels on Booking.com',
+        'accommodation.booking.text': 'Explore additional hotels and accommodations near the Concatedral de Santa María in Cáceres.',
+        'accommodation.booking.note': 'Note: The link is pre-configured for 2 adults, June 5-7, 2026, with hotels near the Concatedral de Santa María. You can adjust the search parameters as needed.',
+        'accommodation.booking.search': 'Search on Booking.com',
+
         // Activities Modal
         'activities.title': 'Things to Do',
         'activities.location': 'Location',
         'activities.cost': 'Cost',
+
+        // Activities - Days
+        'activities.friday': 'Friday - Cáceres Old Town',
+        'activities.saturday': 'Saturday Morning - Cáceres Exploration',
+        'activities.sunday': 'Sunday - Trujillo Day Trip',
+        'activities.tips': 'Helpful Tips',
+
+        // Dress Code Card
+        'card.dresscode': 'Dress Code',
+
+        // Dress Code Modal
+        'dresscode.title': 'Dress Code',
+        'dresscode.intro': 'Our wedding is an evening celebration. Please dress accordingly.',
+        'dresscode.women.title': 'Women',
+        'dresscode.women.recommended': 'Long evening dresses',
+        'dresscode.please.avoid': 'Please avoid:',
+        'dresscode.women.no.white': 'White or beige colors',
+        'dresscode.women.no.patterns': 'Patterns',
+        'dresscode.women.no.sequins': 'Sequins',
+        'dresscode.men.title': 'Men',
+        'dresscode.men.recommended': 'Dark suit',
+        'dresscode.thanks': 'Thank you for helping us make this evening elegant and memorable!',
+
 
         // Gallery Modal
         'gallery.title': 'Our Gallery',
@@ -130,7 +194,18 @@ const translations = {
         'none': 'None',
         'free': 'Free',
         'per.person': 'per person',
-        'for.tasting': 'for tasting tour'
+        'for.tasting': 'for tasting tour',
+
+        // Gifts Card
+        'card.gifts': 'Gifts',
+        
+        // Gifts Modal
+        'gifts.title': 'Wedding Gifts',
+        'gifts.intro': 'Your presence at our wedding is the greatest gift of all! However, if you wish to give a gift, a contribution toward our future together would be greatly appreciated.',
+        'gifts.bank.title': 'Bank Transfer',
+        'gifts.bank.name': 'Account Name:',
+        'gifts.copied': 'IBAN copied to clipboard!',
+        'gifts.thanks': 'Thank you for your generosity and for being part of our special day!',
     },
     es: {
         // Common
@@ -148,17 +223,23 @@ const translations = {
         'nav.rsvp': 'RSVP',
 
         // Home page cards
-        'card.rsvp': 'RSVP',
+        'card.rsvp': 'Confirmación',
         'card.schedule': 'Programa',
         'card.venue': 'Lugar',
         'card.accommodation': 'Alojamiento',
         'card.activities': 'Actividades',
         'card.gallery': 'Galería',
+        'card.countdown': 'Cuenta Atrás',
+        
+        // Countdown
+        'countdown.days': 'Días',
+        'countdown.hours': 'Horas',
+        'countdown.minutes': 'Minutos',
+        'countdown.seconds': 'Segundos',
 
         // Footer
         'footer.contact': 'Contacto',
-        'footer.message': '¡Estamos deseando celebrar con vosotros!',
-        'footer.copyright': '© 2026 Boda Irene y Jaime',
+        'footer.copyright': '© 2026 aznarroa',
 
         // RSVP Landing
         'rsvp.title': 'RSVP de Boda',
@@ -207,12 +288,27 @@ const translations = {
         'rsvp.sorry': 'Sentimos que no puedas asistir a nuestra celebración.',
 
         // Schedule Modal
+        // Schedule Modal
         'schedule.title': 'Programa de la Boda',
-        'schedule.ceremony': 'Ceremonia',
-        'schedule.cocktail': 'Cóctel',
-        'schedule.reception': 'Recepción',
+        'schedule.arrival': 'Llegada y Asientos de Invitados',
+        'schedule.arrival.description': 'Por favor, llega temprano para estar sentado antes de la entrada de los novios.',
+        'schedule.ceremony': 'Ceremonia de Boda',
+        'schedule.ceremony.description': 'Acompáñanos mientras intercambiamos nuestros votos en la hermosa catedral histórica de Cáceres.',
+        'schedule.cathedral': 'Concatedral de Santa María',
+        'schedule.travel': 'Viaje a la Recepción',
+        'schedule.travel.description': 'Transporte proporcionado',
+        'schedule.travel.details': 'Habrá transporte en autobús disponible para los invitados que viajen desde la catedral hasta el lugar de la recepción.',
+        'schedule.reception': 'Recepción y Celebración',
+        'schedule.reception.description': '¡Disfruta de una velada de cena, bebidas y baile mientras celebramos nuestro matrimonio!',
+        'schedule.venue.name': 'Dehesa la Torrecilla, Trujillo',
+        'schedule.cocktail': 'Hora de Cóctel',
+        'schedule.cocktail.description': 'Bebidas y aperitivos',
         'schedule.dinner': 'Cena',
-        'schedule.dancing': 'Baile',
+        'schedule.dinner.description': 'Banquete tradicional español de boda',
+        'schedule.dancing': 'Baile y Celebración',
+        'schedule.dancing.description': '¡Baila toda la noche!',
+        'schedule.note.title': 'Importante:',
+        'schedule.note.text': 'Se proporcionará transporte entre la catedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu RSVP.',
 
         // Venue Modal
         'venue.title': 'Lugar de la Boda',
@@ -223,10 +319,52 @@ const translations = {
         'accommodation.title': 'Alojamiento',
         'accommodation.special.rate': 'Tarifa especial',
 
+        // Accommodation Modal
+        'accommodation.intro': 'Hemos recopilado una lista de hoteles recomendados cerca del lugar de la ceremonia. Todas las distancias mostradas son desde la Concatedral de Santa María en Cáceres.',
+        'accommodation.five.star': 'Hoteles de Lujo',
+        'accommodation.four.star': 'Hoteles Premium',
+        'accommodation.three.star': 'Hoteles Confortables',
+        'accommodation.min': 'min',
+        'accommodation.visit': 'Visitar Sitio Web',
+        'accommodation.historic': 'Edificio Histórico',
+        'accommodation.boutique': 'Hotel Boutique',
+        'accommodation.other.options': 'Otras Opciones de Alojamiento',
+        'accommodation.airbnb.title': 'Airbnb y Alquileres Vacacionales',
+        'accommodation.airbnb.text': 'Muchos apartamentos y casas hermosas disponibles en el casco antiguo de Cáceres.',
+        'accommodation.search': 'Buscar en Airbnb',
+        'accommodation.bb.title': 'Casas Rurales y B&B',
+        'accommodation.bb.text': 'Encantadoras casas rurales en el centro histórico ofrecen experiencias locales auténticas.',
+        // Accommodation - Booking.com
+        'accommodation.booking.title': 'Buscar Más Hoteles en Booking.com',
+        'accommodation.booking.text': 'Explora hoteles adicionales y alojamientos cerca de la Concatedral de Santa María en Cáceres.',
+        'accommodation.booking.note': 'Nota: El enlace está preconfigurado para 2 adultos, 5-7 de junio de 2026, con hoteles cerca de la Concatedral de Santa María. Puedes ajustar los parámetros de búsqueda según sea necesario.',
+        'accommodation.booking.search': 'Buscar en Booking.com',
+
         // Activities Modal
         'activities.title': 'Qué Hacer',
         'activities.location': 'Ubicación',
         'activities.cost': 'Coste',
+        // Activities - Days
+        'activities.friday': 'Viernes - Casco Antiguo de Cáceres',
+        'activities.saturday': 'Sábado por la Mañana - Explorando Cáceres',
+        'activities.sunday': 'Domingo - Excursión a Trujillo',
+        'activities.tips': 'Consejos Útiles',
+
+        // Dress Code Card
+        'card.dresscode': 'Código de Vestimenta',
+
+        // Dress Code Modal
+        'dresscode.title': 'Código de Vestimenta',
+        'dresscode.intro': 'Nuestra boda es una celebración de tarde. Por favor, vestid de acuerdo a la ocasión.',
+        'dresscode.women.title': 'Mujeres',
+        'dresscode.women.recommended': 'Vestido largo de tarde',
+        'dresscode.please.avoid': 'Por favor, evitad:',
+        'dresscode.women.no.white': 'Colores blanco o beige',
+        'dresscode.women.no.patterns': 'Estampados',
+        'dresscode.women.no.sequins': 'Lentejuelas',
+        'dresscode.men.title': 'Hombres',
+        'dresscode.men.recommended': 'Traje oscuro',
+        'dresscode.thanks': '¡Gracias por ayudarnos a hacer esta velada elegante y memorable!',
 
         // Gallery Modal
         'gallery.title': 'Nuestra Galería',
@@ -262,14 +400,25 @@ const translations = {
         'none': 'Ninguno',
         'free': 'Gratis',
         'per.person': 'por persona',
-        'for.tasting': 'para tour de cata'
+        'for.tasting': 'para tour de cata',
+
+        // Gifts Card
+        'card.gifts': 'Regalos',
+        
+        // Gifts Modal
+        'gifts.title': 'Regalos de Boda',
+        'gifts.intro': '¡Vuestra presencia en nuestra boda es el mayor regalo! Sin embargo, si deseáis hacer un regalo, una contribución para nuestro futuro juntos sería muy apreciada.',
+        'gifts.bank.title': 'Transferencia Bancaria',
+        'gifts.bank.name': 'Nombre de Cuenta:',
+        'gifts.copied': '¡IBAN copiado al portapapeles!',
+        'gifts.thanks': '¡Gracias por vuestra generosidad y por ser parte de nuestro día especial!',
     }
 };
 
 // Translation system
 class TranslationSystem {
     constructor() {
-        this.currentLang = localStorage.getItem('preferredLanguage') || 'en';
+        this.currentLang = localStorage.getItem('preferredLanguage') || 'es';
         this.translations = translations;
     }
 

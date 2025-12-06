@@ -15,7 +15,7 @@ migrate = Migrate()
 csrf = CSRFProtect()
 
 def get_locale():
-    return request.accept_languages.best_match(['en', 'es'])
+    request.accept_languages.best_match(['es', 'en'], default='es')
 
 def create_app(config_class=None):
     """Create and configure the Flask application."""
