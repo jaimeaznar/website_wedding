@@ -171,33 +171,6 @@ def export_report():
     flash('Export functionality coming soon!', 'info')
     return redirect(url_for('admin.dashboard'))
 
-
-# Debug route - can be removed in production
-@bp.route('/debug/allergens')
-@admin_required
-def debug_allergens():
-    """Debug route to check allergens in the database."""
-    from flask import jsonify
-    from app.services.allergen_service import AllergenService
-    
-    rsvps = RSVPService.get_all_rsvps()
-    result = []
-    
-    for rsvp in rsvps:
-        allergens = AllergenService.get_allergens_for_rsvp(rsvp.id)
-        
-        rsvp_info = {
-            'rsvp_id': rsvp.id,
-            'guest_name': rsvp.guest.name if rsvp.guest else 'Unknown',
-            'is_attending': rsvp.is_attending,
-            'is_cancelled': rsvp.is_cancelled,
-            'allergens': allergens
-        }
-        
-        result.append(rsvp_info)
-    
-    return jsonify(result)
-
 # ============= REMINDER MANAGEMENT ROUTES =============
 
 @bp.route('/reminders')

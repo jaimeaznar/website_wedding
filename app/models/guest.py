@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db
+
 
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,7 +12,7 @@ class Guest(db.Model):
     has_plus_one = db.Column(db.Boolean, default=False)
     plus_one_used = db.Column(db.Boolean, default=False)
     is_family = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Updated relationship with cascade delete
     rsvp = db.relationship('RSVP', back_populates='guest', uselist=False, cascade='all, delete-orphan')

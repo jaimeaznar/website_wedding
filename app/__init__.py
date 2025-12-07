@@ -15,7 +15,7 @@ migrate = Migrate()
 csrf = CSRFProtect()
 
 def get_locale():
-    request.accept_languages.best_match(['es', 'en'], default='es')
+    return request.accept_languages.best_match(['es', 'en'], default='es')
 
 def create_app(config_class=None):
     """Create and configure the Flask application."""
@@ -82,9 +82,8 @@ def create_app(config_class=None):
     
     # Register blueprints
     print("Registering blueprints...")
-    from app.routes import main_bp, auth_bp, rsvp_bp, admin_bp
+    from app.routes import main_bp, rsvp_bp, admin_bp
     app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp)
     app.register_blueprint(rsvp_bp)
     app.register_blueprint(admin_bp)
     print("Blueprints registered!")

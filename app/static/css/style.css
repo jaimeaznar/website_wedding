@@ -1,36 +1,9 @@
 /* Base variables for consistent styling - UPDATED COLOR PALETTE */
-/* :root {
-    --primary-color: #AD7BE9;
---secondary-color: #3E54AC;
---accent-color: #BFDCE5;
---background-color: #EEEEEE;
---text-color: #4A4A4A;
---light-color: #ffffff;
---muted-color: #f8f9fa;
-
---success-color: #28a745;
---warning-color: #ffc107;
---danger-color: #dc3545;
---info-color: #17a2b8;
-
---card-shadow: 0 4px 20px rgba(173, 123, 233, 0.1);
---transition-speed: 0.3s;
---font-primary: 'Cormorant Garamond',
-serif;
---font-secondary: 'Montserrat',
-sans-serif;
-
---primary-light: #C8B1ED;
---primary-dark: #8A5FD1;
---secondary-light: #6B7BC7;
---secondary-dark: #2A3E82;
-}*/
-
-/* Base variables for consistent styling - UPDATED COLOR PALETTE */
 :root {
     --primary-color: #66397e;        /* Your wedding purple */
     --secondary-color: #8b6ba1;      /* Lighter purple shade */
     --accent-color: #f3eef6;         /* Very light purple/lavender */
+    --background-color: #f9f7fb;     /* Page background */
     --text-color: #4A4A4A;
     --light-color: #ffffff;
     --muted-color: #f9f7fb;
