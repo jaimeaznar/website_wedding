@@ -5,8 +5,8 @@
 
 {% block content %}
 <div class="language-switcher">
-    <a href="#" class="lang-btn active" data-lang="en">EN</a>
-    <a href="#" class="lang-btn" data-lang="es">ES</a>
+    <a href="#" class="lang-btn active" data-lang="es">ES</a>
+    <a href="#" class="lang-btn" data-lang="en">EN</a>
 </div>
 
 <div class="wedding-header">
@@ -16,11 +16,37 @@
 
 <div class="container">
     <div class="card-grid">
+        <!-- NEW: Countdown Timer Card -->
+        <div class="feature-card countdown-card">
+            <div class="feature-card-content">
+                <i class="fas fa-heart feature-card-icon"></i>
+                <h3 class="feature-card-title" data-translate="card.countdown">
+                    Countdown</h3>
+                <div class="countdown-timer">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="days">0</span>
+                        <span class="countdown-label" data-translate="countdown.days">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="hours">0</span>
+                        <span class="countdown-label" data-translate="countdown.hours">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="minutes">0</span>
+                        <span class="countdown-label" data-translate="countdown.minutes">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="seconds">0</span>
+                        <span class="countdown-label" data-translate="countdown.seconds">Seconds</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="feature-card clickable-card" data-target="rsvp"
             data-href="{{ url_for('rsvp.landing') }}">
             <div class="feature-card-content">
                 <i class="fas fa-envelope feature-card-icon"></i>
-                <h3 class="feature-card-title" data-translate="card.rsvp">RSVP
+                <h3 class="feature-card-title" data-translate="card.rsvp">Confirmación
                 </h3>
             </div>
         </div>
@@ -51,19 +77,26 @@
 
         <div class="feature-card clickable-card" data-target="activities">
             <div class="feature-card-content">
-                <i class="fas fa-umbrella-beach feature-card-icon"></i>
+                <i class="fas fa-landmark feature-card-icon"></i>
                 <h3 class="feature-card-title" data-translate="card.activities">
                     Activities</h3>
             </div>
         </div>
-
-        <div class="feature-card clickable-card" data-target="gallery">
+        <div class="feature-card clickable-card" data-target="gifts">
             <div class="feature-card-content">
-                <i class="fas fa-images feature-card-icon"></i>
-                <h3 class="feature-card-title" data-translate="card.gallery">
-                    Gallery</h3>
+                <i class="fas fa-gift feature-card-icon"></i>
+                <h3 class="feature-card-title" data-translate="card.gifts">
+                    Gifts</h3>
             </div>
         </div>
+        <div class="feature-card clickable-card" data-target="dresscode">
+            <div class="feature-card-content">
+                <i class="fas fa-user-tie feature-card-icon"></i>
+                <h3 class="feature-card-title" data-translate="card.dresscode">
+                    Dress Code</h3>
+            </div>
+        </div>
+        
     </div>
 </div>
 
@@ -76,20 +109,98 @@
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
+            <!-- Date Banner -->
+            <div class="schedule-date-banner mb-4">
+                <i class="fas fa-calendar-heart me-2"></i>
+                <span data-translate="wedding.date">June 6, 2026</span>
+            </div>
+
             <div class="timeline clearfix">
+                <!-- Arrival & Seating -->
                 <div class="event">
-                    <h3 data-translate="schedule.ceremony">Ceremony</h3>
-                    <p><i class="far fa-clock me-2"></i> [Time]</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
-                    <p>[Description]</p>
+                    <h3 data-translate="schedule.arrival">Guest Arrival & Seating</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>17:30</strong></p>
+                    <p>
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <a href="https://maps.app.goo.gl/mjmxcZEumGro7XSi9" target="_blank" rel="noopener" class="location-link">
+                            <span data-translate="schedule.cathedral">Concatedral de Santa María</span>
+                        </a>
+                    </p>
+                    <p data-translate="schedule.arrival.description">Please arrive early to be seated before the bride and groom make their entrance.</p>
                 </div>
+
+                <!-- Ceremony -->
                 <div class="event">
-                    <h3 data-translate="schedule.reception">Reception</h3>
-                    <p><i class="far fa-clock me-2"></i> [Time]</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i> [Location]</p>
-                    <p>[Description]</p>
+                    <h3 data-translate="schedule.ceremony">Wedding Ceremony</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>18:00</strong></p>
+                    <p>
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <a href="https://maps.app.goo.gl/mjmxcZEumGro7XSi9" target="_blank" rel="noopener" class="location-link">
+                            <span data-translate="schedule.cathedral">Concatedral de Santa María</span>
+                        </a>
+                    </p>
+                    <p data-translate="schedule.ceremony.description">Join us as we exchange our vows in the beautiful historic cathedral of Cáceres.</p>
                 </div>
-                <!-- Add more events as needed -->
+
+                <!-- Travel to Reception -->
+                <div class="event">
+                    <h3 data-translate="schedule.travel">Travel to Reception</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>19:00 - 20:00</strong></p>
+                    <p>
+                        <i class="fas fa-bus me-2"></i>
+                        <span data-translate="schedule.travel.description">Transportation provided</span>
+                    </p>
+                    <p data-translate="schedule.travel.details">Bus transportation will be available for guests traveling from the cathedral to the reception venue.</p>
+                </div>
+
+                <!-- Reception -->
+                <div class="event">
+                    <h3 data-translate="schedule.reception">Reception & Celebration</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>20:00 onwards</strong></p>
+                    <p>
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <a href="https://maps.app.goo.gl/sqKuDP1WgD8JataR6" target="_blank" rel="noopener" class="location-link">
+                            <span data-translate="schedule.venue.name">Dehesa la Torrecilla, Trujillo</span>
+                        </a>
+                    </p>
+                    <p data-translate="schedule.reception.description">Enjoy an evening of dinner, drinks, and dancing as we celebrate our marriage!</p>
+                </div>
+
+                <!-- Cocktails & Dinner -->
+                <div class="event">
+                    <h3 data-translate="schedule.cocktail">Cocktail Hour</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>20:00 - 21:00</strong></p>
+                    <p>
+                        <i class="fas fa-glass-cheers me-2"></i>
+                        <span data-translate="schedule.cocktail.description">Drinks and appetizers</span>
+                    </p>
+                </div>
+
+                <div class="event">
+                    <h3 data-translate="schedule.dinner">Dinner</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>21:00</strong></p>
+                    <p>
+                        <i class="fas fa-utensils me-2"></i>
+                        <span data-translate="schedule.dinner.description">Traditional Spanish wedding feast</span>
+                    </p>
+                </div>
+
+                <!-- Dancing -->
+                <div class="event">
+                    <h3 data-translate="schedule.dancing">Dancing & Celebration</h3>
+                    <p><i class="far fa-clock me-2"></i> <strong>22:30 - Late</strong></p>
+                    <p>
+                        <i class="fas fa-music me-2"></i>
+                        <span data-translate="schedule.dancing.description">Dance the night away!</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Important Note -->
+            <div class="schedule-note mt-5">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong data-translate="schedule.note.title">Important:</strong>
+                <span data-translate="schedule.note.text">Transportation will be provided between the cathedral and reception venue. Please let us know if you need transportation when completing your RSVP.</span>
             </div>
         </div>
     </div>
@@ -109,69 +220,20 @@
                         class="img-fluid rounded mb-3" alt="Venue">
                 </div>
                 <div class="col-md-6">
-                    <h3>[Venue Name]</h3>
-                    <p>[Venue description]</p>
+                    <h3>Dehesa La Torrecilla</h3>
                     <h4 data-translate="venue.location">Location</h4>
-                    <p>[Address]</p>
+                    <p>Dehesa la Torrecilla, 10220 Trujillo, Cáceres</p>
                     <h4 data-translate="venue.getting.there">Getting There</h4>
-                    <p>[Directions]</p>
-                    <div id="map" style="height: 300px;"
-                        class="mb-3 bg-light rounded d-flex align-items-center justify-content-center">
-                        <p class="mb-0">Map will be embedded here</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Gallery Modal -->
-<div id="gallery-modal" class="fullscreen-modal">
-    <div class="modal-content-wrapper">
-        <div class="modal-header">
-            <h2 data-translate="gallery.title">Our Gallery</h2>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="" alt="Gallery Image 1">
-                    <div class="gallery-caption">
-                        <p data-translate="gallery.first.meet">First time we met
-                        </p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="" alt="Gallery Image 2">
-                    <div class="gallery-caption">
-                        <p data-translate="gallery.engagement">Our engagement
-                            day</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="" alt="Gallery Image 3">
-                    <div class="gallery-caption">
-                        <p data-translate="gallery.traveling">Traveling together
-                        </p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="" alt="Gallery Image 4">
-                    <div class="gallery-caption">
-                        <p data-translate="gallery.special">Special moments</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="" alt="Gallery Image 5">
-                    <div class="gallery-caption">
-                        <p data-translate="gallery.holiday">Holiday memories</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="" alt="Gallery Image 6">
-                    <div class="gallery-caption">
-                        <p data-translate="gallery.celebrating">Celebrating
-                            together</p>
+                    <div class="venue-map-container mb-3">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3083.014433275875!2d-5.8683886233765925!3d39.4011795168212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd15a5000072cde5%3A0xf5c52bb834bab855!2sDehesa%20la%20Torrecilla!5e0!3m2!1sen!2ses!4v1763393726402!5m2!1sen!2ses" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0; border-radius: 10px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -187,67 +249,328 @@
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <div class="hotel-card mb-4">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="" alt="Hotel 1"
-                                    class="hotel-img w-100 h-100">
+            <!-- Introduction -->
+            <div class="row mb-4">
+                <div class="col-md-10 offset-md-1">
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span data-translate="accommodation.intro">We've compiled a list of recommended hotels near the ceremony venue. All distances shown are from the Concatedral de Santa María in Cáceres.</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- 4-Star Hotels -->
+            <div class="accommodation-section mb-5">
+                <h3 class="accommodation-tier-title">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span data-translate="accommodation.four.star">Premium Hotels</span>
+                </h3>
+                
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon">
+                                4 <i class="fas fa-star ms-1"></i>
                             </div>
-                            <div class="col-md-8">
-                                <div class="hotel-info">
-                                    <h3 class="hotel-name">Hotel Name 1</h3>
-                                    <div class="info-row">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <div>123 Main Street, City, Country
-                                        </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-phone"></i>
-                                        <div>+1 234 567 890</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-globe"></i>
-                                        <div><a href="#"
-                                                target="_blank">www.hotel1.com</a>
-                                        </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-tag"></i>
-                                        <div>Special rate: $150/night</div>
-                                    </div>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">NH Collection Cáceres Palacio de Oquendo</h3>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        5 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        8 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Historic palace converted into a luxury hotel in the heart of the old town. Elegant rooms with modern amenities in a 16th-century building.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="https://www.nh-collection.com/es/hotel/nh-collection-caceres-palacio-de-oquendo" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Gran Hotel Don Manuel -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon">
+                                4 <i class="fas fa-star ms-1"></i>
+                            </div>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">Gran Hotel Don Manuel</h3>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        8 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        12 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Modern comfort with excellent service. Features a rooftop terrace and contemporary design in a convenient location.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="https://www.granhoteldonmanuel.com/" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="hotel-card">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="" alt="Hotel 2"
-                                    class="hotel-img w-100 h-100">
+                    <!-- Exe Ágora Cáceres -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon">
+                                4 <i class="fas fa-star ms-1"></i>
                             </div>
-                            <div class="col-md-8">
-                                <div class="hotel-info">
-                                    <h3 class="hotel-name">Hotel Name 2</h3>
-                                    <div class="info-row">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <div>456 Oak Avenue, City, Country</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-phone"></i>
-                                        <div>+1 234 567 891</div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-globe"></i>
-                                        <div><a href="#"
-                                                target="_blank">www.hotel2.com</a>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">Exe Ágora Cáceres</h3>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        6 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        10 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Contemporary hotel with comfortable rooms and modern facilities. Great value in a central location.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="https://www.eurostarshotels.com/exe-agora-caceres.html" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parador de Cáceres -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon ribbon-special">
+                                <i class="fas fa-medal me-1"></i>
+                                4 <i class="fas fa-star ms-1"></i>
+                            </div>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">Parador de Cáceres</h3>
+                                <span class="hotel-badge">
+                                    <i class="fas fa-monument me-1"></i>
+                                    <span data-translate="accommodation.historic">Historic Building</span>
+                                </span>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        5 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        3 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Located in a 14th-century palace within the monumental city. Experience Spanish hospitality in a truly unique setting.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="https://paradores.es/es/parador-de-caceres" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extremadura Hotel -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon">
+                                4 <i class="fas fa-star ms-1"></i>
+                            </div>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">Extremadura Hotel</h3>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        22 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        9 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Modern hotel with spacious rooms and excellent amenities. Perfect for those seeking comfort and convenience.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="http://www.extremadurahotel.com" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3-Star Hotels -->
+            <div class="accommodation-section mb-5">
+                <h3 class="accommodation-tier-title">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span data-translate="accommodation.three.star">Comfortable Hotels</span>
+                </h3>
+                
+                <div class="row">
+                    <!-- Hotel Alcántara -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon">
+                                3 <i class="fas fa-star ms-1"></i>
+                            </div>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">Hotel Alcántara</h3>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        15 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        11 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Cozy and welcoming hotel offering great value. Clean, comfortable rooms with friendly service.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="https://www.hotelalcantaracaceres.com/" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Soho Boutique Casa Don Fernando -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="hotel-card">
+                            <div class="hotel-card-ribbon ribbon-boutique">
+                                <i class="fas fa-gem me-1"></i>
+                                3 <i class="fas fa-star ms-1"></i>
+                            </div>
+                            <div class="hotel-info">
+                                <h3 class="hotel-name">Soho Boutique Casa Don Fernando</h3>
+                                <span class="hotel-badge">
+                                    <i class="fas fa-sparkles me-1"></i>
+                                    <span data-translate="accommodation.boutique">Boutique Hotel</span>
+                                </span>
+                                
+                                <div class="hotel-distances mb-3">
+                                    <span class="distance-badge walking">
+                                        <i class="fas fa-walking me-1"></i>
+                                        3 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                    <span class="distance-badge driving">
+                                        <i class="fas fa-car me-1"></i>
+                                        12 <span data-translate="accommodation.min">min</span>
+                                    </span>
+                                </div>
+
+                                <p class="hotel-description">Charming boutique hotel in the old town. Unique rooms with character and personalized service in a prime location.</p>
+
+                                <div class="hotel-actions mt-3">
+                                    <a href="https://www.sohohoteles.com/destinos/hotel-soho-boutique-casa-don-fernando-3/" 
+                                       target="_blank" 
+                                       rel="noopener" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        <span data-translate="accommodation.visit">Visit Website</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Options -->
+            <div class="row mt-5">
+                <div class="col-md-10 offset-md-1">
+                    <div class="card alternative-accommodation">
+                        <div class="card-body">
+                            <h3 class="section-title">
+                                <i class="fas fa-search me-2"></i>
+                                <span data-translate="accommodation.other.options">Other Accommodation Options</span>
+                            </h3>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-start mb-3">
+                                        <div class="booking-icon-wrapper">
+                                            <i class="fas fa-hotel me-3 text-primary"></i>
                                         </div>
-                                    </div>
-                                    <div class="info-row">
-                                        <i class="fas fa-tag"></i>
-                                        <div>Special rate: $120/night</div>
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-2" data-translate="accommodation.booking.title">Search More Hotels on Booking.com</h5>
+                                            <p class="mb-2" data-translate="accommodation.booking.text">Explore additional hotels and accommodations near the Concatedral de Santa María in Cáceres.</p>
+                                            <div class="alert alert-info mb-3">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                <small>
+                                                    <span data-translate="accommodation.booking.note">Note: The link is pre-configured for 2 adults, June 5-7, 2026, with hotels near the Concatedral de Santa María. You can adjust the search parameters as needed.</span>
+                                                </small>
+                                            </div>
+                                            <a href="https://www.booking.com/searchresults.html?label=gen173nr-10CAEoggI46AdIM1gEaEaIAQGYATO4AQfIAQ3YAQPoAQH4AQGIAgGoAgG4Avb3h8kGwAIB0gIkY2U0NjUxZDAtYWU0OS00MWFlLWI4ZTctN2U1ZTIwMmI2Yzdi2AIB4AIB&aid=304142&ss=Cáceres%2C+Extremadura%2C+Spain&efdco=1&lang=en-us&src=index&dest_id=-374847&dest_type=city&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=5&search_selected=true&search_pageview_id=bb757f7b95b40088&checkin=2026-06-05&checkout=2026-06-07&group_adults=2&no_rooms=1&group_children=0&nflt=ht_id%3D204%3Bpopular_nearby_landmarks%3D2354" 
+                                               target="_blank" 
+                                               rel="noopener" 
+                                               class="btn btn-primary btn-lg">
+                                                <i class="fas fa-external-link-alt me-2"></i>
+                                                <span data-translate="accommodation.booking.search">Search on Booking.com</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -263,63 +586,437 @@
 <div id="activities-modal" class="fullscreen-modal">
     <div class="modal-content-wrapper">
         <div class="modal-header">
-            <h2>Things to Do</h2>
+            <h2 data-translate="activities.title">Things to Do</h2>
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="activity-card">
-                        <img src="" alt="Local Museum"
-                            class="activity-img w-100">
-                        <div class="card-body">
-                            <h3 class="activity-name">Local Museum</h3>
-                            <p>Explore the history and culture of the region
-                                through
-                                interactive exhibits.</p>
-                            <p><span class="info-label">Location:</span> 123
-                                Museum
-                                Street</p>
-                            <p><span class="info-label">Cost:</span> $10 per
-                                person
-                            </p>
+            <!-- Introduction -->
+            <div class="mb-4 text-center">
+                <p class="lead">Explore the beautiful medieval towns of Cáceres and Trujillo while you're here for our wedding!</p>
+            </div>
+
+            <!-- Friday - Cáceres -->
+            <div class="activity-section mb-5">
+                <h3 class="activity-day-title">
+                    <i class="fas fa-calendar-day me-2"></i>
+                    <span data-translate="activities.friday">Friday - Cáceres Old Town</span>
+                </h3>
+                <p class="mb-4">Arrive and explore the UNESCO World Heritage medieval city.</p>
+                
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://dare2go.com/travel/wp-content/uploads/2019/10/Arco-de-la-Estrella.jpg" 
+                                 alt="Plaza Mayor Cáceres" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Plaza Mayor & Old Town</h3>
+                                <p>Start your visit at the historic Plaza Mayor and enter the walled city through the stunning Arco de la Estrella.</p>
+                                <p><span class="info-label">Time:</span> 2-3 hours</p>
+                                <p><span class="info-label">Location:</span> Cáceres Historic Center</p>
+                                <p><span class="info-label">Cost:</span> <span data-translate="free">Free</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://global-geography.org/attach/Geography/Europe/Spain/Pictures/Caceres/Plaza_Mayor_at_Night_3/B051_Plaza_Mayor_Nacht_Plaza_Mayor_Nacht.jpg" 
+                                 alt="Bujaco Tower" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Torre de Bujaco</h3>
+                                <p>Climb this 12th-century tower for panoramic views of the city and surrounding countryside.</p>
+                                <p><span class="info-label">Time:</span> 1 hour</p>
+                                <p><span class="info-label">Location:</span> Plaza Mayor</p>
+                                <p><span class="info-label">Cost:</span> €2.50</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/89/4e/1a/photo7jpg.jpg" 
+                                 alt="Cáceres Evening" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Evening Tapas Tour</h3>
+                                <p>Sample local Extremadura specialties: Torta del Casar cheese, Iberian ham, and migas cacereñas.</p>
+                                <p><span class="info-label">Time:</span> Evening</p>
+                                <p><span class="info-label">Location:</span> Calle Pizarro area</p>
+                                <p><span class="info-label">Cost:</span> €15-25 per person</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="activity-card">
-                        <img src="" alt="Hiking Trails"
-                            class="activity-img w-100">
-                        <div class="card-body">
-                            <h3 class="activity-name">Hiking Trails</h3>
-                            <p>Beautiful scenic trails with stunning views of
-                                the
-                                surrounding landscape.</p>
-                            <p><span class="info-label">Location:</span>
-                                Mountain
-                                View Park</p>
-                            <p><span class="info-label">Cost:</span> Free</p>
+            </div>
+
+            <!-- Saturday Morning - Cáceres -->
+            <div class="activity-section mb-5">
+                <h3 class="activity-day-title">
+                    <i class="fas fa-calendar-day me-2"></i>
+                    <span data-translate="activities.saturday">Saturday Morning - Cáceres Exploration</span>
+                </h3>
+                <p class="mb-4">Explore more before the wedding celebration.</p>
+                
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://static.wixstatic.com/media/26b5e8_9db94c84916442a89c857b6d8a749336~mv2.jpg/v1/fill/w_1000%2Ch_667%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01/26b5e8_9db94c84916442a89c857b6d8a749336~mv2.jpg" 
+                                 alt="Medieval Palaces" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Medieval Palaces Walk</h3>
+                                <p>Discover the noble palaces, historic facades, and medieval architecture of the old quarter.</p>
+                                <p><span class="info-label">Time:</span> 2 hours</p>
+                                <p><span class="info-label">Location:</span> Historic Center</p>
+                                <p><span class="info-label">Cost:</span> <span data-translate="free">Free</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://turismo.caceres.es/sites/default/files/styles/simplecrop_480x480/public/servicio_poi/C%C3%A1ceres.-%20Calle%20Pintores%202.JPG?itok=BWj_dioU&sc=9d342a4a683023821ac145665819ff81" 
+                                 alt="Shopping Streets" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Historic Shopping Streets</h3>
+                                <p>Browse local shops for crafts, souvenirs, and regional products in charming medieval lanes.</p>
+                                <p><span class="info-label">Time:</span> 1-2 hours</p>
+                                <p><span class="info-label">Location:</span> Calle Pintores area</p>
+                                <p><span class="info-label">Cost:</span> Variable</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://media.cntraveller.com/photos/611bea12a86777b29fbc50b1/4%3A3/w_1704%2Ch_1278%2Cc_limit/1860264_cnt_19sep12_MonicaGumm_b.jpg" 
+                                 alt="Co-Cathedral" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Co-Cathedral Visit</h3>
+                                <p>Explore the stunning Gothic Cathedral and peaceful surrounding alleys before the wedding.</p>
+                                <p><span class="info-label">Time:</span> 1 hour</p>
+                                <p><span class="info-label">Location:</span> Plaza de Santa María</p>
+                                <p><span class="info-label">Cost:</span> €4</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="activity-card">
-                        <img src="" alt="Local Winery"
-                            class="activity-img w-100">
-                        <div class="card-body">
-                            <h3 class="activity-name">Local Winery</h3>
-                            <p>Taste award-winning wines and tour the beautiful
-                                vineyards.</p>
-                            <p><span class="info-label">Location:</span> 789
-                                Vineyard Road</p>
-                            <p><span class="info-label">Cost:</span> $25 for
-                                tasting
-                                tour</p>
+            </div>
+
+            <!-- Sunday - Trujillo -->
+            <div class="activity-section mb-5">
+                <h3 class="activity-day-title">
+                    <i class="fas fa-calendar-day me-2"></i>
+                    <span data-translate="activities.sunday">Sunday - Trujillo Day Trip</span>
+                </h3>
+                <p class="mb-4">Discover the hometown of conquistadors (45 minutes from Cáceres).</p>
+                
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Trujillo._Plaza_Mayor_con_la_estatua_ecuestre_de_Francisco_Pizarro.jpg" 
+                                 alt="Plaza Mayor Trujillo" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Plaza Mayor de Trujillo</h3>
+                                <p>Visit the stunning main square featuring the iconic statue of Francisco Pizarro and historic buildings.</p>
+                                <p><span class="info-label">Time:</span> 1-2 hours</p>
+                                <p><span class="info-label">Location:</span> Plaza Mayor, Trujillo</p>
+                                <p><span class="info-label">Cost:</span> <span data-translate="free">Free</span></p>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/58/6f/fd/castillo-de-trujillo.jpg?h=-1&s=1&w=1200" 
+                                 alt="Castillo de Trujillo" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Castillo de Trujillo</h3>
+                                <p>Climb to the medieval castle for breathtaking views of the town and surrounding countryside.</p>
+                                <p><span class="info-label">Time:</span> 1.5 hours</p>
+                                <p><span class="info-label">Location:</span> Castle Hill, Trujillo</p>
+                                <p><span class="info-label">Cost:</span> €3</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="activity-card">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/PedestrianStreet2.jpg/250px-PedestrianStreet2.jpg" 
+                                 alt="Trujillo Streets" class="activity-img w-100">
+                            <div class="card-body">
+                                <h3 class="activity-name">Old Town Lunch & Stroll</h3>
+                                <p>Enjoy traditional Extremadura cuisine on a terrace and wander the charming cobbled streets.</p>
+                                <p><span class="info-label">Time:</span> 2-3 hours</p>
+                                <p><span class="info-label">Location:</span> Trujillo Old Town</p>
+                                <p><span class="info-label">Cost:</span> €20-30 per person</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Travel Tips Section -->
+            <div class="tips-section mt-5">
+                <h3 class="mb-3">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <span data-translate="activities.tips">Helpful Tips</span>
+                </h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="tips-list">
+                            <li><strong>Footwear:</strong> Wear comfortable shoes - many streets are cobbled!</li>
+                            <li><strong>Timing:</strong> Trujillo is 45 minutes from Cáceres by car</li>
+                            <li><strong>Parking:</strong> Check parking near your accommodation in advance</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="tips-list">
+                            <li><strong>Weather:</strong> Bring layers - evenings can be cool</li>
+                            <li><strong>Dining:</strong> Make reservations for Saturday dinner</li>
+                            <li><strong>Language:</strong> Basic Spanish phrases are helpful in smaller towns</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Gifts Modal -->
+<div id="gifts-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2 data-translate="gifts.title">Wedding Gifts</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="gifts-content">
+                <!-- Introduction -->
+                <div class="text-center mb-5">
+                    <i class="fas fa-heart gifts-heart-icon mb-3"></i>
+                    <p class="lead" data-translate="gifts.intro">Your presence at our wedding is the greatest gift of all! However, if you wish to give a gift, a contribution toward our future together would be greatly appreciated.</p>
+                </div>
+
+                <!-- Bank Transfer Card -->
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6">
+                        <div class="bank-card">
+                            <div class="bank-card-header">
+                                <i class="fas fa-university me-2"></i>
+                                <h3 data-translate="gifts.bank.title">Bank Transfer</h3>
+                            </div>
+                            <div class="bank-card-body">
+                                <div class="bank-info-row">
+                                    <span class="bank-label" data-translate="gifts.bank.name">Account Name:</span>
+                                    <span class="bank-value">Irene & Jaime</span>
+                                </div>
+                                <div class="bank-info-row">
+                                    <span class="bank-label">IBAN:</span>
+                                    <div class="iban-container">
+                                        <span class="bank-value iban-number" id="iban-number">ES00 0000 0000 0000 0000 0000</span>
+                                        <button class="btn-copy" onclick="copyIBAN()" title="Copy IBAN">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bank-info-row">
+                                    <span class="bank-label">BIC/SWIFT:</span>
+                                    <span class="bank-value" id="swift-number">XXXXXXXXX</span>
+                                    <button class="btn-copy" onclick="copySwift()" title="Copy Swift">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                </div>
+                                <div class="copy-success" id="iban-copy-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span data-translate="gifts.copied">IBAN copied to clipboard!</span>
+                                </div>
+                                <div class="copy-success" id="swift-copy-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span data-translate="gifts.copied">Swift copied to clipboard!</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thank You Message -->
+                <div class="text-center mt-5">
+                    <p class="gifts-thank-you" data-translate="gifts.thanks">Thank you for your generosity and for being part of our special day!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dress Code Modal -->
+<div id="dresscode-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2 data-translate="dresscode.title">Dress Code</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="dresscode-content">
+                <!-- Introduction -->
+                <div class="text-center mb-5">
+                    <i class="fas fa-star dresscode-icon mb-3"></i>
+                    <p class="lead" data-translate="dresscode.intro">Our wedding is an evening celebration. Please dress accordingly.</p>
+                </div>
+
+                <div class="row justify-content-center">
+                    <!-- Women -->
+                    <div class="col-md-5 mb-4">
+                        <div class="dresscode-card">
+                            <div class="dresscode-card-header">
+                                <i class="fas fa-female me-2"></i>
+                                <h3 data-translate="dresscode.women.title">Women</h3>
+                            </div>
+                            <div class="dresscode-card-body">
+                                <div class="dresscode-recommendation mb-3">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span data-translate="dresscode.women.recommended">Long evening dresses</span>
+                                </div>
+                                <div class="dresscode-restrictions">
+                                    <p class="restrictions-title" data-translate="dresscode.please.avoid">Please avoid:</p>
+                                    <ul class="restrictions-list">
+                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.white">White or beige colors</span></li>
+                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.patterns">Patterns</span></li>
+                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.sequins">Sequins</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Men -->
+                    <div class="col-md-5 mb-4">
+                        <div class="dresscode-card">
+                            <div class="dresscode-card-header">
+                                <i class="fas fa-male me-2"></i>
+                                <h3 data-translate="dresscode.men.title">Men</h3>
+                            </div>
+                            <div class="dresscode-card-body">
+                                <div class="dresscode-recommendation mb-3">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span data-translate="dresscode.men.recommended">Dark suit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thank You Message -->
+                <div class="text-center mt-4">
+                    <p class="dresscode-thanks" data-translate="dresscode.thanks">Thank you for helping us make this evening elegant and memorable!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Copy IBAN JavaScript -->
+<script>
+    function copyIBAN() {
+        const ibanText = document.getElementById('iban-number').textContent;
+        const ibanClean = ibanText.replace(/\s/g, ''); // Remove spaces
+        
+        navigator.clipboard.writeText(ibanClean).then(() => {
+            // Show success message
+            const successMsg = document.getElementById('iban-copy-success');
+            successMsg.classList.add('show');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy IBAN:', err);
+        });
+    }
+</script>
+
+<!-- Copy IBAN JavaScript -->
+<script>
+    function copySwift() {
+        const SwiftText = document.getElementById('swift-number').textContent;
+        const SwiftClean = SwiftText.replace(/\s/g, ''); // Remove spaces
+        
+        navigator.clipboard.writeText(SwiftClean).then(() => {
+            // Show success message
+            const successMsg = document.getElementById('swift-copy-success');
+            successMsg.classList.add('show');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy Swift:', err);
+        });
+    }
+</script>
+
+<!-- Countdown Timer JavaScript -->
+<script>
+    // Check for test date in URL (for automated testing)
+    const urlParams = new URLSearchParams(window.location.search);
+    const testDate = urlParams.get('_test_date');
+    
+    // Set the wedding date: June 6, 2026 at 18:00 (6:00 PM)
+    const weddingDate = new Date('2026-06-06T18:00:00').getTime();
+
+    function updateCountdown() {
+        const now = testDate ? new Date(testDate).getTime() : new Date().getTime();
+        const distance = weddingDate - now;
+        
+        // Check if it's wedding day (compare date strings)
+        const today = testDate ? new Date(testDate) : new Date();
+        const todayStr = today.toISOString().split('T')[0];  // "YYYY-MM-DD"
+        const weddingDayStr = '2026-06-06';
+        
+        if (todayStr === weddingDayStr) {
+            // It's the wedding day! Show celebration message
+            const countdownTimer = document.querySelector('.countdown-timer');
+            
+            if (countdownTimer) {
+                // Get current language
+                const lang = window.translator ? window.translator.currentLang : 'es';
+                const message = lang === 'es' ? '¡Hoy es el día!' : 'Today is the day!';
+                
+                countdownTimer.innerHTML = `
+                    <div class="celebration-message">
+                        <span class="celebration-emoji">🎉</span>
+                        <span class="celebration-text">${message}</span>
+                        <span class="celebration-emoji">🎉</span>
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        if (distance < 0) {
+            // Wedding has passed
+            document.getElementById('days').textContent = '0';
+            document.getElementById('hours').textContent = '0';
+            document.getElementById('minutes').textContent = '0';
+            document.getElementById('seconds').textContent = '0';
+            return;
+        }
+
+        // Calculate time units
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Update the DOM
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    }
+
+    // Update immediately and every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
 {% endblock %}

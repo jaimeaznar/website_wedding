@@ -7,8 +7,7 @@ from app.services.reminder_service import ReminderService
 from app.forms import LoginForm, GuestForm, ImportForm
 from app.security import rate_limit
 from app.constants import (
-    LogMessage, ErrorMessage, SuccessMessage, FlashCategory,
-    HttpStatus, TimeLimit, Template, Security
+    LogMessage, ErrorMessage, FlashCategory, TimeLimit, Template, Security
 )
 from app.models.reminder import ReminderType
 from datetime import datetime, timedelta
@@ -170,33 +169,6 @@ def export_report():
     # This will be implemented in the export phase
     flash('Export functionality coming soon!', 'info')
     return redirect(url_for('admin.dashboard'))
-
-
-# Debug route - can be removed in production
-@bp.route('/debug/allergens')
-@admin_required
-def debug_allergens():
-    """Debug route to check allergens in the database."""
-    from flask import jsonify
-    from app.services.allergen_service import AllergenService
-    
-    rsvps = RSVPService.get_all_rsvps()
-    result = []
-    
-    for rsvp in rsvps:
-        allergens = AllergenService.get_allergens_for_rsvp(rsvp.id)
-        
-        rsvp_info = {
-            'rsvp_id': rsvp.id,
-            'guest_name': rsvp.guest.name if rsvp.guest else 'Unknown',
-            'is_attending': rsvp.is_attending,
-            'is_cancelled': rsvp.is_cancelled,
-            'allergens': allergens
-        }
-        
-        result.append(rsvp_info)
-    
-    return jsonify(result)
 
 # ============= REMINDER MANAGEMENT ROUTES =============
 
@@ -428,4 +400,218 @@ def test_reminder():
     return redirect(url_for('admin.reminders'))
 
 
-# ============= OTHER REPORT ROUTES =============
+# ============= PDF EXPORT ROUTES =============
+
+# ADD THESE ROUTES TO: app/routes/admin.py
+# Insert after the existing routes, before the end of the file
+
+# ============= PDF EXPORT ROUTES =============
+
+@bp.route('/reports/dietary/pdf')
+@admin_required
+def download_dietary_pdf():
+    """Download dietary restrictions report as PDF."""
+    try:
+        from app.services.pdf_service import PDFService
+        from flask import send_file
+        import io
+        
+        logger.info("Admin requested dietary PDF download")
+        
+        # Generate PDF
+        pdf_data = PDFService.generate_dietary_pdf()
+        
+        # Create a file-like object
+        pdf_buffer = io.BytesIO(pdf_data)
+        pdf_buffer.seek(0)
+        
+        # Generate filename with date
+        filename = f"dietary_restrictions_{datetime.now().strftime('%Y%m%d')}.pdf"
+        
+        # Send file
+        return send_file(
+            pdf_buffer,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        logger.error(f"Error generating dietary PDF: {str(e)}", exc_info=True)
+        flash(f"Error generating PDF: {str(e)}", 'error')
+        return redirect(url_for('admin.dietary_report'))
+
+
+@bp.route('/reports/transport/pdf')
+@admin_required
+def download_transport_pdf():
+    """Download transport requirements report as PDF."""
+    try:
+        from app.services.pdf_service import PDFService
+        from flask import send_file
+        import io
+        
+        logger.info("Admin requested transport PDF download")
+        
+        # Generate PDF
+        pdf_data = PDFService.generate_transport_pdf()
+        
+        # Create a file-like object
+        pdf_buffer = io.BytesIO(pdf_data)
+        pdf_buffer.seek(0)
+        
+        # Generate filename with date
+        filename = f"transport_plan_{datetime.now().strftime('%Y%m%d')}.pdf"
+        
+        # Send file
+        return send_file(
+            pdf_buffer,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        logger.error(f"Error generating transport PDF: {str(e)}", exc_info=True)
+        flash(f"Error generating PDF: {str(e)}", 'error')
+        return redirect(url_for('admin.transport_report'))
+
+
+@bp.route('/reports/export-all')
+@admin_required
+def export_all_reports():
+    """Generate and download all reports as a ZIP file."""
+    try:
+        from app.services.pdf_service import PDFService
+        from flask import send_file
+        import io
+        import zipfile
+        
+        logger.info("Admin requested full report export")
+        
+        # Create ZIP buffer
+        zip_buffer = io.BytesIO()
+        
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            # Add dietary PDF
+            dietary_pdf = PDFService.generate_dietary_pdf()
+            zip_file.writestr(
+                f"dietary_restrictions_{datetime.now().strftime('%Y%m%d')}.pdf",
+                dietary_pdf
+            )
+            
+            # Add transport PDF
+            transport_pdf = PDFService.generate_transport_pdf()
+            zip_file.writestr(
+                f"transport_plan_{datetime.now().strftime('%Y%m%d')}.pdf",
+                transport_pdf
+            )
+            
+            # Add CSV export of all guests
+            csv_data = _generate_guest_csv()
+            zip_file.writestr(
+                f"guest_list_{datetime.now().strftime('%Y%m%d')}.csv",
+                csv_data
+            )
+        
+        # Prepare for download
+        zip_buffer.seek(0)
+        
+        filename = f"wedding_reports_{datetime.now().strftime('%Y%m%d')}.zip"
+        
+        return send_file(
+            zip_buffer,
+            mimetype='application/zip',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        logger.error(f"Error generating report export: {str(e)}", exc_info=True)
+        flash(f"Error generating reports: {str(e)}", 'error')
+        return redirect(url_for('admin.dashboard'))
+
+
+def _generate_guest_csv():
+    """
+    Helper function to generate CSV export of all guests and RSVPs.
+    
+    Returns:
+        CSV data as string
+    """
+    import csv
+    import io
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Header
+    writer.writerow([
+        'Guest Name',
+        'Phone',
+        'Email',
+        'Language',
+        'Has Plus One',
+        'Is Family',
+        'RSVP Status',
+        'Attending',
+        'Additional Guests',
+        'Total People',
+        'Hotel',
+        'Transport to Church',
+        'Transport to Reception',
+        'Transport to Hotel',
+        'Dietary Restrictions',
+        'Last Updated'
+    ])
+    
+    # Get all RSVPs with detailed info
+    from app.services.admin_service import AdminService
+    report = AdminService.get_detailed_rsvp_report()
+    
+    for rsvp_data in report:
+        # Format allergens
+        allergens_str = ''
+        if rsvp_data['allergens']:
+            allergen_list = []
+            for guest_name, restrictions in rsvp_data['allergens'].items():
+                # Convert restriction items to strings
+                restriction_strs = []
+                for r in restrictions:
+                    if isinstance(r, dict):
+                        # Handle dict format (allergen object)
+                        restriction_strs.append(r.get('name', str(r)))
+                    else:
+                        restriction_strs.append(str(r))
+                allergen_list.append(f"{guest_name}: {', '.join(restriction_strs)}")
+            allergens_str = '; '.join(allergen_list)
+        
+        # Format additional guests
+        additional_str = ''
+        if rsvp_data['additional_guests']:
+            additional_list = [
+                f"{ag['name']} ({'Child' if ag['is_child'] else 'Adult'})"
+                for ag in rsvp_data['additional_guests']
+            ]
+            additional_str = ', '.join(additional_list)
+        
+        writer.writerow([
+            rsvp_data['guest_name'],
+            rsvp_data['guest_phone'],
+            rsvp_data['guest_email'],
+            rsvp_data['language'],
+            'Yes' if rsvp_data['has_plus_one'] else 'No',
+            'Yes' if rsvp_data['is_family'] else 'No',
+            rsvp_data['status'],
+            'Yes' if rsvp_data['status'] == 'Attending' else 'No',
+            additional_str,
+            rsvp_data['total_guests'],
+            rsvp_data['hotel'] or '',
+            'Yes' if rsvp_data['transport_church'] else 'No',
+            'Yes' if rsvp_data['transport_reception'] else 'No',
+            'Yes' if rsvp_data['transport_hotel'] else 'No',
+            allergens_str,
+            rsvp_data['last_updated']
+        ])
+    
+    return output.getvalue()

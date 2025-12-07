@@ -1,7 +1,12 @@
 # app/models/reminder.py
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db
 from app.constants import Language
+
+
+def _utc_now():
+    """Helper to get current UTC time."""
+    return datetime.now(timezone.utc)
 
 
 class ReminderType:
@@ -55,7 +60,7 @@ class ReminderHistory(db.Model):
     sent_by = db.Column(db.String(100))  # 'system' or admin email
     notes = db.Column(db.Text)  # Any admin notes
     
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=_utc_now)
     
     # Relationships
     guest = db.relationship('Guest', backref='reminders')
@@ -89,7 +94,7 @@ class ReminderBatch(db.Model):
     skipped_count = db.Column(db.Integer, default=0)
     
     # Execution details
-    started_at = db.Column(db.DateTime, default=datetime.now)
+    started_at = db.Column(db.DateTime, default=_utc_now)
     completed_at = db.Column(db.DateTime)
     executed_by = db.Column(db.String(100))  # 'scheduler' or admin email
     
@@ -152,8 +157,8 @@ class GuestReminderPreference(db.Model):
     total_sent = db.Column(db.Integer, default=0)
     last_reminder_sent = db.Column(db.DateTime)
     
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    created_at = db.Column(db.DateTime, default=_utc_now)
+    updated_at = db.Column(db.DateTime, default=_utc_now, onupdate=_utc_now)
     
     # Relationships
     guest = db.relationship('Guest', backref=db.backref('reminder_preference', uselist=False))
@@ -173,5 +178,5 @@ class GuestReminderPreference(db.Model):
     def increment_sent_count(self):
         """Increment the sent count and update last sent time."""
         self.total_sent += 1
-        self.last_reminder_sent = datetime.now()
+        self.last_reminder_sent = _utc_now()
         db.session.commit()

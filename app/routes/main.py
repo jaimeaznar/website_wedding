@@ -35,3 +35,14 @@ def activities():
 @bp.route('/gallery')
 def gallery():
     return render_template('gallery.html')
+
+@bp.route('/health')
+def health():
+    """Health check endpoint for Railway/load balancers."""
+    try:
+        # Quick database connectivity check
+        db.session.execute(db.text('SELECT 1'))
+        return {'status': 'healthy', 'database': 'connected'}, 200
+    except Exception as e:
+        logger.error(f"Health check failed: {str(e)}")
+        return {'status': 'unhealthy', 'error': str(e)}, 503

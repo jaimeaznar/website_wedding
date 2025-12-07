@@ -5,8 +5,7 @@ from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 from app.constants import (
-    Language, DEFAULT_CONFIG, TimeLimit, DateFormat
-)
+    Language, DEFAULT_CONFIG)
 
 basedir = Path(__file__).parent.parent.absolute()
 load_dotenv(basedir / '.env')
@@ -89,10 +88,6 @@ def validate_admin_password(password: str, is_production: bool = False) -> bool:
         return False
     
     return True
-
-def generate_secure_secret_key(length: int = 32) -> str:
-    """Generate a cryptographically secure secret key."""
-    return secrets.token_hex(length)
 
 def get_env_variable(var_name, default=None, required=False):
     """Get environment variable with validation."""

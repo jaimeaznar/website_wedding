@@ -7,10 +7,7 @@ from app import db
 from app.models.guest import Guest
 from app.models.rsvp import RSVP
 from app.utils.import_guests import process_guest_csv
-from app.constants import (
-    GuestLimit, Language, LogMessage, ErrorMessage, 
-    SuccessMessage, RSVPStatus
-)
+from app.constants import (GuestLimit, Language, LogMessage, ErrorMessage)
 
 logger = logging.getLogger(__name__)
 

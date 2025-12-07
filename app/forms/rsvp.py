@@ -1,30 +1,47 @@
 # app/forms/rsvp.py
+"""RSVP-related forms for the wedding website."""
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SelectField, RadioField, FieldList, FormField
 from wtforms.validators import DataRequired, Optional, Length, ValidationError
-from flask import current_app
+
 
 class AllergenForm(FlaskForm):
-    """Form for a single allergen selection."""
+    """
+    Form for a single allergen selection.
+    
+    Note: CSRF is disabled because this is a nested form.
+    The parent RSVPForm handles CSRF protection for the entire submission.
+    """
     allergen_id = SelectField('Allergen', coerce=int, validators=[Optional()])
     custom_allergen = StringField('Other', validators=[Optional(), Length(max=100)])
     
     class Meta:
-        # CSRF protection is handled by the parent form
-        csrf = False
+        csrf = False  # Parent form handles CSRF
+
 
 class AdditionalGuestForm(FlaskForm):
-    """Form for an additional guest."""
+    """
+    Form for an additional guest (family member or plus one).
+    
+    Note: CSRF is disabled because this is a nested form.
+    The parent RSVPForm handles CSRF protection for the entire submission.
+    """
     name = StringField('Name', validators=[DataRequired(), Length(max=120)])
     is_child = BooleanField('Child')
     allergens = FieldList(FormField(AllergenForm))
     
     class Meta:
-        # CSRF protection is handled by the parent form
-        csrf = False
+        csrf = False  # Parent form handles CSRF
+
 
 class RSVPForm(FlaskForm):
-    """Form for RSVP submission."""
+    """
+    Main RSVP submission form.
+    
+    CSRF Protection: This form includes CSRF protection (enabled by default in FlaskForm).
+    All nested forms (AllergenForm, AdditionalGuestForm) have CSRF disabled since
+    this parent form's token protects the entire submission.
+    """
     is_attending = RadioField(
         'Will you attend?', 
         choices=[('yes', 'Yes, I will attend'), ('no', 'No, I cannot attend')],
@@ -41,12 +58,10 @@ class RSVPForm(FlaskForm):
     adults_count = SelectField('Number of Additional Adults', coerce=int, default=0)
     children_count = SelectField('Number of Children', coerce=int, default=0)
     
-    # Dynamic fields for additional guests will be handled in the form processing
-    
     def __init__(self, *args, **kwargs):
         """Initialize the form with custom choices based on guest type."""
         self.guest = kwargs.pop('guest', None)
-        super(RSVPForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         
         # Set choices for adults and children counts based on guest type
         max_adults = 10 if self.guest and self.guest.is_family else 0
@@ -65,6 +80,7 @@ class RSVPForm(FlaskForm):
             )
             if needs_transport and not field.data.strip():
                 raise ValidationError('Please specify a hotel if you need transport services.')
+
 
 class RSVPCancellationForm(FlaskForm):
     """Form for RSVP cancellation confirmation."""

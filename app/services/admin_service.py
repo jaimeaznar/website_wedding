@@ -1,12 +1,9 @@
 # app/services/admin_service.py
 import logging
-from typing import Dict, Any, List, Optional
-from datetime import datetime
-from werkzeug.security import check_password_hash
-from flask import current_app
+from typing import Dict, Any, List
 from app import db
 from app.models.guest import Guest
-from app.models.rsvp import RSVP, AdditionalGuest
+from app.models.rsvp import RSVP
 from app.models.allergen import Allergen, GuestAllergen
 from app.services.guest_service import GuestService
 from app.services.rsvp_service import RSVPService
