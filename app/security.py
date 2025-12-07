@@ -3,7 +3,7 @@
 from flask import request, abort, current_app
 from functools import wraps
 import time
-from app.constants import HttpStatus, TimeLimit, LogMessage
+from app.constants import HttpStatus, TimeLimit
 
 # Simple rate limiting implementation (in-memory)
 # Note: This resets on app restart and doesn't share across workers.

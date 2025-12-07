@@ -1,6 +1,6 @@
 # app/services/allergen_service.py
 import logging
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from app import db
 from app.models.allergen import Allergen, GuestAllergen
 

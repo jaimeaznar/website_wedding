@@ -10,8 +10,7 @@ from app.models.allergen import GuestAllergen
 from app.services.allergen_service import AllergenService
 from app.utils.email import send_cancellation_notification
 from app.constants import (
-    DateFormat, RSVPStatus, LogMessage, ErrorMessage,
-    SuccessMessage, DEFAULT_CONFIG
+    DateFormat, LogMessage, DEFAULT_CONFIG
 )
 
 logger = logging.getLogger(__name__)

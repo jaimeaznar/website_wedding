@@ -54,13 +54,14 @@ class PDFService:
         """
         canvas_obj.saveState()
         
-        # Wedding couple names
+        # Wedding couple names - get from config
+        wedding_title = current_app.config.get('WEDDING_TITLE', "Irene & Jaime's Wedding")
         canvas_obj.setFont('Helvetica-Bold', 20)
         canvas_obj.setFillColor(PDFService.COLOR_PRIMARY)
         canvas_obj.drawCentredString(
             doc.width / 2 + doc.leftMargin,
             doc.height + doc.topMargin - 30,
-            "Irene & Jaime's Wedding"
+            wedding_title
         )
         
         # Document title

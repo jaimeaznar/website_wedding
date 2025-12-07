@@ -252,5 +252,6 @@ DEFAULT_CONFIG = {
     'RSVP_DEADLINE': '2026-05-06',
     'ADMIN_EMAIL': 'admin@wedding.com',
     'ADMIN_PHONE': '123-456-7890',
-    'WARNING_MESSAGE_TIMEOUT': 0,  # 0 means no auto-dismiss
+    'WARNING_MESSAGE_TIMEOUT': 0,
+    'WEDDING_TITLE': "Irene & Jaime's Wedding",  # ADD THIS LINE
 }

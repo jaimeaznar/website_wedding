@@ -1,5 +1,5 @@
 # app/error_handlers.py
-from flask import render_template, request, current_app
+from flask import render_template, request
 import logging
 from werkzeug.exceptions import HTTPException
 import traceback

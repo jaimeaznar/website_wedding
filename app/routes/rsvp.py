@@ -3,11 +3,10 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from app.services.guest_service import GuestService
 from app.services.rsvp_service import RSVPService
 from app.services.allergen_service import AllergenService
-from app.forms import RSVPForm, RSVPCancellationForm
+from app.forms import RSVPForm
 from app.security import rate_limit
 from app.constants import (
-    LogMessage, ErrorMessage, SuccessMessage, FlashCategory,
-    HttpStatus, TimeLimit, Template, DEFAULT_CONFIG
+    LogMessage, HttpStatus, TimeLimit, Template, DEFAULT_CONFIG
 )
 import logging
 

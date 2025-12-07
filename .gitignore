@@ -1,69 +1,89 @@
+# ===========================================
 # Python
+# ===========================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+*.egg
+*.egg-info/
+.installed.cfg
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Distribution / Packaging
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
-.eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
 wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Virtual Environment
+# ===========================================
+# Virtual Environments
+# ===========================================
 venv/
+.venv/
 env/
 ENV/
-.venv/
+env.bak/
+venv.bak/
 
-# IDE
+# ===========================================
+# Environment Variables - SECURITY CRITICAL
+# ===========================================
+.env
+.env.*
+!.env.example
+secrets/
+config/secrets/
+
+# ===========================================
+# IDE / Editor
+# ===========================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-.DS_Store
+.*.swp
+.*.swo
+.spyderproject
+.spyproject
+.ropeproject
 
+# ===========================================
+# OS Files
+# ===========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===========================================
 # Flask
+# ===========================================
 instance/
 .webassets-cache
 
+# ===========================================
 # Database
+# ===========================================
 *.db
 *.sqlite
 *.sqlite3
 wedding_db
 test_*.db
 
-# Environment Variables - CRITICAL FOR SECURITY
-.env
-.env.*
-*.env
-!.env.example
-.env.local
-.env.production
-.env.development
-.env.test
-secrets/
-config/secrets/
-
-# Sensitive Backups
-.env.backup*
-*.backup
-backup/
-backups/
-
+# ===========================================
 # Security Keys and Certificates
+# ===========================================
 *.pem
 *.key
 *.crt
@@ -71,112 +91,25 @@ backups/
 *.p12
 *.pfx
 
+# ===========================================
 # Logs
+# ===========================================
 *.log
 logs/
 log/
 
-# Testing
+# ===========================================
+# Testing / Coverage
+# ===========================================
 .coverage
+.coverage.*
 htmlcov/
 .tox/
 .pytest_cache/
 .hypothesis/
-
-# Migrations (keep structure, ignore local files)
-migrations/versions/*.pyc
-migrations/__pycache__/
-
-# Static files (if generated)
-static/dist/
-static/uploads/
-
-# Node (if using any JS build tools)
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# Documentation builds
-docs/_build/
-site/
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-*.temp
-
-# OS Files
-Thumbs.db
-.DS_Store
-desktop.ini
-
-# Editor backups
-*~
-.*.swp
-.*.swo
-
-# Python specific
-*.pyc
-*.pyo
-*.pyd
-.Python
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
 .cache
 nosetests.xml
 coverage.xml
 *.cover
-.hypothesis/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# Custom
-*.xlsx
-*.csv
-!guest_template.csv
-uploads/
-downloads/
+# =
