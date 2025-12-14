@@ -4,8 +4,8 @@
 {% block content %}
 <div class="page-header">
     <div class="container">
-        <h1>Things to Do</h1>
-        <p class="lead">Explore the area during your stay</p>
+        <h1 data-translate="activities.title">Things to Do</h1>
+        <p class="lead" data-translate="activities.subtitle">Explore the area during your stay</p>
     </div>
 </div>
 
@@ -18,23 +18,17 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="activity-card">
                     {% if activity.image %}
-                    <img src="{{ activity.image }}" alt="{{ activity.name }}"
-                        class="activity-img w-100">
+                    <img src="{{ activity.image }}" alt="{{ activity.name }}" class="activity-img w-100">
                     {% else %}
-                    <img src="" alt="{{ activity.name }}"
-                        class="activity-img w-100">
+                    <img src="" alt="{{ activity.name }}" class="activity-img w-100">
                     {% endif %}
                     <div class="card-body">
                         <h3 class="activity-name">{{ activity.name }}</h3>
                         <p>{{ activity.description }}</p>
-                        <p><span class="info-label">Location:</span> {{
-                            activity.location }}</p>
-                        <p><span class="info-label">Cost:</span> {{
-                            activity.cost }}</p>
+                        <p><span class="info-label" data-translate="activities.location">Location:</span> {{ activity.location }}</p>
+                        <p><span class="info-label" data-translate="activities.cost">Cost:</span> {{ activity.cost }}</p>
                         {% if activity.website %}
-                        <a href="{{ activity.website }}"
-                            class="btn btn-outline-primary"
-                            target="_blank">Learn More</a>
+                        <a href="{{ activity.website }}" class="btn btn-outline-primary" target="_blank" data-translate="activities.learn.more">Learn More</a>
                         {% endif %}
                     </div>
                 </div>
@@ -44,24 +38,19 @@
     </div>
     {% endfor %}
 
-    <!-- If no activities data is provided, show some example content -->
     {% if not activities or activities|length == 0 %}
     <div class="category mb-5">
-        <h2 class="section-title">Local Attractions</h2>
+        <h2 class="section-title" data-translate="activities.local.attractions">Local Attractions</h2>
         <div class="row">
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="activity-card">
                     <img src="" alt="Local Museum" class="activity-img w-100">
                     <div class="card-body">
-                        <h3 class="activity-name">Local Museum</h3>
-                        <p>Explore the history and culture of the region through
-                            interactive exhibits.</p>
-                        <p><span class="info-label">Location:</span> 123 Museum
-                            Street</p>
-                        <p><span class="info-label">Cost:</span> $10 per person
-                        </p>
-                        <a href="#" class="btn btn-outline-primary"
-                            target="_blank">Learn More</a>
+                        <h3 class="activity-name" data-translate="activities.local.museum">Local Museum</h3>
+                        <p data-translate="activities.museum.desc">Explore the history and culture of the region through interactive exhibits.</p>
+                        <p><span class="info-label" data-translate="activities.location">Location:</span> 123 Museum Street</p>
+                        <p><span class="info-label" data-translate="activities.cost">Cost:</span> $10 <span data-translate="per.person">per person</span></p>
+                        <a href="#" class="btn btn-outline-primary" target="_blank" data-translate="activities.learn.more">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -70,14 +59,11 @@
                 <div class="activity-card">
                     <img src="" alt="Hiking Trails" class="activity-img w-100">
                     <div class="card-body">
-                        <h3 class="activity-name">Hiking Trails</h3>
-                        <p>Beautiful scenic trails with stunning views of the
-                            surrounding landscape.</p>
-                        <p><span class="info-label">Location:</span> Mountain
-                            View Park</p>
-                        <p><span class="info-label">Cost:</span> Free</p>
-                        <a href="#" class="btn btn-outline-primary"
-                            target="_blank">Learn More</a>
+                        <h3 class="activity-name" data-translate="activities.hiking">Hiking Trails</h3>
+                        <p data-translate="activities.hiking.desc">Beautiful scenic trails with stunning views of the surrounding landscape.</p>
+                        <p><span class="info-label" data-translate="activities.location">Location:</span> Mountain View Park</p>
+                        <p><span class="info-label" data-translate="activities.cost">Cost:</span> <span data-translate="free">Free</span></p>
+                        <a href="#" class="btn btn-outline-primary" target="_blank" data-translate="activities.learn.more">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -86,15 +72,11 @@
                 <div class="activity-card">
                     <img src="" alt="Local Winery" class="activity-img w-100">
                     <div class="card-body">
-                        <h3 class="activity-name">Local Winery</h3>
-                        <p>Taste award-winning wines and tour the beautiful
-                            vineyards.</p>
-                        <p><span class="info-label">Location:</span> 789
-                            Vineyard Road</p>
-                        <p><span class="info-label">Cost:</span> $25 for tasting
-                            tour</p>
-                        <a href="#" class="btn btn-outline-primary"
-                            target="_blank">Learn More</a>
+                        <h3 class="activity-name" data-translate="activities.winery">Local Winery</h3>
+                        <p data-translate="activities.winery.desc">Taste award-winning wines and tour the beautiful vineyards.</p>
+                        <p><span class="info-label" data-translate="activities.location">Location:</span> 789 Vineyard Road</p>
+                        <p><span class="info-label" data-translate="activities.cost">Cost:</span> $25 <span data-translate="for.tasting">for tasting tour</span></p>
+                        <a href="#" class="btn btn-outline-primary" target="_blank" data-translate="activities.learn.more">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -102,21 +84,17 @@
     </div>
 
     <div class="category mb-5">
-        <h2 class="section-title">Dining Experiences</h2>
+        <h2 class="section-title" data-translate="activities.dining">Dining Experiences</h2>
         <div class="row">
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="activity-card">
-                    <img src="" alt="Farm-to-Table Restaurant"
-                        class="activity-img w-100">
+                    <img src="" alt="Farm-to-Table Restaurant" class="activity-img w-100">
                     <div class="card-body">
-                        <h3 class="activity-name">Farm-to-Table Restaurant</h3>
-                        <p>Experience fresh, locally-sourced cuisine in a
-                            charming setting.</p>
-                        <p><span class="info-label">Location:</span> 456 Main
-                            Street</p>
-                        <p><span class="info-label">Cost:</span> $$$</p>
-                        <a href="#" class="btn btn-outline-primary"
-                            target="_blank">Learn More</a>
+                        <h3 class="activity-name" data-translate="activities.farm.restaurant">Farm-to-Table Restaurant</h3>
+                        <p data-translate="activities.farm.desc">Experience fresh, locally-sourced cuisine in a charming setting.</p>
+                        <p><span class="info-label" data-translate="activities.location">Location:</span> 456 Main Street</p>
+                        <p><span class="info-label" data-translate="activities.cost">Cost:</span> $$$</p>
+                        <a href="#" class="btn btn-outline-primary" target="_blank" data-translate="activities.learn.more">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -125,14 +103,11 @@
                 <div class="activity-card">
                     <img src="" alt="Historic Café" class="activity-img w-100">
                     <div class="card-body">
-                        <h3 class="activity-name">Historic Café</h3>
-                        <p>A cozy café located in a historic building with
-                            delicious pastries and coffee.</p>
-                        <p><span class="info-label">Location:</span> 789 Oak
-                            Street</p>
-                        <p><span class="info-label">Cost:</span> $</p>
-                        <a href="#" class="btn btn-outline-primary"
-                            target="_blank">Learn More</a>
+                        <h3 class="activity-name" data-translate="activities.historic.cafe">Historic Café</h3>
+                        <p data-translate="activities.cafe.desc">A cozy café located in a historic building with delicious pastries and coffee.</p>
+                        <p><span class="info-label" data-translate="activities.location">Location:</span> 789 Oak Street</p>
+                        <p><span class="info-label" data-translate="activities.cost">Cost:</span> $</p>
+                        <a href="#" class="btn btn-outline-primary" target="_blank" data-translate="activities.learn.more">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -143,6 +118,5 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock %}

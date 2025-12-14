@@ -4,8 +4,8 @@
 {% block content %}
 <div class="page-header">
     <div class="container">
-        <h1>Accommodation</h1>
-        <p class="lead">Where to stay for our special day</p>
+        <h1 data-translate="accommodation.title">Accommodation</h1>
+        <p class="lead" data-translate="accommodation.subtitle">Where to stay for our special day</p>
     </div>
 </div>
 
@@ -13,9 +13,7 @@
     <div class="row mb-4">
         <div class="col-md-8 offset-md-2">
             <div class="alert alert-info">
-                <p class="mb-0">We've arranged special rates at the following
-                    hotels for our wedding guests. Please mention "Irene & Jaime
-                    Wedding" when booking to receive the discounted rate.</p>
+                <p class="mb-0" data-translate="accommodation.special.rates.info">We've arranged special rates at the following hotels for our wedding guests. Please mention "Irene & Jaime Wedding" when booking to receive the discounted rate.</p>
             </div>
         </div>
     </div>
@@ -36,16 +34,14 @@
                     </div>
                     <div class="info-row">
                         <i class="fas fa-globe"></i>
-                        <div><a href="#" target="_blank">www.hotel1.com</a>
-                        </div>
+                        <div><a href="#" target="_blank">www.hotel1.com</a></div>
                     </div>
                     <div class="info-row">
                         <i class="fas fa-tag"></i>
-                        <div>Special rate: $150/night</div>
+                        <div><span data-translate="accommodation.special.rate">Special rate:</span> $150/night</div>
                     </div>
                     <div class="mt-3">
-                        <a href="#" class="btn btn-primary" target="_blank">Book
-                            Now</a>
+                        <a href="#" class="btn btn-primary" target="_blank" data-translate="accommodation.book.now">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -66,16 +62,14 @@
                     </div>
                     <div class="info-row">
                         <i class="fas fa-globe"></i>
-                        <div><a href="#" target="_blank">www.hotel2.com</a>
-                        </div>
+                        <div><a href="#" target="_blank">www.hotel2.com</a></div>
                     </div>
                     <div class="info-row">
                         <i class="fas fa-tag"></i>
-                        <div>Special rate: $120/night</div>
+                        <div><span data-translate="accommodation.special.rate">Special rate:</span> $120/night</div>
                     </div>
                     <div class="mt-3">
-                        <a href="#" class="btn btn-primary" target="_blank">Book
-                            Now</a>
+                        <a href="#" class="btn btn-primary" target="_blank" data-translate="accommodation.book.now">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -86,33 +80,27 @@
         <div class="col-md-8 offset-md-2">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h3 class="section-title">Other Accommodations</h3>
-                    <p>There are also several alternative accommodations in the
-                        area:</p>
+                    <h3 class="section-title" data-translate="accommodation.other.options">Other Accommodations</h3>
+                    <p data-translate="accommodation.alternatives.intro">There are also several alternative accommodations in the area:</p>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div class="d-flex align-items-center">
-                                <i class="fab fa-airbnb me-3 text-primary"
-                                    style="font-size: 1.5rem;"></i>
+                                <i class="fab fa-airbnb me-3 text-primary" style="font-size: 1.5rem;"></i>
                                 <div>
-                                    <h5 class="mb-1">Airbnb Options</h5>
-                                    <p class="mb-0">There are many Airbnb
-                                        properties available in the area. <a
-                                            href="https://www.airbnb.com"
-                                            target="_blank">Search on Airbnb</a>
+                                    <h5 class="mb-1" data-translate="accommodation.airbnb.title">Airbnb & Vacation Rentals</h5>
+                                    <p class="mb-0">
+                                        <span data-translate="accommodation.airbnb.text">Many beautiful apartments and houses available in Cáceres old town.</span>
+                                        <a href="https://www.airbnb.com" target="_blank" data-translate="accommodation.search">Search Airbnb</a>
                                     </p>
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-home me-3 text-primary"
-                                    style="font-size: 1.5rem;"></i>
+                                <i class="fas fa-home me-3 text-primary" style="font-size: 1.5rem;"></i>
                                 <div>
-                                    <h5 class="mb-1">Nearby Bed & Breakfasts
-                                    </h5>
-                                    <p class="mb-0">Several charming B&Bs are
-                                        within 10 minutes of the venue.</p>
+                                    <h5 class="mb-1" data-translate="accommodation.bb.title">Bed & Breakfasts</h5>
+                                    <p class="mb-0" data-translate="accommodation.bb.text">Charming B&Bs throughout the historic center offer authentic local experiences.</p>
                                 </div>
                             </div>
                         </li>
@@ -126,11 +114,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="section-title">Accommodation Map</h3>
-                    <div
-                        style="height: 400px; background-color: #e9e5f5; display: flex; align-items: center; justify-content: center;">
-                        <p>Map will be embedded here</p>
-                        <!-- Replace with actual map embed code -->
+                    <h3 class="section-title" data-translate="accommodation.map.title">Accommodation Map</h3>
+                    <div style="height: 400px; background-color: #e9e5f5; display: flex; align-items: center; justify-content: center;">
+                        <p data-translate="accommodation.map.placeholder">Map will be embedded here</p>
                     </div>
                 </div>
             </div>
@@ -140,6 +126,5 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 {% endblock %}

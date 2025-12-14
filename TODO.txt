@@ -1,0 +1,3 @@
+- añadir bizum como pago
+- añadir información sobre limite de RSVP
+- editar los pdf para comida y buses

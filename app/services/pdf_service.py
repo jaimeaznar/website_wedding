@@ -40,7 +40,9 @@ class PDFService:
     COLOR_SUCCESS = colors.HexColor('#27AE60')      # Green
     COLOR_WARNING = colors.HexColor('#F39C12')      # Orange
     COLOR_LIGHT_GRAY = colors.HexColor('#ECF0F1')   # Light gray for alternating rows
+    HEADER_HEIGHT = 1.4 * inch
     
+
     @staticmethod
     def _create_header(canvas_obj, doc, title: str, subtitle: str = None):
         """
@@ -54,22 +56,24 @@ class PDFService:
         """
         canvas_obj.saveState()
         
+        page_width, page_height = PDFService.PAGE_SIZE
+        
         # Wedding couple names - get from config
         wedding_title = current_app.config.get('WEDDING_TITLE', "Irene & Jaime's Wedding")
-        canvas_obj.setFont('Helvetica-Bold', 20)
+        canvas_obj.setFont('Helvetica-BoldOblique', 22)
         canvas_obj.setFillColor(PDFService.COLOR_PRIMARY)
         canvas_obj.drawCentredString(
-            doc.width / 2 + doc.leftMargin,
-            doc.height + doc.topMargin - 30,
+            page_width / 2,
+            page_height - 0.6 * inch,
             wedding_title
         )
         
         # Document title
-        canvas_obj.setFont('Helvetica', 14)
+        canvas_obj.setFont('Helvetica-Bold', 14)
         canvas_obj.setFillColor(PDFService.COLOR_SECONDARY)
         canvas_obj.drawCentredString(
-            doc.width / 2 + doc.leftMargin,
-            doc.height + doc.topMargin - 50,
+            page_width / 2,
+            page_height - 0.95 * inch,
             title
         )
         
@@ -78,8 +82,8 @@ class PDFService:
             canvas_obj.setFont('Helvetica', 10)
             canvas_obj.setFillColor(colors.gray)
             canvas_obj.drawCentredString(
-                doc.width / 2 + doc.leftMargin,
-                doc.height + doc.topMargin - 65,
+                page_width / 2,
+                page_height - 1.15 * inch,
                 subtitle
             )
         
@@ -87,23 +91,25 @@ class PDFService:
         canvas_obj.setFont('Helvetica', 8)
         canvas_obj.setFillColor(colors.gray)
         canvas_obj.drawRightString(
-            doc.width + doc.leftMargin,
-            doc.height + doc.topMargin - 10,
+            page_width - PDFService.MARGIN,
+            page_height - 0.4 * inch,
             f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         )
         
         # Line under header
+        line_y = page_height - 1.35 * inch
         canvas_obj.setStrokeColor(PDFService.COLOR_SECONDARY)
         canvas_obj.setLineWidth(2)
         canvas_obj.line(
-            doc.leftMargin,
-            doc.height + doc.topMargin - 75,
-            doc.width + doc.leftMargin,
-            doc.height + doc.topMargin - 75
+            PDFService.MARGIN,
+            line_y,
+            page_width - PDFService.MARGIN,
+            line_y
         )
         
         canvas_obj.restoreState()
-    
+
+
     @staticmethod
     def _create_footer(canvas_obj, doc):
         """Create a standard footer for all PDFs."""
@@ -149,7 +155,7 @@ class PDFService:
             pagesize=PDFService.PAGE_SIZE,
             rightMargin=PDFService.MARGIN,
             leftMargin=PDFService.MARGIN,
-            topMargin=PDFService.MARGIN + 0.5 * inch,
+            topMargin=1.5 * inch,  # Changed from MARGIN + 0.5 * inch
             bottomMargin=PDFService.MARGIN
         )
         
@@ -178,11 +184,7 @@ class PDFService:
         
         # Get dietary data
         dietary_data = AdminService.get_dietary_report()
-        
-        # Title
-        elements.append(Paragraph("Dietary Restrictions & Allergen Information", title_style))
-        elements.append(Spacer(1, 0.2 * inch))
-        
+
         # Executive Summary
         elements.append(Paragraph("Executive Summary", heading_style))
         
@@ -366,7 +368,7 @@ class PDFService:
             pagesize=PDFService.PAGE_SIZE,
             rightMargin=PDFService.MARGIN,
             leftMargin=PDFService.MARGIN,
-            topMargin=PDFService.MARGIN + 0.5 * inch,
+            topMargin=PDFService.MARGIN + 1.5 * inch,
             bottomMargin=PDFService.MARGIN
         )
         
@@ -403,10 +405,6 @@ class PDFService:
         
         # Get transport data
         transport_data = AdminService.get_transport_report()
-        
-        # Title
-        elements.append(Paragraph("Transport Coordination Plan", title_style))
-        elements.append(Spacer(1, 0.2 * inch))
         
         # Executive Summary
         elements.append(Paragraph("Transport Summary", heading_style))
