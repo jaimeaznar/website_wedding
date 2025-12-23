@@ -14,7 +14,7 @@ from unittest.mock import MagicMock, patch
 class TestImportGuests:
     def test_process_guest_csv_valid(self):
         """Test processing a valid CSV file."""
-        csv_content = b'name,phone,email,has_plus_one,is_family,language\nJohn Doe,123456789,john@example.com,true,false,en\nJane Smith,987654321,jane@example.com,false,true,es'
+        csv_content = b'name,phone,has_plus_one,is_family,language\nJohn Doe,123456789,true,false,en\nJane Smith,987654321,false,true,es'
         
         guests = process_guest_csv(csv_content)
         assert len(guests) == 2
@@ -22,7 +22,6 @@ class TestImportGuests:
         # Check first guest
         assert guests[0].name == 'John Doe'
         assert guests[0].phone == '123456789'
-        assert guests[0].email == 'john@example.com'
         assert guests[0].has_plus_one is True
         assert guests[0].is_family is False
         assert guests[0].language_preference == 'en'
@@ -30,14 +29,13 @@ class TestImportGuests:
         # Check second guest
         assert guests[1].name == 'Jane Smith'
         assert guests[1].phone == '987654321'
-        assert guests[1].email == 'jane@example.com'
         assert guests[1].has_plus_one is False
         assert guests[1].is_family is True
         assert guests[1].language_preference == 'es'
 
     def test_process_guest_csv_missing_headers(self):
         """Test processing a CSV with missing required headers."""
-        csv_content = b'name,phone,email\nJohn Doe,123456789,john@example.com'
+        csv_content = b'name,phone,John Doe,123456789'
         
         with pytest.raises(ValueError) as excinfo:
             process_guest_csv(csv_content)
@@ -46,7 +44,7 @@ class TestImportGuests:
 
     def test_process_guest_csv_missing_required_fields(self):
         """Test processing a CSV with missing required fields."""
-        csv_content = b'name,phone,email,has_plus_one,is_family,language\n,123456789,john@example.com,true,false,en'
+        csv_content = b'name,phone,has_plus_one,is_family,language\n,123456789,true,false,en'
         
         with pytest.raises(ValueError) as excinfo:
             process_guest_csv(csv_content)

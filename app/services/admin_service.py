@@ -83,7 +83,6 @@ class AdminService:
             rsvp_data = {
                 'guest_name': guest.name,
                 'guest_phone': guest.phone,
-                'guest_email': guest.email,
                 'language': guest.language_preference,
                 'is_family': guest.is_family,
                 'has_plus_one': guest.has_plus_one,
@@ -228,4 +227,4 @@ class AdminService:
         Returns:
             CSV content as string
         """
-        return 'name,phone,email,has_plus_one,is_family,language\n'
+        return 'name,phone,has_plus_one,is_family,language\n'

@@ -1,7 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask_mail import Mail
 from flask_babel import Babel
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
@@ -9,7 +8,6 @@ import os
 import sys
 
 db = SQLAlchemy()
-mail = Mail()
 babel = Babel()
 migrate = Migrate()
 csrf = CSRFProtect()
@@ -63,7 +61,6 @@ def create_app(config_class=None):
     
     # Initialize extensions
     db.init_app(app)
-    mail.init_app(app)
     babel.init_app(app, locale_selector=get_locale)
     migrate.init_app(app, db)
     csrf.init_app(app)
@@ -79,6 +76,7 @@ def create_app(config_class=None):
     # Register error handlers
     from app.error_handlers import register_error_handlers
     register_error_handlers(app)
+
     
     # Register blueprints
     print("Registering blueprints...")
@@ -91,6 +89,10 @@ def create_app(config_class=None):
     from app.routes.admin_airtable import bp as admin_airtable_bp
     app.register_blueprint(admin_airtable_bp)
 
+    # Register Cron blueprint (for scheduled reminders)
+    from app.routes.cron import bp as cron_bp
+    app.register_blueprint(cron_bp)
+
     print("Blueprints registered!")
     
     # Log configuration status (without exposing sensitive data)
@@ -100,7 +102,6 @@ def create_app(config_class=None):
         app.logger.info(f"Environment: {os.getenv('FLASK_ENV', 'development')}")
         app.logger.info(f"Database: {'✅ Configured' if app.config.get('SQLALCHEMY_DATABASE_URI') else '❌ Not configured'}")
         app.logger.info(f"Admin: {'✅ Configured' if app.config.get('ADMIN_PASSWORD') else '❌ Not configured'}")
-        app.logger.info(f"Email: {'✅ Configured' if app.config.get('MAIL_USERNAME') else '⚠️  Not configured'}")
         app.logger.info(f"Wedding Date: {app.config.get('WEDDING_DATE')}")
         app.logger.info(f"RSVP Deadline: {app.config.get('RSVP_DEADLINE')}")
         app.logger.info("=" * 50)

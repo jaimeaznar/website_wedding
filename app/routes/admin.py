@@ -3,13 +3,11 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from app.services.admin_service import AdminService
 from app.services.guest_service import GuestService
 from app.services.rsvp_service import RSVPService
-from app.services.reminder_service import ReminderService
 from app.forms import LoginForm, GuestForm, ImportForm
 from app.security import rate_limit
 from app.constants import (
     LogMessage, ErrorMessage, FlashCategory, TimeLimit, Template, Security
 )
-from app.models.reminder import ReminderType
 from datetime import datetime, timedelta
 from functools import wraps
 import logging
@@ -80,7 +78,6 @@ def add_guest():
             guest = GuestService.create_guest(
                 name=form.name.data,
                 phone=form.phone.data,
-                email=form.email.data,
                 has_plus_one=form.has_plus_one.data,
                 is_family=form.is_family.data,
                 language_preference=form.language_preference.data
@@ -169,236 +166,6 @@ def export_report():
     # This will be implemented in the export phase
     flash('Export functionality coming soon!', 'info')
     return redirect(url_for('admin.dashboard'))
-
-# ============= REMINDER MANAGEMENT ROUTES =============
-
-@bp.route('/reminders')
-@admin_required
-def reminders():
-    """Display reminder management interface."""
-    # Get statistics
-    statistics = ReminderService.get_reminder_statistics()
-    
-    # Get pending guests
-    pending_guests = AdminService.get_pending_rsvps()
-    
-    # Calculate reminder schedule
-    reminder_schedule = []
-    deadline_str = current_app.config.get('RSVP_DEADLINE')
-    
-    if deadline_str:
-        deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
-        
-        for reminder_type in [
-            ReminderType.INITIAL,
-            ReminderType.FIRST_FOLLOWUP,
-            ReminderType.SECOND_FOLLOWUP,
-            ReminderType.FINAL
-        ]:
-            days_before = ReminderType.get_days_before(reminder_type)
-            scheduled_date = deadline - timedelta(days=days_before)
-            guests = ReminderService.get_guests_needing_reminder(reminder_type)
-            
-            # Check if already sent today
-            from app.models.reminder import ReminderBatch
-            sent = ReminderBatch.query.filter_by(
-                reminder_type=reminder_type
-            ).filter(
-                ReminderBatch.started_at >= datetime.combine(scheduled_date, datetime.min.time())
-            ).first()
-            
-            reminder_schedule.append({
-                'type': reminder_type,
-                'days_before': days_before,
-                'scheduled_date': scheduled_date.strftime('%Y-%m-%d'),
-                'guests_count': len(guests),
-                'sent': sent is not None,
-                'sent_date': sent.started_at.strftime('%Y-%m-%d') if sent else None
-            })
-    
-    today = datetime.now().date().strftime('%Y-%m-%d')
-    
-    return render_template('admin/reminders.html',
-                         statistics=statistics,
-                         pending_guests=pending_guests,
-                         reminder_schedule=reminder_schedule,
-                         today=today)
-
-
-@bp.route('/reminders/send-batch', methods=['POST'])
-@admin_required
-def send_batch_reminder():
-    """Send batch reminders."""
-    reminder_type = request.form.get('reminder_type')
-    target = request.form.get('target', 'all')
-    
-    # Get admin email for tracking
-    admin_email = current_app.config.get('ADMIN_EMAIL', 'admin')
-    
-    try:
-        # Send reminders
-        results = ReminderService.send_batch_reminders(
-            reminder_type=reminder_type,
-            executed_by=admin_email
-        )
-        
-        flash(f"Sent {results['sent']} reminders, {results['failed']} failed", 
-              'success' if results['sent'] > 0 else 'warning')
-        
-    except Exception as e:
-        logger.error(f"Error sending batch reminders: {str(e)}")
-        flash(f"Error sending reminders: {str(e)}", 'error')
-    
-    return redirect(url_for('admin.reminders'))
-
-
-@bp.route('/reminders/send-individual/<int:guest_id>')
-@admin_required
-def send_individual_reminder(guest_id):
-    """Send reminder to individual guest."""
-    from app.models.guest import Guest
-    
-    guest = Guest.query.get_or_404(guest_id)
-    admin_email = current_app.config.get('ADMIN_EMAIL', 'admin')
-    
-    try:
-        success, message = ReminderService.send_reminder(
-            guest=guest,
-            reminder_type=ReminderType.INITIAL,  # Default to initial
-            sent_by=admin_email
-        )
-        
-        if success:
-            flash(f"Reminder sent to {guest.name}", 'success')
-        else:
-            flash(message, 'warning')
-            
-    except Exception as e:
-        logger.error(f"Error sending individual reminder: {str(e)}")
-        flash(f"Error sending reminder: {str(e)}", 'error')
-    
-    return redirect(url_for('admin.reminders'))
-
-
-@bp.route('/reminders/send-scheduled/<string:reminder_type>')
-@admin_required
-def send_scheduled_reminder(reminder_type):
-    """Send a scheduled reminder type now."""
-    admin_email = current_app.config.get('ADMIN_EMAIL', 'admin')
-    
-    try:
-        results = ReminderService.send_batch_reminders(
-            reminder_type=reminder_type,
-            executed_by=admin_email
-        )
-        
-        flash(f"Sent {results['sent']} {reminder_type} reminders", 'success')
-        
-    except Exception as e:
-        logger.error(f"Error sending scheduled reminders: {str(e)}")
-        flash(f"Error sending reminders: {str(e)}", 'error')
-    
-    return redirect(url_for('admin.reminders'))
-
-
-@bp.route('/reminders/opt-out/<int:guest_id>')
-@admin_required
-def opt_out_guest(guest_id):
-    """Opt out a guest from reminders."""
-    from app.models.guest import Guest
-    
-    guest = Guest.query.get_or_404(guest_id)
-    
-    try:
-        ReminderService.opt_out_guest(guest_id)
-        flash(f"{guest.name} has been opted out of reminders", 'success')
-        
-    except Exception as e:
-        logger.error(f"Error opting out guest: {str(e)}")
-        flash(f"Error opting out guest: {str(e)}", 'error')
-    
-    return redirect(url_for('admin.reminders'))
-
-
-@bp.route('/reminders/history')
-@admin_required
-def reminder_history():
-    """View detailed reminder history."""
-    from app.models.reminder import ReminderHistory
-    
-    # Get filter parameters
-    guest_id = request.args.get('guest_id', type=int)
-    reminder_type = request.args.get('type')
-    status = request.args.get('status')
-    
-    # Build query
-    query = ReminderHistory.query
-    
-    if guest_id:
-        query = query.filter_by(guest_id=guest_id)
-    if reminder_type:
-        query = query.filter_by(reminder_type=reminder_type)
-    if status:
-        query = query.filter_by(status=status)
-    
-    # Order by most recent first
-    history = query.order_by(ReminderHistory.created_at.desc()).limit(100).all()
-    
-    return render_template('admin/reminder_history.html', history=history)
-
-
-@bp.route('/reminders/test')
-@admin_required
-def test_reminder():
-    """Test reminder email by sending to admin."""
-    admin_email = current_app.config.get('ADMIN_EMAIL')
-    
-    if not admin_email:
-        flash('Admin email not configured', 'error')
-        return redirect(url_for('admin.reminders'))
-    
-    # Create a test guest object
-    from app.models.guest import Guest
-    test_guest = Guest(
-        name='Admin (Test)',
-        email=admin_email,
-        token='test-token',
-        language_preference='en'
-    )
-    
-    try:
-        from flask_mail import Message
-        from app import mail
-        from datetime import datetime
-        
-        msg = Message(
-            subject='Test Reminder Email',
-            recipients=[admin_email],
-            sender=current_app.config.get('MAIL_DEFAULT_SENDER')
-        )
-        
-        # Use the initial reminder template as a test
-        deadline_str = current_app.config.get('RSVP_DEADLINE', '2026-05-06')
-        deadline_formatted = datetime.strptime(deadline_str, '%Y-%m-%d').strftime('%B %d, %Y')
-        
-        html_body = render_template(
-            'emails/reminder_initial_en.html',
-            guest=test_guest,
-            rsvp_deadline=deadline_formatted,
-            config=current_app.config
-        )
-        
-        msg.html = html_body
-        mail.send(msg)
-        
-        flash('Test email sent successfully to admin email', 'success')
-        
-    except Exception as e:
-        logger.error(f"Error sending test reminder: {str(e)}")
-        flash(f"Error sending test email: {str(e)}", 'error')
-    
-    return redirect(url_for('admin.reminders'))
-
 
 # ============= PDF EXPORT ROUTES =============
 
@@ -549,7 +316,6 @@ def _generate_guest_csv():
     writer.writerow([
         'Guest Name',
         'Phone',
-        'Email',
         'Language',
         'Has Plus One',
         'Is Family',
@@ -598,7 +364,6 @@ def _generate_guest_csv():
         writer.writerow([
             rsvp_data['guest_name'],
             rsvp_data['guest_phone'],
-            rsvp_data['guest_email'],
             rsvp_data['language'],
             'Yes' if rsvp_data['has_plus_one'] else 'No',
             'Yes' if rsvp_data['is_family'] else 'No',

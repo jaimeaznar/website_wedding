@@ -31,7 +31,6 @@ class TestPDFService:
                 {
                     'name': 'John Doe',
                     'phone': '555-0001',
-                    'email': 'john@example.com',
                     'hotel': 'Hotel Parador Trujillo',
                     'transport_church': True,
                     'transport_reception': True,
@@ -41,7 +40,6 @@ class TestPDFService:
                 {
                     'name': 'Jane Smith',
                     'phone': '555-0002',
-                    'email': 'jane@example.com',
                     'hotel': 'Hotel Cáceres',
                     'transport_church': True,
                     'transport_reception': False,
@@ -51,7 +49,6 @@ class TestPDFService:
                 {
                     'name': 'Bob Johnson',
                     'phone': '555-0003',
-                    'email': 'bob@example.com',
                     'hotel': 'Hotel Parador Trujillo',
                     'transport_church': False,
                     'transport_reception': True,
@@ -65,7 +62,6 @@ class TestPDFService:
                 guest = Guest(
                     name=data['name'],
                     phone=data['phone'],
-                    email=data['email'],
                     token=f"token-{data['phone']}"
                 )
                 db.session.add(guest)
@@ -315,7 +311,6 @@ class TestPDFService:
             guest = Guest(
                 name='Allergy Test Guest',
                 phone='555-9999',
-                email='allergy@test.com',
                 token='token-allergy'
             )
             db.session.add(guest)
@@ -361,7 +356,7 @@ class TestPDFService:
             guest = Guest(
                 name='Family Test',
                 phone='555-8888',
-                email='family@test.com',
+
                 token='token-family',
                 is_family=True
             )

@@ -122,18 +122,6 @@ class Config:
     # Note: The app will hash this password automatically when comparing
     
     # ============================================
-    # EMAIL CONFIGURATION
-    # ============================================
-    
-    MAIL_SERVER = get_env_variable('MAIL_SERVER', 'smtp.gmail.com')
-    MAIL_PORT = int(get_env_variable('MAIL_PORT', '587'))
-    MAIL_USE_TLS = get_env_variable('MAIL_USE_TLS', 'True').lower() == 'true'
-    MAIL_USE_SSL = get_env_variable('MAIL_USE_SSL', 'False').lower() == 'true'
-    MAIL_USERNAME = get_env_variable('MAIL_USERNAME')
-    MAIL_PASSWORD = get_env_variable('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = get_env_variable('MAIL_DEFAULT_SENDER', MAIL_USERNAME)
-    
-    # ============================================
     # WEDDING CONFIGURATION
     # ============================================
     

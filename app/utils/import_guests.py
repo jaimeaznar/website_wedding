@@ -24,7 +24,6 @@ def process_guest_csv(file_content):
             guest = Guest(
                 name=row['name'].strip(),
                 phone=row['phone'].strip(),
-                email=row.get('email', '').strip() or None,  # Make email optional
                 token=secrets.token_urlsafe(32),
                 has_plus_one=str(row.get('has_plus_one', '')).lower() == 'true',
                 is_family=str(row.get('is_family', '')).lower() == 'true',
@@ -43,6 +42,5 @@ def validate_guest_data(row):
     errors = []
     if not row.get('name'):
         errors.append('Name is required')
-    if not row.get('email'):
-        errors.append('Email is required')
+
     return errors

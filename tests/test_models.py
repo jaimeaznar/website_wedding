@@ -19,7 +19,6 @@ class TestGuestModel:
             # Create a new guest
             guest = Guest(
                 name='John Doe',
-                email='john@example.com',
                 phone='123456789',
                 token=secrets.token_urlsafe(32),
                 language_preference='en',
@@ -31,7 +30,6 @@ class TestGuestModel:
 
             assert guest.id is not None
             assert guest.name == 'John Doe'
-            assert guest.email == 'john@example.com'
             assert guest.phone == '123456789'
             assert len(guest.token) > 0
             assert guest.language_preference == 'en'

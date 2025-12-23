@@ -16,26 +16,6 @@ def index():
         logger.error(f"Error rendering template: {str(e)}")
         raise
 
-@bp.route('/schedule')
-def schedule():
-    return render_template('schedule.html')
-
-@bp.route('/venue')
-def venue():
-    return render_template('venue.html')
-
-@bp.route('/accommodation')
-def accommodation():
-    return render_template('accommodation.html')
-
-@bp.route('/activities')
-def activities():
-    return render_template('activities.html')
-
-@bp.route('/gallery')
-def gallery():
-    return render_template('gallery.html')
-
 @bp.route('/health')
 def health():
     """Health check endpoint for Railway/load balancers."""

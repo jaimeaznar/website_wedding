@@ -26,7 +26,6 @@ class TestPDFRoutes:
             guest = Guest(
                 name='PDF Route Test',
                 phone='555-PDF1',
-                email='pdf@test.com',
                 token='token-pdf-route'
             )
             db.session.add(guest)

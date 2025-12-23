@@ -420,7 +420,6 @@ def api_guests():
                     'record_id': g.record_id,
                     'name': g.name,
                     'phone': g.phone,
-                    'email': g.email,
                     'language': g.language,
                     'status': g.status,
                     'token': g.token,

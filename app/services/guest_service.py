@@ -19,7 +19,6 @@ class GuestService:
     def create_guest(
         name: str,
         phone: str,
-        email: Optional[str] = None,
         has_plus_one: bool = False,
         is_family: bool = False,
         language_preference: str = Language.DEFAULT
@@ -30,7 +29,6 @@ class GuestService:
         Args:
             name: Guest's full name
             phone: Guest's phone number
-            email: Guest's email address (optional)
             has_plus_one: Whether guest can bring a plus one
             is_family: Whether guest is a family member
             language_preference: Preferred language (en/es)
@@ -40,7 +38,7 @@ class GuestService:
             
         Raises:
             ValueError: If required fields are missing
-            IntegrityError: If guest with same email/phone exists
+            IntegrityError: If guest with same phone exists
         """
         if not name or not phone:
             raise ValueError(ErrorMessage.MISSING_REQUIRED_FIELDS)
@@ -49,8 +47,6 @@ class GuestService:
             raise ValueError(f"Name exceeds maximum length of {GuestLimit.MAX_NAME_LENGTH} characters")
         if len(phone) > GuestLimit.MAX_PHONE_LENGTH:
             raise ValueError(f"Phone exceeds maximum length of {GuestLimit.MAX_PHONE_LENGTH} characters")
-        if email and len(email) > GuestLimit.MAX_EMAIL_LENGTH:
-            raise ValueError(f"Email exceeds maximum length of {GuestLimit.MAX_EMAIL_LENGTH} characters")
         
         # Generate unique token
         token = secrets.token_urlsafe(GuestLimit.TOKEN_LENGTH)
@@ -62,7 +58,6 @@ class GuestService:
         guest = Guest(
             name=name.strip(),
             phone=phone.strip(),
-            email=email.strip() if email else None,
             token=token,
             has_plus_one=has_plus_one,
             is_family=is_family,
@@ -106,28 +101,25 @@ class GuestService:
         return Guest.query.get(guest_id)
     
     @staticmethod
-    def find_guest_by_email_or_phone(email: Optional[str] = None, phone: Optional[str] = None) -> Optional[Guest]:
+    def find_guest_by_phone(phone: Optional[str] = None) -> Optional[Guest]:
         """
-        Find a guest by email or phone number.
+        Find a guest by phone number.
         
         Args:
-            email: Email address to search
             phone: Phone number to search
             
         Returns:
             Guest or None if not found
         """
-        if not email and not phone:
-            return None
+
         
         query = Guest.query
         
-        if email and phone:
+        if phone:
             return query.filter(
-                (Guest.email == email) | (Guest.phone == phone)
+                (Guest.phone == phone)
             ).first()
-        elif email:
-            return query.filter_by(email=email).first()
+        
         else:
             return query.filter_by(phone=phone).first()
     
@@ -242,7 +234,6 @@ class GuestService:
         guest_id: int,
         name: Optional[str] = None,
         phone: Optional[str] = None,
-        email: Optional[str] = None,
         has_plus_one: Optional[bool] = None,
         is_family: Optional[bool] = None,
         language_preference: Optional[str] = None
@@ -254,7 +245,6 @@ class GuestService:
             guest_id: ID of guest to update
             name: New name (optional)
             phone: New phone (optional)
-            email: New email (optional)
             has_plus_one: New plus one status (optional)
             is_family: New family status (optional)
             language_preference: New language preference (optional)
@@ -274,8 +264,6 @@ class GuestService:
             guest.name = name.strip()
         if phone is not None:
             guest.phone = phone.strip()
-        if email is not None:
-            guest.email = email.strip() if email else None
         if has_plus_one is not None:
             guest.has_plus_one = has_plus_one
         if is_family is not None:

@@ -67,7 +67,6 @@ def clean_db(app):
         
         # Delete guests (which will cascade to RSVPs and their allergens)
         test_guests = Guest.query.filter(
-            Guest.email.like('%test%') | 
             Guest.name.like('%Test%')
         ).all()
         
@@ -107,7 +106,6 @@ def sample_guest(app):
     with app.app_context():
         guest = Guest(
             name='Test Guest',
-            email='test@example.com',
             phone='555-0123',
             token=secrets.token_urlsafe(32),
             language_preference='en',

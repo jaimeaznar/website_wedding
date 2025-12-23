@@ -22,7 +22,6 @@ class TestGuestService:
             guest = GuestService.create_guest(
                 name="Service Test Guest",
                 phone="555-SERVICE",
-                email="service@test.com",
                 has_plus_one=True,
                 is_family=False,
                 language_preference='en'
@@ -31,7 +30,6 @@ class TestGuestService:
             assert guest.id is not None
             assert guest.name == "Service Test Guest"
             assert guest.phone == "555-SERVICE"
-            assert guest.email == "service@test.com"
             assert guest.has_plus_one is True
             assert guest.is_family is False
             assert len(guest.token) > 0
@@ -74,29 +72,23 @@ class TestGuestService:
             db.session.delete(guest)
             db.session.commit()
     
-    def test_find_guest_by_email_or_phone(self, app):
-        """Test finding a guest by email or phone."""
+    def test_find_guest_by_phone(self, app):
+        """Test finding a guest by phone."""
         with app.app_context():
             # Create a guest
             guest = GuestService.create_guest(
                 name="Find Test Guest",
                 phone="555-FIND",
-                email="find@test.com"
             )
-            
-            # Find by email
-            found_by_email = GuestService.find_guest_by_email_or_phone(email="find@test.com")
-            assert found_by_email is not None
-            assert found_by_email.id == guest.id
+
             
             # Find by phone
-            found_by_phone = GuestService.find_guest_by_email_or_phone(phone="555-FIND")
+            found_by_phone = GuestService.find_guest_by_phone(phone="555-FIND")
             assert found_by_phone is not None
             assert found_by_phone.id == guest.id
             
             # Find by both (should return the same guest)
-            found_by_both = GuestService.find_guest_by_email_or_phone(
-                email="find@test.com",
+            found_by_both = GuestService.find_guest_by_phone(
                 phone="555-FIND"
             )
             assert found_by_both is not None

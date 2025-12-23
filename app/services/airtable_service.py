@@ -43,7 +43,6 @@ class AirtableGuest:
     record_id: str
     name: str
     phone: str
-    email: Optional[str]
     language: str
     is_family: bool
     has_plus_one: bool
@@ -82,7 +81,6 @@ class AirtableGuest:
             record_id=record['id'],
             name=fields.get('Name', ''),
             phone=fields.get('Phone', ''),
-            email=fields.get('Email'),
             language=fields.get('Language', 'es'),
             is_family=fields.get('Is Family', False),
             has_plus_one=fields.get('Has Plus One', False),
@@ -259,7 +257,7 @@ class AirtableService:
         try:
             reminder_field = f"Reminder {reminder_number}"
             # Status is Pending AND this reminder hasn't been sent
-            formula = f"AND({{Status}} = '{AirtableStatus.PENDING}', {{{reminder_field}}} = '')"
+            formula = f"AND({{Status}} = '{AirtableStatus.PENDING}', {{{reminder_field}}} = BLANK())"
             records = self.table.all(formula=formula)
             guests = [AirtableGuest.from_airtable_record(r) for r in records]
             logger.info(f"Found {len(guests)} guests needing reminder {reminder_number}")
@@ -493,7 +491,6 @@ class AirtableService:
             # Update existing guest
             local_guest.name = airtable_guest.name
             local_guest.phone = airtable_guest.phone
-            local_guest.email = airtable_guest.email
             local_guest.language_preference = airtable_guest.language
             local_guest.is_family = airtable_guest.is_family
             local_guest.has_plus_one = airtable_guest.has_plus_one
@@ -506,7 +503,6 @@ class AirtableService:
             local_guest = Guest(
                 name=airtable_guest.name,
                 phone=airtable_guest.phone,
-                email=airtable_guest.email,
                 token=token,
                 language_preference=airtable_guest.language,
                 is_family=airtable_guest.is_family,

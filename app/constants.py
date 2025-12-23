@@ -90,16 +90,6 @@ class FlashCategory:
     INFO = 'info'
     DANGER = 'danger'
 
-
-class EmailTemplate:
-    """Email template names."""
-    INVITATION_EN = 'emails/invitation_en.html'
-    INVITATION_ES = 'emails/invitation_es.html'
-    REMINDER_EN = 'emails/reminder_en.html'
-    REMINDER_ES = 'emails/reminder_es.html'
-    CANCELLATION_NOTIFICATION = 'emails/cancellation_notification.html'
-
-
 class LogMessage:
     """Standardized log messages."""
     # Guest operations

@@ -20,10 +20,6 @@ class TestMainNavigation:
         assert b'>EN</a>' in response.data
         assert b'>ES</a>' in response.data
         
-        # Test navigation to schedule page
-        response = client.get('/schedule')
-        assert response.status_code == 200
-        assert b'Wedding Schedule' in response.data
 
 class TestRSVPProcess:
     """Test the RSVP process flow."""
@@ -40,7 +36,6 @@ class TestRSVPProcess:
         with app.app_context():
             guest = Guest(
                 name='Functional Test Guest',
-                email='functional_test@example.com',
                 phone='555-123-4567',
                 token=secrets.token_urlsafe(32),
                 language_preference='en',

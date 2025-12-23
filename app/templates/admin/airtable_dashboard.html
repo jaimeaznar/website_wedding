@@ -234,7 +234,6 @@
                         <tr class="{% if guest.status == 'Attending' %}table-success{% elif guest.status == 'Declined' %}table-secondary{% elif guest.status == 'Cancelled' %}table-danger{% endif %}">
                             <td>
                                 <strong>{{ guest.name }}</strong>
-                                {% if guest.email %}<br><small class="text-muted">{{ guest.email }}</small>{% endif %}
                             </td>
                             <td>{{ guest.phone }}</td>
                             <td>

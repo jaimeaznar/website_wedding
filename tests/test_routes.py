@@ -15,18 +15,6 @@ class TestMainRoutes:
         assert response.status_code == 200
         assert b'Irene & Jaime' in response.data
 
-    def test_schedule_route(self, client):
-        """Test the schedule route."""
-        response = client.get('/schedule')
-        assert response.status_code == 200
-        assert b'Wedding Schedule' in response.data
-
-    def test_venue_route(self, client):
-        """Test the venue route."""
-        response = client.get('/venue')
-        assert response.status_code == 200
-        assert b'Wedding Venue' in response.data
-
     def test_language_switching(self, client):
         """Test language switching."""
         # Default is English
@@ -304,8 +292,7 @@ class TestAdminGuestManagement:
             # Submit new guest
             response = auth_client.post('/admin/guest/add', data={
                 'name': 'Admin Test Guest',
-                'phone': '555-ADMIN',
-                'email': 'admin.test@example.com',
+                'phone': '555-999',
                 'has_plus_one': True,
                 'is_family': False,
                 'language_preference': 'en'
@@ -316,7 +303,7 @@ class TestAdminGuestManagement:
             assert '/admin/dashboard' in response.location
             
             # Verify guest was created
-            guest = Guest.query.filter_by(email='admin.test@example.com').first()
+            guest = Guest.query.filter_by(phone='555-999').first()
             assert guest is not None
             assert guest.name == 'Admin Test Guest'
             
@@ -331,13 +318,13 @@ class TestAdminGuestManagement:
         
         assert response.status_code == 200
         assert response.content_type.startswith('text/csv')
-        assert b'name,phone,email,has_plus_one,is_family,language' in response.data
+        assert b'name,phone,has_plus_one,is_family,language' in response.data
     
     def test_import_guests_requires_auth(self, client):
         """Test that import guests requires authentication."""
         from io import BytesIO
         
-        csv_content = b'name,phone,email,has_plus_one,is_family,language\n'
+        csv_content = b'name,phone,has_plus_one,is_family,language\n'
         csv_content += b'Test Import,555-1234,test@import.com,false,false,en\n'
         
         csv_file = BytesIO(csv_content)
@@ -388,14 +375,12 @@ class TestAdminDashboardData:
             guest1 = Guest(
                 name='Dashboard Test 1',
                 phone='555-DASH1',
-                email='dash1@test.com',
                 token='token1',
                 is_family=True
             )
             guest2 = Guest(
                 name='Dashboard Test 2',
                 phone='555-DASH2',
-                email='dash2@test.com',
                 token='token2',
                 is_family=False
             )

@@ -53,7 +53,7 @@ def seed_test_guest():
     print("\nCreating test guest...")
     
     # Check if test guest already exists
-    existing_guest = Guest.query.filter_by(email='test@example.com').first()
+    existing_guest = Guest.query.filter_by(phone='555-999').first()
     if existing_guest:
         print(f"Test guest already exists: {existing_guest.name} (token: {existing_guest.token})")
         return existing_guest
@@ -61,7 +61,6 @@ def seed_test_guest():
     # Create test guest
     test_guest = Guest(
         name='Test Family Guest',
-        email='test@example.com',
         phone='555-0123',
         token=secrets.token_urlsafe(32),
         language_preference='en',

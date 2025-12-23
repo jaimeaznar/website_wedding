@@ -8,7 +8,6 @@ from app.models.guest import Guest
 from app.models.rsvp import RSVP, AdditionalGuest
 from app.models.allergen import GuestAllergen
 from app.services.allergen_service import AllergenService
-from app.utils.email import send_cancellation_notification
 from app.constants import (
     DateFormat, LogMessage, DEFAULT_CONFIG
 )
@@ -266,11 +265,6 @@ class RSVPService:
         try:
             db.session.commit()
             
-            # Send notification email (optional, don't fail if email fails)
-            try:
-                send_cancellation_notification(guest, rsvp)
-            except Exception as e:
-                logger.error(f"Failed to send cancellation email: {str(e)}")
             
             logger.info(f"RSVP cancelled for guest {guest.name}")
             

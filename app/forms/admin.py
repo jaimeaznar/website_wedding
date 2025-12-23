@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, BooleanField, PasswordField, SelectField
-from wtforms.validators import DataRequired, Email, Optional, Length
+from wtforms.validators import DataRequired, Length
 from app.constants import GuestLimit, Language, FileUpload
 
 class LoginForm(FlaskForm):
@@ -18,11 +18,6 @@ class GuestForm(FlaskForm):
     phone = StringField('Phone Number', validators=[
         DataRequired(), 
         Length(max=GuestLimit.MAX_PHONE_LENGTH)
-    ])
-    email = StringField('Email', validators=[
-        Optional(), 
-        Email(), 
-        Length(max=GuestLimit.MAX_EMAIL_LENGTH)
     ])
     has_plus_one = BooleanField('Has Plus One')
     is_family = BooleanField('Is Family')
