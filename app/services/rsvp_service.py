@@ -53,6 +53,36 @@ class RSVPService:
             return rsvp_deadline_str
     
     @staticmethod
+    def _sync_to_airtable(guest: Guest) -> None:
+        """
+        Sync RSVP data to Airtable (if configured).
+        
+        This runs in a background-safe way - failures don't affect the main RSVP flow.
+        
+        Args:
+            guest: The guest whose RSVP should be synced
+        """
+        try:
+            from app.services.airtable_service import get_airtable_service
+            
+            airtable = get_airtable_service()
+            
+            # Check if Airtable is configured
+            if not airtable.is_configured:
+                logger.debug("Airtable not configured, skipping sync")
+                return
+            
+            # Sync the RSVP to Airtable
+            airtable.sync_rsvp_to_airtable(guest.token)
+            logger.info(f"Synced RSVP for {guest.name} to Airtable")
+            
+        except ImportError:
+            logger.debug("Airtable service not available, skipping sync")
+        except Exception as e:
+            # Log but don't fail - Airtable sync is optional
+            logger.warning(f"Failed to sync RSVP to Airtable for {guest.name}: {e}")
+    
+    @staticmethod
     def create_or_update_rsvp(
         guest: Guest,
         form_data: Dict[str, Any]
@@ -148,6 +178,10 @@ class RSVPService:
                 message = "Your response has been recorded."
             
             logger.info(f"RSVP {'created' if not rsvp.id else 'updated'} for guest {guest.name}")
+            
+            # Sync to Airtable (async-safe, won't fail the main flow)
+            RSVPService._sync_to_airtable(guest)
+            
             return True, message, rsvp
             
         except Exception as e:
@@ -239,6 +273,10 @@ class RSVPService:
                 logger.error(f"Failed to send cancellation email: {str(e)}")
             
             logger.info(f"RSVP cancelled for guest {guest.name}")
+            
+            # Sync cancellation to Airtable
+            RSVPService._sync_to_airtable(guest)
+            
             return True, "Your RSVP has been cancelled."
             
         except Exception as e:

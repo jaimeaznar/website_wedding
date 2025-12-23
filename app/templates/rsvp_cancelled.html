@@ -1,27 +1,26 @@
 {% extends "base.html" %}
 {% block title %}RSVP Cancelled{% endblock %}
 {% block content %}
+<div class="language-switcher">
+    <a href="#" class="lang-btn" data-lang="es">ES</a>
+    <a href="#" class="lang-btn" data-lang="en">EN</a>
+</div>
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
             <div class="card">
                 <div class="card-body text-center py-5">
                     <div class="mb-4">
-                        <i class="fas fa-calendar-times text-danger"
-                            style="font-size: 4rem;"></i>
+                        <i class="fas fa-heart text-secondary" style="font-size: 4rem;"></i>
                     </div>
-                    <h1 class="mb-3">RSVP Cancelled</h1>
-                    <p class="lead mb-4">Your RSVP has been cancelled.</p>
-                    <p class="mb-4">We're sorry you can't make it to our
-                        celebration.</p>
-                    <p class="text-muted mb-4">If you change your mind before
-                        the RSVP deadline, please contact us directly at {{
-                        admin_phone }}.</p>
+                    <h1 class="mb-3" data-translate="rsvp.cancelled.title">RSVP Cancelled</h1>
+                    <p class="lead mb-4" data-translate="rsvp.cancelled.sorry">We're sorry to hear you can no longer attend. We appreciate you informing us.</p>
+                    <p class="text-muted mb-4" data-translate="rsvp.cancelled.change.mind">If your situation changes before the RSVP deadline, please contact us directly.</p>
 
                     <div class="mt-4">
-                        <a href="{{ url_for('main.index') }}"
-                            class="btn btn-primary">
-                            Return to Home
+                        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i><span data-translate="back_home">Back to Home</span>
                         </a>
                     </div>
                 </div>

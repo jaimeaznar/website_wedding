@@ -122,7 +122,7 @@
                     <p><i class="far fa-clock me-2"></i> <strong>17:30</strong></p>
                     <p>
                         <i class="fas fa-map-marker-alt me-2"></i>
-                        <a href="https://maps.app.goo.gl/mjmxcZEumGro7XSi9" target="_blank" rel="noopener" class="location-link">
+                        <a href="https://maps.app.goo.gl/BHAoCBuV2kcbpkC28" target="_blank" rel="noopener" class="location-link">
                             <span data-translate="schedule.cathedral">Concatedral de Santa María</span>
                         </a>
                     </p>
@@ -135,7 +135,7 @@
                     <p><i class="far fa-clock me-2"></i> <strong>18:00</strong></p>
                     <p>
                         <i class="fas fa-map-marker-alt me-2"></i>
-                        <a href="https://maps.app.goo.gl/mjmxcZEumGro7XSi9" target="_blank" rel="noopener" class="location-link">
+                        <a href="https://maps.app.goo.gl/BHAoCBuV2kcbpkC28" target="_blank" rel="noopener" class="location-link">
                             <span data-translate="schedule.cathedral">Concatedral de Santa María</span>
                         </a>
                     </p>
@@ -159,7 +159,7 @@
                     <p><i class="far fa-clock me-2"></i> <strong>20:00 onwards</strong></p>
                     <p>
                         <i class="fas fa-map-marker-alt me-2"></i>
-                        <a href="https://maps.app.goo.gl/sqKuDP1WgD8JataR6" target="_blank" rel="noopener" class="location-link">
+                        <a href="https://maps.app.goo.gl/V7X1T7uZSDz362F57" target="_blank" rel="noopener" class="location-link">
                             <span data-translate="schedule.venue.name">Dehesa la Torrecilla, Trujillo</span>
                         </a>
                     </p>
@@ -188,7 +188,7 @@
                 <!-- Dancing -->
                 <div class="event">
                     <h3 data-translate="schedule.dancing">Dancing & Celebration</h3>
-                    <p><i class="far fa-clock me-2"></i> <strong>22:30 - Late</strong></p>
+                    <p ><i class="far fa-clock me-2"></i> <strong data-translate="schedule.dancing.until">22:30 - Late</strong></p>
                     <p>
                         <i class="fas fa-music me-2"></i>
                         <span data-translate="schedule.dancing.description">Dance the night away!</span>
@@ -216,6 +216,31 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-md-6">
+                    <img src="{{ url_for('static', filename='img/concatedral.jpg') }}"
+                        class="img-fluid rounded mb-3" alt="Concatedral">
+                </div>
+                <div class="col-md-6">
+                    <h3>Concatedral de Santa María (Cáceres)</h3>
+                    <h4 data-translate="venue.location">Location</h4>
+                    <p>Pl. Sta. María, 3, Centro-Casco Antiguo, 10003 Cáceres</p>
+                    <h4 data-translate="venue.getting.there">Getting There</h4>
+                    <div class="venue-map-container mb-3">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <a href="https://maps.app.goo.gl/BHAoCBuV2kcbpkC28" target="_blank" rel="noopener" class="location-link">
+                            <span data-translate="schedule.cathedral">Concatedral de Santa María</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="schedule-note mt-5">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong data-translate="schedule.note.title">Important:</strong>
+                    <span data-translate="schedule.note.text">Transportation will be provided between the cathedral and reception venue. Please let us know if you need transportation when completing your RSVP.</span>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
                     <img src="{{ url_for('static', filename='img/venue.jpg') }}"
                         class="img-fluid rounded mb-3" alt="Venue">
                 </div>
@@ -225,15 +250,10 @@
                     <p>Dehesa la Torrecilla, 10220 Trujillo, Cáceres</p>
                     <h4 data-translate="venue.getting.there">Getting There</h4>
                     <div class="venue-map-container mb-3">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3083.014433275875!2d-5.8683886233765925!3d39.4011795168212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd15a5000072cde5%3A0xf5c52bb834bab855!2sDehesa%20la%20Torrecilla!5e0!3m2!1sen!2ses!4v1763393726402!5m2!1sen!2ses" 
-                            width="100%" 
-                            height="400" 
-                            style="border:0; border-radius: 10px;" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <a href="https://maps.app.goo.gl/V7X1T7uZSDz362F57" target="_blank" rel="noopener" class="location-link">
+                            <span data-translate="schedule.venue.name">Dehesa la Torrecilla, Trujillo</span>
+                        </a>
                     </div>
                 </div>
             </div>

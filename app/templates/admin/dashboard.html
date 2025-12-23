@@ -115,6 +115,9 @@
             <a href="{{ url_for('admin.test_reminder') }}" class="btn btn-warning btn-sm">
                 <i class="fas fa-envelope me-2"></i>Test Email
             </a>
+            <a href="{{ url_for('admin_airtable.airtable_dashboard') }}" class="btn btn-success btn-sm">
+                <i class="fab fa-whatsapp me-2"></i>Airtable & WhatsApp
+            </a>
         </div>
     </div>
 </div>
@@ -172,10 +175,12 @@
                         <td>
                             {% if guest.rsvp %}
                             {% if guest.rsvp.is_cancelled %}
-                            <span class="badge bg-danger">Cancelled</span>
-                            <small class="d-block text-muted">{{
-                                guest.rsvp.cancellation_date.strftime('%Y-%m-%d')
-                                }}</small>
+                                <span class="badge bg-danger">Cancelled</span>
+                                {% if guest.rsvp.cancellation_date %}
+                                <small class="d-block text-muted">{{
+                                    guest.rsvp.cancellation_date.strftime('%Y-%m-%d')
+                                    }}</small>
+                                {% endif %}
                             {% elif guest.rsvp.is_attending %}
                             <span class="badge bg-success">Attending</span>
                             {% else %}
@@ -327,12 +332,13 @@
                                 <span class="badge bg-info">Family</span>
                                 {% endif %}
                                 {% if rsvp.is_cancelled %}
-                                <span class="badge bg-danger">Cancelled</span>
-                                <br>
-                                <small>Cancelled on: {{
-                                    rsvp.cancellation_date.strftime('%Y-%m-%d
-                                    %H:%M') }}</small>
-                                {% endif %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                    {% if rsvp.cancellation_date %}
+                                    <br>
+                                    <small>Cancelled on: {{
+                                        rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M') }}</small>
+                                    {% endif %}
+                                    {% endif %}
                             </td>
                             <td>
                                 {% if rsvp.is_cancelled %}

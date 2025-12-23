@@ -25,3 +25,8 @@ reportlab==4.0.9
 pypdf==3.17.4
 
 pytest-playwright==0.4.3
+
+pyairtable==2.3.3
+
+twilio==9.0.0
+

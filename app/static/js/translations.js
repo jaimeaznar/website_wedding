@@ -70,6 +70,17 @@ const translations = {
         'rsvp.cancelled': 'RSVP Cancelled',
         'rsvp.cancelled.message': 'Your RSVP has been cancelled.',
         'rsvp.change.mind': 'If you change your mind before the RSVP deadline, please contact us directly at',
+        // RSVP Confirmation Pages
+        'rsvp.explore.message': 'Now discover all the details about our wedding: venue, hotels, activities, and more!',
+        'rsvp.explore.button': 'Explore Wedding Details',
+        'rsvp.declined.title': 'Thank You',
+        'rsvp.declined.subtitle': 'Thank you for letting us know.',
+        'rsvp.declined.sorry': 'We\'re sorry you won\'t be able to join us, but we appreciate you taking the time to respond.',
+        'rsvp.declined.change.mind': 'If your plans change before the RSVP deadline, feel free to contact us.',
+        'rsvp.cancelled.title': 'RSVP Cancelled',
+        'rsvp.cancelled.subtitle': 'Thank you for letting us know.',
+        'rsvp.cancelled.sorry': 'We\'re sorry to hear you can no longer attend. We appreciate you informing us.',
+        'rsvp.cancelled.change.mind': 'If your situation changes before the RSVP deadline, please contact us directly.',
 
         // RSVP Confirmations
         'rsvp.thank.you': 'Thank You!',
@@ -98,12 +109,13 @@ const translations = {
         'schedule.dinner': 'Dinner',
         'schedule.dinner.description': 'Traditional Spanish wedding feast',
         'schedule.dancing': 'Dancing & Celebration',
+        'schedule.dancing.until': '22:30 - Late',
         'schedule.dancing.description': 'Dance the night away!',
         'schedule.note.title': 'Important:',
         'schedule.note.text': 'Transportation will be provided between the cathedral and reception venue. Please let us know if you need transportation when completing your RSVP.',
 
         // Venue Modal
-        'venue.title': 'Wedding Venue',
+        'venue.title': 'Wedding Venue and Reception',
         'venue.location': 'Location',
         'venue.getting.there': 'Getting There',
 
@@ -278,6 +290,10 @@ const translations = {
         'gifts.bank.name': 'Account Name:',
         'gifts.copied': 'IBAN copied to clipboard!',
         'gifts.thanks': 'Thank you for your generosity and for being part of our special day!',
+
+        'confirmation_explore': "Now explore everything about the wedding!",
+        'declined_explore': "Feel free to explore the wedding details in case your plans change:",
+        'back_home': "Back to Home",
     },
     es: {
         // Common
@@ -297,7 +313,7 @@ const translations = {
         // Home page cards
         'card.rsvp': 'Confirmación',
         'card.schedule': 'Programa',
-        'card.venue': 'Celebración de boda y banquete',
+        'card.venue': 'Ceremonia y banquete',
         'card.accommodation': 'Alojamiento',
         'card.activities': 'Actividades',
         'card.gallery': 'Galería',
@@ -349,6 +365,17 @@ const translations = {
         'rsvp.cancelled': 'RSVP Cancelado',
         'rsvp.cancelled.message': 'Tu RSVP ha sido cancelado.',
         'rsvp.change.mind': 'Si cambias de opinión antes de la fecha límite del RSVP, por favor contáctanos directamente en',
+        // RSVP Confirmation Pages  
+        'rsvp.explore.message': '¡Descubre todos los detalles de nuestra boda: lugar, hoteles, actividades y más!',
+        'rsvp.explore.button': 'Explorar Detalles de la Boda',
+        'rsvp.declined.title': 'Gracias',
+        'rsvp.declined.subtitle': 'Gracias por hacérnoslo saber.',
+        'rsvp.declined.sorry': 'Sentimos que no puedas acompañarnos, pero agradecemos que te hayas tomado el tiempo de responder.',
+        'rsvp.declined.change.mind': 'Si tus planes cambian antes de la fecha límite, no dudes en contactarnos.',
+        'rsvp.cancelled.title': 'RSVP Cancelado',
+        'rsvp.cancelled.subtitle': 'Gracias por informarnos.',
+        'rsvp.cancelled.sorry': 'Lamentamos saber que ya no puedes asistir. Agradecemos que nos lo hayas comunicado.',
+        'rsvp.cancelled.change.mind': 'Si tu situación cambia antes de la fecha límite, por favor contáctanos directamente.',
 
         // RSVP Confirmations
         'rsvp.thank.you': '¡Gracias!',
@@ -378,11 +405,12 @@ const translations = {
         'schedule.dinner.description': 'Banquete tradicional español de boda',
         'schedule.dancing': 'Baile y Celebración',
         'schedule.dancing.description': '¡Baila toda la noche!',
+        'schedule.dancing.until': '22:30 - Cierre',
         'schedule.note.title': 'Importante:',
         'schedule.note.text': 'Se proporcionará transporte entre la catedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu RSVP.',
 
         // Venue Modal
-        'venue.title': 'Lugar de la Boda',
+        'venue.title': 'Ceremonia y banquete',
         'venue.location': 'Ubicación',
         'venue.getting.there': 'Cómo Llegar',
 
@@ -539,6 +567,9 @@ const translations = {
         'gifts.bank.name': 'Nombre de Cuenta:',
         'gifts.copied': '¡IBAN copiado al portapapeles!',
         'gifts.thanks': '¡Gracias por vuestra generosidad y por ser parte de nuestro día especial!',
+        'confirmation_explore': "¡Ahora explora todo sobre la boda!",
+        'declined_explore': "Si cambias de opinión, aquí tienes toda la información:",
+        'back_home': "Volver al inicio",
     }
 };
 

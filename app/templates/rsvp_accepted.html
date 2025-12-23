@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 {% block title %}RSVP Accepted{% endblock %}
 {% block content %}
+<div class="language-switcher">
+    <a href="#" class="lang-btn" data-lang="es">ES</a>
+    <a href="#" class="lang-btn" data-lang="en">EN</a>
+</div>
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
             <div class="card">
                 <div class="card-body text-center py-5">
                     <div class="mb-4">
-                        <i class="fas fa-check-circle text-success"
-                            style="font-size: 4rem;"></i>
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                     </div>
-                    <h1 class="mb-3">Thank You!</h1>
-                    <p class="lead mb-4">We're excited that you'll be joining us
-                        for our special day!</p>
-                    <p class="mb-4">Your RSVP has been successfully submitted.
-                    </p>
-                    <p class="text-muted mb-4">You can return to this link at
-                        any time before the RSVP deadline to update your
-                        response.</p>
+                    <h1 class="mb-3" data-translate="rsvp.thank.you">Thank You!</h1>
+                    <p class="lead mb-4" data-translate="rsvp.excited">We're excited that you'll be joining us for our special day!</p>
+                    <p class="mb-4" data-translate="rsvp.success">Your RSVP has been successfully submitted.</p>
+                    <p class="text-muted mb-4" data-translate="rsvp.update.note">You can return to this link at any time before the RSVP deadline to update your response.</p>
 
+                    <hr class="my-4">
+                    
+                    <p class="mb-3" data-translate="rsvp.explore.message">Now discover all the details about our wedding: venue, hotels, activities, and more!</p>
                     <div class="mt-4">
-                        <a href="{{ url_for('main.index') }}"
-                            class="btn btn-primary">
-                            Return to Home
+                        <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-heart me-2"></i><span data-translate="rsvp.explore.button">Explore Wedding Details</span>
                         </a>
                     </div>
                 </div>

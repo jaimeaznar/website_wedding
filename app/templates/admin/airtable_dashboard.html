@@ -1,0 +1,388 @@
+{% extends "base.html" %}
+
+{% block title %}Airtable & WhatsApp - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <h1 class="mb-4">
+        <i class="fas fa-sync-alt"></i> Airtable & WhatsApp Integration
+    </h1>
+
+    <!-- Configuration Status -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card {% if config_status.airtable_configured %}border-success{% else %}border-danger{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {% if config_status.airtable_configured %}
+                            <i class="fas fa-check-circle text-success"></i>
+                        {% else %}
+                            <i class="fas fa-times-circle text-danger"></i>
+                        {% endif %}
+                        Airtable
+                    </h5>
+                    <p class="card-text">
+                        {% if config_status.airtable_configured %}
+                            Connected and configured
+                        {% else %}
+                            Not configured. Set AIRTABLE_API_KEY and AIRTABLE_BASE_ID in .env
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card {% if config_status.whatsapp_configured %}border-success{% else %}border-danger{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {% if config_status.whatsapp_configured %}
+                            <i class="fas fa-check-circle text-success"></i>
+                        {% else %}
+                            <i class="fas fa-times-circle text-danger"></i>
+                        {% endif %}
+                        WhatsApp (Twilio)
+                    </h5>
+                    <p class="card-text">
+                        {% if config_status.whatsapp_configured %}
+                            Connected and configured
+                        {% else %}
+                            Not configured. Set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_WHATSAPP_NUMBER in .env
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> Error: {{ error }}
+    </div>
+    {% endif %}
+
+    {% if config_status.airtable_configured %}
+    
+    <!-- Statistics -->
+    {% if stats %}
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h2>{{ stats.total_guests }}</h2>
+                    <p class="mb-0">Total Guests</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-warning text-dark">
+                <div class="card-body text-center">
+                    <h2>{{ stats.pending }}</h2>
+                    <p class="mb-0">Pending</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h2>{{ stats.attending }}</h2>
+                    <p class="mb-0">Attending</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-secondary text-white">
+                <div class="card-body text-center">
+                    <h2>{{ stats.declined }}</h2>
+                    <p class="mb-0">Declined</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h2>{{ stats.links_sent }}</h2>
+                    <p class="mb-0">Links Sent</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card bg-dark text-white">
+                <div class="card-body text-center">
+                    <h2>{{ stats.total_people }}</h2>
+                    <p class="mb-0">Total People</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-cogs"></i> Actions</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.sync_to_local') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-download"></i> Sync Airtable → Local DB
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.generate_tokens') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-key"></i> Generate All Tokens
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.send_all_links') }}" 
+                          onsubmit="return confirm('Send RSVP links to all guests who haven\'t received one?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-success w-100" 
+                                {% if not config_status.whatsapp_configured %}disabled{% endif %}>
+                            <i class="fab fa-whatsapp"></i> Send All RSVP Links
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.test_whatsapp') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-success w-100"
+                                {% if not config_status.whatsapp_configured %}disabled{% endif %}>
+                            <i class="fas fa-vial"></i> Test WhatsApp
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Reminder Buttons -->
+            <hr>
+            <h6 class="mb-3">Send Reminders (to all pending guests)</h6>
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.send_batch_reminders', reminder_number=1) }}"
+                          onsubmit="return confirm('Send Reminder 1 (30 days) to all pending guests?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-warning w-100"
+                                {% if not config_status.whatsapp_configured %}disabled{% endif %}>
+                            <i class="fas fa-bell"></i> Reminder 1 (30 days)
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.send_batch_reminders', reminder_number=2) }}"
+                          onsubmit="return confirm('Send Reminder 2 (14 days) to all pending guests?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-warning w-100"
+                                {% if not config_status.whatsapp_configured %}disabled{% endif %}>
+                            <i class="fas fa-bell"></i> Reminder 2 (14 days)
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.send_batch_reminders', reminder_number=3) }}"
+                          onsubmit="return confirm('Send Reminder 3 (7 days) to all pending guests?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-warning w-100"
+                                {% if not config_status.whatsapp_configured %}disabled{% endif %}>
+                            <i class="fas fa-bell"></i> Reminder 3 (7 days)
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <form method="POST" action="{{ url_for('admin_airtable.send_batch_reminders', reminder_number=4) }}"
+                          onsubmit="return confirm('Send FINAL Reminder (3 days) to all pending guests?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-danger w-100"
+                                {% if not config_status.whatsapp_configured %}disabled{% endif %}>
+                            <i class="fas fa-exclamation-triangle"></i> FINAL Reminder (3 days)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest List -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-users"></i> Guests from Airtable</h5>
+            <span class="badge bg-primary">{{ guests|length }} guests</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="guestsTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Language</th>
+                            <th>Status</th>
+                            <th>Token</th>
+                            <th>Link Sent</th>
+                            <th>Reminders</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for guest in guests %}
+                        <tr class="{% if guest.status == 'Attending' %}table-success{% elif guest.status == 'Declined' %}table-secondary{% elif guest.status == 'Cancelled' %}table-danger{% endif %}">
+                            <td>
+                                <strong>{{ guest.name }}</strong>
+                                {% if guest.email %}<br><small class="text-muted">{{ guest.email }}</small>{% endif %}
+                            </td>
+                            <td>{{ guest.phone }}</td>
+                            <td>
+                                <span class="badge bg-info">{{ guest.language|upper }}</span>
+                            </td>
+                            <td>
+                                {% if guest.status == 'Pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% elif guest.status == 'Attending' %}
+                                    <span class="badge bg-success">Attending</span>
+                                    {% if guest.adults_count or guest.children_count %}
+                                    <br><small>{{ guest.adults_count or 1 }} adults, {{ guest.children_count or 0 }} children</small>
+                                    {% endif %}
+                                {% elif guest.status == 'Declined' %}
+                                    <span class="badge bg-secondary">Declined</span>
+                                {% elif guest.status == 'Cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if guest.token %}
+                                    <span class="badge bg-success" title="{{ guest.token }}">
+                                        <i class="fas fa-check"></i> Generated
+                                    </span>
+                                {% else %}
+                                    <form method="POST" action="{{ url_for('admin_airtable.generate_single_token', record_id=guest.record_id) }}" class="d-inline">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-key"></i> Generate
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if guest.link_sent %}
+                                    <span class="badge bg-success" title="{{ guest.link_sent }}">
+                                        <i class="fas fa-check"></i> {{ guest.link_sent.strftime('%m/%d') }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Not sent</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    {% if guest.reminder_1 %}
+                                        <span class="badge bg-success" title="Reminder 1: {{ guest.reminder_1 }}">1</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">1</span>
+                                    {% endif %}
+                                    {% if guest.reminder_2 %}
+                                        <span class="badge bg-success" title="Reminder 2: {{ guest.reminder_2 }}">2</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">2</span>
+                                    {% endif %}
+                                    {% if guest.reminder_3 %}
+                                        <span class="badge bg-success" title="Reminder 3: {{ guest.reminder_3 }}">3</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">3</span>
+                                    {% endif %}
+                                    {% if guest.reminder_4 %}
+                                        <span class="badge bg-success" title="Reminder 4: {{ guest.reminder_4 }}">4</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">4</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    {% if guest.token and not guest.link_sent and config_status.whatsapp_configured %}
+                                    <form method="POST" action="{{ url_for('admin_airtable.send_single_link', record_id=guest.record_id) }}" class="d-inline">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-success" title="Send RSVP Link">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    
+                                    {% if guest.token and guest.status == 'Pending' and config_status.whatsapp_configured %}
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" title="Send Reminder">
+                                            <i class="fas fa-bell"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <form method="POST" action="{{ url_for('admin_airtable.send_single_reminder', record_id=guest.record_id, reminder_number=1) }}">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <button type="submit" class="dropdown-item">Reminder 1 (30 days)</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('admin_airtable.send_single_reminder', record_id=guest.record_id, reminder_number=2) }}">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <button type="submit" class="dropdown-item">Reminder 2 (14 days)</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('admin_airtable.send_single_reminder', record_id=guest.record_id, reminder_number=3) }}">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <button type="submit" class="dropdown-item">Reminder 3 (7 days)</button>
+                                                </form>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('admin_airtable.send_single_reminder', record_id=guest.record_id, reminder_number=4) }}">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <button type="submit" class="dropdown-item text-danger">FINAL Reminder</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if guest.token %}
+                                    <a href="{{ url_for('rsvp.rsvp_form', token=guest.token) }}" 
+                                       class="btn btn-outline-primary btn-sm" 
+                                       target="_blank" 
+                                       title="View RSVP Form">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <div class="alert alert-warning">
+        <h4><i class="fas fa-exclamation-triangle"></i> Airtable Not Configured</h4>
+        <p>To use the Airtable integration, add these to your <code>.env</code> file:</p>
+        <pre class="bg-dark text-light p-3 rounded">
+AIRTABLE_API_KEY=patXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+AIRTABLE_BASE_ID=appXXXXXXXXXXXXXX
+AIRTABLE_TABLE_NAME=Guests</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-refresh statistics every 30 seconds
+setInterval(function() {
+    // Could add AJAX refresh here if needed
+}, 30000);
+</script>
+{% endblock %}

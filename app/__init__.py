@@ -86,6 +86,11 @@ def create_app(config_class=None):
     app.register_blueprint(main_bp)
     app.register_blueprint(rsvp_bp)
     app.register_blueprint(admin_bp)
+
+    # Register Airtable/WhatsApp blueprint
+    from app.routes.admin_airtable import bp as admin_airtable_bp
+    app.register_blueprint(admin_airtable_bp)
+
     print("Blueprints registered!")
     
     # Log configuration status (without exposing sensitive data)
