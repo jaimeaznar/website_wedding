@@ -215,12 +215,6 @@ class Config:
         if self.is_production:
             # Ensure HTTPS in production
             self.SESSION_COOKIE_SECURE = True
-            
-            # Validate email configuration
-            if not self.MAIL_USERNAME or not self.MAIL_PASSWORD:
-                print("⚠️  WARNING: Email not configured properly for production!")
-                print("   Some features (invitations, confirmations) will not work.")
-            
             print("✅ Production configuration validated")
         else:
             print("✅ Development configuration loaded")
