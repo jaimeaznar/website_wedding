@@ -65,7 +65,6 @@ class TestAdminAPIContracts:
                 guest = GuestService.create_guest(
                     name=f"Dashboard Test {i}",
                     phone=f"555-{2000+i:04d}",
-                    is_family=i == 0
                 )
                 if i < 2:
                     rsvp = RSVP(
@@ -113,16 +112,14 @@ class TestAdminAPIContracts:
         data = response.data.decode('utf-8')
         assert 'name="name"' in data
         assert 'name="phone"' in data
-        assert 'name="has_plus_one"' in data
-        assert 'name="is_family"' in data
+
         assert 'name="language_preference"' in data
         
         # Test POST with valid data
         response = auth_client.post('/admin/guest/add', data={
             'name': 'API Test Guest',
             'phone': '555-9999',
-            'has_plus_one': True,
-            'is_family': False,
+
             'language_preference': 'en'
         }, follow_redirects=False)
         
@@ -134,7 +131,6 @@ class TestAdminAPIContracts:
             guest = Guest.query.filter_by(phone='555-9999').first()
             assert guest is not None
             assert guest.name == 'API Test Guest'
-            assert guest.has_plus_one is True
         
         # Test POST with invalid data
         response = auth_client.post('/admin/guest/add', data={
@@ -148,9 +144,9 @@ class TestAdminAPIContracts:
         from io import BytesIO
         
         # Test POST with valid CSV
-        csv_content = b'name,phone,has_plus_one,is_family,language\n'
-        csv_content += b'Import Test 1,555-7001,true,false,en\n'
-        csv_content += b'Import Test 2,555-7002,false,true,es\n'
+        csv_content = b'name,phone,language\n'
+        csv_content += b'Import Test 1,555-7001,en\n'
+        csv_content += b'Import Test 2,555-7002,es\n'
         
         # Create a proper file object
         csv_file = BytesIO(csv_content)
@@ -188,7 +184,7 @@ class TestAdminAPIContracts:
     
         # Check content
         content = response.data.decode('utf-8')
-        assert 'name,phone,has_plus_one,is_family,language' in content
+        assert 'name,phone,language' in content
     
     def test_admin_logout_contract(self, app, auth_client):
         """Test admin logout endpoint contract."""
@@ -267,8 +263,7 @@ class TestRSVPAPIContracts:
         with app.app_context():
             guest = GuestService.create_guest(
                 name="Contract Test Guest",
-                phone="555-8000",
-                is_family=True
+                phone="555-8000"
             )
             token = guest.token
         

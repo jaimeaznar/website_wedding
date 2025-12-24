@@ -39,8 +39,6 @@ class TestRSVPProcess:
                 phone='555-123-4567',
                 token=secrets.token_urlsafe(32),
                 language_preference='en',
-                has_plus_one=True,
-                is_family=True
             )
             db.session.add(guest)
             db.session.commit()

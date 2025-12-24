@@ -1,4 +1,4 @@
-{# app/templates/rsvp.html - FIXED VERSION #}
+{# app/templates/rsvp.html - BILINGUAL VERSION #}
 {% extends "base.html" %}
 {% block title %}RSVP{% endblock %}
 
@@ -8,44 +8,40 @@
         <div class="col-lg-8 offset-lg-2">
             <div class="text-center mb-4">
                 <h1>RSVP</h1>
-                <p class="lead">Welcome, {{ guest.name }}!</p>
+                <p class="lead"><span data-translate="rsvp.welcome">Welcome</span>, {{ guest.name }}!</p>
                 {% if rsvp and not rsvp.is_cancelled and rsvp.is_editable %}
-                <p class="text-muted">Last updated: {{
+                <p class="text-muted"><span data-translate="rsvp.last.updated">Last updated</span>: {{
                     rsvp.last_updated.strftime('%Y-%m-%d %H:%M') }}</p>
                 {% endif %}
             </div>
 
             {% if show_warning %}
             <div class="alert alert-warning mb-4">
-                <h4 class="alert-heading">Changes Restricted</h4>
-                <p>Changes are not possible within {{ config.WARNING_CUTOFF_DAYS
-                    }} days of the wedding date.</p>
+                <h4 class="alert-heading" data-translate="alert.changes.restricted">Changes Restricted</h4>
+                <p><span data-translate="alert.changes.not.possible">Changes are not possible within</span> {{ config.WARNING_CUTOFF_DAYS }} <span data-translate="alert.days.of.wedding">days of the wedding date.</span></p>
                 <hr>
-                <p class="mb-0">Need assistance? Contact us at: {{ admin_phone
-                    }}</p>
+                <p class="mb-0"><span data-translate="alert.need.assistance">Need assistance? Contact us at:</span> {{ admin_phone }}</p>
             </div>
             {% endif %}
 
             {% if rsvp and rsvp.is_cancelled %}
             <div class="alert alert-info mb-4">
-                <h4 class="alert-heading">RSVP Cancelled</h4>
-                <p>Your RSVP was cancelled on {{
+                <h4 class="alert-heading" data-translate="rsvp.cancelled">RSVP Cancelled</h4>
+                <p><span data-translate="rsvp.cancelled.message">Your RSVP was cancelled on</span> {{
                     rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M') }}</p>
             </div>
             {% endif %}
 
-            <form method="POST" id="rsvpForm" {% if readonly
-                %}class="form-readonly" {% endif %}>
+            <form method="POST" id="rsvpForm" {% if readonly %}class="form-readonly" {% endif %}>
                 {{ form.csrf_token }}
 
                 <!-- Attendance Section -->
                 <div class="form-section">
                     <div class="form-section-header">
-                        <h3 class="mb-0">Will you attend?</h3>
+                        <h3 class="mb-0" data-translate="rsvp.will.attend">Will you attend?</h3>
                     </div>
                     <div class="form-section-body">
-                        {% if not rsvp or rsvp.is_cancelled or not
-                        rsvp.is_attending %}
+                        {% if not rsvp or rsvp.is_cancelled or not rsvp.is_attending %}
                         <div class="attendance-options">
                             <div class="attendance-option">
                                 <input type="radio" name="is_attending"
@@ -54,7 +50,7 @@
                                     endif %}>
                                 <label for="is_attending_0">
                                     <i class="fas fa-check-circle"></i>
-                                    Yes, I will attend
+                                    <span data-translate="rsvp.yes">Yes, I will attend</span>
                                 </label>
                             </div>
                             <div class="attendance-option">
@@ -64,14 +60,13 @@
                                     rsvp.is_cancelled %}checked{% endif %}>
                                 <label for="is_attending_1">
                                     <i class="fas fa-times-circle"></i>
-                                    No, I cannot attend
+                                    <span data-translate="rsvp.no">No, I cannot attend</span>
                                 </label>
                             </div>
                         </div>
                         {% else %}
                         <div class="alert alert-success">
-                            <i class="fas fa-check-circle me-2"></i> You have
-                            confirmed your attendance.
+                            <i class="fas fa-check-circle me-2"></i> <span data-translate="rsvp.confirmed">You have confirmed your attendance.</span>
                         </div>
                         {% endif %}
                     </div>
@@ -84,16 +79,16 @@
                     <!-- Hotel Information -->
                     <div class="form-section">
                         <div class="form-section-header">
-                            <h3 class="mb-0">Accommodation</h3>
+                            <h3 class="mb-0" data-translate="rsvp.accommodation.title">Accommodation</h3>
                         </div>
                         <div class="form-section-body">
                             <div class="mb-3">
-                                {{ form.hotel_name.label(class="form-label") }}
-                                {{ form.hotel_name(class="form-control",
-                                placeholder="Enter hotel name or leave blank if
-                                undecided") }}
-                                <div class="form-text">Please let us know where
-                                    you'll be staying.</div>
+                                <label class="form-label" for="hotel_name" data-translate="rsvp.where.staying">Where are you staying?</label>
+                                <input type="text" class="form-control" name="hotel_name" id="hotel_name"
+                                    value="{{ rsvp.hotel_name if rsvp else '' }}"
+                                    data-translate-placeholder="rsvp.hotel.placeholder"
+                                    placeholder="Enter hotel name or leave blank if undecided">
+                                <div class="form-text" data-translate="rsvp.hotel.help">Please let us know where you'll be staying.</div>
                                 {% if form.hotel_name.errors %}
                                 <div class="invalid-feedback d-block">
                                     {% for error in form.hotel_name.errors %}
@@ -108,33 +103,27 @@
                     <!-- Transport Options -->
                     <div class="form-section">
                         <div class="form-section-header">
-                            <h3 class="mb-0">Transportation</h3>
+                            <h3 class="mb-0" data-translate="rsvp.transport.title">Transportation</h3>
                         </div>
                         <div class="form-section-body">
-                            <p>Would you like us to arrange transportation?</p>
+                            <p data-translate="rsvp.transport.question">Would you like us to arrange transportation?</p>
                             <div class="form-check mb-2">
-                                {{
-                                form.transport_to_church(class="form-check-input
-                                transport-checkbox") }}
-                                {{
-                                form.transport_to_church.label(class="form-check-label")
-                                }}
+                                <input class="form-check-input transport-checkbox" type="checkbox" 
+                                    name="transport_to_church" id="transport_to_church"
+                                    {% if rsvp and rsvp.transport_to_church %}checked{% endif %}>
+                                <label class="form-check-label" for="transport_to_church" data-translate="rsvp.transport.church">Transport to church</label>
                             </div>
                             <div class="form-check mb-2">
-                                {{
-                                form.transport_to_reception(class="form-check-input
-                                transport-checkbox") }}
-                                {{
-                                form.transport_to_reception.label(class="form-check-label")
-                                }}
+                                <input class="form-check-input transport-checkbox" type="checkbox"
+                                    name="transport_to_reception" id="transport_to_reception"
+                                    {% if rsvp and rsvp.transport_to_reception %}checked{% endif %}>
+                                <label class="form-check-label" for="transport_to_reception" data-translate="rsvp.transport.reception">Transport to reception</label>
                             </div>
                             <div class="form-check">
-                                {{
-                                form.transport_to_hotel(class="form-check-input
-                                transport-checkbox") }}
-                                {{
-                                form.transport_to_hotel.label(class="form-check-label")
-                                }}
+                                <input class="form-check-input transport-checkbox" type="checkbox"
+                                    name="transport_to_hotel" id="transport_to_hotel"
+                                    {% if rsvp and rsvp.transport_to_hotel %}checked{% endif %}>
+                                <label class="form-check-label" for="transport_to_hotel" data-translate="rsvp.transport.hotel">Transport to hotel</label>
                             </div>
                         </div>
                     </div>
@@ -142,8 +131,7 @@
                     <!-- Dietary Restrictions - Main Guest -->
                     <div class="form-section">
                         <div class="form-section-header">
-                            <h3 class="mb-0">Dietary Restrictions - {{
-                                guest.name }}</h3>
+                            <h3 class="mb-0"><span data-translate="rsvp.dietary.title">Dietary Restrictions</span> - {{ guest.name }}</h3>
                         </div>
                         <div class="form-section-body">
                             {% for allergen in allergens %}
@@ -156,60 +144,47 @@
                                     and allergen.id in rsvp.allergen_ids
                                     %}checked{% endif %}>
                                 <label class="form-check-label"
-                                    for="allergen_main_{{ allergen.id }}">
+                                    for="allergen_main_{{ allergen.id }}"
+                                    data-translate="allergen.{{ allergen.name|lower|replace(' (tree nuts)', '')|replace(' ', '') }}"
+                                    data-allergen-fallback="{{ allergen.name }}">
                                     {{ allergen.name }}
                                 </label>
                             </div>
                             {% endfor %}
                             <div class="mt-3">
-                                <label class="form-label">Other Dietary
-                                    Restrictions</label>
+                                <label class="form-label" data-translate="rsvp.dietary.other">Other Dietary Restrictions</label>
                                 <input type="text" class="form-control"
                                     name="custom_allergen_main"
                                     value="{{ rsvp.custom_allergen if rsvp else '' }}"
                                     {% if readonly %}readonly{% endif %}
+                                    data-translate-placeholder="rsvp.dietary.placeholder"
                                     placeholder="Please specify any other dietary restrictions">
                             </div>
                         </div>
                     </div>
 
                     <!-- Family Guests Section -->
-                    {% if guest.is_family %}
                     <div class="form-section">
                         <div class="form-section-header">
-                            <h3 class="mb-0">Family Members</h3>
+                            <h3 class="mb-0" data-translate="rsvp.family.title">Family Members</h3>
                         </div>
                         <div class="form-section-body">
                             <div class="row mb-4">
                                 <div class="col-md-6 mb-3">
-                                    {{
-                                    form.adults_count.label(class="form-label")
-                                    }}
-                                    {{ form.adults_count(class="form-select",
-                                    id="adults_count") }}
-                                    {% if form.adults_count.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.adults_count.errors
-                                        %}
-                                        {{ error }}
+                                    <label class="form-label" for="adults_count" data-translate="rsvp.additional.adults">Number of Additional Adults</label>
+                                    <select class="form-select" name="adults_count" id="adults_count">
+                                        {% for i in range(11) %}
+                                        <option value="{{ i }}" {% if rsvp and rsvp.adults_count == i %}selected{% endif %}>{{ i }}</option>
                                         {% endfor %}
-                                    </div>
-                                    {% endif %}
+                                    </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    {{
-                                    form.children_count.label(class="form-label")
-                                    }}
-                                    {{ form.children_count(class="form-select",
-                                    id="children_count") }}
-                                    {% if form.children_count.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in
-                                        form.children_count.errors %}
-                                        {{ error }}
+                                    <label class="form-label" for="children_count" data-translate="rsvp.children.count">Number of Children</label>
+                                    <select class="form-select" name="children_count" id="children_count">
+                                        {% for i in range(11) %}
+                                        <option value="{{ i }}" {% if rsvp and rsvp.children_count == i %}selected{% endif %}>{{ i }}</option>
                                         {% endfor %}
-                                    </div>
-                                    {% endif %}
+                                    </select>
                                 </div>
                             </div>
 
@@ -217,63 +192,16 @@
                             <div id="children_container"></div>
                         </div>
                     </div>
-                    {% endif %}
-
-                    <!-- Plus One Section -->
-                    {% if guest.has_plus_one and not guest.is_family %}
-                    <div class="form-section">
-                        <div class="form-section-header">
-                            <h3 class="mb-0">Plus One</h3>
-                        </div>
-                        <div class="form-section-body">
-                            <div class="guest-card">
-                                <div class="mb-3">
-                                    <label class="form-label">Name*</label>
-                                    <input type="text" class="form-control"
-                                        name="plus_one_name"
-                                        value="{{ rsvp.plus_one_name if rsvp else '' }}"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <h5>Dietary Restrictions</h5>
-                                    {% for allergen in allergens %}
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input"
-                                            type="checkbox"
-                                            name="allergens_plus_one"
-                                            value="{{ allergen.id }}"
-                                            id="allergen_plus_one_{{ allergen.id }}"
-                                            {% if readonly %}disabled{% endif
-                                            %}>
-                                        <label class="form-check-label"
-                                            for="allergen_plus_one_{{ allergen.id }}">
-                                            {{ allergen.name }}
-                                        </label>
-                                    </div>
-                                    {% endfor %}
-                                    <div class="mt-3">
-                                        <label class="form-label">Other Dietary
-                                            Restrictions</label>
-                                        <input type="text" class="form-control"
-                                            name="custom_allergen_plus_one"
-                                            placeholder="Please specify any other dietary restrictions">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
 
                 <div class="form-actions text-center mt-4">
                     {% if not readonly %}
-                    <button type="submit" class="btn btn-primary btn-lg">Submit
-                        RSVP</button>
+                    <button type="submit" class="btn btn-primary btn-lg" data-translate="rsvp.submit">Submit RSVP</button>
                     {% endif %}
 
                     {% if rsvp and not rsvp.is_cancelled and rsvp.is_editable %}
                     <a href="{{ url_for('rsvp.cancel_rsvp', token=guest.token) }}"
-                        class="btn btn-outline-danger btn-lg ms-2">
+                        class="btn btn-outline-danger btn-lg ms-2" data-translate="rsvp.cancel">
                         Cancel RSVP
                     </a>
                     {% endif %}
@@ -291,15 +219,18 @@
             name="allergens_PLACEHOLDER" value="{{ allergen.id }}"
             id="allergen_PLACEHOLDER_{{ allergen.id }}">
         <label class="form-check-label"
-            for="allergen_PLACEHOLDER_{{ allergen.id }}">
+            for="allergen_PLACEHOLDER_{{ allergen.id }}"
+            data-translate="allergen.{{ allergen.name|lower|replace(' ', '')|replace('(treenuts)', 'nuts')|replace('(', '')|replace(')', '') }}"
+            data-allergen-fallback="{{ allergen.name }}">
             {{ allergen.name }}
         </label>
     </div>
     {% endfor %}
     <div class="mt-3">
-        <label class="form-label">Other Dietary Restrictions</label>
+        <label class="form-label" data-translate="rsvp.dietary.other">Other Dietary Restrictions</label>
         <input type="text" class="form-control"
             name="custom_allergen_PLACEHOLDER"
+            data-translate-placeholder="rsvp.dietary.placeholder"
             placeholder="Please specify any other dietary restrictions">
     </div>
 </template>

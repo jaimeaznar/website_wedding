@@ -64,8 +64,8 @@ class RSVPForm(FlaskForm):
         super().__init__(*args, **kwargs)
         
         # Set choices for adults and children counts based on guest type
-        max_adults = 10 if self.guest and self.guest.is_family else 0
-        max_children = 10 if self.guest and self.guest.is_family else 0
+        max_adults = 10 
+        max_children = 10
         
         self.adults_count.choices = [(i, str(i)) for i in range(max_adults + 1)]
         self.children_count.choices = [(i, str(i)) for i in range(max_children + 1)]

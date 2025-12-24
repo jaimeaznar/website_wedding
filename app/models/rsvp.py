@@ -18,7 +18,6 @@ class RSVP(db.Model):
     is_cancelled = db.Column(db.Boolean, default=False)
     adults_count = db.Column(db.Integer, default=1)
     children_count = db.Column(db.Integer, default=0)
-    plus_one_name = db.Column(db.String(120))
     hotel_name = db.Column(db.String(200))
     transport_to_church = db.Column(db.Boolean, default=False)
     transport_to_reception = db.Column(db.Boolean, default=False)

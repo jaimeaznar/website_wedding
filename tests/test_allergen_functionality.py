@@ -60,8 +60,7 @@ class TestAllergenFunctionality:
                 phone="555-0001",
                 token=secrets.token_urlsafe(32),
                 language_preference="en",
-                has_plus_one=False,
-                is_family=True
+
             )
             db.session.add(guest)
             db.session.commit()
@@ -135,8 +134,6 @@ class TestAllergenFunctionality:
                 phone="555-0002",
                 token=secrets.token_urlsafe(32),
                 language_preference="en",
-                has_plus_one=False,
-                is_family=True
             )
             db.session.add(guest)
             db.session.commit()
@@ -200,8 +197,7 @@ class TestAllergenFunctionality:
                 phone="555-0003",
                 token=secrets.token_urlsafe(32),
                 language_preference="en",
-                has_plus_one=False,
-                is_family=True
+
             )
             db.session.add(guest)
             db.session.commit()
@@ -269,8 +265,7 @@ class TestAllergenFunctionality:
                 phone="555-0004",
                 token=secrets.token_urlsafe(32),
                 language_preference="en",
-                has_plus_one=False,
-                is_family=True
+
             )
             db.session.add(guest)
             db.session.commit()
@@ -342,8 +337,7 @@ class TestAllergenFunctionality:
                 phone="555-0005",
                 token=secrets.token_urlsafe(32),
                 language_preference="en",
-                has_plus_one=False,
-                is_family=False
+
             )
             db.session.add(guest)
             db.session.commit()

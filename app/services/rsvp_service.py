@@ -133,30 +133,9 @@ class RSVPService:
                 AllergenService.process_guest_allergens(
                     rsvp.id, guest.name, form_data, 'main'
                 )
+                # Process family members
+                RSVPService._process_family_members(rsvp, form_data)
                 
-                # Process plus one if applicable
-                if guest.has_plus_one and not guest.is_family:
-                    plus_one_name = form_data.get('plus_one_name', '').strip()
-                    if plus_one_name:
-                        rsvp.plus_one_name = plus_one_name
-                        guest.plus_one_used = True
-                        
-                        # Create additional guest entry
-                        plus_one = AdditionalGuest(
-                            rsvp_id=rsvp.id,
-                            name=plus_one_name,
-                            is_child=False
-                        )
-                        db.session.add(plus_one)
-                        
-                        # Process allergens
-                        AllergenService.process_guest_allergens(
-                            rsvp.id, plus_one_name, form_data, 'plus_one'
-                        )
-                
-                # Process family members if applicable
-                if guest.is_family:
-                    RSVPService._process_family_members(rsvp, form_data)
             else:
                 # Reset fields for non-attending
                 rsvp.hotel_name = None

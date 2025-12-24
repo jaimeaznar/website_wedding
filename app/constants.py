@@ -56,8 +56,6 @@ class GuestLimit:
     """Guest-related limits."""
     MAX_ADULTS_FAMILY = 10
     MAX_CHILDREN_FAMILY = 10
-    MAX_ADULTS_NON_FAMILY = 0
-    MAX_CHILDREN_NON_FAMILY = 0
     MAX_NAME_LENGTH = 120
     MAX_PHONE_LENGTH = 20
     MAX_EMAIL_LENGTH = 120

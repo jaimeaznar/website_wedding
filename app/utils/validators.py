@@ -20,9 +20,7 @@ class RSVPValidator:
             self._validate_transport()
             self._validate_allergens()
             self._validate_hotel()
-            
-            if self.guest.is_family:
-                self._validate_family_members()
+            self._validate_family_members()
         
         return len(self.errors) == 0, self.errors
     

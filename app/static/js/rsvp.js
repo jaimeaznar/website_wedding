@@ -142,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const possibleNames = [
                     `allergens_${guestName.toLowerCase().replace(' ', '_')}`,
                     `allergens_main`,
-                    `allergens_plus_one`
                 ];
 
                 let found = false;
@@ -166,9 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Try different possible field name formats for custom allergens
                 const possibleCustomNames = [
                     `custom_allergen_${guestName.toLowerCase().replace(' ', '_')}`,
-                    `custom_allergen_main`,
-                    `custom_allergen_plus_one`
-                ];
+                    `custom_allergen_main`                ];
 
                 let found = false;
                 possibleCustomNames.forEach(name => {

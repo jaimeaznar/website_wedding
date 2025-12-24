@@ -22,16 +22,14 @@ class TestGuestService:
             guest = GuestService.create_guest(
                 name="Service Test Guest",
                 phone="555-SERVICE",
-                has_plus_one=True,
-                is_family=False,
+
                 language_preference='en'
             )
             
             assert guest.id is not None
             assert guest.name == "Service Test Guest"
             assert guest.phone == "555-SERVICE"
-            assert guest.has_plus_one is True
-            assert guest.is_family is False
+
             assert len(guest.token) > 0
             
             # Clean up

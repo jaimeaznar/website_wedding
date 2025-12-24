@@ -19,8 +19,6 @@ class GuestForm(FlaskForm):
         DataRequired(), 
         Length(max=GuestLimit.MAX_PHONE_LENGTH)
     ])
-    has_plus_one = BooleanField('Has Plus One')
-    is_family = BooleanField('Is Family')
     language_preference = SelectField(
         'Preferred Language',
         choices=[(Language.ENGLISH, 'English'), (Language.SPANISH, 'Spanish')],

@@ -64,8 +64,6 @@ def seed_test_guest():
         phone='555-0123',
         token=secrets.token_urlsafe(32),
         language_preference='en',
-        has_plus_one=False,
-        is_family=True  # Make it a family guest for testing
     )
     
     db.session.add(test_guest)

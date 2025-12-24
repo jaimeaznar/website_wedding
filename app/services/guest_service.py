@@ -19,8 +19,6 @@ class GuestService:
     def create_guest(
         name: str,
         phone: str,
-        has_plus_one: bool = False,
-        is_family: bool = False,
         language_preference: str = Language.DEFAULT
     ) -> Guest:
         """
@@ -29,8 +27,6 @@ class GuestService:
         Args:
             name: Guest's full name
             phone: Guest's phone number
-            has_plus_one: Whether guest can bring a plus one
-            is_family: Whether guest is a family member
             language_preference: Preferred language (en/es)
             
         Returns:
@@ -59,8 +55,6 @@ class GuestService:
             name=name.strip(),
             phone=phone.strip(),
             token=token,
-            has_plus_one=has_plus_one,
-            is_family=is_family,
             language_preference=language_preference
         )
         
@@ -234,8 +228,6 @@ class GuestService:
         guest_id: int,
         name: Optional[str] = None,
         phone: Optional[str] = None,
-        has_plus_one: Optional[bool] = None,
-        is_family: Optional[bool] = None,
         language_preference: Optional[str] = None
     ) -> Guest:
         """
@@ -245,8 +237,6 @@ class GuestService:
             guest_id: ID of guest to update
             name: New name (optional)
             phone: New phone (optional)
-            has_plus_one: New plus one status (optional)
-            is_family: New family status (optional)
             language_preference: New language preference (optional)
             
         Returns:
@@ -264,10 +254,6 @@ class GuestService:
             guest.name = name.strip()
         if phone is not None:
             guest.phone = phone.strip()
-        if has_plus_one is not None:
-            guest.has_plus_one = has_plus_one
-        if is_family is not None:
-            guest.is_family = is_family
         if language_preference is not None:
             guest.language_preference = language_preference
         

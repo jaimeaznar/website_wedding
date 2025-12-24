@@ -109,8 +109,7 @@ def sample_guest(app):
             phone='555-0123',
             token=secrets.token_urlsafe(32),
             language_preference='en',
-            has_plus_one=True,
-            is_family=False
+
         )
         db.session.add(guest)
         db.session.commit()
