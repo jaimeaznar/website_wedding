@@ -153,8 +153,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Phone</th>
-                        <th>Plus One</th>
-                        <th>Family</th>
                         <th>RSVP Status</th>
                         <th>RSVP Link</th>
                     </tr>
@@ -164,8 +162,7 @@
                     <tr>
                         <td>{{ guest.name }}</td>
                         <td>{{ guest.phone }}</td>
-                        <td>{{ 'Yes' if guest.has_plus_one else 'No' }}</td>
-                        <td>{{ 'Yes' if guest.is_family else 'No' }}</td>
+
                         <td>
                             {% if guest.rsvp %}
                             {% if guest.rsvp.is_cancelled %}
@@ -322,9 +319,8 @@
                             %}class="table-secondary text-muted" {% endif %}>
                             <td>
                                 <strong>{{ rsvp.guest.name }}</strong>
-                                {% if rsvp.guest.is_family %}
                                 <span class="badge bg-info">Family</span>
-                                {% endif %}
+                                
                                 {% if rsvp.is_cancelled %}
                                     <span class="badge bg-danger">Cancelled</span>
                                     {% if rsvp.cancellation_date %}

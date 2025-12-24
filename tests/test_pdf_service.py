@@ -358,7 +358,7 @@ class TestPDFService:
                 phone='555-8888',
 
                 token='token-family',
-                is_family=True
+
             )
             db.session.add(guest)
             db.session.flush()

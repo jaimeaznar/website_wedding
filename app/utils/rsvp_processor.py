@@ -30,8 +30,6 @@ class RSVPFormProcessor:
                 self._process_transport()
                 self._process_main_guest_allergens()
                 
-                if self.guest.is_family:
-                    self._process_additional_guests()
             
             db.session.commit()
             return True, "Your RSVP has been updated successfully!"

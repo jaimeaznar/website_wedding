@@ -10,7 +10,7 @@ def process_guest_csv(file_content):
         stream = StringIO(content)
         
         reader = csv.DictReader(stream)
-        required_headers = ['name', 'phone', 'has_plus_one', 'is_family', 'language']
+        required_headers = ['name', 'phone', 'language']
         
         if not all(header in reader.fieldnames for header in required_headers):
             missing = [h for h in required_headers if h not in reader.fieldnames]
@@ -25,8 +25,6 @@ def process_guest_csv(file_content):
                 name=row['name'].strip(),
                 phone=row['phone'].strip(),
                 token=secrets.token_urlsafe(32),
-                has_plus_one=str(row.get('has_plus_one', '')).lower() == 'true',
-                is_family=str(row.get('is_family', '')).lower() == 'true',
                 language_preference=row.get('language', 'en').strip()
             )
             guests.append(guest)

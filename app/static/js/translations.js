@@ -294,6 +294,26 @@ const translations = {
         'confirmation_explore': "Now explore everything about the wedding!",
         'declined_explore': "Feel free to explore the wedding details in case your plans change:",
         'back_home': "Back to Home",
+
+        // Allergens
+        'allergen.gluten': 'Gluten',
+        'allergen.dairy': 'Dairy',
+        'allergen.nuts': 'Nuts (Tree nuts)',
+        'allergen.peanuts': 'Peanuts',
+        'allergen.soy': 'Soy',
+        'allergen.eggs': 'Eggs',
+        'allergen.fish': 'Fish',
+        'allergen.shellfish': 'Shellfish',
+        'allergen.celery': 'Celery',
+        'allergen.mustard': 'Mustard',
+        'allergen.sesame': 'Sesame',
+        'allergen.sulphites': 'Sulphites',
+        'allergen.lupins': 'Lupins',
+        'allergen.molluscs': 'Molluscs',
+        'allergen.vegetarian': 'Vegetarian',
+        'allergen.vegan': 'Vegan',
+        'allergen.kosher': 'Kosher',
+        'allergen.halal': 'Halal',
     },
     es: {
         // Common
@@ -330,10 +350,10 @@ const translations = {
         'footer.copyright': '© 2026 aznarroa',
 
         // RSVP Landing
-        'rsvp.title': 'RSVP de Boda',
-        'rsvp.landing.message': 'Por favor, usa el enlace proporcionado en tu invitación para acceder al formulario RSVP.',
+        'rsvp.title': 'Confirmación de Boda',
+        'rsvp.landing.message': 'Por favor, usa el enlace proporcionado en tu invitación para acceder al formulario de confirmación.',
         'rsvp.lost.invitation': '¿Has perdido tu invitación?',
-        'rsvp.lost.message': 'Si has perdido tu invitación con el enlace RSVP, por favor contáctanos directamente y te ayudaremos.',
+        'rsvp.lost.message': 'Si has perdido tu invitación con el enlace de confirmación, por favor contáctanos directamente y te ayudaremos.',
         'rsvp.return.home': 'Volver al Inicio',
 
         // RSVP Form
@@ -359,12 +379,12 @@ const translations = {
         'rsvp.children.count': 'Número de Niños',
         'rsvp.guest.name': 'Nombre',
         'rsvp.plus.one': 'Acompañante',
-        'rsvp.submit': 'Enviar RSVP',
-        'rsvp.cancel': 'Cancelar RSVP',
+        'rsvp.submit': 'Enviar confirmación',
+        'rsvp.cancel': 'Cancelar confirmación',
         'rsvp.confirmed': 'Has confirmado tu asistencia.',
-        'rsvp.cancelled': 'RSVP Cancelado',
-        'rsvp.cancelled.message': 'Tu RSVP ha sido cancelado.',
-        'rsvp.change.mind': 'Si cambias de opinión antes de la fecha límite del RSVP, por favor contáctanos directamente en',
+        'rsvp.cancelled': 'Confirmación Cancelada',
+        'rsvp.cancelled.message': 'Tu confirmación ha sido cancelado.',
+        'rsvp.change.mind': 'Si cambias de opinión antes de la fecha límite de la confimación, por favor contáctanos directamente en',
         // RSVP Confirmation Pages  
         'rsvp.explore.message': '¡Descubre todos los detalles de nuestra boda: lugar, hoteles, actividades y más!',
         'rsvp.explore.button': 'Explorar Detalles de la Boda',
@@ -372,7 +392,7 @@ const translations = {
         'rsvp.declined.subtitle': 'Gracias por hacérnoslo saber.',
         'rsvp.declined.sorry': 'Sentimos que no puedas acompañarnos, pero agradecemos que te hayas tomado el tiempo de responder.',
         'rsvp.declined.change.mind': 'Si tus planes cambian antes de la fecha límite, no dudes en contactarnos.',
-        'rsvp.cancelled.title': 'RSVP Cancelado',
+        'rsvp.cancelled.title': 'Confirmación Cancelada',
         'rsvp.cancelled.subtitle': 'Gracias por informarnos.',
         'rsvp.cancelled.sorry': 'Lamentamos saber que ya no puedes asistir. Agradecemos que nos lo hayas comunicado.',
         'rsvp.cancelled.change.mind': 'Si tu situación cambia antes de la fecha límite, por favor contáctanos directamente.',
@@ -380,10 +400,10 @@ const translations = {
         // RSVP Confirmations
         'rsvp.thank.you': '¡Gracias!',
         'rsvp.excited': '¡Estamos emocionados de que nos acompañes en nuestro día especial!',
-        'rsvp.success': 'Tu RSVP se ha enviado correctamente.',
-        'rsvp.update.note': 'Puedes volver a este enlace en cualquier momento antes de la fecha límite del RSVP para actualizar tu respuesta.',
+        'rsvp.success': 'Tu confirmación se ha enviado correctamente.',
+        'rsvp.update.note': 'Puedes volver a este enlace en cualquier momento antes de la fecha límite de la confirmación para actualizar tu respuesta.',
         'rsvp.miss.you': 'Te Echaremos de Menos',
-        'rsvp.declined.message': 'Tu RSVP ha sido registrado como rechazado.',
+        'rsvp.declined.message': 'Tu confirmación ha sido registrada como rechazada.',
         'rsvp.sorry': 'Sentimos que no puedas asistir a nuestra celebración.',
 
         // Schedule Modal
@@ -407,7 +427,7 @@ const translations = {
         'schedule.dancing.description': '¡Baila toda la noche!',
         'schedule.dancing.until': '22:30 - Cierre',
         'schedule.note.title': 'Importante:',
-        'schedule.note.text': 'Se proporcionará transporte entre la catedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu RSVP.',
+        'schedule.note.text': 'Se proporcionará transporte entre la catedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu confirmación.',
 
         // Venue Modal
         'venue.title': 'Ceremonia y banquete',
@@ -542,12 +562,12 @@ const translations = {
         'alert.changes.not.possible': 'No es posible hacer cambios dentro de',
         'alert.days.of.wedding': 'días de la fecha de la boda.',
         'alert.need.assistance': '¿Necesitas ayuda? Contáctanos en:',
-        'alert.deadline.passed': 'La Fecha Límite del RSVP Ha Pasado',
-        'alert.deadline.message': 'Lo sentimos, pero la fecha límite del RSVP ha pasado.',
-        'alert.current.status': 'Tu Estado RSVP Actual:',
+        'alert.deadline.passed': 'La Fecha Límite de la confirmación ha pasado',
+        'alert.deadline.message': 'Lo sentimos, pero la fecha límite de la confirmación ha pasado.',
+        'alert.current.status': 'Tu Estado de confirmación actual:',
         'alert.confirmed.attendance': 'Has confirmado tu asistencia. ¡Gracias!',
         'alert.declined.invitation': 'Has rechazado la invitación.',
-        'alert.make.changes': 'Si necesitas hacer cambios en tu RSVP, por favor contáctanos directamente.',
+        'alert.make.changes': 'Si necesitas hacer cambios en tu confirmación, por favor contáctanos directamente.',
 
         // Additional texts
         'child': 'Niño',
@@ -570,6 +590,26 @@ const translations = {
         'confirmation_explore': "¡Ahora explora todo sobre la boda!",
         'declined_explore': "Si cambias de opinión, aquí tienes toda la información:",
         'back_home': "Volver al inicio",
+
+        // Allergens
+        'allergen.gluten': 'Gluten',
+        'allergen.dairy': 'Lácteos',
+        'allergen.nuts': 'Frutos secos',
+        'allergen.peanuts': 'Cacahuetes',
+        'allergen.soy': 'Soja',
+        'allergen.eggs': 'Huevos',
+        'allergen.fish': 'Pescado',
+        'allergen.shellfish': 'Mariscos',
+        'allergen.celery': 'Apio',
+        'allergen.mustard': 'Mostaza',
+        'allergen.sesame': 'Sésamo',
+        'allergen.sulphites': 'Sulfitos',
+        'allergen.lupins': 'Altramuces',
+        'allergen.molluscs': 'Moluscos',
+        'allergen.vegetarian': 'Vegetariano',
+        'allergen.vegan': 'Vegano',
+        'allergen.kosher': 'Kosher',
+        'allergen.halal': 'Halal',
     }
 };
 
@@ -607,25 +647,30 @@ class TranslationSystem {
             }
         });
 
-        // Update all elements with data-translate-html attribute (for HTML content)
-        document.querySelectorAll('[data-translate-html]').forEach(element => {
-            const key = element.getAttribute('data-translate-html');
-            element.innerHTML = this.t(key);
+        // Update all elements with data-translate-placeholder attribute
+        document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-translate-placeholder');
+            const translation = this.t(key);
+            element.placeholder = translation;
         });
 
-        // Update document title
-        document.title = this.t('wedding.title');
-
-        // Fire custom event for any additional updates needed
-        document.dispatchEvent(new CustomEvent('languageChanged', {
-            detail: { language: this.currentLang }
-        }));
+        // Handle allergen labels with fallback
+        document.querySelectorAll('[data-allergen-fallback]').forEach(element => {
+            const key = element.getAttribute('data-translate');
+            const translation = this.translations[this.currentLang][key];
+            if (translation) {
+                element.textContent = translation;
+            } else {
+                // Use fallback if no translation found
+                element.textContent = element.getAttribute('data-allergen-fallback');
+            }
+        });
     }
 
     updateLanguageButtons() {
-        // Update language button states
+        // Update language button states using data-lang attribute
         document.querySelectorAll('.lang-btn').forEach(btn => {
-            const btnLang = btn.textContent.toLowerCase();
+            const btnLang = btn.getAttribute('data-lang');
             if (btnLang === this.currentLang) {
                 btn.classList.add('active');
             } else {
@@ -648,14 +693,15 @@ class TranslationSystem {
 document.addEventListener('DOMContentLoaded', function () {
     window.translator = new TranslationSystem();
 
-    // Set initial language
+    // Set initial language and update buttons
     window.translator.updatePageTranslations();
+    window.translator.updateLanguageButtons();
 
     // Handle language button clicks
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('lang-btn')) {
             e.preventDefault();
-            const newLang = e.target.textContent.toLowerCase();
+            const newLang = e.target.getAttribute('data-lang');
             window.translator.setLanguage(newLang);
         }
     });

@@ -159,7 +159,6 @@ class TestRSVPServicePerformance(PerformanceBenchmark):
             guest = GuestService.create_guest(
                 name="RSVP Perf Test",
                 phone="555-9999",
-                is_family=True
             )
             
             def submit_rsvp():

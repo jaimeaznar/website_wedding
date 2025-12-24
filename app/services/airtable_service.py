@@ -44,8 +44,6 @@ class AirtableGuest:
     name: str
     phone: str
     language: str
-    is_family: bool
-    has_plus_one: bool
     token: Optional[str]
     status: str
     rsvp_date: Optional[datetime]
@@ -82,8 +80,6 @@ class AirtableGuest:
             name=fields.get('Name', ''),
             phone=fields.get('Phone', ''),
             language=fields.get('Language', 'es'),
-            is_family=fields.get('Is Family', False),
-            has_plus_one=fields.get('Has Plus One', False),
             token=fields.get('Token'),
             status=fields.get('Status', AirtableStatus.PENDING),
             rsvp_date=parse_date(fields.get('RSVP Date')),
@@ -492,8 +488,7 @@ class AirtableService:
             local_guest.name = airtable_guest.name
             local_guest.phone = airtable_guest.phone
             local_guest.language_preference = airtable_guest.language
-            local_guest.is_family = airtable_guest.is_family
-            local_guest.has_plus_one = airtable_guest.has_plus_one
+
             if airtable_guest.token:
                 local_guest.token = airtable_guest.token
             logger.debug(f"Updated local guest: {local_guest.name}")
@@ -505,8 +500,7 @@ class AirtableService:
                 phone=airtable_guest.phone,
                 token=token,
                 language_preference=airtable_guest.language,
-                is_family=airtable_guest.is_family,
-                has_plus_one=airtable_guest.has_plus_one,
+
             )
             db.session.add(local_guest)
             logger.debug(f"Created local guest: {local_guest.name}")

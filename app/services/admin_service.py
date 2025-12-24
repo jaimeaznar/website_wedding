@@ -84,8 +84,6 @@ class AdminService:
                 'guest_name': guest.name,
                 'guest_phone': guest.phone,
                 'language': guest.language_preference,
-                'is_family': guest.is_family,
-                'has_plus_one': guest.has_plus_one,
                 'status': 'Cancelled' if rsvp.is_cancelled else ('Attending' if rsvp.is_attending else 'Declined'),
                 'adults_count': rsvp.adults_count if rsvp.is_attending else 0,
                 'children_count': rsvp.children_count if rsvp.is_attending else 0,
@@ -227,4 +225,4 @@ class AdminService:
         Returns:
             CSV content as string
         """
-        return 'name,phone,has_plus_one,is_family,language\n'
+        return 'name,phone,language\n'

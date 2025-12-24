@@ -26,3 +26,5 @@ pyairtable==2.3.3
 
 twilio==9.0.0
 
+gunicorn==21.2.0
+

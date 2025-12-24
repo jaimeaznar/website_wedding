@@ -8,9 +8,6 @@ class Guest(db.Model):
     phone = db.Column(db.String(20))
     token = db.Column(db.String(100), unique=True, nullable=False)
     language_preference = db.Column(db.String(2), default='en')
-    has_plus_one = db.Column(db.Boolean, default=False)
-    plus_one_used = db.Column(db.Boolean, default=False)
-    is_family = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Updated relationship with cascade delete

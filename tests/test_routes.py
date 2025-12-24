@@ -99,8 +99,6 @@ class TestRSVPRoutes:
             RSVP.query.filter_by(guest_id=sample_guest.id).delete()
             db.session.commit()
 
-            # Ensure sample_guest has is_family set to True for this test
-            sample_guest.is_family = True
             db.session.commit()
 
             # Get the CSRF token from the form first
@@ -293,8 +291,7 @@ class TestAdminGuestManagement:
             response = auth_client.post('/admin/guest/add', data={
                 'name': 'Admin Test Guest',
                 'phone': '555-999',
-                'has_plus_one': True,
-                'is_family': False,
+
                 'language_preference': 'en'
             }, follow_redirects=False)
             
@@ -318,14 +315,14 @@ class TestAdminGuestManagement:
         
         assert response.status_code == 200
         assert response.content_type.startswith('text/csv')
-        assert b'name,phone,has_plus_one,is_family,language' in response.data
+        assert b'name,phone,language' in response.data
     
     def test_import_guests_requires_auth(self, client):
         """Test that import guests requires authentication."""
         from io import BytesIO
         
-        csv_content = b'name,phone,has_plus_one,is_family,language\n'
-        csv_content += b'Test Import,555-1234,test@import.com,false,false,en\n'
+        csv_content = b'name,phone,language\n'
+        csv_content += b'Test Import,555-1234,test@import.com,en\n'
         
         csv_file = BytesIO(csv_content)
         
@@ -376,13 +373,11 @@ class TestAdminDashboardData:
                 name='Dashboard Test 1',
                 phone='555-DASH1',
                 token='token1',
-                is_family=True
             )
             guest2 = Guest(
                 name='Dashboard Test 2',
                 phone='555-DASH2',
                 token='token2',
-                is_family=False
             )
             db.session.add_all([guest1, guest2])
             db.session.commit()

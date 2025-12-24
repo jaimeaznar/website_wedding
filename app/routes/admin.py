@@ -78,8 +78,6 @@ def add_guest():
             guest = GuestService.create_guest(
                 name=form.name.data,
                 phone=form.phone.data,
-                has_plus_one=form.has_plus_one.data,
-                is_family=form.is_family.data,
                 language_preference=form.language_preference.data
             )
             
@@ -317,8 +315,6 @@ def _generate_guest_csv():
         'Guest Name',
         'Phone',
         'Language',
-        'Has Plus One',
-        'Is Family',
         'RSVP Status',
         'Attending',
         'Additional Guests',
@@ -365,8 +361,6 @@ def _generate_guest_csv():
             rsvp_data['guest_name'],
             rsvp_data['guest_phone'],
             rsvp_data['language'],
-            'Yes' if rsvp_data['has_plus_one'] else 'No',
-            'Yes' if rsvp_data['is_family'] else 'No',
             rsvp_data['status'],
             'Yes' if rsvp_data['status'] == 'Attending' else 'No',
             additional_str,

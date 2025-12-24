@@ -21,9 +21,7 @@ class TestGuestModel:
                 name='John Doe',
                 phone='123456789',
                 token=secrets.token_urlsafe(32),
-                language_preference='en',
-                has_plus_one=True,
-                is_family=False
+                language_preference='en'
             )
             db.session.add(guest)
             db.session.commit()
@@ -33,8 +31,7 @@ class TestGuestModel:
             assert guest.phone == '123456789'
             assert len(guest.token) > 0
             assert guest.language_preference == 'en'
-            assert guest.has_plus_one is True
-            assert guest.is_family is False
+
             
             # Clean up
             db.session.delete(guest)

@@ -32,7 +32,7 @@ class TestMaximumLimits:
             guest = GuestService.create_guest(
                 name="Large Family",
                 phone="555-0001",
-                is_family=True
+
             )
             
             # Prepare form data with maximum guests
@@ -65,7 +65,6 @@ class TestMaximumLimits:
             guest = GuestService.create_guest(
                 name="Too Large Family",
                 phone="555-0002",
-                is_family=True
             )
             
             # Try to exceed adult limit
@@ -105,7 +104,6 @@ class TestMaximumLimits:
             guest = GuestService.create_guest(
                 name="Boundary Test",
                 phone="555-0005",
-                is_family=True
             )
             
             # Test zero guests
@@ -380,7 +378,6 @@ class TestDataIntegrity:
             guest = GuestService.create_guest(
                 name="Cascade Test",
                 phone="555-6000",
-                is_family=True
             )
             
             # Create RSVP with additional guests
