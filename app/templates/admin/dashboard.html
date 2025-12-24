@@ -319,25 +319,18 @@
                             %}class="table-secondary text-muted" {% endif %}>
                             <td>
                                 <strong>{{ rsvp.guest.name }}</strong>
-                                <span class="badge bg-info">Family</span>
-                                
-                                {% if rsvp.is_cancelled %}
-                                    <span class="badge bg-danger">Cancelled</span>
-                                    {% if rsvp.cancellation_date %}
-                                    <br>
-                                    <small>Cancelled on: {{
-                                        rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M') }}</small>
-                                    {% endif %}
-                                    {% endif %}
+                                {% if rsvp.is_cancelled and rsvp.cancellation_date %}
+                                <br>
+                                <small class="text-muted">Cancelled on: {{ rsvp.cancellation_date.strftime('%Y-%m-%d %H:%M') }}</small>
+                                {% endif %}
                             </td>
                             <td>
                                 {% if rsvp.is_cancelled %}
-                                Cancelled
+                                <span class="badge bg-danger">Cancelled</span>
                                 {% elif rsvp.is_attending %}
                                 <span class="badge bg-success">Attending</span>
                                 {% else %}
-                                <span
-                                    class="badge bg-warning text-dark">Declined</span>
+                                <span class="badge bg-warning text-dark">Declined</span>
                                 {% endif %}
                             </td>
                             <td>
