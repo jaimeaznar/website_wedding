@@ -505,10 +505,16 @@ class AirtableService:
             db.session.flush()  # Get the guest ID
             logger.debug(f"Created local guest: {local_guest.name}")
         
-        # Sync RSVP status if not Pending
-        if airtable_guest.status and airtable_guest.status != AirtableStatus.PENDING:
-            rsvp = RSVP.query.filter_by(guest_id=local_guest.id).first()
-            
+        # Always sync RSVP status
+        rsvp = RSVP.query.filter_by(guest_id=local_guest.id).first()
+        
+        if airtable_guest.status == AirtableStatus.PENDING:
+            # Pending = no RSVP record (or delete existing one)
+            if rsvp:
+                db.session.delete(rsvp)
+                logger.debug(f"Deleted RSVP for {local_guest.name} (now Pending)")
+        else:
+            # Attending, Declined, or Cancelled - create/update RSVP
             if not rsvp:
                 rsvp = RSVP(guest_id=local_guest.id)
                 db.session.add(rsvp)
@@ -526,12 +532,9 @@ class AirtableService:
                 rsvp.cancellation_date = airtable_guest.rsvp_date or datetime.now()
             
             # Sync other RSVP fields
-            if airtable_guest.hotel:
-                rsvp.hotel_name = airtable_guest.hotel
-            if airtable_guest.adults_count is not None:
-                rsvp.adults_count = airtable_guest.adults_count
-            if airtable_guest.children_count is not None:
-                rsvp.children_count = airtable_guest.children_count
+            rsvp.hotel_name = airtable_guest.hotel
+            rsvp.adults_count = airtable_guest.adults_count or 1
+            rsvp.children_count = airtable_guest.children_count or 0
             rsvp.transport_to_church = airtable_guest.transport_church
             rsvp.transport_to_reception = airtable_guest.transport_reception
             rsvp.transport_to_hotel = airtable_guest.transport_hotel
@@ -540,7 +543,7 @@ class AirtableService:
                 rsvp.created_at = airtable_guest.rsvp_date
                 rsvp.last_updated = airtable_guest.rsvp_date
             
-            logger.debug(f"Synced RSVP status for {local_guest.name}: {airtable_guest.status}")
+            logger.debug(f"Synced RSVP for {local_guest.name}: {airtable_guest.status}")
         
         db.session.commit()
         return local_guest
