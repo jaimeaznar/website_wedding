@@ -26,3 +26,25 @@ def health():
     except Exception as e:
         logger.error(f"Health check failed: {str(e)}")
         return {'status': 'unhealthy', 'error': str(e)}, 503
+    
+@bp.route('/seed-allergens')
+def seed_allergens():
+    """One-time endpoint to seed allergens."""
+    from app.models.allergen import Allergen
+    
+    if Allergen.query.count() > 0:
+        return {'status': 'already seeded', 'count': Allergen.query.count()}
+    
+    common_allergens = [
+        'Gluten', 'Dairy', 'Nuts (Tree nuts)', 'Peanuts',
+        'Soy', 'Eggs', 'Fish', 'Shellfish',
+        'Celery', 'Mustard', 'Sesame', 'Sulphites',
+        'Lupins', 'Molluscs', 'Vegetarian', 'Vegan',
+        'Kosher', 'Halal'
+    ]
+    
+    for name in common_allergens:
+        db.session.add(Allergen(name=name))
+    
+    db.session.commit()
+    return {'status': 'seeded', 'count': len(common_allergens)}
