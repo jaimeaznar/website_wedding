@@ -465,7 +465,7 @@ class AirtableService:
         """
         Sync a single Airtable guest to the local database.
         
-        Creates or updates the guest in the local DB.
+        Creates or updates the guest and their RSVP in the local DB.
         
         Args:
             airtable_guest: Guest data from Airtable
@@ -475,6 +475,7 @@ class AirtableService:
         """
         from app import db
         from app.models.guest import Guest
+        from app.models.rsvp import RSVP
         
         # Try to find existing guest by token or phone
         local_guest = None
@@ -488,7 +489,6 @@ class AirtableService:
             local_guest.name = airtable_guest.name
             local_guest.phone = airtable_guest.phone
             local_guest.language_preference = airtable_guest.language
-
             if airtable_guest.token:
                 local_guest.token = airtable_guest.token
             logger.debug(f"Updated local guest: {local_guest.name}")
@@ -500,10 +500,47 @@ class AirtableService:
                 phone=airtable_guest.phone,
                 token=token,
                 language_preference=airtable_guest.language,
-
             )
             db.session.add(local_guest)
+            db.session.flush()  # Get the guest ID
             logger.debug(f"Created local guest: {local_guest.name}")
+        
+        # Sync RSVP status if not Pending
+        if airtable_guest.status and airtable_guest.status != AirtableStatus.PENDING:
+            rsvp = RSVP.query.filter_by(guest_id=local_guest.id).first()
+            
+            if not rsvp:
+                rsvp = RSVP(guest_id=local_guest.id)
+                db.session.add(rsvp)
+            
+            # Set RSVP fields based on Airtable status
+            if airtable_guest.status == AirtableStatus.ATTENDING:
+                rsvp.is_attending = True
+                rsvp.is_cancelled = False
+            elif airtable_guest.status == AirtableStatus.DECLINED:
+                rsvp.is_attending = False
+                rsvp.is_cancelled = False
+            elif airtable_guest.status == AirtableStatus.CANCELLED:
+                rsvp.is_attending = False
+                rsvp.is_cancelled = True
+                rsvp.cancellation_date = airtable_guest.rsvp_date or datetime.now()
+            
+            # Sync other RSVP fields
+            if airtable_guest.hotel:
+                rsvp.hotel_name = airtable_guest.hotel
+            if airtable_guest.adults_count is not None:
+                rsvp.adults_count = airtable_guest.adults_count
+            if airtable_guest.children_count is not None:
+                rsvp.children_count = airtable_guest.children_count
+            rsvp.transport_to_church = airtable_guest.transport_church
+            rsvp.transport_to_reception = airtable_guest.transport_reception
+            rsvp.transport_to_hotel = airtable_guest.transport_hotel
+            
+            if airtable_guest.rsvp_date:
+                rsvp.created_at = airtable_guest.rsvp_date
+                rsvp.last_updated = airtable_guest.rsvp_date
+            
+            logger.debug(f"Synced RSVP status for {local_guest.name}: {airtable_guest.status}")
         
         db.session.commit()
         return local_guest
