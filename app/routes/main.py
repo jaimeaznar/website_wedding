@@ -48,3 +48,24 @@ def seed_allergens():
     
     db.session.commit()
     return {'status': 'seeded', 'count': len(common_allergens)}
+
+
+@bp.route('/clear-and-sync')
+def clear_and_sync():
+    """Clear local DB and resync from Airtable."""
+    from app.models.guest import Guest
+    from app.models.rsvp import RSVP
+    from app.models.allergen import GuestAllergen
+    from app.services.airtable_service import get_airtable_service
+    
+    # Delete all RSVPs and guests
+    GuestAllergen.query.delete()
+    RSVP.query.delete()
+    Guest.query.delete()
+    db.session.commit()
+    
+    # Sync from Airtable
+    airtable = get_airtable_service()
+    created, updated = airtable.sync_all_to_local_db()
+    
+    return {'status': 'cleared and synced', 'created': created, 'updated': updated}
