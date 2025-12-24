@@ -243,11 +243,6 @@ class ProductionConfig(Config):
         self.SESSION_COOKIE_SECURE = True
         self.WTF_CSRF_ENABLED = True
         
-        # Additional production validations
-        if not self.MAIL_USERNAME or not self.MAIL_PASSWORD:
-            print("⚠️  WARNING: Email not configured properly for production!")
-            print("   Invitations and confirmations will not be sent.")
-        
         # Ensure we're not using any development values
         if 'localhost' in self.SQLALCHEMY_DATABASE_URI or '127.0.0.1' in self.SQLALCHEMY_DATABASE_URI:
             print("⚠️  WARNING: Using local database in production!")
