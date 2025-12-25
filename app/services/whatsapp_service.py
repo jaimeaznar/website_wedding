@@ -78,6 +78,8 @@ class WhatsAppService:
                 "Por favor, confirma tu asistencia antes del *6 de mayo de 2026* "
                 "haciendo clic en el siguiente enlace:\n\n"
                 "👉 {rsvp_link}\n\n"
+                "Descubre todos los detalles de la boda en nuestra web:\n"
+                "🌐 https://wedding.aznarroa.com\n\n"
                 "¡Esperamos verte allí! 💒"
             ),
             'en': (
@@ -86,6 +88,8 @@ class WhatsAppService:
                 "Please confirm your attendance before *May 6th, 2026* "
                 "by clicking the following link:\n\n"
                 "👉 {rsvp_link}\n\n"
+                "Discover all the wedding details on our website:\n"
+                "🌐 https://wedding.aznarroa.com\n\n"
                 "We hope to see you there! 💒"
             ),
         },
@@ -96,6 +100,7 @@ class WhatsAppService:
                 "de *Irene y Jaime*.\n\n"
                 "Quedan *30 días* para la fecha límite (6 de mayo).\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 Más información: https://wedding.aznarroa.com\n\n"
                 "¡Gracias! 🙏"
             ),
             'en': (
@@ -104,6 +109,7 @@ class WhatsAppService:
                 "to *Irene and Jaime's* wedding.\n\n"
                 "There are *30 days* left until the deadline (May 6th).\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 More info: https://wedding.aznarroa.com\n\n"
                 "Thank you! 🙏"
             ),
         },
@@ -114,6 +120,7 @@ class WhatsAppService:
                 "de Irene y Jaime.\n\n"
                 "Por favor, responde antes del 6 de mayo:\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 Detalles de la boda: https://wedding.aznarroa.com\n\n"
                 "¡Gracias por tu respuesta! 💐"
             ),
             'en': (
@@ -122,6 +129,7 @@ class WhatsAppService:
                 "Irene and Jaime's wedding.\n\n"
                 "Please respond before May 6th:\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 Wedding details: https://wedding.aznarroa.com\n\n"
                 "Thank you for your response! 💐"
             ),
         },
@@ -132,6 +140,7 @@ class WhatsAppService:
                 "Necesitamos tu respuesta para la boda de Irene y Jaime. "
                 "Por favor, confirma lo antes posible:\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 Info: https://wedding.aznarroa.com\n\n"
                 "¡Gracias! 🌸"
             ),
             'en': (
@@ -140,6 +149,7 @@ class WhatsAppService:
                 "We need your response for Irene and Jaime's wedding. "
                 "Please confirm as soon as possible:\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 Info: https://wedding.aznarroa.com\n\n"
                 "Thank you! 🌸"
             ),
         },
@@ -150,6 +160,7 @@ class WhatsAppService:
                 "Quedan solo *3 días* para confirmar tu asistencia a la boda. "
                 "Después del 6 de mayo no podremos garantizar tu plaza.\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 https://wedding.aznarroa.com\n\n"
                 "Si tienes algún problema, contacta con nosotros. ❤️"
             ),
             'en': (
@@ -158,6 +169,7 @@ class WhatsAppService:
                 "Only *3 days* left to confirm your attendance to the wedding. "
                 "After May 6th we cannot guarantee your spot.\n\n"
                 "👉 {rsvp_link}\n\n"
+                "📍 https://wedding.aznarroa.com\n\n"
                 "If you have any issues, please contact us. ❤️"
             ),
         },
@@ -170,7 +182,7 @@ class WhatsAppService:
         self.whatsapp_number = os.environ.get('TWILIO_WHATSAPP_NUMBER')
         
         # Base URL for RSVP links
-        self.base_url = os.environ.get('BASE_URL', 'https://wedding.yoursite.com')
+        self.base_url = os.environ.get('BASE_URL', 'https://wedding.aznarroa.com')
         
         self._client = None
     
