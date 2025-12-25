@@ -1,4 +1,5 @@
 {# app/templates/home.html #}
+{# CHANGED: Removed inline countdown script - now consolidated in main.js #}
 {% extends "base.html" %}
 
 {% block title %}Irene & Jaime's Wedding{% endblock %}
@@ -12,7 +13,7 @@
 
 <div class="container">
     <div class="card-grid">
-        <!-- NEW: Countdown Timer Card -->
+        <!-- Countdown Timer Card -->
         <div class="feature-card countdown-card">
             <div class="feature-card-content">
                 <i class="fas fa-heart feature-card-icon"></i>
@@ -929,18 +930,15 @@
     </div>
 </div>
 
-<!-- Copy IBAN JavaScript -->
+<!-- CHANGED: Copy IBAN/Swift scripts kept here as they are specific to this page -->
 <script>
     function copyIBAN() {
         const ibanText = document.getElementById('iban-number').textContent;
-        const ibanClean = ibanText.replace(/\s/g, ''); // Remove spaces
+        const ibanClean = ibanText.replace(/\s/g, '');
         
         navigator.clipboard.writeText(ibanClean).then(() => {
-            // Show success message
             const successMsg = document.getElementById('iban-copy-success');
             successMsg.classList.add('show');
-            
-            // Hide after 3 seconds
             setTimeout(() => {
                 successMsg.classList.remove('show');
             }, 3000);
@@ -948,20 +946,14 @@
             console.error('Failed to copy IBAN:', err);
         });
     }
-</script>
 
-<!-- Copy IBAN JavaScript -->
-<script>
     function copySwift() {
         const SwiftText = document.getElementById('swift-number').textContent;
-        const SwiftClean = SwiftText.replace(/\s/g, ''); // Remove spaces
+        const SwiftClean = SwiftText.replace(/\s/g, '');
         
         navigator.clipboard.writeText(SwiftClean).then(() => {
-            // Show success message
             const successMsg = document.getElementById('swift-copy-success');
             successMsg.classList.add('show');
-            
-            // Hide after 3 seconds
             setTimeout(() => {
                 successMsg.classList.remove('show');
             }, 3000);
@@ -971,68 +963,5 @@
     }
 </script>
 
-<!-- Countdown Timer JavaScript -->
-<script>
-    // Check for test date in URL (for automated testing)
-    const urlParams = new URLSearchParams(window.location.search);
-    const testDate = urlParams.get('_test_date');
-    
-    // Set the wedding date: June 6, 2026 at 18:00 (6:00 PM)
-    const weddingDate = new Date('2026-06-06T18:00:00').getTime();
 
-    function updateCountdown() {
-        const now = testDate ? new Date(testDate).getTime() : new Date().getTime();
-        const distance = weddingDate - now;
-        
-        // Check if it's wedding day (compare date strings)
-        const today = testDate ? new Date(testDate) : new Date();
-        const todayStr = today.toISOString().split('T')[0];  // "YYYY-MM-DD"
-        const weddingDayStr = '2026-06-06';
-        
-        if (todayStr === weddingDayStr) {
-            // It's the wedding day! Show celebration message
-            const countdownTimer = document.querySelector('.countdown-timer');
-            
-            if (countdownTimer) {
-                // Get current language
-                const lang = window.translator ? window.translator.currentLang : 'es';
-                const message = lang === 'es' ? '¡Hoy es el día!' : 'Today is the day!';
-                
-                countdownTimer.innerHTML = `
-                    <div class="celebration-message">
-                        <span class="celebration-emoji">🎉</span>
-                        <span class="celebration-text">${message}</span>
-                        <span class="celebration-emoji">🎉</span>
-                    </div>
-                `;
-            }
-            return;
-        }
-
-        if (distance < 0) {
-            // Wedding has passed
-            document.getElementById('days').textContent = '0';
-            document.getElementById('hours').textContent = '0';
-            document.getElementById('minutes').textContent = '0';
-            document.getElementById('seconds').textContent = '0';
-            return;
-        }
-
-        // Calculate time units
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Update the DOM
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-    }
-
-    // Update immediately and every second
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-</script>
 {% endblock %}
