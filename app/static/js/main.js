@@ -1,54 +1,144 @@
-// Save this as app/static/js/main.js
+// app/static/js/main.js
+// CONSOLIDATED: All date configuration and countdown logic now in this single file
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Check for test date in URL (for automated testing)
+    // ========================================
+    // DATE CONFIGURATION (Single Source of Truth)
+    // CHANGED: Consolidated from both main.js and home.html
+    // ========================================
     const urlParams = new URLSearchParams(window.location.search);
     const testDate = urlParams.get('_test_date');
     
     const today = testDate ? new Date(testDate) : new Date();
-    const rsvpDeadline = new Date('2026-05-06'); // RSVP deadline
-    const weddingDay = new Date('2026-06-06');   // Wedding day
+    const rsvpDeadline = new Date('2026-05-06');
+    const weddingDay = new Date('2026-06-06');
+    const weddingDateTime = new Date('2026-06-06T18:00:00').getTime();
 
     // Reset time to compare dates only
-    today.setHours(0, 0, 0, 0);
-    rsvpDeadline.setHours(0, 0, 0, 0);
-    weddingDay.setHours(0, 0, 0, 0);
+    const todayDateOnly = new Date(today);
+    todayDateOnly.setHours(0, 0, 0, 0);
+    const rsvpDeadlineDateOnly = new Date(rsvpDeadline);
+    rsvpDeadlineDateOnly.setHours(0, 0, 0, 0);
+    const weddingDayDateOnly = new Date(weddingDay);
+    weddingDayDateOnly.setHours(0, 0, 0, 0);
 
+    // ========================================
+    // HIDE CARDS BASED ON DATE
+    // CHANGED: Simplified using the consolidated date variables
+    // ========================================
+    
     // Hide RSVP card after RSVP deadline
-    if (today >= rsvpDeadline) {
+    if (todayDateOnly >= rsvpDeadlineDateOnly) {
         const rsvpCard = document.querySelector('[data-href*="rsvp"]');
         if (rsvpCard) rsvpCard.style.display = 'none';
     }
 
-    // Hide RSVP and Accommodation on wedding day
-    if (today >= weddingDay) {
-        const rsvpCard = document.querySelector('[data-href*="rsvp"]');
+    // Hide Accommodation on wedding day
+    if (todayDateOnly >= weddingDayDateOnly) {
         const accommodationCard = document.querySelector('[data-target="accommodation"]');
         const accommodationModal = document.getElementById('accommodation-modal');
         
-        if (rsvpCard) rsvpCard.style.display = 'none';
         if (accommodationCard) accommodationCard.style.display = 'none';
         if (accommodationModal) accommodationModal.remove();
     }
-    // Listen for language changes to update dynamic content
+
+    // ========================================
+    // COUNTDOWN TIMER
+    // CHANGED: Moved entirely from home.html inline script
+    // ========================================
+    function updateCountdown() {
+        const now = testDate ? new Date(testDate).getTime() : new Date().getTime();
+        const distance = weddingDateTime - now;
+        
+        const todayStr = (testDate ? new Date(testDate) : new Date()).toISOString().split('T')[0];
+        const weddingDayStr = '2026-06-06';
+        
+        const countdownTimer = document.querySelector('.countdown-timer');
+        if (!countdownTimer) return; // Not on home page, skip
+        
+        // Check if it's the wedding day
+        if (todayStr === weddingDayStr) {
+            const lang = window.translator ? window.translator.currentLang : 'es';
+            const message = lang === 'es' ? '¡Hoy es el día!' : 'Today is the day!';
+            
+            countdownTimer.innerHTML = `
+                <div class="celebration-message">
+                    <span class="celebration-emoji">🎉</span>
+                    <span class="celebration-text">${message}</span>
+                    <span class="celebration-emoji">🎉</span>
+                </div>
+            `;
+            return;
+        }
+
+        // Wedding has passed
+        if (distance < 0) {
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            
+            if (daysEl) daysEl.textContent = '0';
+            if (hoursEl) hoursEl.textContent = '0';
+            if (minutesEl) minutesEl.textContent = '0';
+            if (secondsEl) secondsEl.textContent = '0';
+            return;
+        }
+
+        // Calculate time units
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Update the DOM
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
+    }
+
+    // Start countdown if countdown timer exists (home page)
+    if (document.querySelector('.countdown-timer')) {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    // ========================================
+    // LANGUAGE CHANGE LISTENER
+    // ========================================
     document.addEventListener('languageChanged', function (e) {
-        // Any dynamic content that needs updating can be handled here
         console.log('Language changed to:', e.detail.language);
+        
+        // CHANGED: Update countdown message if on wedding day
+        const countdownTimer = document.querySelector('.countdown-timer');
+        if (countdownTimer) {
+            const todayStr = (testDate ? new Date(testDate) : new Date()).toISOString().split('T')[0];
+            if (todayStr === '2026-06-06') {
+                updateCountdown(); // Re-render with new language
+            }
+        }
     });
-    // Modal functionality for home page cards
+
+    // ========================================
+    // MODAL FUNCTIONALITY
+    // ========================================
     const modals = document.querySelectorAll('.fullscreen-modal');
     const closeButtons = document.querySelectorAll('.modal-close');
 
     // Handle clickable cards
     document.querySelectorAll('.clickable-card').forEach(card => {
         card.addEventListener('click', function () {
-            // Check if this card has a data-href attribute (for RSVP card)
             const href = this.getAttribute('data-href');
             if (href) {
-                // Navigate to the URL
                 window.location.href = href;
             } else {
-                // Open the modal (instant, no animation)
                 const targetId = this.getAttribute('data-target') + '-modal';
                 const modal = document.getElementById(targetId);
 
@@ -85,15 +175,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Close modal function (instant, no animation)
+    // Close modal function
     function closeModal() {
         const modal = this.closest('.fullscreen-modal');
         modal.classList.remove('active');
         modal.style.display = 'none';
-        document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.overflow = '';
     }
 
-    // Gallery functionality if gallery page is loaded
+    // ========================================
+    // GALLERY FUNCTIONALITY
+    // ========================================
     const galleryItems = document.querySelectorAll('.gallery-item');
     const galleryModal = document.querySelector('.gallery-modal');
 
@@ -123,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentIndex = index;
                 showImage(currentIndex);
                 galleryModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                document.body.style.overflow = 'hidden';
             });
         });
 
@@ -132,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (closeGalleryBtn) {
             closeGalleryBtn.addEventListener('click', function () {
                 galleryModal.style.display = 'none';
-                document.body.style.overflow = ''; // Restore scrolling
+                document.body.style.overflow = '';
             });
         }
 
@@ -140,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
         galleryModal.addEventListener('click', function (e) {
             if (e.target === this) {
                 galleryModal.style.display = 'none';
-                document.body.style.overflow = ''; // Restore scrolling
+                document.body.style.overflow = '';
             }
         });
 
@@ -171,7 +263,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Hide language switcher on scroll
+    // ========================================
+    // LANGUAGE SWITCHER VISIBILITY ON SCROLL
+    // ========================================
     const languageSwitcher = document.querySelector('.language-switcher');
     if (languageSwitcher) {
         window.addEventListener('scroll', function() {
