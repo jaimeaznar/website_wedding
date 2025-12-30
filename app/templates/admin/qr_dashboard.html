@@ -1,0 +1,113 @@
+{# app/templates/admin/qr_dashboard.html #}
+{% extends "base.html" %}
+
+{% block title %}QR Codes - Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-qrcode me-2"></i>QR Code Generator</h1>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Info Alert -->
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>How it works:</strong> Each guest has a unique QR code that links directly to their personalized RSVP form. 
+        Print these on your invitations - guests scan and go directly to their RSVP page.
+    </div>
+
+    <!-- Bulk Download Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-download me-2"></i>Bulk Download</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="d-grid">
+                        <a href="{{ url_for('admin_qr.download_all_qr', format='png') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-file-archive me-2"></i>Download All (PNG)
+                        </a>
+                        <small class="text-muted mt-1 text-center">Best for printing</small>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="d-grid">
+                        <a href="{{ url_for('admin_qr.download_all_qr', format='svg') }}" class="btn btn-outline-success btn-lg">
+                            <i class="fas fa-file-archive me-2"></i>Download All (SVG)
+                        </a>
+                        <small class="text-muted mt-1 text-center">Scalable vector format</small>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="d-grid">
+                        <a href="{{ url_for('admin_qr.printable_sheet') }}" target="_blank" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-print me-2"></i>Printable Sheet
+                        </a>
+                        <small class="text-muted mt-1 text-center">All QR codes on one page</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest Count -->
+    <div class="mb-3">
+        <span class="badge bg-secondary fs-6">{{ guests|length }} guests</span>
+    </div>
+
+    <!-- Individual QR Codes -->
+    <div class="row">
+        {% for guest in guests %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <!-- QR Code Preview -->
+                    <div class="qr-preview mb-3">
+                        <img src="{{ url_for('admin_qr.preview_qr', guest_id=guest.id) }}" 
+                             alt="QR Code for {{ guest.name }}"
+                             class="img-fluid"
+                             style="max-width: 200px;">
+                    </div>
+                    
+                    <!-- Guest Info -->
+                    <h5 class="card-title mb-1">{{ guest.name }}</h5>
+                    {% if guest.phone %}
+                    <p class="text-muted small mb-2">{{ guest.phone }}</p>
+                    {% endif %}
+                    
+                    <!-- RSVP URL (truncated) -->
+                    <div class="mb-3">
+                        <code class="small" style="word-break: break-all; font-size: 0.7rem;">
+                            {{ guest.rsvp_url[:50] }}...
+                        </code>
+                    </div>
+                    
+                    <!-- Download Buttons -->
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('admin_qr.download_qr', guest_id=guest.id, format='png') }}" 
+                           class="btn btn-sm btn-primary">
+                            <i class="fas fa-download me-1"></i>PNG
+                        </a>
+                        <a href="{{ url_for('admin_qr.download_qr', guest_id=guest.id, format='svg') }}" 
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-download me-1"></i>SVG
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                No guests found. <a href="{{ url_for('admin_airtable.airtable_dashboard') }}">Sync from Airtable</a> first.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
