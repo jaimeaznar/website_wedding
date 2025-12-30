@@ -28,3 +28,7 @@ twilio==9.0.0
 
 gunicorn==21.2.0
 
+qrcode[pil]==7.4.2
+
+
+

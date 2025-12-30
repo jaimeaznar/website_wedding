@@ -89,6 +89,9 @@ def create_app(config_class=None):
     from app.routes.admin_airtable import bp as admin_airtable_bp
     app.register_blueprint(admin_airtable_bp)
 
+    from app.routes import admin_qr
+    app.register_blueprint(admin_qr.bp)
+
     # Register Cron blueprint (for scheduled reminders)
     from app.routes.cron import bp as cron_bp
     app.register_blueprint(cron_bp)
