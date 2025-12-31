@@ -50,7 +50,6 @@ class RSVPForm(FlaskForm):
     
     # Only required if attending
     hotel_name = StringField('Where are you staying?', validators=[Optional(), Length(max=200)])
-    transport_to_church = BooleanField('Transport to church', default=False)
     transport_to_reception = BooleanField('Transport to reception', default=False)
     transport_to_hotel = BooleanField('Transport to hotel', default=False)
     
@@ -74,7 +73,6 @@ class RSVPForm(FlaskForm):
         """Validate that hotel is provided if transport is requested."""
         if self.is_attending.data == 'yes':
             needs_transport = (
-                self.transport_to_church.data or 
                 self.transport_to_reception.data or 
                 self.transport_to_hotel.data
             )

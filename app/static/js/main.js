@@ -24,6 +24,74 @@ document.addEventListener('DOMContentLoaded', function () {
     weddingDayDateOnly.setHours(0, 0, 0, 0);
 
     // ========================================
+    // RSVP BANNER HANDLING
+    // ========================================
+    const bannerMessages = {
+        rsvp_success: {
+            es: '¡Gracias! Tu confirmación ha sido enviada.',
+            en: 'Thank you! Your RSVP has been submitted.'
+        },
+        rsvp_cancelled: {
+            es: 'Tu confirmación ha sido cancelada.',
+            en: 'Your RSVP has been cancelled.'
+        },
+        deadline_passed: {
+            es: 'La fecha límite ha pasado. Por favor, contáctanos directamente.',
+            en: 'The deadline has passed. Please contact us directly.'
+        },
+        already_submitted: {
+            es: 'Ya has confirmado tu asistencia.',
+            en: 'You have already submitted your RSVP.'
+        }
+    };
+
+    function showBanner(type, message) {
+        const banner = document.getElementById('rsvp-banner');
+        if (!banner) return;
+        
+        // Set alert type (success, info, warning, danger)
+        banner.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+        banner.style.display = 'block';
+        banner.style.zIndex = '1050';
+        banner.style.minWidth = '300px';
+        
+        document.getElementById('banner-message').textContent = message;
+        
+        // Remove URL params (so refresh doesn't show again)
+        const url = new URL(window.location);
+        url.searchParams.delete('rsvp_success');
+        url.searchParams.delete('rsvp_cancelled');
+        url.searchParams.delete('deadline_passed');
+        url.searchParams.delete('already_submitted');
+        history.replaceState({}, '', url);
+        
+        // Auto-hide after 3 seconds
+        setTimeout(function() {
+            hideBanner();
+        }, 3000);
+    }
+
+    window.hideBanner = function() {
+        const banner = document.getElementById('rsvp-banner');
+        if (banner) {
+            banner.style.display = 'none';
+        }
+    };
+
+    // Check URL params for banners
+    const lang = localStorage.getItem('preferredLanguage') || 'es';
+    
+    if (urlParams.get('rsvp_success') === '1') {
+        showBanner('success', bannerMessages.rsvp_success[lang]);
+    } else if (urlParams.get('rsvp_cancelled') === '1') {
+        showBanner('info', bannerMessages.rsvp_cancelled[lang]);
+    } else if (urlParams.get('deadline_passed') === '1') {
+        showBanner('warning', bannerMessages.deadline_passed[lang]);
+    } else if (urlParams.get('already_submitted') === '1') {
+        showBanner('info', bannerMessages.already_submitted[lang]);
+    }
+
+    // ========================================
     // HIDE CARDS BASED ON DATE
     // CHANGED: Simplified using the consolidated date variables
     // ========================================

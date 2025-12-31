@@ -89,7 +89,6 @@ class AdminService:
                 'children_count': rsvp.children_count if rsvp.is_attending else 0,
                 'total_guests': 1 + len(rsvp.additional_guests) if rsvp.is_attending else 0,
                 'hotel': rsvp.hotel_name if rsvp.is_attending else None,
-                'transport_church': rsvp.transport_to_church if rsvp.is_attending else False,
                 'transport_reception': rsvp.transport_to_reception if rsvp.is_attending else False,
                 'transport_hotel': rsvp.transport_to_hotel if rsvp.is_attending else False,
                 'additional_guests': [],
@@ -177,8 +176,6 @@ class AdminService:
                 'guest_count': 1 + len(rsvp.additional_guests)
             }
             
-            if rsvp.transport_to_church:
-                to_church.append(guest_info)
             if rsvp.transport_to_reception:
                 to_reception.append(guest_info)
             if rsvp.transport_to_hotel:

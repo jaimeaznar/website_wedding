@@ -12,7 +12,6 @@ const translations = {
         'nav.venue': 'Venue',
         'nav.accommodation': 'Accommodation',
         'nav.activities': 'Activities',
-        'nav.gallery': 'Gallery',
         'nav.rsvp': 'RSVP',
 
         // Home page cards
@@ -20,9 +19,10 @@ const translations = {
         'card.schedule': 'Schedule',
         'card.venue': 'Wedding Venue and Reception',
         'card.accommodation': 'Accommodation',
-        'card.activities': 'Activities',
-        'card.gallery': 'Gallery',
+        'card.activities': 'Cáceres & Trujillo',
         'card.countdown': 'Countdown',
+        'card.dresscode': 'Dress Code',
+        'card.gifts': 'Gifts',
         
         // Countdown
         'countdown.days': 'Days',
@@ -53,7 +53,6 @@ const translations = {
         'rsvp.hotel.help': 'Please let us know where you\'ll be staying.',
         'rsvp.transport.title': 'Transportation',
         'rsvp.transport.question': 'Would you like us to arrange transportation?',
-        'rsvp.transport.church': 'Transport to church',
         'rsvp.transport.reception': 'Transport to reception',
         'rsvp.transport.hotel': 'Transport to hotel',
         'rsvp.dietary.title': 'Dietary Restrictions',
@@ -70,6 +69,7 @@ const translations = {
         'rsvp.cancelled': 'RSVP Cancelled',
         'rsvp.cancelled.message': 'Your RSVP has been cancelled.',
         'rsvp.change.mind': 'If you change your mind before the RSVP deadline, please contact us directly at',
+
         // RSVP Confirmation Pages
         'rsvp.explore.message': 'Now discover all the details about our wedding: venue, hotels, activities, and more!',
         'rsvp.explore.button': 'Explore Wedding Details',
@@ -91,6 +91,24 @@ const translations = {
         'rsvp.declined.message': 'Your RSVP has been recorded as declined.',
         'rsvp.sorry': 'We\'re sorry you can\'t make it to our celebration.',
 
+        // RSVP Summary Page
+        'rsvp.summary.title': 'Your RSVP',
+        'rsvp.summary.attending': 'Attending',
+        'rsvp.summary.declined': 'Declined',
+        'rsvp.summary.guests': 'Total Guests',
+        'rsvp.summary.adults': 'adults',
+        'rsvp.summary.children': 'children',
+        'rsvp.summary.hotel': 'Hotel',
+        'rsvp.summary.transport': 'Transport Needed',
+        'rsvp.summary.not.specified': 'Not specified',
+        'rsvp.summary.no.transport': 'No transport requested',
+        'rsvp.summary.edit': 'Edit RSVP',
+        'rsvp.summary.cancel': 'Cancel RSVP',
+        'rsvp.cancel.confirm.title': 'Cancel RSVP?',
+        'rsvp.cancel.confirm.message': 'Are you sure you want to cancel your RSVP? You can submit a new response before the deadline.',
+        'rsvp.cancel.confirm.yes': 'Yes, Cancel RSVP',
+        'modal.personal.continue': 'Continue to RSVP →',
+
         // Schedule Modal
         'schedule.title': 'Wedding Schedule',
         'schedule.arrival': 'Guest Arrival & Seating',
@@ -100,7 +118,6 @@ const translations = {
         'schedule.cathedral': 'Concatedral de Santa María',
         'schedule.travel': 'Travel to Reception',
         'schedule.travel.description': 'Transportation provided',
-        'schedule.travel.details': 'Bus transportation will be available for guests traveling from the cathedral to the reception venue.',
         'schedule.reception': 'Reception & Celebration',
         'schedule.reception.time': '20:00 onwards',
         'schedule.reception.description': 'Enjoy an evening of dinner, drinks, and dancing as we celebrate our marriage!',
@@ -122,11 +139,7 @@ const translations = {
 
         // Accommodation Modal
         'accommodation.title': 'Accommodation',
-        'accommodation.special.rate': 'Special rate',
-
-        // Accommodation Modal
         'accommodation.intro': 'We\'ve compiled a list of recommended hotels near the ceremony venue. All distances shown are from the Concatedral de Santa María in Cáceres.',
-        'accommodation.five.star': 'Luxury Hotels',
         'accommodation.four.star': 'Premium Hotels',
         'accommodation.three.star': 'Comfortable Hotels',
         'accommodation.min': 'min',
@@ -134,17 +147,10 @@ const translations = {
         'accommodation.historic': 'Historic Building',
         'accommodation.boutique': 'Boutique Hotel',
         'accommodation.other.options': 'Other Accommodation Options',
-        'accommodation.airbnb.title': 'Airbnb & Vacation Rentals',
-        'accommodation.airbnb.text': 'Many beautiful apartments and houses available in Cáceres old town.',
-        'accommodation.search': 'Search Airbnb',
-        'accommodation.bb.title': 'Bed & Breakfasts',
-        'accommodation.bb.text': 'Charming B&Bs throughout the historic center offer authentic local experiences.',
-        // Accommodation - Booking.com
         'accommodation.booking.title': 'Search More Hotels on Booking.com',
         'accommodation.booking.text': 'Explore additional hotels and accommodations near the Concatedral de Santa María in Cáceres.',
         'accommodation.booking.note': 'Note: The link is pre-configured for 2 adults, June 5-7, 2026, with hotels near the Concatedral de Santa María. You can adjust the search parameters as needed.',
         'accommodation.booking.search': 'Search on Booking.com',
-        // Accommodation - Hotel Descriptions
         'accommodation.hotel.nh.desc': 'Historic palace converted into a luxury hotel in the heart of the old town. Elegant rooms with modern amenities in a 16th-century building.',
         'accommodation.hotel.donmanuel.desc': 'Modern comfort with excellent service. Features a rooftop terrace and contemporary design in a convenient location.',
         'accommodation.hotel.agora.desc': 'Contemporary hotel with comfortable rooms and modern facilities. Great value in a central location.',
@@ -153,106 +159,138 @@ const translations = {
         'accommodation.hotel.alcantara.desc': 'Cozy and welcoming hotel offering great value. Clean, comfortable rooms with friendly service.',
         'accommodation.hotel.soho.desc': 'Charming boutique hotel in the old town. Unique rooms with character and personalized service in a prime location.',
 
-        // Accommodation - Additional
-        'accommodation.subtitle': 'Where to stay for our special day',
-        'accommodation.special.rates.info': 'We\'ve arranged special rates at the following hotels for our wedding guests. Please mention "Irene & Jaime Wedding" when booking to receive the discounted rate.',
-        'accommodation.book.now': 'Book Now',
-        'accommodation.alternatives.intro': 'There are also several alternative accommodations in the area:',
-        'accommodation.map.title': 'Accommodation Map',
-        'accommodation.map.placeholder': 'Map will be embedded here',
+        // ==================== ACTIVITIES - CÁCERES & TRUJILLO ====================
+        // Main
+        'activities.title': 'Cáceres & Trujillo',
+        'activities.intro': 'Explore these beautiful medieval towns while you\'re here for our wedding!',
+        'activities.whattosee': 'What to See',
+        'activities.wheretoeat': 'Where to Eat & Drink',
+        'activities.didyouknow': 'Did You Know?',
+        'activities.musttry': 'Must Try!',
+        'activities.tips': 'Practical Tips',
 
-        // Accommodation - Hotel Descriptions
-        'accommodation.hotel.nh.desc': 'Palacio histórico convertido en hotel de lujo en el corazón del casco antiguo. Habitaciones elegantes con comodidades modernas en un edificio del siglo XVI.',
-        'accommodation.hotel.donmanuel.desc': 'Confort moderno con excelente servicio. Cuenta con terraza en la azotea y diseño contemporáneo en una ubicación conveniente.',
-        'accommodation.hotel.agora.desc': 'Hotel contemporáneo con habitaciones cómodas e instalaciones modernas. Excelente relación calidad-precio en una ubicación céntrica.',
-        'accommodation.hotel.parador.desc': 'Ubicado en un palacio del siglo XIV dentro de la ciudad monumental. Experimenta la hospitalidad española en un entorno verdaderamente único.',
-        'accommodation.hotel.extremadura.desc': 'Hotel moderno con habitaciones amplias y excelentes comodidades. Perfecto para quienes buscan confort y comodidad.',
-        'accommodation.hotel.alcantara.desc': 'Hotel acogedor que ofrece una excelente relación calidad-precio. Habitaciones limpias y cómodas con servicio amable.',
-        'accommodation.hotel.soho.desc': 'Encantador hotel boutique en el casco antiguo. Habitaciones únicas con carácter y servicio personalizado en una ubicación privilegiada.',
-        
-        // Activities Modal
-        'activities.title': 'Things to Do',
-        'activities.location': 'Location',
-        'activities.cost': 'Cost',
-        // Activities - Days
-        'activities.friday': 'Friday - Cáceres Old Town',
-        'activities.saturday': 'Saturday Morning - Cáceres Exploration',
-        'activities.sunday': 'Sunday - Trujillo Day Trip',
-        'activities.tips': 'Helpful Tips',
-        // Activities Modal - Introduction & Sections
-        'activities.intro': 'Explore the beautiful medieval towns of Cáceres and Trujillo while you\'re here for our wedding!',
-        'activities.friday.desc': 'Arrive and explore the UNESCO World Heritage medieval city.',
-        'activities.saturday.desc': 'Explore more before the wedding celebration.',
-        'activities.sunday.desc': 'Discover the hometown of conquistadors (45 minutes from Cáceres).',
+        // Cáceres
+        'activities.caceres.subtitle': 'UNESCO World Heritage Medieval City',
+        'activities.caceres.didyouknow': 'Cáceres doubled as King\'s Landing! Its medieval old town was used as a filming location for House of the Dragon (HBO) and Game of Thrones, chosen because its streets require almost no digital alteration to look medieval. The historic center is one of the best-preserved medieval cities in Europe!',
 
-        // Activities - Friday
-        'activities.plaza.mayor': 'Plaza Mayor & Old Town',
-        'activities.plaza.mayor.desc': 'Start your visit at the historic Plaza Mayor and enter the walled city through the stunning Arco de la Estrella.',
-        'activities.torre.bujaco': 'Torre de Bujaco',
-        'activities.torre.bujaco.desc': 'Climb this 12th-century tower for panoramic views of the city and surrounding countryside.',
-        'activities.tapas.tour': 'Evening Tapas Tour',
-        'activities.tapas.tour.desc': 'Sample local Extremadura specialties: Torta del Casar cheese, Iberian ham, and migas cacereñas.',
+        // Cáceres - What to See
+        'activities.caceres.oldtown.title': 'Old Town (Parte Antigua)',
+        'activities.caceres.plaza.desc': 'Main square with the Arco de la Estrella entrance',
+        'activities.caceres.bujaco.desc': '12th-century tower with panoramic city views (€2.50)',
+        'activities.caceres.aljibe.desc': 'Ancient Arab cistern and tower, fascinating history',
+        'activities.caceres.pintores.desc': 'Charming street for shopping and strolling',
+        'activities.caceres.convents': 'Convents',
+        'activities.caceres.convents.desc': 'Buy artisan sweets through little windows (tornos)',
+        'activities.caceres.culture.title': 'Museums & Culture',
+        'activities.caceres.helga.desc': 'Contemporary art museum. Free guided tours but reservation required!',
+        'activities.caceres.teatro.desc': 'Check listings for theater, concerts, or indie cinema',
+        'activities.caceres.cathedral.desc': 'Gothic cathedral, wedding ceremony venue (€4)',
+        'activities.caceres.viewpoints.title': 'Viewpoints & Scenic Spots',
+        'activities.caceres.montana.desc': 'Best views of the city! Perfect for sunset. Book with Civitatis for guided visit',
+        'activities.caceres.galarza.desc': 'Near the plaza with parking and great views',
+        'activities.caceres.fuente.desc': 'Lesser-known spots with beautiful views of old and new town',
+        'activities.caceres.nature.title': 'Parks & Nature',
+        'activities.caceres.principe.desc': 'Beautiful park for a relaxing walk',
+        'activities.caceres.canovas.desc': 'Tree-lined promenade, perfect for an evening stroll',
+        'activities.caceres.barruecos.desc': 'Spectacular natural park (~15 min drive). Unique rock formations and stork colonies',
+        'activities.caceres.monfrague.desc': '~1 hour drive. Vultures, eagles, storks - perfect for hiking and nature lovers',
 
-        // Activities - Saturday
-        'activities.palaces.walk': 'Medieval Palaces Walk',
-        'activities.palaces.walk.desc': 'Discover the noble palaces, historic facades, and medieval architecture of the old quarter.',
-        'activities.shopping': 'Historic Shopping Streets',
-        'activities.shopping.desc': 'Browse local shops for crafts, souvenirs, and regional products in charming medieval lanes.',
-        'activities.cathedral.visit': 'Co-Cathedral Visit',
-        'activities.cathedral.visit.desc': 'Explore the stunning Gothic Cathedral and peaceful surrounding alleys before the wedding.',
+        // Cáceres - Where to Eat
+        'activities.caceres.chill.title': 'Old Town - Drinks & Tapas',
+        'activities.caceres.chill.desc': 'Cozy spots perfect for drinks and light bites in charming settings:',
+        'activities.caceres.golfines.desc': 'One of our favorites!',
+        'activities.caceres.restaurants.title': 'Old Town - Restaurants',
+        'activities.caceres.palacchio.desc': 'Great quality in the old town',
+        'activities.caceres.eustaquio.desc': 'Upscale traditional cuisine (2 locations)',
+        'activities.caceres.golfines.food.desc': 'Great for food too!',
+        'activities.caceres.atrio.desc': 'Most prestigious in Cáceres, Michelin-starred',
+        'activities.caceres.canovasarea.title': 'Cánovas / Hotel Extremadura Area',
+        'activities.caceres.albalat.desc': 'Great value, across from Hotel Extremadura',
+        'activities.caceres.nolasco.desc': 'Excellent reviews',
+        'activities.caceres.sananton.desc': 'Highly recommended',
+        'activities.caceres.charlotte.desc': 'Great for drinks',
+        'activities.caceres.bars.title': 'Casual Bar Areas',
+        'activities.caceres.avmontana.desc': 'Informal bars, local vibe',
+        'activities.caceres.sanpedro.desc': 'Pedestrian street near 100 Montaditos, full of bars',
+        'activities.caceres.plazaarea': 'Plaza Mayor area',
+        'activities.caceres.plazaarea.desc': 'Many terrace options',
 
-        // Activities - Sunday (Trujillo)
-        'activities.trujillo.plaza': 'Plaza Mayor de Trujillo',
-        'activities.trujillo.plaza.desc': 'Visit the stunning main square featuring the iconic statue of Francisco Pizarro and historic buildings.',
-        'activities.trujillo.castle': 'Castillo de Trujillo',
-        'activities.trujillo.castle.desc': 'Climb to the medieval castle for breathtaking views of the town and surrounding countryside.',
-        'activities.trujillo.lunch': 'Old Town Lunch & Stroll',
-        'activities.trujillo.lunch.desc': 'Enjoy traditional Extremadura cuisine on a terrace and wander the charming cobbled streets.',
+        // Trujillo
+        'activities.trujillo.subtitle': 'Birthplace of Conquistadors (45 min from Cáceres)',
+        'activities.trujillo.didyouknow': 'Trujillo is the birthplace of Francisco Pizarro, the conquistador who led the Spanish conquest of the Inca Empire. The iconic statue on horseback in Plaza Mayor was sculpted by American artist Charles Rumsey. Trujillo was also used in House of the Dragon - its castle and main square appear in key scenes!',
 
-        // Activities - Labels
-        'activities.time': 'Time',
-        'activities.evening': 'Evening',
-        'activities.variable': 'Variable',
+        // Trujillo - What to See
+        'activities.trujillo.main.title': 'Main Attractions',
+        'activities.trujillo.plaza.desc': 'Stunning main square with Pizarro\'s equestrian statue, arcades, and historic palaces',
+        'activities.trujillo.castle.desc': '10th-century Moorish castle with breathtaking views of Extremadura (€2)',
+        'activities.trujillo.iglesia.desc': 'Romanesque church with beautiful tower views',
+        'activities.trujillo.palacio.desc': 'Built by Pizarro\'s family, ornate corner balcony',
+        'activities.trujillo.stroll.title': 'Strolling & Discovery',
+        'activities.trujillo.oldtown': 'Old Town Streets',
+        'activities.trujillo.oldtown.desc': 'Wander cobbled lanes that look unchanged for centuries',
+        'activities.trujillo.walls': 'Medieval Walls',
+        'activities.trujillo.walls.desc': 'Walk sections of the original defensive walls',
+        'activities.trujillo.convents': 'Historic Convents',
+        'activities.trujillo.convents.desc': 'Several beautiful convents to discover',
+        'activities.trujillo.sunset': 'Sunset from the Castle',
+        'activities.trujillo.sunset.desc': 'Unforgettable views across the Extremadura plains',
 
-        // Activities - Tips
-        'activities.tip.footwear': 'Wear comfortable shoes - many streets are cobbled!',
-        'activities.tip.timing': 'Trujillo is 45 minutes from Cáceres by car',
-        'activities.tip.parking': 'Check parking near your accommodation in advance',
-        'activities.tip.weather': 'Bring layers - evenings can be cool',
-        'activities.tip.dining': 'Make reservations for Saturday dinner',
-        'activities.tip.language': 'Basic Spanish phrases are helpful in smaller towns',
+        // Trujillo - Where to Eat
+        'activities.trujillo.plazadining.title': 'Plaza Mayor Terraces',
+        'activities.trujillo.plazadining.desc': 'Enjoy the view while you dine:',
+        'activities.trujillo.latroya.desc': 'Famous for huge portions and local character',
+        'activities.trujillo.pizarro.desc': 'Traditional cuisine with terrace views',
+        'activities.trujillo.el7.desc': 'Casual tapas right on the plaza',
+        'activities.trujillo.quality.title': 'Quality Restaurants',
+        'activities.trujillo.corralrey.desc': 'Upscale dining in historic setting',
+        'activities.trujillo.bizcocho.desc': 'Creative local cuisine',
+        'activities.trujillo.alberca.desc': 'Traditional Extremaduran dishes',
+
+        // Must Try Foods
+        'activities.food.torta': 'Creamy sheep\'s cheese, scoop and spread on bread',
+        'activities.food.migas': 'Fried breadcrumbs with garlic, paprika, chorizo',
+        'activities.food.jamon': 'Acorn-fed ham, melt-in-your-mouth',
+        'activities.food.patatera': 'Potato spread with paprika on toast',
+        'activities.food.retinto': 'Local beef, grilled or slow-cooked',
+        'activities.food.frite': 'Fried lamb, a regional specialty',
+        'activities.food.perrunillas': 'Crumbly shortbread cookies',
+        'activities.food.localwines': 'Local Wines',
+        'activities.food.wines.desc': 'Ribera del Guadiana reds',
+
+        // Tips
         'activities.tip.footwear.label': 'Footwear:',
-        'activities.tip.timing.label': 'Timing:',
+        'activities.tip.footwear': 'Wear comfortable shoes - cobblestone streets!',
+        'activities.tip.distance.label': 'Distance:',
+        'activities.tip.distance': 'Trujillo is 45 minutes from Cáceres by car',
         'activities.tip.parking.label': 'Parking:',
+        'activities.tip.parking': 'Free parking outside old town walls in both cities',
+        'activities.tip.siesta.label': 'Siesta:',
+        'activities.tip.siesta': 'Many shops close 2-5pm, plan accordingly',
+        'activities.tip.reservations.label': 'Reservations:',
+        'activities.tip.reservations': 'Book Helga de Alvear museum in advance!',
         'activities.tip.weather.label': 'Weather:',
-        'activities.tip.dining.label': 'Dining:',
-        'activities.tip.language.label': 'Language:',
-
-        // Dress Code Card
-        'card.dresscode': 'Dress Code',
+        'activities.tip.weather': 'June can be hot - bring water and sunscreen',
 
         // Dress Code Modal
         'dresscode.title': 'Dress Code',
         'dresscode.intro': 'Our wedding is an evening celebration. Please dress accordingly.',
         'dresscode.women.title': 'Women',
-        'dresscode.women.recommended': 'Long evening dresses',
-        'dresscode.please.avoid': 'Please avoid:',
-        'dresscode.women.no.white': 'White or beige colors',
-        'dresscode.women.no.patterns': 'Patterns',
+        'dresscode.women.recommended': 'Long (or midi) dresses in a solid colour',
+        'dresscode.women.no.white': 'White, beige or light colours',
+        'dresscode.women.no.patterns': 'Bold Prints/Patterns',
         'dresscode.women.no.sequins': 'Sequins',
         'dresscode.men.title': 'Men',
-        'dresscode.men.recommended': 'Dark suit',
+        'dresscode.men.recommended': 'Morning suit',
+        'dresscode.men.recommended.suit': 'Dark suit',
         'dresscode.thanks': 'Thank you for helping us make this evening elegant and memorable!',
 
-
-        // Gallery Modal
-        'gallery.title': 'Our Gallery',
-        'gallery.first.meet': 'First time we met',
-        'gallery.engagement': 'Our engagement day',
-        'gallery.traveling': 'Traveling together',
-        'gallery.special': 'Special moments',
-        'gallery.holiday': 'Holiday memories',
-        'gallery.celebrating': 'Celebrating together',
+        // Gifts Modal
+        'gifts.title': 'Wedding Gifts',
+        'gifts.intro': 'Your presence at our wedding is the greatest gift of all! However, if you wish to give a gift, a contribution toward our future together would be greatly appreciated.',
+        'gifts.bank.title': 'Bank Transfer',
+        'gifts.bank.name': 'Account Name:',
+        'gifts.copied': 'IBAN copied to clipboard!',
+        'gifts.thanks': 'Thank you for your generosity and for being part of our special day!',
 
         // Common actions
         'action.close': 'Close',
@@ -276,25 +314,7 @@ const translations = {
         // Additional texts
         'child': 'Child',
         'adult': 'Additional Adult',
-        'none': 'None',
         'free': 'Free',
-        'per.person': 'per person',
-        'for.tasting': 'for tasting tour',
-
-        // Gifts Card
-        'card.gifts': 'Gifts',
-        
-        // Gifts Modal
-        'gifts.title': 'Wedding Gifts',
-        'gifts.intro': 'Your presence at our wedding is the greatest gift of all! However, if you wish to give a gift, a contribution toward our future together would be greatly appreciated.',
-        'gifts.bank.title': 'Bank Transfer',
-        'gifts.bank.name': 'Account Name:',
-        'gifts.copied': 'IBAN copied to clipboard!',
-        'gifts.thanks': 'Thank you for your generosity and for being part of our special day!',
-
-        'confirmation_explore': "Now explore everything about the wedding!",
-        'declined_explore': "Feel free to explore the wedding details in case your plans change:",
-        'back_home': "Back to Home",
 
         // Allergens
         'allergen.gluten': 'Gluten',
@@ -316,6 +336,7 @@ const translations = {
         'allergen.kosher': 'Kosher',
         'allergen.halal': 'Halal',
     },
+
     es: {
         // Common
         'wedding.title': 'Boda de Irene y Jaime',
@@ -328,7 +349,6 @@ const translations = {
         'nav.venue': 'Lugar',
         'nav.accommodation': 'Alojamiento',
         'nav.activities': 'Actividades',
-        'nav.gallery': 'Galería',
         'nav.rsvp': 'RSVP',
 
         // Home page cards
@@ -336,9 +356,10 @@ const translations = {
         'card.schedule': 'Programa',
         'card.venue': 'Ceremonia y banquete',
         'card.accommodation': 'Alojamiento',
-        'card.activities': 'Actividades',
-        'card.gallery': 'Galería',
+        'card.activities': 'Cáceres y Trujillo',
         'card.countdown': 'Cuenta Atrás',
+        'card.dresscode': 'Código de Vestimenta',
+        'card.gifts': 'Regalos',
         
         // Countdown
         'countdown.days': 'Días',
@@ -369,7 +390,6 @@ const translations = {
         'rsvp.hotel.help': 'Por favor, haznos saber dónde te alojarás.',
         'rsvp.transport.title': 'Transporte',
         'rsvp.transport.question': '¿Te gustaría que organicemos el transporte?',
-        'rsvp.transport.church': 'Transporte a la iglesia',
         'rsvp.transport.reception': 'Transporte a la recepción',
         'rsvp.transport.hotel': 'Transporte al hotel',
         'rsvp.dietary.title': 'Restricciones Dietéticas',
@@ -384,8 +404,9 @@ const translations = {
         'rsvp.cancel': 'Cancelar confirmación',
         'rsvp.confirmed': 'Has confirmado tu asistencia.',
         'rsvp.cancelled': 'Confirmación Cancelada',
-        'rsvp.cancelled.message': 'Tu confirmación ha sido cancelado.',
-        'rsvp.change.mind': 'Si cambias de opinión antes de la fecha límite de la confimación, por favor contáctanos directamente en',
+        'rsvp.cancelled.message': 'Tu confirmación ha sido cancelada.',
+        'rsvp.change.mind': 'Si cambias de opinión antes de la fecha límite de la confirmación, por favor contáctanos directamente en',
+
         // RSVP Confirmation Pages  
         'rsvp.explore.message': '¡Descubre todos los detalles de nuestra boda: lugar, hoteles, actividades y más!',
         'rsvp.explore.button': 'Explorar Detalles de la Boda',
@@ -407,6 +428,24 @@ const translations = {
         'rsvp.declined.message': 'Tu confirmación ha sido registrada como rechazada.',
         'rsvp.sorry': 'Sentimos que no puedas asistir a nuestra celebración.',
 
+        // RSVP Summary Page
+        'rsvp.summary.title': 'Tu Confirmación',
+        'rsvp.summary.attending': 'Asistiendo',
+        'rsvp.summary.declined': 'Rechazado',
+        'rsvp.summary.guests': 'Total de Invitados',
+        'rsvp.summary.adults': 'adultos',
+        'rsvp.summary.children': 'niños',
+        'rsvp.summary.hotel': 'Hotel',
+        'rsvp.summary.transport': 'Transporte Necesario',
+        'rsvp.summary.not.specified': 'No especificado',
+        'rsvp.summary.no.transport': 'No se solicitó transporte',
+        'rsvp.summary.edit': 'Modificar datos',
+        'rsvp.summary.cancel': 'Cancelar confirmación',
+        'rsvp.cancel.confirm.title': '¿Cancelar confirmación?',
+        'rsvp.cancel.confirm.message': '¿Estás seguro de que quieres cancelar tu confirmación? Puedes enviar una nueva respuesta antes de la fecha límite.',
+        'rsvp.cancel.confirm.yes': 'Sí, Cancelar',
+        'modal.personal.continue': 'Continuar con la confirmación →',
+
         // Schedule Modal
         'schedule.title': 'Programa de la Boda',
         'schedule.arrival': 'Llegada y Asientos de Invitados',
@@ -416,7 +455,6 @@ const translations = {
         'schedule.cathedral': 'Concatedral de Santa María',
         'schedule.travel': 'Viaje a la Recepción',
         'schedule.travel.description': 'Transporte proporcionado',
-        'schedule.travel.details': 'Habrá transporte en autobús disponible para los invitados que viajen desde la catedral hasta el lugar de la recepción.',
         'schedule.reception': 'Recepción y Celebración',
         'schedule.reception.time': '20:00 en adelante',
         'schedule.reception.description': '¡Disfruta de una velada de cena, bebidas y baile mientras celebramos nuestro matrimonio!',
@@ -438,11 +476,7 @@ const translations = {
 
         // Accommodation Modal
         'accommodation.title': 'Alojamiento',
-        'accommodation.special.rate': 'Tarifa especial',
-
-        // Accommodation Modal
         'accommodation.intro': 'Hemos recopilado una lista de hoteles recomendados cerca del lugar de la ceremonia. Todas las distancias mostradas son desde la Concatedral de Santa María en Cáceres.',
-        'accommodation.five.star': 'Hoteles de Lujo',
         'accommodation.four.star': 'Hoteles Premium',
         'accommodation.three.star': 'Hoteles Confortables',
         'accommodation.min': 'min',
@@ -450,107 +484,150 @@ const translations = {
         'accommodation.historic': 'Edificio Histórico',
         'accommodation.boutique': 'Hotel Boutique',
         'accommodation.other.options': 'Otras Opciones de Alojamiento',
-        'accommodation.airbnb.title': 'Airbnb y Alquileres Vacacionales',
-        'accommodation.airbnb.text': 'Muchos apartamentos y casas hermosas disponibles en el casco antiguo de Cáceres.',
-        'accommodation.search': 'Buscar en Airbnb',
-        'accommodation.bb.title': 'Casas Rurales y B&B',
-        'accommodation.bb.text': 'Encantadoras casas rurales en el centro histórico ofrecen experiencias locales auténticas.',
-        // Accommodation - Booking.com
         'accommodation.booking.title': 'Buscar Más Hoteles en Booking.com',
         'accommodation.booking.text': 'Explora hoteles adicionales y alojamientos cerca de la Concatedral de Santa María en Cáceres.',
         'accommodation.booking.note': 'Nota: El enlace está preconfigurado para 2 adultos, 5-7 de junio de 2026, con hoteles cerca de la Concatedral de Santa María. Puedes ajustar los parámetros de búsqueda según sea necesario.',
         'accommodation.booking.search': 'Buscar en Booking.com',
+        'accommodation.hotel.nh.desc': 'Palacio histórico convertido en hotel de lujo en el corazón del casco antiguo. Habitaciones elegantes con comodidades modernas en un edificio del siglo XVI.',
+        'accommodation.hotel.donmanuel.desc': 'Confort moderno con excelente servicio. Cuenta con terraza en la azotea y diseño contemporáneo en una ubicación conveniente.',
+        'accommodation.hotel.agora.desc': 'Hotel contemporáneo con habitaciones cómodas e instalaciones modernas. Excelente relación calidad-precio en una ubicación céntrica.',
+        'accommodation.hotel.parador.desc': 'Ubicado en un palacio del siglo XIV dentro de la ciudad monumental. Experimenta la hospitalidad española en un entorno verdaderamente único.',
+        'accommodation.hotel.extremadura.desc': 'Hotel moderno con habitaciones amplias y excelentes comodidades. Perfecto para quienes buscan confort y comodidad.',
+        'accommodation.hotel.alcantara.desc': 'Hotel acogedor que ofrece una excelente relación calidad-precio. Habitaciones limpias y cómodas con servicio amable.',
+        'accommodation.hotel.soho.desc': 'Encantador hotel boutique en el casco antiguo. Habitaciones únicas con carácter y servicio personalizado en una ubicación privilegiada.',
 
-        // Activities Modal
-        'activities.title': 'Qué Hacer',
-        'activities.location': 'Ubicación',
-        'activities.cost': 'Coste',
-        // Current in your file:
-        'activities.friday': 'Viernes - Casco Antiguo de Cáceres',
-        'activities.saturday': 'Sábado por la Mañana - Explorando Cáceres',
-        'activities.sunday': 'Domingo - Excursión a Trujillo',
-        'activities.tips': 'Consejos Útiles',
-        // Activities Modal - Introduction & Sections
-        'activities.intro': '¡Explora las hermosas ciudades medievales de Cáceres y Trujillo mientras estás aquí para nuestra boda!',
-        'activities.friday.desc': 'Llega y explora la ciudad medieval Patrimonio de la Humanidad de la UNESCO.',
-        'activities.saturday.desc': 'Explora más antes de la celebración de la boda.',
-        'activities.sunday.desc': 'Descubre la ciudad natal de los conquistadores (45 minutos desde Cáceres).',
+        // ==================== ACTIVITIES - CÁCERES Y TRUJILLO ====================
+        // Main
+        'activities.title': 'Cáceres y Trujillo',
+        'activities.intro': '¡Explora estas hermosas ciudades medievales mientras estás aquí para nuestra boda!',
+        'activities.whattosee': 'Qué Ver',
+        'activities.wheretoeat': 'Dónde Comer y Beber',
+        'activities.didyouknow': '¿Sabías que...?',
+        'activities.musttry': '¡Imprescindibles!',
+        'activities.tips': 'Consejos Prácticos',
 
-        // Activities - Friday
-        'activities.plaza.mayor': 'Plaza Mayor y Casco Antiguo',
-        'activities.plaza.mayor.desc': 'Comienza tu visita en la histórica Plaza Mayor y entra en la ciudad amurallada a través del impresionante Arco de la Estrella.',
-        'activities.torre.bujaco': 'Torre de Bujaco',
-        'activities.torre.bujaco.desc': 'Sube a esta torre del siglo XII para disfrutar de vistas panorámicas de la ciudad y el campo circundante.',
-        'activities.tapas.tour': 'Ruta de Tapas por la Noche',
-        'activities.tapas.tour.desc': 'Prueba las especialidades locales de Extremadura: Torta del Casar, jamón ibérico y migas cacereñas.',
+        // Cáceres
+        'activities.caceres.subtitle': 'Ciudad Medieval Patrimonio de la Humanidad',
+        'activities.caceres.didyouknow': '¡Cáceres fue escenario de Desembarco del Rey! Su casco antiguo medieval se utilizó como localización para La Casa del Dragón (HBO) y Juego de Tronos, elegido porque sus calles apenas necesitan alteración digital para parecer medievales. ¡El centro histórico es una de las ciudades medievales mejor conservadas de Europa!',
 
-        // Activities - Saturday
-        'activities.palaces.walk': 'Paseo por los Palacios Medievales',
-        'activities.palaces.walk.desc': 'Descubre los palacios nobles, las fachadas históricas y la arquitectura medieval del casco antiguo.',
-        'activities.shopping': 'Calles Comerciales Históricas',
-        'activities.shopping.desc': 'Explora las tiendas locales de artesanía, recuerdos y productos regionales en encantadoras calles medievales.',
-        'activities.cathedral.visit': 'Visita a la Concatedral',
-        'activities.cathedral.visit.desc': 'Explora la impresionante Catedral Gótica y los tranquilos callejones que la rodean antes de la boda.',
+        // Cáceres - What to See
+        'activities.caceres.oldtown.title': 'Parte Antigua',
+        'activities.caceres.plaza.desc': 'Plaza principal con el Arco de la Estrella',
+        'activities.caceres.bujaco.desc': 'Torre del siglo XII con vistas panorámicas de la ciudad (2,50€)',
+        'activities.caceres.aljibe.desc': 'Antiguo aljibe árabe y torre, historia fascinante',
+        'activities.caceres.pintores.desc': 'Calle encantadora para compras y paseos',
+        'activities.caceres.convents': 'Conventos',
+        'activities.caceres.convents.desc': 'Compra dulces artesanos a través de los tornos',
+        'activities.caceres.culture.title': 'Museos y Cultura',
+        'activities.caceres.helga.desc': 'Museo de arte contemporáneo. ¡Visitas guiadas gratuitas pero hay que reservar!',
+        'activities.caceres.teatro.desc': 'Consulta la programación de teatro, conciertos o cine independiente',
+        'activities.caceres.cathedral.desc': 'Catedral gótica, lugar de la ceremonia de boda (4€)',
+        'activities.caceres.viewpoints.title': 'Miradores y Vistas',
+        'activities.caceres.montana.desc': '¡Las mejores vistas de la ciudad! Perfecto para el atardecer. Reserva con Civitatis para visita guiada',
+        'activities.caceres.galarza.desc': 'Cerca de la plaza con parking y buenas vistas',
+        'activities.caceres.fuente.desc': 'Lugares poco conocidos con vistas bonitas del casco antiguo y la zona nueva',
+        'activities.caceres.nature.title': 'Parques y Naturaleza',
+        'activities.caceres.principe.desc': 'Bonito parque para un paseo relajante',
+        'activities.caceres.canovas.desc': 'Paseo arbolado, perfecto para un paseo nocturno',
+        'activities.caceres.barruecos.desc': 'Parque natural espectacular (~15 min en coche). Formaciones rocosas únicas y colonias de cigüeñas',
+        'activities.caceres.monfrague.desc': '~1 hora en coche. Buitres, águilas, cigüeñas - perfecto para senderismo y amantes de la naturaleza',
 
-        // Activities - Sunday (Trujillo)
-        'activities.trujillo.plaza': 'Plaza Mayor de Trujillo',
-        'activities.trujillo.plaza.desc': 'Visita la impresionante plaza principal con la icónica estatua de Francisco Pizarro y edificios históricos.',
-        'activities.trujillo.castle': 'Castillo de Trujillo',
-        'activities.trujillo.castle.desc': 'Sube al castillo medieval para disfrutar de vistas impresionantes del pueblo y el campo circundante.',
-        'activities.trujillo.lunch': 'Almuerzo y Paseo por el Casco Antiguo',
-        'activities.trujillo.lunch.desc': 'Disfruta de la cocina tradicional extremeña en una terraza y pasea por las encantadoras calles empedradas.',
+        // Cáceres - Where to Eat
+        'activities.caceres.chill.title': 'Parte Antigua - Copas y Tapas',
+        'activities.caceres.chill.desc': 'Lugares acogedores perfectos para tomar algo en ambientes con encanto:',
+        'activities.caceres.golfines.desc': '¡Uno de nuestros favoritos!',
+        'activities.caceres.restaurants.title': 'Parte Antigua - Restaurantes',
+        'activities.caceres.palacchio.desc': 'Buena calidad en el casco antiguo',
+        'activities.caceres.eustaquio.desc': 'Cocina tradicional de categoría (2 locales)',
+        'activities.caceres.golfines.food.desc': '¡También genial para comer!',
+        'activities.caceres.atrio.desc': 'El más prestigioso de Cáceres, estrella Michelin',
+        'activities.caceres.canovasarea.title': 'Zona Cánovas / Hotel Extremadura',
+        'activities.caceres.albalat.desc': 'Muy buena relación calidad-precio, enfrente del Hotel Extremadura',
+        'activities.caceres.nolasco.desc': 'Excelentes referencias',
+        'activities.caceres.sananton.desc': 'Muy recomendado',
+        'activities.caceres.charlotte.desc': 'Genial para tomar algo',
+        'activities.caceres.bars.title': 'Zonas de Bares Informales',
+        'activities.caceres.avmontana.desc': 'Bares informales, ambiente local',
+        'activities.caceres.sanpedro.desc': 'Calle peatonal cerca de 100 Montaditos, llena de bares',
+        'activities.caceres.plazaarea': 'Zona Plaza Mayor',
+        'activities.caceres.plazaarea.desc': 'Muchas opciones de terrazas',
 
-        // Activities - Labels
-        'activities.time': 'Tiempo',
-        'activities.evening': 'Noche',
-        'activities.variable': 'Variable',
+        // Trujillo
+        'activities.trujillo.subtitle': 'Cuna de Conquistadores (45 min desde Cáceres)',
+        'activities.trujillo.didyouknow': 'Trujillo es la cuna de Francisco Pizarro, el conquistador que lideró la conquista española del Imperio Inca. La icónica estatua ecuestre en la Plaza Mayor fue esculpida por el artista americano Charles Rumsey. ¡Trujillo también apareció en La Casa del Dragón - su castillo y plaza mayor aparecen en escenas clave!',
 
-        // Activities - Tips
-        'activities.tip.footwear': '¡Usa zapatos cómodos - muchas calles son empedradas!',
-        'activities.tip.timing': 'Trujillo está a 45 minutos de Cáceres en coche',
-        'activities.tip.parking': 'Consulta el aparcamiento cerca de tu alojamiento con antelación',
-        'activities.tip.weather': 'Lleva capas de ropa - las noches pueden ser frescas',
-        'activities.tip.dining': 'Haz reservas para la cena del sábado',
-        'activities.tip.language': 'Frases básicas en español son útiles en pueblos pequeños',
+        // Trujillo - What to See
+        'activities.trujillo.main.title': 'Atracciones Principales',
+        'activities.trujillo.plaza.desc': 'Impresionante plaza principal con la estatua ecuestre de Pizarro, soportales y palacios históricos',
+        'activities.trujillo.castle.desc': 'Castillo árabe del siglo X con vistas impresionantes de Extremadura (2€)',
+        'activities.trujillo.iglesia.desc': 'Iglesia románica con bonitas vistas desde la torre',
+        'activities.trujillo.palacio.desc': 'Construido por la familia Pizarro, balcón esquinero ornamentado',
+        'activities.trujillo.stroll.title': 'Pasear y Descubrir',
+        'activities.trujillo.oldtown': 'Calles del Casco Antiguo',
+        'activities.trujillo.oldtown.desc': 'Pasea por calles empedradas que parecen no haber cambiado en siglos',
+        'activities.trujillo.walls': 'Murallas Medievales',
+        'activities.trujillo.walls.desc': 'Recorre secciones de las murallas defensivas originales',
+        'activities.trujillo.convents': 'Conventos Históricos',
+        'activities.trujillo.convents.desc': 'Varios conventos bonitos por descubrir',
+        'activities.trujillo.sunset': 'Atardecer desde el Castillo',
+        'activities.trujillo.sunset.desc': 'Vistas inolvidables de las llanuras extremeñas',
+
+        // Trujillo - Where to Eat
+        'activities.trujillo.plazadining.title': 'Terrazas de la Plaza Mayor',
+        'activities.trujillo.plazadining.desc': 'Disfruta de las vistas mientras comes:',
+        'activities.trujillo.latroya.desc': 'Famoso por sus raciones enormes y carácter local',
+        'activities.trujillo.pizarro.desc': 'Cocina tradicional con vistas a la terraza',
+        'activities.trujillo.el7.desc': 'Tapas informales en plena plaza',
+        'activities.trujillo.quality.title': 'Restaurantes de Calidad',
+        'activities.trujillo.corralrey.desc': 'Comida de categoría en entorno histórico',
+        'activities.trujillo.bizcocho.desc': 'Cocina local creativa',
+        'activities.trujillo.alberca.desc': 'Platos tradicionales extremeños',
+
+        // Must Try Foods
+        'activities.food.torta': 'Queso cremoso de oveja, se unta en pan',
+        'activities.food.migas': 'Migas fritas con ajo, pimentón y chorizo',
+        'activities.food.jamon': 'Jamón de bellota, se deshace en la boca',
+        'activities.food.patatera': 'Crema de patata con pimentón sobre tostada',
+        'activities.food.retinto': 'Carne local de vacuno, a la brasa o guisada',
+        'activities.food.frite': 'Cordero frito, especialidad regional',
+        'activities.food.perrunillas': 'Galletas de manteca desmigables',
+        'activities.food.localwines': 'Vinos Locales',
+        'activities.food.wines.desc': 'Tintos de Ribera del Guadiana',
+
+        // Tips
         'activities.tip.footwear.label': 'Calzado:',
-        'activities.tip.timing.label': 'Tiempo:',
+        'activities.tip.footwear': '¡Lleva zapatos cómodos - calles empedradas!',
+        'activities.tip.distance.label': 'Distancia:',
+        'activities.tip.distance': 'Trujillo está a 45 minutos de Cáceres en coche',
         'activities.tip.parking.label': 'Aparcamiento:',
+        'activities.tip.parking': 'Parking gratuito fuera de las murallas en ambas ciudades',
+        'activities.tip.siesta.label': 'Siesta:',
+        'activities.tip.siesta': 'Muchas tiendas cierran de 14 a 17h, planifica en consecuencia',
+        'activities.tip.reservations.label': 'Reservas:',
+        'activities.tip.reservations': '¡Reserva el museo Helga de Alvear con antelación!',
         'activities.tip.weather.label': 'Clima:',
-        'activities.tip.dining.label': 'Cenas:',
-        'activities.tip.language.label': 'Idioma:',
-
-        // Accommodation - Additional
-        'accommodation.subtitle': 'Dónde alojarse para nuestro día especial',
-        'accommodation.special.rates.info': 'Hemos acordado tarifas especiales en los siguientes hoteles para nuestros invitados. Por favor, menciona "Boda de Irene y Jaime" al reservar para obtener el descuento.',
-        'accommodation.book.now': 'Reservar Ahora',
-        'accommodation.alternatives.intro': 'También hay varias opciones de alojamiento alternativas en la zona:',
-        'accommodation.map.title': 'Mapa de Alojamientos',
-        'accommodation.map.placeholder': 'El mapa se mostrará aquí',
-
-        // Dress Code Card
-        'card.dresscode': 'Código de Vestimenta',
+        'activities.tip.weather': 'Junio puede ser caluroso - lleva agua y protector solar',
 
         // Dress Code Modal
         'dresscode.title': 'Código de Vestimenta',
-        'dresscode.intro': 'Nuestra boda es una celebración de tarde. Por favor, vestid de acuerdo a la ocasión.',
+        'dresscode.intro': 'Nuestra boda es una celebración de tarde. Os dejamos una serie de indicaciones para vestir acorde a la ocasión.',
         'dresscode.women.title': 'Mujeres',
-        'dresscode.women.recommended': 'Vestido largo de tarde',
-        'dresscode.please.avoid': 'Por favor, evitad:',
-        'dresscode.women.no.white': 'Colores blanco o beige',
-        'dresscode.women.no.patterns': 'Estampados',
+        'dresscode.women.recommended': 'Vestido largo (o midi) de tonos lisos',
+        'dresscode.women.no.white': 'Colores blanco, beige o claro',
+        'dresscode.women.no.patterns': 'Estampados llamativos',
         'dresscode.women.no.sequins': 'Lentejuelas',
         'dresscode.men.title': 'Hombres',
-        'dresscode.men.recommended': 'Traje oscuro',
+        'dresscode.men.recommended': 'Chaqué',
+        'dresscode.men.recommended.suit': 'Traje oscuro',
         'dresscode.thanks': '¡Gracias por ayudarnos a hacer esta velada elegante y memorable!',
 
-        // Gallery Modal
-        'gallery.title': 'Nuestra Galería',
-        'gallery.first.meet': 'Primera vez que nos conocimos',
-        'gallery.engagement': 'Nuestro día de compromiso',
-        'gallery.traveling': 'Viajando juntos',
-        'gallery.special': 'Momentos especiales',
-        'gallery.holiday': 'Recuerdos de vacaciones',
-        'gallery.celebrating': 'Celebrando juntos',
+        // Gifts Modal
+        'gifts.title': 'Regalos de Boda',
+        'gifts.intro': '¡Vuestra presencia en nuestra boda es el mayor regalo! Sin embargo, si deseáis hacer un regalo, una contribución para nuestro futuro juntos sería muy apreciada.',
+        'gifts.bank.title': 'Transferencia Bancaria',
+        'gifts.bank.name': 'Nombre de Cuenta:',
+        'gifts.copied': '¡IBAN copiado al portapapeles!',
+        'gifts.thanks': '¡Gracias por vuestra generosidad y por ser parte de nuestro día especial!',
 
         // Common actions
         'action.close': 'Cerrar',
@@ -574,24 +651,7 @@ const translations = {
         // Additional texts
         'child': 'Niño',
         'adult': 'Adulto Adicional',
-        'none': 'Ninguno',
         'free': 'Gratis',
-        'per.person': 'por persona',
-        'for.tasting': 'para tour de cata',
-
-        // Gifts Card
-        'card.gifts': 'Regalos',
-        
-        // Gifts Modal
-        'gifts.title': 'Regalos de Boda',
-        'gifts.intro': '¡Vuestra presencia en nuestra boda es el mayor regalo! Sin embargo, si deseáis hacer un regalo, una contribución para nuestro futuro juntos sería muy apreciada.',
-        'gifts.bank.title': 'Transferencia Bancaria',
-        'gifts.bank.name': 'Nombre de Cuenta:',
-        'gifts.copied': '¡IBAN copiado al portapapeles!',
-        'gifts.thanks': '¡Gracias por vuestra generosidad y por ser parte de nuestro día especial!',
-        'confirmation_explore': "¡Ahora explora todo sobre la boda!",
-        'declined_explore': "Si cambias de opinión, aquí tienes toda la información:",
-        'back_home': "Volver al inicio",
 
         // Allergens
         'allergen.gluten': 'Gluten',

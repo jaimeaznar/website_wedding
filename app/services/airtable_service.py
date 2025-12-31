@@ -59,6 +59,8 @@ class AirtableGuest:
     reminder_2: Optional[datetime]
     reminder_3: Optional[datetime]
     reminder_4: Optional[datetime]
+    personal_message: Optional[str]
+
     
     @classmethod
     def from_airtable_record(cls, record: Dict[str, Any]) -> 'AirtableGuest':
@@ -95,6 +97,8 @@ class AirtableGuest:
             reminder_2=parse_date(fields.get('Reminder 2')),
             reminder_3=parse_date(fields.get('Reminder 3')),
             reminder_4=parse_date(fields.get('Reminder 4')),
+            personal_message=fields.get('Personal Message'),
+
         )
 
 
@@ -491,6 +495,8 @@ class AirtableService:
             local_guest.language_preference = airtable_guest.language
             if airtable_guest.token:
                 local_guest.token = airtable_guest.token
+                local_guest.personal_message = airtable_guest.personal_message
+
             logger.debug(f"Updated local guest: {local_guest.name}")
         else:
             # Create new guest
@@ -500,6 +506,7 @@ class AirtableService:
                 phone=airtable_guest.phone,
                 token=token,
                 language_preference=airtable_guest.language,
+                personal_message=airtable_guest.personal_message,
             )
             db.session.add(local_guest)
             db.session.flush()  # Get the guest ID
@@ -535,7 +542,6 @@ class AirtableService:
             rsvp.hotel_name = airtable_guest.hotel
             rsvp.adults_count = airtable_guest.adults_count or 1
             rsvp.children_count = airtable_guest.children_count or 0
-            rsvp.transport_to_church = airtable_guest.transport_church
             rsvp.transport_to_reception = airtable_guest.transport_reception
             rsvp.transport_to_hotel = airtable_guest.transport_hotel
             
@@ -644,7 +650,6 @@ class AirtableService:
             children_count=children,
             hotel=rsvp.hotel_name,
             dietary_notes=dietary_notes,
-            transport_church=rsvp.transport_to_church,
             transport_reception=rsvp.transport_to_reception,
             transport_hotel=rsvp.transport_to_hotel,
         )

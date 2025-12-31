@@ -38,7 +38,6 @@ class RSVPValidator:
         """Validate hotel information"""
         hotel_name = self.form.get('hotel_name', '').strip()
         needs_transport = (
-            self.form.get('transport_to_church') == 'on' or 
             self.form.get('transport_to_hotel') == 'on'
         )
         
@@ -48,10 +47,9 @@ class RSVPValidator:
     def _validate_transport(self):
         """Validate transport selections"""
         hotel = self.form.get('hotel_name', '').strip()
-        needs_transport_to_church = self.form.get('transport_to_church') == 'on'
         needs_transport_to_hotel = self.form.get('transport_to_hotel') == 'on'
         
-        if (needs_transport_to_church or needs_transport_to_hotel) and not hotel:
+        if needs_transport_to_hotel and not hotel:
             self.errors.append("Please specify a hotel if you need transport services.")
 
     def _validate_allergens(self):

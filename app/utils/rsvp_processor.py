@@ -54,7 +54,6 @@ class RSVPFormProcessor:
 
     def _process_transport(self):
         """Process transport options"""
-        self.rsvp.transport_to_church = bool(self.form.get('transport_to_church'))
         self.rsvp.transport_to_reception = bool(self.form.get('transport_to_reception'))
         self.rsvp.transport_to_hotel = bool(self.form.get('transport_to_hotel'))
 

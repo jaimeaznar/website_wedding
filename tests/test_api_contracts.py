@@ -284,7 +284,6 @@ class TestRSVPAPIContracts:
         response = client.post(f'/rsvp/{token}', data={
             'is_attending': 'yes',
             'hotel_name': 'Contract Hotel',
-            'transport_to_church': 'on',
             'adults_count': '2',
             'children_count': '1',
             'adult_name_0': 'Adult One',

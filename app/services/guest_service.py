@@ -164,8 +164,6 @@ class GuestService:
                     total_people_attending += 1 + len(rsvp.additional_guests)
                     
                     # Count transport needs
-                    if rsvp.transport_to_church:
-                        transport_stats['to_church'] += 1
                     if rsvp.transport_to_reception:
                         transport_stats['to_reception'] += 1
                     if rsvp.transport_to_hotel:

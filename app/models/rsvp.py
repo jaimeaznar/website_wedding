@@ -19,7 +19,6 @@ class RSVP(db.Model):
     adults_count = db.Column(db.Integer, default=1)
     children_count = db.Column(db.Integer, default=0)
     hotel_name = db.Column(db.String(200))
-    transport_to_church = db.Column(db.Boolean, default=False)
     transport_to_reception = db.Column(db.Boolean, default=False)
     transport_to_hotel = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=_utc_now)

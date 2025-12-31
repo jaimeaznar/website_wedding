@@ -91,7 +91,6 @@ def upgrade():
     sa.Column('children_count', sa.Integer(), nullable=True),
     sa.Column('plus_one_name', sa.String(length=120), nullable=True),
     sa.Column('hotel_name', sa.String(length=200), nullable=True),
-    sa.Column('transport_to_church', sa.Boolean(), nullable=True),
     sa.Column('transport_to_reception', sa.Boolean(), nullable=True),
     sa.Column('transport_to_hotel', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),

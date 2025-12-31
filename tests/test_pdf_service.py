@@ -71,7 +71,6 @@ class TestPDFService:
                     guest_id=guest.id,
                     is_attending=True,
                     hotel_name=data['hotel'],
-                    transport_to_church=data['transport_church'],
                     transport_to_reception=data['transport_reception'],
                     transport_to_hotel=data['transport_hotel']
                 )
@@ -366,8 +365,7 @@ class TestPDFService:
             rsvp = RSVP(
                 guest_id=guest.id,
                 is_attending=True,
-                hotel_name='Family Hotel',
-                transport_to_church=True
+                hotel_name='Family Hotel'
             )
             db.session.add(rsvp)
             db.session.flush()

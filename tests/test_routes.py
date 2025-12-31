@@ -68,7 +68,6 @@ class TestRSVPRoutes:
                 adults_count=1,
                 children_count=0,
                 hotel_name="Direct Test Hotel",
-                transport_to_church=True,
                 transport_to_reception=False,
                 transport_to_hotel=True
             )
@@ -113,7 +112,6 @@ class TestRSVPRoutes:
                 'adults_count': '2',
                 'children_count': '1',
                 'hotel_name': 'Test Hotel',
-                'transport_to_church': 'on',
                 'transport_to_reception': 'on',
                 'transport_to_hotel': 'on',
                 'adult_name_0': 'Additional Adult 1',
