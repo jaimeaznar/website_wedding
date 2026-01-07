@@ -194,11 +194,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const minutes = spainTime.getMinutes();
         
         // Check if it's June 6, 2026
-        const isWeddingDay = true;
+        const isWeddingDay = (year === 2026 && month === 6 && day === 6);
         
         // Check if time is between 18:30 and 19:30
         const currentMinutes = hours * 60 + minutes;
-        const startTime = 13 * 60 + 30; // 18:30
+        const startTime = 18 * 60 + 45; // 18:30
         const endTime = 19 * 60 + 30;   // 19:30
         const isCorrectTime = (currentMinutes >= startTime && currentMinutes <= endTime);
         
