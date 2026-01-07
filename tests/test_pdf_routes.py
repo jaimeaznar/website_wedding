@@ -35,7 +35,6 @@ class TestPDFRoutes:
                 guest_id=guest.id,
                 is_attending=True,
                 hotel_name='PDF Test Hotel',
-                transport_to_church=True
             )
             db.session.add(rsvp)
             db.session.flush()

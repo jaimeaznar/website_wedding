@@ -1,0 +1,178 @@
+{# app/templates/rsvp_summary.html - Summary page for submitted RSVPs #}
+{% extends "base.html" %}
+{% block title %}RSVP{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="text-center mb-4">
+                <h1 data-translate="rsvp.summary.title">Your RSVP</h1>
+                <p class="lead"><span data-translate="rsvp.welcome">Welcome</span>, {{ guest.name }}!</p>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- Status Badge -->
+                    <div class="text-center mb-4">
+                        {% if rsvp.is_attending %}
+                        <span class="badge bg-success fs-5 px-4 py-2">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <span data-translate="rsvp.summary.attending">Attending</span>
+                        </span>
+                        {% else %}
+                        <span class="badge bg-secondary fs-5 px-4 py-2">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <span data-translate="rsvp.summary.declined">Declined</span>
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    {% if rsvp.is_attending %}
+                    <!-- Attendance Details -->
+                    <div class="row g-4">
+                        <!-- Guest Count -->
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-users me-2"></i>
+                                    <span data-translate="rsvp.summary.guests">Total Guests</span>
+                                </h6>
+                                <p class="fs-4 mb-0">
+                                    {{ 1 + rsvp.additional_guests|length }}
+                                    {% if rsvp.additional_guests %}
+                                    <small class="text-muted fs-6">
+                                        ({{ rsvp.adults_count }} <span data-translate="rsvp.summary.adults">adults</span>, 
+                                        {{ rsvp.children_count }} <span data-translate="rsvp.summary.children">children</span>)
+                                    </small>
+                                    {% endif %}
+                                </p>
+                                {% if rsvp.additional_guests %}
+                                <ul class="list-unstyled mt-2 mb-0 small text-muted">
+                                    {% for additional in rsvp.additional_guests %}
+                                    <li>• {{ additional.name }}{% if additional.is_child %} <span class="badge bg-info">child</span>{% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Hotel -->
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-hotel me-2"></i>
+                                    <span data-translate="rsvp.summary.hotel">Hotel</span>
+                                </h6>
+                                <p class="fs-5 mb-0">
+                                    {% if rsvp.hotel_name %}
+                                    {{ rsvp.hotel_name }}
+                                    {% else %}
+                                    <span class="text-muted" data-translate="rsvp.summary.not.specified">Not specified</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Transport -->
+                        <div class="col-12">
+                            <div class="border rounded p-3">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-bus me-2"></i>
+                                    <span data-translate="rsvp.summary.transport">Transport Needed</span>
+                                </h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% if rsvp.transport_to_reception %}
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-check me-1"></i>
+                                        <span data-translate="rsvp.transport.reception">To reception</span>
+                                    </span>
+                                    {% endif %}
+                                    {% if rsvp.transport_to_hotel %}
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-check me-1"></i>
+                                        <span data-translate="rsvp.transport.hotel">To hotel</span>
+                                    </span>
+                                    {% endif %}
+                                    {% if not rsvp.transport_to_reception and not rsvp.transport_to_hotel %}
+                                    <span class="text-muted" data-translate="rsvp.summary.no.transport">No transport requested</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dietary Restrictions -->
+                        {% if rsvp.allergens %}
+                        <div class="col-12">
+                            <div class="border rounded p-3">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-utensils me-2"></i>
+                                    <span data-translate="rsvp.dietary.title">Dietary Restrictions</span>
+                                </h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% for allergen in rsvp.allergens %}
+                                    <span class="badge bg-warning text-dark">
+                                        {{ allergen.guest_name }}: 
+                                        {% if allergen.allergen %}{{ allergen.allergen.name }}{% endif %}
+                                        {% if allergen.custom_allergen %}{{ allergen.custom_allergen }}{% endif %}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Last Updated -->
+                    <div class="text-center text-muted mt-4 small">
+                        <span data-translate="rsvp.last.updated">Last updated</span>: {{ rsvp.last_updated.strftime('%Y-%m-%d %H:%M') }}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-center gap-3 mt-4 pt-3 border-top">
+                        <a href="{{ url_for('rsvp.edit_rsvp', token=guest.token) }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-edit me-2"></i>
+                            <span data-translate="rsvp.summary.edit">Edit RSVP</span>
+                        </a>
+                        <button type="button" class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                            <i class="fas fa-times me-2"></i>
+                            <span data-translate="rsvp.summary.cancel">Cancel RSVP</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to Home -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.index') }}" class="btn btn-link">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    <span data-translate="rsvp.return.home">Return to Home</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel" data-translate="rsvp.cancel.confirm.title">Cancel RSVP?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p data-translate="rsvp.cancel.confirm.message">Are you sure you want to cancel your RSVP? You can submit a new response before the deadline.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="action.back">Go Back</button>
+                <form action="{{ url_for('rsvp.cancel_rsvp', token=guest.token) }}" method="POST" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger" data-translate="rsvp.cancel.confirm.yes">Yes, Cancel RSVP</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

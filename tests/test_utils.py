@@ -120,7 +120,6 @@ class TestRSVPValidator:
         """Test validating transport selections."""
         form = {
             'hotel_name': 'Test Hotel',
-            'transport_to_church': 'on',
             'transport_to_hotel': 'on'
         }
         guest = MagicMock()
@@ -131,8 +130,7 @@ class TestRSVPValidator:
         
         # Missing hotel name with transport
         form = {
-            'hotel_name': '',
-            'transport_to_church': 'on'
+            'hotel_name': ''
         }
         validator = RSVPValidator(form, guest)
         validator._validate_transport()
@@ -188,9 +186,7 @@ class TestRSVPProcessor:
             # Create form data
             form_data = {
                 'is_attending': 'yes',
-                'hotel_name': 'Test Hotel',
-                'transport_to_church': 'on'
-            }
+                'hotel_name': 'Test Hotel'            }
             
             # Create processor with actual guest instance
             processor = RSVPFormProcessor(form_data, sample_guest)
@@ -221,8 +217,7 @@ class TestRSVPProcessor:
             # Create form data
             form_data = {
                 'is_attending': 'yes',
-                'hotel_name': '',  # Missing required hotel
-                'transport_to_church': 'on'
+                'hotel_name': ''  # Missing required hotel
             }
     
             # Create processor

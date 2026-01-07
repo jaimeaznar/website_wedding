@@ -62,9 +62,7 @@ class TestRSVPModel:
                 is_attending=True,
                 adults_count=2,
                 children_count=0,
-                hotel_name="Test Hotel",
-                transport_to_church=True
-            )
+                hotel_name="Test Hotel"            )
             db.session.add(rsvp)
             db.session.commit()
 

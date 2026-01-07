@@ -125,7 +125,6 @@ class RSVPService:
             if is_attending:
                 # Hotel and transport
                 rsvp.hotel_name = form_data.get('hotel_name', '').strip() or None
-                rsvp.transport_to_church = 'transport_to_church' in form_data
                 rsvp.transport_to_reception = 'transport_to_reception' in form_data
                 rsvp.transport_to_hotel = 'transport_to_hotel' in form_data
                 
@@ -139,7 +138,6 @@ class RSVPService:
             else:
                 # Reset fields for non-attending
                 rsvp.hotel_name = None
-                rsvp.transport_to_church = False
                 rsvp.transport_to_reception = False
                 rsvp.transport_to_hotel = False
                 rsvp.adults_count = 0
@@ -309,9 +307,6 @@ class RSVPService:
         guests_requiring_transport = set()
         
         for rsvp in attending_rsvps:
-            if rsvp.transport_to_church:
-                summary['to_church'] += 1
-                guests_requiring_transport.add(rsvp.guest_id)
             if rsvp.transport_to_reception:
                 summary['to_reception'] += 1
                 guests_requiring_transport.add(rsvp.guest_id)

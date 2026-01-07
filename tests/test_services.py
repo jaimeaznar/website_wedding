@@ -142,7 +142,6 @@ class TestRSVPService:
             form_data = {
                 'is_attending': 'yes',
                 'hotel_name': 'Test Hotel',
-                'transport_to_church': 'on',
                 'allergens_main': [str(allergen.id)],
                 'custom_allergen_main': 'Shellfish'
             }
@@ -154,8 +153,7 @@ class TestRSVPService:
             assert rsvp is not None
             assert rsvp.is_attending is True
             assert rsvp.hotel_name == 'Test Hotel'
-            assert rsvp.transport_to_church is True
-            
+                        
             # Verify allergens were saved
             allergens = GuestAllergen.query.filter_by(rsvp_id=rsvp.id).all()
             assert len(allergens) == 2  # One standard, one custom

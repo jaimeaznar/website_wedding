@@ -421,7 +421,8 @@ class WhatsAppService:
         name: str,
         phone: str,
         token: str,
-        language: Optional[str] = None
+        language: Optional[str] = None,
+        personal_message: Optional[str] = None
     ) -> MessageResult:
         """
         Send RSVP link to a guest.
@@ -435,13 +436,18 @@ class WhatsAppService:
         Returns:
             MessageResult
         """
-        # Auto-detect language from phone country code if not provided
+       # If personal message exists, use it as the ENTIRE message
+        if personal_message:
+            logger.info(f"Sending personal message to {name} ({phone})")
+            return self.send_message(phone, personal_message)
+        
+        # Otherwise use default template
         lang = self.get_language_for_guest(phone, language)
         
         rsvp_link = f"{self.base_url}/rsvp/{token}"
         
         template = self.TEMPLATES[MessageType.RSVP_LINK].get(lang, 
-                   self.TEMPLATES[MessageType.RSVP_LINK]['en'])
+                self.TEMPLATES[MessageType.RSVP_LINK]['en'])
         
         message = template.format(name=name, rsvp_link=rsvp_link)
         
@@ -607,7 +613,8 @@ class WhatsAppService:
             name=airtable_guest.name,
             phone=airtable_guest.phone,
             token=token,
-            language=airtable_guest.language
+            language=airtable_guest.language,
+            personal_message=airtable_guest.personal_message
         )
         
         # Update Airtable if successful

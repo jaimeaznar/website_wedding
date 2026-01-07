@@ -376,11 +376,6 @@
                                 <div>
                                     <strong>Transport needed:</strong>
                                     <ul class="list-unstyled mb-0">
-                                        {% if rsvp.transport_to_church %}
-                                        <li><i
-                                                class="fas fa-check text-success"></i>
-                                            To church</li>
-                                        {% endif %}
                                         {% if rsvp.transport_to_reception %}
                                         <li><i
                                                 class="fas fa-check text-success"></i>
@@ -391,8 +386,7 @@
                                                 class="fas fa-check text-success"></i>
                                             To hotel</li>
                                         {% endif %}
-                                        {% if not rsvp.transport_to_church and
-                                        not rsvp.transport_to_reception and not
+                                        {% if not rsvp.transport_to_reception and not
                                         rsvp.transport_to_hotel %}
                                         <li class="text-muted">None needed</li>
                                         {% endif %}

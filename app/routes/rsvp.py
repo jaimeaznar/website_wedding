@@ -15,16 +15,10 @@ logger = logging.getLogger(__name__)
 bp = Blueprint('rsvp', __name__, url_prefix='/rsvp')
 
 
-@bp.route('/')
-def landing():
-    """Landing page for RSVP without token."""
-    return render_template(Template.RSVP_LANDING)
-
-
-@bp.route('/<token>', methods=['GET', 'POST'])
+@bp.route('/<token>', methods=['GET'])
 @rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
 def rsvp_form(token):
-    """Handle RSVP form display and submission."""
+    """Handle RSVP - show summary if submitted, form if not."""
     logger.info(LogMessage.RSVP_ACCESS.format(token=token))
     
     # Get guest by token
@@ -35,40 +29,61 @@ def rsvp_form(token):
     
     logger.info(LogMessage.RSVP_GUEST_FOUND.format(name=guest.name, id=guest.id))
     
-    # Get allergens for form
-    allergens = AllergenService.get_all_allergens()
-    logger.debug(f"Available allergens: {[a.name for a in allergens]}")
-    
-    # Get existing RSVP if any
-    rsvp = RSVPService.get_rsvp_by_guest_id(guest.id)
-    
     # Get configuration
     admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
-    rsvp_deadline = RSVPService.get_rsvp_deadline_formatted()
     
     # Check if RSVP deadline has passed
     if RSVPService.is_rsvp_deadline_passed():
         logger.info("RSVP deadline has passed")
-        return render_template('rsvp_deadline_passed.html', 
+        return redirect(url_for('main.index', deadline_passed=1))
+    
+    # Get existing RSVP if any
+    rsvp = RSVPService.get_rsvp_by_guest_id(guest.id)
+    
+    # If RSVP exists and is not cancelled, show summary page
+    if rsvp and not rsvp.is_cancelled:
+        logger.info(f"Showing RSVP summary for {guest.name}")
+        return render_template('rsvp_summary.html',
                              guest=guest,
                              rsvp=rsvp,
-                             admin_phone=admin_phone,
-                             rsvp_deadline=rsvp_deadline)
+                             admin_phone=admin_phone)
     
-    # Handle previously declined or cancelled RSVPs
-    if rsvp:
-        if rsvp.is_cancelled:
-            logger.info("Previously cancelled RSVP")
-            return render_template('rsvp_previously_cancelled.html', 
-                                 guest=guest,
-                                 admin_phone=admin_phone,
-                                 rsvp_deadline=rsvp_deadline)
-        elif not rsvp.is_attending and not rsvp.is_cancelled:
-            logger.info("Previously declined RSVP")
-            return render_template('rsvp_previously_declined.html', 
-                                 guest=guest,
-                                 admin_phone=admin_phone,
-                                 rsvp_deadline=rsvp_deadline)
+    # No RSVP yet (or cancelled) - show form
+    allergens = AllergenService.get_all_allergens()
+    form = RSVPForm(obj=rsvp, guest=guest)
+    
+    return render_template('rsvp.html',
+                         guest=guest,
+                         rsvp=rsvp,
+                         form=form,
+                         allergens=allergens,
+                         admin_phone=admin_phone,
+                         personal_message=guest.personal_message,
+                         readonly=False,
+                         show_warning=False)
+
+@bp.route('/<token>/edit', methods=['GET', 'POST'])
+@rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
+def edit_rsvp(token):
+    """Handle RSVP form editing."""
+    logger.info(f"Edit RSVP access: {token}")
+    
+    # Get guest by token
+    guest = GuestService.get_guest_by_token(token)
+    if not guest:
+        logger.warning(f"Invalid token attempted: {token}")
+        abort(HttpStatus.NOT_FOUND)
+    
+    # Get configuration
+    admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
+    
+    # Check if RSVP deadline has passed
+    if RSVPService.is_rsvp_deadline_passed():
+        logger.info("RSVP deadline has passed")
+        return redirect(url_for('main.index', deadline_passed=1))
+    
+    # Get existing RSVP
+    rsvp = RSVPService.get_rsvp_by_guest_id(guest.id)
     
     # Check editability
     readonly = False
@@ -78,6 +93,9 @@ def rsvp_form(token):
         readonly = True
         show_warning = True
         flash('Changes are not possible at this time. Please contact ' + admin_phone + ' for assistance.', 'warning')
+    
+    # Get allergens for form
+    allergens = AllergenService.get_all_allergens()
     
     # Initialize form
     form = RSVPForm(obj=rsvp, guest=guest)
@@ -89,16 +107,10 @@ def rsvp_form(token):
         success, message, updated_rsvp = RSVPService.create_or_update_rsvp(guest, request.form)
         
         if success:
-            flash(message, 'success' if updated_rsvp.is_attending else 'info')
-            
-            # Redirect to appropriate confirmation page
-            if updated_rsvp.is_attending:
-                return redirect(url_for('rsvp.confirmation_accepted'))
-            else:
-                return redirect(url_for('rsvp.confirmation_declined'))
+            # Redirect to home with success param
+            return redirect(url_for('main.index', rsvp_success=1))
         else:
             flash(message, 'danger')
-            # Re-render form with errors
     
     # Render form
     return render_template('rsvp.html',
@@ -107,9 +119,10 @@ def rsvp_form(token):
                          form=form,
                          allergens=allergens,
                          admin_phone=admin_phone,
+                         personal_message=None,  # Don't show modal on edit
                          readonly=readonly,
-                         show_warning=show_warning)
-
+                         show_warning=show_warning,
+                         is_editing=True)
 
 @bp.route('/<token>/cancel', methods=['GET', 'POST'])
 def cancel_rsvp(token):
@@ -137,8 +150,7 @@ def cancel_rsvp(token):
             success, message = RSVPService.cancel_rsvp(guest)
             
             if success:
-                flash(message, 'info')
-                return redirect(url_for('rsvp.confirmation_cancelled'))
+                return redirect(url_for('main.index', rsvp_cancelled=1))
             else:
                 flash(message, 'warning')
                 return redirect(url_for('rsvp.rsvp_form', token=token))
@@ -157,25 +169,23 @@ def cancel_rsvp(token):
 
 @bp.route('/confirmation/accepted')
 def confirmation_accepted():
-    """Show confirmation page for accepted RSVP."""
-    return render_template('rsvp_accepted.html')
+    """Legacy route - redirect to home with success."""
+    return redirect(url_for('main.index', rsvp_success=1))
 
 
 @bp.route('/confirmation/declined')
 def confirmation_declined():
-    """Show confirmation page for declined RSVP."""
-    admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
-    return render_template('rsvp_declined.html', admin_phone=admin_phone)
+    """Legacy route - redirect to home with success."""
+    return redirect(url_for('main.index', rsvp_success=1))
 
 
 @bp.route('/confirmation/cancelled')
 def confirmation_cancelled():
-    """Show confirmation page for cancelled RSVP."""
-    admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
-    return render_template('rsvp_cancelled.html', admin_phone=admin_phone)
+    """Legacy route - redirect to home."""
+    return redirect(url_for('main.index', rsvp_cancelled=1))
 
 
 @bp.route('/confirmation')
 def confirmation():
-    """Legacy confirmation route - redirect to accepted."""
-    return redirect(url_for('rsvp.confirmation_accepted'))
+    """Legacy confirmation route - redirect to home."""
+    return redirect(url_for('main.index', rsvp_success=1))

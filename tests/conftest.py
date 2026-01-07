@@ -129,7 +129,6 @@ def sample_rsvp(app, sample_guest):
             guest_id=sample_guest.id,
             is_attending=True,
             hotel_name='Test Hotel',
-            transport_to_church=True,
             transport_to_reception=False,
             transport_to_hotel=False
         )

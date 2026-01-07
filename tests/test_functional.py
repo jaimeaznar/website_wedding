@@ -70,7 +70,6 @@ class TestRSVPProcess:
         data = {
             'is_attending': 'yes',
             'hotel_name': 'Test Hotel',
-            'transport_to_church': 'on',
             'adults_count': '1',
             'adult_name_0': 'Additional Adult'
         }
