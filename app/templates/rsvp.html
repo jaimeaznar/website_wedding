@@ -32,7 +32,7 @@
             </div>
             {% endif %}
 
-            <form method="POST" id="rsvpForm" {% if readonly %}class="form-readonly" {% endif %}>
+            <form method="POST" action="{{ url_for('rsvp.edit_rsvp', token=guest.token) }}" id="rsvpForm" {% if readonly %}class="form-readonly" {% endif %}>
                 {{ form.csrf_token }}
 
                 <!-- Attendance Section -->
@@ -41,7 +41,6 @@
                         <h3 class="mb-0" data-translate="rsvp.will.attend">Will you attend?</h3>
                     </div>
                     <div class="form-section-body">
-                        {% if not rsvp or rsvp.is_cancelled or not rsvp.is_attending %}
                         <div class="attendance-options">
                             <div class="attendance-option">
                                 <input type="radio" name="is_attending"
@@ -64,11 +63,6 @@
                                 </label>
                             </div>
                         </div>
-                        {% else %}
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle me-2"></i> <span data-translate="rsvp.confirmed">You have confirmed your attendance.</span>
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
 
@@ -85,7 +79,7 @@
                             <div class="mb-3">
                                 <label class="form-label" for="hotel_name" data-translate="rsvp.where.staying">Where are you staying?</label>
                                 <input type="text" class="form-control" name="hotel_name" id="hotel_name"
-                                    value="{{ rsvp.hotel_name if rsvp else '' }}"
+                                    value="{{ rsvp.hotel_name if rsvp and rsvp.hotel_name else '' }}"
                                     data-translate-placeholder="rsvp.hotel.placeholder"
                                     placeholder="Enter hotel name or leave blank if undecided">
                                 <div class="form-text" data-translate="rsvp.hotel.help">Please let us know where you'll be staying.</div>
@@ -190,7 +184,11 @@
 
                 <div class="form-actions text-center mt-4">
                     {% if not readonly %}
-                    <button type="submit" class="btn btn-primary btn-lg" data-translate="rsvp.submit">Submit RSVP</button>
+                        {% if is_editing %}
+                        <button type="submit" class="btn btn-primary btn-lg" data-translate="rsvp.update">Update RSVP</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-primary btn-lg" data-translate="rsvp.submit">Submit RSVP</button>
+                        {% endif %}
                     {% endif %}
 
                     {% if rsvp and not rsvp.is_cancelled and rsvp.is_editable %}
@@ -269,6 +267,16 @@
     data-custom-allergen="{{ allergen.custom_allergen if allergen.custom_allergen else 'None' }}">
 </div>
 {% endfor %}
+{% endif %}
+<!-- Hidden data for existing additional guests -->
+{% if rsvp and rsvp.additional_guests %}
+<script id="existing-guests-data" type="application/json">
+[
+{% for guest in rsvp.additional_guests %}
+    {"name": "{{ guest.name }}", "is_child": {{ 'true' if guest.is_child else 'false' }}}{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+</script>
 {% endif %}
 {% endblock %}
 

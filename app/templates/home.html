@@ -148,6 +148,12 @@
                         <i class="fas fa-bus me-2"></i>
                         <span data-translate="schedule.travel.description">Transportation provided</span>
                     </p>
+                    <p>
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <a href="https://maps.app.goo.gl/MHpxYvbxLBurEMYq5" target="_blank" rel="noopener" class="location-link">
+                            <span data-translate="schedule.bus.location">Bus Stop: Plaza Luis Obispo Galarza</span>
+                        </a>
+                    </p>
                     <!-- Important Note -->
                     <div class="schedule-note">
                         <i class="fas fa-info-circle me-2"></i>
@@ -631,131 +637,179 @@
                     </div>
                 </div>
 
-                <!-- What to See - Cáceres -->
-                <div class="activity-category mb-4">
-                    <h3 class="category-title">
-                        <i class="fas fa-camera me-2"></i>
-                        <span data-translate="activities.whattosee">What to See</span>
-                    </h3>
+                <!-- Cáceres Accordion -->
+                <div class="accordion" id="caceresAccordion">
                     
-                    <div class="row">
-                        <!-- Old Town -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-archway me-2"></i> <span data-translate="activities.caceres.oldtown.title">Old Town (Parte Antigua)</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Plaza Mayor</strong> - <span data-translate="activities.caceres.plaza.desc">Main square with the Arco de la Estrella entrance</span></li>
-                                    <li><strong>Torre de Bujaco</strong> - <span data-translate="activities.caceres.bujaco.desc">12th-century tower with panoramic city views (€2.50)</span></li>
-                                    <li><strong>Aljibe & Yusuf Al-Burch</strong> - <span data-translate="activities.caceres.aljibe.desc">Ancient Arab cistern and tower, fascinating history</span></li>
-                                    <li><strong>Calle Pintores</strong> - <span data-translate="activities.caceres.pintores.desc">Charming street for shopping and strolling</span></li>
-                                    <li><strong data-translate="activities.caceres.convents">Convents</strong> - <span data-translate="activities.caceres.convents.desc">Buy artisan sweets through little windows (tornos)</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <!-- What to See - Cáceres -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="caceresWhatToSeeHead">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#caceresWhatToSee" aria-expanded="false" aria-controls="caceresWhatToSee">
+                                <i class="fas fa-camera me-2"></i>
+                                <span data-translate="activities.whattosee">What to See</span>
+                            </button>
+                        </h2>
+                        <div id="caceresWhatToSee" class="accordion-collapse collapse" aria-labelledby="caceresWhatToSeeHead" data-bs-parent="#caceresAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <!-- Old Town -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-archway me-2"></i> <span data-translate="activities.caceres.oldtown.title">Old Town (Parte Antigua)</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Plaza Mayor</strong> - <span data-translate="activities.caceres.plaza.desc">Next to the old town, with its walls, iconic buildings, and the Arch of the Star.</span></li>
+                                                <li><strong>Torre de Bujaco</strong> - <span data-translate="activities.caceres.bujaco.desc">12th-century tower with panoramic city views (€2.50)</span></li>
+                                                <li><strong>Aljibe & Yusuf Al-Burch</strong> - <span data-translate="activities.caceres.aljibe.desc">Ancient Arab cistern and tower, fascinating history</span></li>
+                                                <li><strong>Calle Pintores</strong> - <span data-translate="activities.caceres.pintores.desc">Charming street for shopping and strolling</span></li>
+                                                <li><strong>Palacio de los Arenales</strong> - <span data-translate="activities.caceres.arenales.desc">Historic noble palace of the Golfín family</span></li>
+                                                <li><strong>Calle Pizarro</strong> - <span data-translate="activities.caceres.pizarro.desc">Lively street with shops, bars and restaurants</span></li>
+                                                <li><strong data-translate="activities.caceres.convents">Convents</strong> - <span data-translate="activities.caceres.convents.desc">Buy handmade sweets made by the cloistered nuns through the revolving windows.</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                        <!-- Museums & Culture -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-palette me-2"></i> <span data-translate="activities.caceres.culture.title">Museums & Culture</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Museo Helga de Alvear</strong> - <span data-translate="activities.caceres.helga.desc">Contemporary art museum. Free guided tours but reservation required!</span></li>
-                                    <li><strong>Gran Teatro de Cáceres</strong> - <span data-translate="activities.caceres.teatro.desc">Check listings for theater, concerts, or indie cinema</span></li>
-                                    <li><strong>Concatedral de Santa María</strong> - <span data-translate="activities.caceres.cathedral.desc">Gothic cathedral, wedding ceremony venue (€4)</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                                    <!-- Museums & Culture -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-palette me-2"></i> <span data-translate="activities.caceres.culture.title">Museums & Culture</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Museo Helga de Alvear</strong> - <span data-translate="activities.caceres.helga.desc">Contemporary art museum. Free guided tours but reservation required!</span></li>
+                                                <li><strong>Gran Teatro de Cáceres</strong> - <span data-translate="activities.caceres.teatro.desc">Check listings for theater, concerts, or indie cinema</span></li>
+                                                <li><strong>Concatedral de Santa María</strong> - <span data-translate="activities.caceres.cathedral.desc">Gothic cathedral, wedding ceremony venue (€4)</span></li>
+                                                <li><strong>Iglesia de la Preciosa Sangre</strong> - <span data-translate="activities.caceres.preciosa.desc">Beautiful church near the Cathedral, worth a quick visit</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                        <!-- Viewpoints -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-mountain me-2"></i> <span data-translate="activities.caceres.viewpoints.title">Viewpoints & Scenic Spots</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Santuario de la Virgen de la Montaña</strong> - <span data-translate="activities.caceres.montana.desc">Best views of the city! Perfect for sunset. Book with Civitatis for guided visit</span></li>
-                                    <li><strong>Mirador de Galarza</strong> - <span data-translate="activities.caceres.galarza.desc">Near the plaza with parking and great views</span></li>
-                                    <li><strong>Miradores de Fuente Rocha</strong> - <span data-translate="activities.caceres.fuente.desc">Lesser-known spots with beautiful views of old and new town</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                                    <!-- Viewpoints -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-mountain me-2"></i> <span data-translate="activities.caceres.viewpoints.title">Viewpoints & Scenic Spots</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Santuario de la Virgen de la Montaña</strong> - <span data-translate="activities.caceres.montana.desc">Best views of the city! Perfect for sunset.</span></li>
+                                                <li><strong>Mirador de Galarza</strong> - <span data-translate="activities.caceres.galarza.desc">Near the plaza with parking and great views</span></li>
+                                                <li><strong>Miradores de Fuente Rocha</strong> - <span data-translate="activities.caceres.fuente.desc">Lesser-known spots with beautiful views of old and new town</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                        <!-- Parks & Nature -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-tree me-2"></i> <span data-translate="activities.caceres.nature.title">Parks & Nature</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Parque del Príncipe</strong> - <span data-translate="activities.caceres.principe.desc">Beautiful park for a relaxing walk</span></li>
-                                    <li><strong>Paseo de Cánovas</strong> - <span data-translate="activities.caceres.canovas.desc">Tree-lined promenade, perfect for an evening stroll</span></li>
-                                    <li><strong>Los Barruecos</strong> - <span data-translate="activities.caceres.barruecos.desc">Spectacular natural park (~15 min drive). Unique rock formations and stork colonies</span></li>
-                                    <li><strong>Parque Nacional Monfragüe</strong> - <span data-translate="activities.caceres.monfrague.desc">~1 hour drive. Vultures, eagles, storks - perfect for hiking and nature lovers</span></li>
-                                </ul>
+                                    <!-- Parks & Nature -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-tree me-2"></i> <span data-translate="activities.caceres.nature.title">Parks & Nature</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Parque del Príncipe</strong> - <span data-translate="activities.caceres.principe.desc">Beautiful park for a relaxing walk</span></li>
+                                                <li><strong>Paseo de Cánovas</strong> - <span data-translate="activities.caceres.canovas.desc">Tree-lined promenade, perfect for an evening stroll</span></li>
+                                                <li><strong>Los Barruecos (Malpartida de Cáceres)</strong> - <span data-translate="activities.caceres.barruecos.desc">Spectacular natural park (~15 min drive). Unique rock formations and stork colonies</span></li>
+                                                <li><strong>Parque Nacional Monfragüe</strong> - <span data-translate="activities.caceres.monfrague.desc">~1 hour drive. Vultures, eagles, storks - perfect for hiking and nature lovers</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Where to Eat & Drink - Cáceres -->
-                <div class="activity-category mb-4">
-                    <h3 class="category-title">
-                        <i class="fas fa-utensils me-2"></i>
-                        <span data-translate="activities.wheretoeat">Where to Eat & Drink</span>
-                    </h3>
-                    
-                    <div class="row">
-                        <!-- Old Town - Chill Spots -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-wine-glass me-2"></i> <span data-translate="activities.caceres.chill.title">Old Town - Drinks & Tapas</span></h4>
-                                <p class="text-muted small" data-translate="activities.caceres.chill.desc">Cozy spots perfect for drinks and light bites in charming settings:</p>
-                                <ul class="activity-list">
-                                    <li><strong>Corral de las Cigüeñas</strong></li>
-                                    <li><strong>Mastropiero</strong></li>
-                                    <li><strong>La Caballeriza</strong></li>
-                                    <li><strong>Los Siete Jardines</strong></li>
-                                    <li><strong>El Jardín de los Golfines</strong> - <span data-translate="activities.caceres.golfines.desc">One of our favorites!</span></li>
-                                </ul>
+                    <!-- Where to Eat & Drink - Cáceres -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="caceresWhereToEatHead">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#caceresWhereToEat" aria-expanded="false" aria-controls="caceresWhereToEat">
+                                <i class="fas fa-utensils me-2"></i>
+                                <span data-translate="activities.wheretoeat">Where to Eat & Drink</span>
+                            </button>
+                        </h2>
+                        <div id="caceresWhereToEat" class="accordion-collapse collapse" aria-labelledby="caceresWhereToEatHead" data-bs-parent="#caceresAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <!-- Old Town - Chill Spots -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-wine-glass me-2"></i> <span data-translate="activities.caceres.chill.title">Old Town - Drinks & Tapas</span></h4>
+                                            <p class="text-muted small" data-translate="activities.caceres.chill.desc">Cozy spots perfect for drinks and light bites in charming settings:</p>
+                                            <ul class="activity-list">
+                                                <li><strong>Corral de las Cigüeñas</strong></li>
+                                                <li><strong>Mastropiero</strong></li>
+                                                <li><strong>La Caballeriza</strong></li>
+                                                <li><strong>Los Siete Jardines</strong></li>
+                                                <li><strong>El Jardín de los Golfines</strong> - <span data-translate="activities.caceres.golfines.desc">One of our favorites!</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Old Town - Restaurants -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-star me-2"></i> <span data-translate="activities.caceres.restaurants.title">Old Town - Restaurants</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Figón de Eustaquio</strong> <span class="badge bg-warning text-dark">€€€</span> - <span data-translate="activities.caceres.eustaquio.desc">Upscale traditional cuisine</span></li>
+                                                <li><strong>El Atrio</strong> <span class="badge bg-danger">€€€€</span> - <span data-translate="activities.caceres.atrio.desc">Most prestigious in Cáceres, Michelin-starred</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cánovas Area -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-map-pin me-2"></i> <span data-translate="activities.caceres.canovasarea.title">Cánovas / Hotel Extremadura Area</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Albalat</strong> <span class="badge bg-success">€€</span> - <span data-translate="activities.caceres.albalat.desc">Great value, across from Hotel Extremadura</span></li>
+                                                <li><strong>El Nolasco</strong> - <span data-translate="activities.caceres.nolasco.desc">Excellent reviews</span></li>
+                                                <li><strong>13 de San Antón</strong> - <span data-translate="activities.caceres.sananton.desc">Highly recommended</span></li>
+                                                <li><strong>Charlotte</strong> - <span data-translate="activities.caceres.charlotte.desc">Great for brunch and afternoon snacks</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Casual Bar Areas -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-beer me-2"></i> <span data-translate="activities.caceres.bars.title">Casual Bar Areas</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Avenida de la Montaña</strong> - <span data-translate="activities.caceres.avmontana.desc">bars, local vibe</span></li>
+                                                <li><strong>Calle San Pedro</strong> - <span data-translate="activities.caceres.sanpedro.desc">Pedestrian street near 100 Montaditos, full of bars</span></li>
+                                                <li><strong data-translate="activities.caceres.plazaarea">Plaza Mayor area</strong> - <span data-translate="activities.caceres.plazaarea.desc">Many terrace options</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Old Town - Restaurants -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-star me-2"></i> <span data-translate="activities.caceres.restaurants.title">Old Town - Restaurants</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>La Casa Palacchio</strong> - <span data-translate="activities.caceres.palacchio.desc">Great quality in the old town</span></li>
-                                    <li><strong>Figón de Eustaquio</strong> <span class="badge bg-warning text-dark">€€€</span> - <span data-translate="activities.caceres.eustaquio.desc">Upscale traditional cuisine</span></li>
-                                    <li><strong>El Atrio</strong> <span class="badge bg-danger">€€€€</span> - <span data-translate="activities.caceres.atrio.desc">Most prestigious in Cáceres, Michelin-starred</span></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Cánovas Area -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-map-pin me-2"></i> <span data-translate="activities.caceres.canovasarea.title">Cánovas / Hotel Extremadura Area</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Albalat</strong> <span class="badge bg-success">€€</span> - <span data-translate="activities.caceres.albalat.desc">Great value, across from Hotel Extremadura</span></li>
-                                    <li><strong>El Nolasco</strong> - <span data-translate="activities.caceres.nolasco.desc">Excellent reviews</span></li>
-                                    <li><strong>13 de San Antón</strong> - <span data-translate="activities.caceres.sananton.desc">Highly recommended</span></li>
-                                    <li><strong>Charlotte</strong> - <span data-translate="activities.caceres.charlotte.desc">Great for drinks</span></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Casual Bar Areas -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-beer me-2"></i> <span data-translate="activities.caceres.bars.title">Casual Bar Areas</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Avenida de la Montaña</strong> - <span data-translate="activities.caceres.avmontana.desc">Informal bars, local vibe</span></li>
-                                    <li><strong>Calle San Pedro</strong> - <span data-translate="activities.caceres.sanpedro.desc">Pedestrian street near 100 Montaditos, full of bars</span></li>
-                                    <li><strong data-translate="activities.caceres.plazaarea">Plaza Mayor area</strong> - <span data-translate="activities.caceres.plazaarea.desc">Many terrace options</span></li>
-                                </ul>
+                    <!-- Local Products & Shopping - Cáceres -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="caceresShoppingHead">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#caceresShopping" aria-expanded="false" aria-controls="caceresShopping">
+                                <i class="fas fa-shopping-bag me-2"></i>
+                                <span data-translate="activities.wheretoshop">Local Products & Shopping</span>
+                            </button>
+                        </h2>
+                        <div id="caceresShopping" class="accordion-collapse collapse" aria-labelledby="caceresShoppingHead" data-bs-parent="#caceresAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-store me-2"></i> <span data-translate="activities.caceres.gourmet.title">Gourmet & Delicatessen</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Mostazo</strong> - <span data-translate="activities.caceres.mostazo.desc">Local delicatessen with regional products.</span></li>
+                                                <li><strong>La Chinata</strong> - <span data-translate="activities.caceres.chinata.desc">Famous olive oil products and cosmetics from Extremadura.</span></li>
+                                            </ul>
+                                            <a href="https://maps.app.goo.gl/m2JMvh1sdkDEWVk97" 
+                                               target="_blank" 
+                                               rel="noopener" 
+                                               class="btn btn-primary mt-2">
+                                                <i class="fas fa-map-marker-alt me-2"></i>
+                                                <span data-translate="activities.directions">Get Directions</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Must Try Foods - Cáceres -->
-                <div class="tip-box tip-box-orange mb-4">
+                <div class="tip-box tip-box-orange mt-4">
                     <div class="tip-box-header">
                         <i class="fas fa-pepper-hot me-2"></i>
                         <span data-translate="activities.musttry">Must Try!</span>
@@ -797,79 +851,93 @@
                     </div>
                 </div>
 
-                <!-- What to See - Trujillo -->
-                <div class="activity-category mb-4">
-                    <h3 class="category-title">
-                        <i class="fas fa-camera me-2"></i>
-                        <span data-translate="activities.whattosee">What to See</span>
-                    </h3>
+                <!-- Trujillo Accordion -->
+                <div class="accordion" id="trujilloAccordion">
                     
-                    <div class="row">
-                        <!-- Main Attractions -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-monument me-2"></i> <span data-translate="activities.trujillo.main.title">Main Attractions</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Plaza Mayor</strong> - <span data-translate="activities.trujillo.plaza.desc">Stunning main square with Pizarro's equestrian statue, arcades, and historic palaces</span></li>
-                                    <li><strong>Castillo de Trujillo</strong> - <span data-translate="activities.trujillo.castle.desc">10th-century Moorish castle with breathtaking views of Extremadura (€2)</span></li>
-                                    <li><strong>Iglesia de Santa María la Mayor</strong> - <span data-translate="activities.trujillo.iglesia.desc">Romanesque church with beautiful tower views</span></li>
-                                    <li><strong>Palacio de la Conquista</strong> - <span data-translate="activities.trujillo.palacio.desc">Built by Pizarro's family, ornate corner balcony</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <!-- What to See - Trujillo -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="trujilloWhatToSeeHead">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trujilloWhatToSee" aria-expanded="false" aria-controls="trujilloWhatToSee">
+                                <i class="fas fa-camera me-2"></i>
+                                <span data-translate="activities.whattosee">What to See</span>
+                            </button>
+                        </h2>
+                        <div id="trujilloWhatToSee" class="accordion-collapse collapse" aria-labelledby="trujilloWhatToSeeHead" data-bs-parent="#trujilloAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <!-- Main Attractions -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-monument me-2"></i> <span data-translate="activities.trujillo.main.title">Main Attractions</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Plaza Mayor</strong> - <span data-translate="activities.trujillo.plaza.desc">Stunning main square with Pizarro's equestrian statue, arcades, and historic palaces</span></li>
+                                                <li><strong>Castillo de Trujillo</strong> - <span data-translate="activities.trujillo.castle.desc">10th-century Moorish castle with breathtaking views of Extremadura (€2)</span></li>
+                                                <li><strong>Iglesia de Santa María la Mayor</strong> - <span data-translate="activities.trujillo.iglesia.desc">Romanesque church with beautiful tower views</span></li>
+                                                <li><strong>Palacio de la Conquista</strong> - <span data-translate="activities.trujillo.palacio.desc">Built by Pizarro's family, ornate corner balcony</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                        <!-- Strolling & Discovery -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-walking me-2"></i> <span data-translate="activities.trujillo.stroll.title">Strolling & Discovery</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong data-translate="activities.trujillo.oldtown">Old Town Streets</strong> - <span data-translate="activities.trujillo.oldtown.desc">Wander cobbled lanes that look unchanged for centuries</span></li>
-                                    <li><strong data-translate="activities.trujillo.walls">Medieval Walls</strong> - <span data-translate="activities.trujillo.walls.desc">Walk sections of the original defensive walls</span></li>
-                                    <li><strong data-translate="activities.trujillo.convents">Historic Convents</strong> - <span data-translate="activities.trujillo.convents.desc">Several beautiful convents to discover</span></li>
-                                    <li><strong data-translate="activities.trujillo.sunset">Sunset from the Castle</strong> - <span data-translate="activities.trujillo.sunset.desc">Unforgettable views across the Extremadura plains</span></li>
-                                </ul>
+                                    <!-- Strolling & Discovery -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-walking me-2"></i> <span data-translate="activities.trujillo.stroll.title">Strolling & Discovery</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong data-translate="activities.trujillo.oldtown">Old Town Streets</strong> - <span data-translate="activities.trujillo.oldtown.desc">Wander cobbled lanes that look unchanged for centuries</span></li>
+                                                <li><strong data-translate="activities.trujillo.walls">Medieval Walls</strong> - <span data-translate="activities.trujillo.walls.desc">Walk sections of the original defensive walls</span></li>
+                                                <li><strong data-translate="activities.trujillo.convents">Historic Convents</strong> - <span data-translate="activities.trujillo.convents.desc">Several beautiful convents to discover</span></li>
+                                                <li><strong data-translate="activities.trujillo.sunset">Sunset from the Castle</strong> - <span data-translate="activities.trujillo.sunset.desc">Unforgettable views across the Extremadura plains</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Where to Eat & Drink - Trujillo -->
-                <div class="activity-category mb-4">
-                    <h3 class="category-title">
-                        <i class="fas fa-utensils me-2"></i>
-                        <span data-translate="activities.wheretoeat">Where to Eat & Drink</span>
-                    </h3>
-                    
-                    <div class="row">
-                        <!-- Plaza Mayor Dining -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-sun me-2"></i> <span data-translate="activities.trujillo.plazadining.title">Plaza Mayor Terraces</span></h4>
-                                <p class="text-muted small" data-translate="activities.trujillo.plazadining.desc">Enjoy the view while you dine:</p>
-                                <ul class="activity-list">
-                                    <li><strong>Mesón La Troya</strong> - <span data-translate="activities.trujillo.latroya.desc">Famous for huge portions and local character</span></li>
-                                    <li><strong>Restaurante Pizarro</strong> - <span data-translate="activities.trujillo.pizarro.desc">Traditional cuisine with terrace views</span></li>
-                                    <li><strong>Bar El 7</strong> - <span data-translate="activities.trujillo.el7.desc">Casual tapas right on the plaza</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <!-- Where to Eat & Drink - Trujillo -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="trujilloWhereToEatHead">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trujilloWhereToEat" aria-expanded="false" aria-controls="trujilloWhereToEat">
+                                <i class="fas fa-utensils me-2"></i>
+                                <span data-translate="activities.wheretoeat">Where to Eat & Drink</span>
+                            </button>
+                        </h2>
+                        <div id="trujilloWhereToEat" class="accordion-collapse collapse" aria-labelledby="trujilloWhereToEatHead" data-bs-parent="#trujilloAccordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <!-- Plaza Mayor Dining -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-sun me-2"></i> <span data-translate="activities.trujillo.plazadining.title">Plaza Mayor Terraces</span></h4>
+                                            <p class="text-muted small" data-translate="activities.trujillo.plazadining.desc">Enjoy the view while you dine:</p>
+                                            <ul class="activity-list">
+                                                <li><strong>Mesón La Troya</strong> - <span data-translate="activities.trujillo.latroya.desc">Famous for huge portions and local character</span></li>
+                                                <li><strong>Restaurante Pizarro</strong> - <span data-translate="activities.trujillo.pizarro.desc">Traditional cuisine with terrace views</span></li>
+                                                <li><strong>Bar El 7</strong> - <span data-translate="activities.trujillo.el7.desc">Casual tapas right on the plaza</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                        <!-- Quality Restaurants -->
-                        <div class="col-md-6 mb-3">
-                            <div class="activity-item">
-                                <h4><i class="fas fa-star me-2"></i> <span data-translate="activities.trujillo.quality.title">Quality Restaurants</span></h4>
-                                <ul class="activity-list">
-                                    <li><strong>Corral del Rey</strong> <span class="badge bg-warning text-dark">€€€</span> - <span data-translate="activities.trujillo.corralrey.desc">Upscale dining in historic setting</span></li>
-                                    <li><strong>Restaurante Bizcocho</strong> - <span data-translate="activities.trujillo.bizcocho.desc">Creative local cuisine</span></li>
-                                    <li><strong>La Alberca</strong> - <span data-translate="activities.trujillo.alberca.desc">Traditional Extremaduran dishes</span></li>
-                                </ul>
+                                    <!-- Quality Restaurants -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="activity-item">
+                                            <h4><i class="fas fa-star me-2"></i> <span data-translate="activities.trujillo.quality.title">Quality Restaurants</span></h4>
+                                            <ul class="activity-list">
+                                                <li><strong>Corral del Rey</strong> <span class="badge bg-warning text-dark">€€€</span> - <span data-translate="activities.trujillo.corralrey.desc">Upscale dining in historic setting</span></li>
+                                                <li><strong>Restaurante Bizcocho</strong> - <span data-translate="activities.trujillo.bizcocho.desc">Creative local cuisine</span></li>
+                                                <li><strong>La Alberca</strong> - <span data-translate="activities.trujillo.alberca.desc">Traditional Extremaduran dishes</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Must Try Foods - Trujillo -->
-                <div class="tip-box tip-box-orange mb-4">
+                <div class="tip-box tip-box-orange mt-4">
                     <div class="tip-box-header">
                         <i class="fas fa-pepper-hot me-2"></i>
                         <span data-translate="activities.musttry">Must Try!</span>
@@ -902,10 +970,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <ul class="tips-list">
-                            <li><i class="fas fa-shoe-prints me-2 text-primary"></i><strong data-translate="activities.tip.footwear.label">Footwear:</strong> <span data-translate="activities.tip.footwear">Wear comfortable shoes - cobblestone streets!</span></li>
-                            <li><i class="fas fa-parking me-2 text-primary"></i><strong data-translate="activities.tip.parking.label">Parking:</strong> <span data-translate="activities.tip.parking">Free parking outside old town walls in both cities</span></li>
-                            <li><i class="fas fa-calendar-check me-2 text-primary"></i><strong data-translate="activities.tip.reservations.label">Reservations:</strong> <span data-translate="activities.tip.reservations">Book Helga de Alvear museum in advance!</span></li>
-                            <li><i class="fas fa-sun me-2 text-primary"></i><strong data-translate="activities.tip.weather.label">Weather:</strong> <span data-translate="activities.tip.weather">June can be hot - bring water and sunscreen</span></li>
+                            <li><i class="fas fa-shoe-prints me-2 text-primary"></i><strong data-translate="activities.tip.footwear.label">Footwear:</strong> <span data-translate="activities.tip.footwear"> Wear comfortable shoes - cobblestone streets!</span></li>
+                            <li><i class="fas fa-parking me-2 text-primary"></i><strong data-translate="activities.tip.parking.label">Parking:</strong> <span data-translate="activities.tip.parking"> Free parking outside old town walls in both cities</span></li>
+                            <li><i class="fas fa-calendar-check me-2 text-primary"></i><strong data-translate="activities.tip.reservations.label">Reservations:</strong> <span data-translate="activities.tip.reservations"> Book Helga de Alvear museum in advance!</span></li>
+                            <li><i class="fas fa-sun me-2 text-primary"></i><strong data-translate="activities.tip.weather.label">Weather:</strong> <span data-translate="activities.tip.weather"> June can be hot - bring water and sunscreen</span></li>
                         </ul>
                     </div>
                 </div>
@@ -1011,8 +1079,8 @@
                                 <div class="dresscode-restrictions">
                                     <ul class="restrictions-list">
                                         <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.white">White, beige or light colours</span></li>
-                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.patterns">Patterns</span></li>
-                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.sequins">Sequins</span></li>
+                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.patterns">Bold or extravagant patterns</span></li>
+                                        <li><i class="fas fa-times-circle text-danger me-2"></i><span data-translate="dresscode.women.no.sequins">Sequins (New Year\'s Eve style)</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -1045,6 +1113,30 @@
                     <p class="dresscode-thanks" data-translate="dresscode.thanks">Thank you for helping us make this evening elegant and memorable!</p>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bus Location Modal - Wedding Day Only -->
+<div id="bus-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2 data-translate="bus.title">Bus Location</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body text-center">
+            <div class="bus-icon-container mb-4">
+                <i class="fas fa-bus"></i>
+            </div>
+            <p class="lead mb-2" data-translate="bus.message">The buses to the reception venue are waiting for you!</p>
+            <p class="text-muted mb-4" data-translate="bus.location">Plaza Luis Obispo Galarza</p>
+            <a href="https://maps.app.goo.gl/MHpxYvbxLBurEMYq5" 
+               target="_blank" 
+               rel="noopener" 
+               class="btn btn-primary btn-lg">
+                <i class="fas fa-map-marker-alt me-2"></i>
+                <span data-translate="bus.directions">Get Directions</span>
+            </a>
         </div>
     </div>
 </div>

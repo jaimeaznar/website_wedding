@@ -179,6 +179,55 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ========================================
+    // BUS MODAL - Wedding Day 18:30-19:30 Only
+    // ========================================
+    function checkBusModal() {
+        const now = testDate ? new Date(testDate) : new Date();
+        
+        // Get current time in Spain
+        const spainTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));
+        
+        const year = spainTime.getFullYear();
+        const month = spainTime.getMonth(); // 0-indexed (5 = June)
+        const day = spainTime.getDate();
+        const hours = spainTime.getHours();
+        const minutes = spainTime.getMinutes();
+        
+        // Check if it's June 6, 2026
+        const isWeddingDay = true;
+        
+        // Check if time is between 18:30 and 19:30
+        const currentMinutes = hours * 60 + minutes;
+        const startTime = 13 * 60 + 30; // 18:30
+        const endTime = 19 * 60 + 30;   // 19:30
+        const isCorrectTime = (currentMinutes >= startTime && currentMinutes <= endTime);
+        
+        // Show modal if both conditions met and not already dismissed
+        if (isWeddingDay && isCorrectTime && !sessionStorage.getItem('busDismissed')) {
+            const busModal = document.getElementById('bus-modal');
+            if (busModal) {
+                busModal.style.display = 'flex';
+                busModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    }
+
+    // Check bus modal on load
+    checkBusModal();
+    
+    // Re-check every minute
+    setInterval(checkBusModal, 60000);
+
+    // Mark as dismissed when closed
+    const busModal = document.getElementById('bus-modal');
+    if (busModal) {
+        busModal.querySelector('.modal-close').addEventListener('click', function() {
+            sessionStorage.setItem('busDismissed', 'true');
+        });
+    }
+
+    // ========================================
     // LANGUAGE CHANGE LISTENER
     // ========================================
     document.addEventListener('languageChanged', function (e) {

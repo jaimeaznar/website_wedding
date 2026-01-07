@@ -411,7 +411,6 @@ class PDFService:
         
         summary_data = [
             ['Route', 'Guests Requiring Transport'],
-            ['Hotel → Church', str(len(transport_data['to_church']))],
             ['Church → Reception', str(len(transport_data['to_reception']))],
             ['Reception → Hotel', str(len(transport_data['to_hotel']))],
             ['Total Hotels', str(len(transport_data['hotels']))]
@@ -431,65 +430,6 @@ class PDFService:
         ]))
         elements.append(summary_table)
         elements.append(Spacer(1, 0.3 * inch))
-        
-        # ROUTE 1: Hotel to Church
-        elements.append(PageBreak())
-        elements.append(Paragraph("Route 1: Hotel → Church", heading_style))
-        elements.append(Paragraph(
-            "⏰ <b>Timing:</b> Pickup 30 minutes before ceremony start",
-            ParagraphStyle('Timing', parent=normal_style, fontSize=10, textColor=colors.red)
-        ))
-        elements.append(Spacer(1, 0.1 * inch))
-        
-        if transport_data['to_church']:
-            # Group by hotel
-            hotel_groups = {}
-            for guest in transport_data['to_church']:
-                hotel = guest['hotel'] or 'Unknown Hotel'
-                if hotel not in hotel_groups:
-                    hotel_groups[hotel] = []
-                hotel_groups[hotel].append(guest)
-            
-            for hotel, guests in sorted(hotel_groups.items()):
-                # Hotel name
-                elements.append(Paragraph(f"📍 Pickup Location: {hotel}", route_heading_style))
-                
-                # Calculate total people
-                total_people = sum(g['guest_count'] for g in guests)
-                elements.append(Paragraph(
-                    f"Total Passengers: <b>{total_people}</b> ({len(guests)} booking{'s' if len(guests) != 1 else ''})",
-                    ParagraphStyle('Info', parent=normal_style, fontSize=9, leftIndent=20)
-                ))
-                elements.append(Spacer(1, 0.05 * inch))
-                
-                # Guest list
-                guest_data = [['Guest Name', 'Phone', 'Passengers']]
-                for guest in sorted(guests, key=lambda x: x['name']):
-                    guest_data.append([
-                        guest['name'],
-                        guest['phone'],
-                        str(guest['guest_count'])
-                    ])
-                
-                guest_table = Table(guest_data, colWidths=[2.5 * inch, 1.8 * inch, 1.2 * inch])
-                guest_table.setStyle(TableStyle([
-                    ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_SUCCESS),
-                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                    ('ALIGN', (2, 0), (2, -1), 'CENTER'),
-                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                    ('FONTSIZE', (0, 0), (-1, 0), 10),
-                    ('FONTSIZE', (0, 1), (-1, -1), 9),
-                    ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-                    ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
-                    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY]),
-                    ('LEFTPADDING', (0, 0), (-1, -1), 8),
-                    ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-                ]))
-                elements.append(guest_table)
-                elements.append(Spacer(1, 0.15 * inch))
-        else:
-            elements.append(Paragraph("No transport required for this route.", normal_style))
         
         # ROUTE 2: Church to Reception
         elements.append(PageBreak())

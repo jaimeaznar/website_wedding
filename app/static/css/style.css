@@ -2078,3 +2078,57 @@ a:hover {
         margin-bottom: 1rem;
     }
 }
+
+.bus-icon-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    background: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bus-icon-container i {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+}
+
+/* Accordion Styling */
+.accordion-item {
+    border: 1px solid var(--accent-color);
+    margin-bottom: 0.5rem;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.accordion-button {
+    background: var(--accent-color);
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.accordion-button:not(.collapsed) {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(102, 57, 126, 0.25);
+    border-color: var(--primary-color);
+}
+
+.accordion-button::after {
+    filter: brightness(0) saturate(100%);
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: brightness(0) invert(1);
+}
+
+.accordion-body {
+    background: #ffffff;
+    padding: 1.5rem;
+}

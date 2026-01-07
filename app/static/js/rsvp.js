@@ -79,6 +79,40 @@ document.addEventListener('DOMContentLoaded', function () {
         return card;
     }
 
+    // Function to prefill existing additional guests
+    function prefillAdditionalGuests() {
+        const existingGuestsData = document.getElementById('existing-guests-data');
+        if (!existingGuestsData) return;
+        
+        try {
+            const guests = JSON.parse(existingGuestsData.textContent);
+            console.log("Existing additional guests:", guests);
+            
+            let adultIndex = 0;
+            let childIndex = 0;
+            
+            guests.forEach(guest => {
+                if (guest.is_child) {
+                    const nameInput = document.querySelector(`input[name="child_name_${childIndex}"]`);
+                    if (nameInput) {
+                        nameInput.value = guest.name;
+                        console.log(`Prefilled child ${childIndex}: ${guest.name}`);
+                    }
+                    childIndex++;
+                } else {
+                    const nameInput = document.querySelector(`input[name="adult_name_${adultIndex}"]`);
+                    if (nameInput) {
+                        nameInput.value = guest.name;
+                        console.log(`Prefilled adult ${adultIndex}: ${guest.name}`);
+                    }
+                    adultIndex++;
+                }
+            });
+        } catch (e) {
+            console.error("Error parsing existing guests data:", e);
+        }
+    }
+
     // Handle adults count change
     const adultsSelect = document.getElementById('adults_count');
     if (adultsSelect) {
@@ -91,6 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
             for (let i = 0; i < count; i++) {
                 adultsContainer.appendChild(createGuestInput('adult', i));
             }
+            // Prefill after creating inputs
+            setTimeout(prefillAdditionalGuests, 50);
         });
 
         // Trigger once to initialize if needed
@@ -113,6 +149,8 @@ document.addEventListener('DOMContentLoaded', function () {
             for (let i = 0; i < count; i++) {
                 childrenContainer.appendChild(createGuestInput('child', i));
             }
+            // Prefill after creating inputs
+            setTimeout(prefillAdditionalGuests, 50);
         });
 
         // Trigger once to initialize if needed
@@ -185,6 +223,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+
 
     // Call prefill function with a slight delay to ensure all elements are rendered
     setTimeout(prefillAllergens, 100);

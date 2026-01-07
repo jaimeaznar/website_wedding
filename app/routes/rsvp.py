@@ -121,7 +121,8 @@ def edit_rsvp(token):
                          admin_phone=admin_phone,
                          personal_message=None,  # Don't show modal on edit
                          readonly=readonly,
-                         show_warning=show_warning)
+                         show_warning=show_warning,
+                         is_editing=True)
 
 @bp.route('/<token>/cancel', methods=['GET', 'POST'])
 def cancel_rsvp(token):
