@@ -365,7 +365,9 @@ class TestPDFService:
             rsvp = RSVP(
                 guest_id=guest.id,
                 is_attending=True,
-                hotel_name='Family Hotel'
+                hotel_name='Family Hotel',
+                transport_to_reception=True,
+                transport_to_hotel=True
             )
             db.session.add(rsvp)
             db.session.flush()

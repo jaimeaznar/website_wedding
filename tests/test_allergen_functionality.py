@@ -90,7 +90,7 @@ class TestAllergenFunctionality:
             }
             
             response = client.post(
-                f'/rsvp/{guest.token}',
+                f'/rsvp/{guest.token}/edit',
                 data=form_data,
                 follow_redirects=True
             )
@@ -301,7 +301,7 @@ class TestAllergenFunctionality:
             }
             
             response = client.post(
-                f'/rsvp/{guest.token}',
+                f'/rsvp/{guest.token}/edit',
                 data=form_data,
                 follow_redirects=True
             )
@@ -352,7 +352,7 @@ class TestAllergenFunctionality:
             }
             
             response = client.post(
-                f'/rsvp/{guest.token}',
+                f'/rsvp/{guest.token}/edit',
                 data=form_data,
                 follow_redirects=True
             )

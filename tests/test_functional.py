@@ -74,7 +74,7 @@ class TestRSVPProcess:
             'adult_name_0': 'Additional Adult'
         }
         response = client.post(
-            f'/rsvp/{rsvp_guest.token}', 
+            f'/rsvp/{rsvp_guest.token}/edit', 
             data=data,
             follow_redirects=True
         )
@@ -88,7 +88,7 @@ class TestRSVPProcess:
             'is_attending': 'no'
         }
         response = client.post(
-            f'/rsvp/{rsvp_guest.token}', 
+            f'/rsvp/{rsvp_guest.token}/edit', 
             data=data,
             follow_redirects=True
         )
