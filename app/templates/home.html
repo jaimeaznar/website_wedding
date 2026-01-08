@@ -47,6 +47,23 @@
             </div>
         </div>
 
+        <!-- RSVP Card -->
+        {% if guest %}
+        <a href="{{ url_for('rsvp.rsvp') }}" class="feature-card rsvp-card" style="text-decoration: none; color: inherit;">
+            <div class="feature-card-content">
+                <i class="fas fa-envelope-open-text feature-card-icon"></i>
+                <h3 class="feature-card-title" data-translate="card.rsvp">RSVP</h3>
+            </div>
+        </a>
+        {% else %}
+        <div class="feature-card clickable-card" data-target="rsvp">
+            <div class="feature-card-content">
+                <i class="fas fa-envelope-open-text feature-card-icon"></i>
+                <h3 class="feature-card-title" data-translate="card.rsvp">RSVP</h3>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="feature-card clickable-card" data-target="schedule">
             <div class="feature-card-content">
                 <i class="fas fa-clock feature-card-icon"></i>
@@ -1111,6 +1128,30 @@
                 <!-- Thank You Message -->
                 <div class="text-center mt-4">
                     <p class="dresscode-thanks" data-translate="dresscode.thanks">Thank you for helping us make this evening elegant and memorable!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- RSVP Modal (for users without token) -->
+<div id="rsvp-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2 data-translate="rsvp.title">Wedding RSVP</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="text-center py-4">
+                <div class="mb-4">
+                    <i class="fas fa-envelope-open-text" style="font-size: 4rem; color: var(--primary-purple);"></i>
+                </div>
+                <p class="lead mb-4" data-translate="rsvp.landing.message">Please use the link provided in your invitation to access the RSVP form.</p>
+                
+                <div class="alert alert-info text-start">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong data-translate="rsvp.lost.invitation">Did you lose your invitation?</strong>
+                    <p class="mb-0 mt-2" data-translate="rsvp.lost.message">If you've lost your invitation with the RSVP link, please contact us directly and we'll help you out.</p>
                 </div>
             </div>
         </div>

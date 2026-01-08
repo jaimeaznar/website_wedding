@@ -32,7 +32,7 @@
             </div>
             {% endif %}
 
-            <form method="POST" action="{{ url_for('rsvp.edit_rsvp', token=guest.token) }}" id="rsvpForm" {% if readonly %}class="form-readonly" {% endif %}>
+            <form method="POST" action="{{ url_for('rsvp.edit') }}" id="rsvpForm" {% if readonly %}class="form-readonly" {% endif %}>
                 {{ form.csrf_token }}
 
                 <!-- Attendance Section -->
@@ -192,7 +192,7 @@
                     {% endif %}
 
                     {% if rsvp and not rsvp.is_cancelled and rsvp.is_editable %}
-                    <a href="{{ url_for('rsvp.cancel_rsvp', token=guest.token) }}"
+                    <a href="{{ url_for('rsvp.cancel') }}"
                         class="btn btn-outline-danger btn-lg ms-2" data-translate="rsvp.cancel">
                         Cancel RSVP
                     </a>

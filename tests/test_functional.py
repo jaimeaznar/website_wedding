@@ -61,8 +61,11 @@ class TestRSVPProcess:
         
     def test_rsvp_attending_flow(self, client, rsvp_guest):
         """Test the RSVP flow for an attending guest."""
+        # Set token in session by visiting homepage with token
+        client.get(f'/?token={rsvp_guest.token}')
+        
         # Get the RSVP form
-        response = client.get(f'/rsvp/{rsvp_guest.token}')
+        response = client.get('/rsvp')
         assert response.status_code == 200
         assert rsvp_guest.name.encode() in response.data
         
@@ -74,7 +77,7 @@ class TestRSVPProcess:
             'adult_name_0': 'Additional Adult'
         }
         response = client.post(
-            f'/rsvp/{rsvp_guest.token}/edit', 
+            '/rsvp/edit', 
             data=data,
             follow_redirects=True
         )
@@ -83,12 +86,15 @@ class TestRSVPProcess:
     
     def test_rsvp_not_attending_flow(self, client, rsvp_guest):
         """Test the RSVP flow for a non-attending guest."""
+        # Set token in session by visiting homepage with token
+        client.get(f'/?token={rsvp_guest.token}')
+        
         # Submit the RSVP form with non-attendance data
         data = {
             'is_attending': 'no'
         }
         response = client.post(
-            f'/rsvp/{rsvp_guest.token}/edit', 
+            '/rsvp/edit', 
             data=data,
             follow_redirects=True
         )
