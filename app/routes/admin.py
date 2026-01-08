@@ -60,10 +60,17 @@ def login():
 @admin_required
 def dashboard():
     """Display admin dashboard with statistics."""
-    # Use service to get all dashboard data
-    dashboard_data = AdminService.get_dashboard_data()
-    
-    return render_template('admin/dashboard.html', **dashboard_data)
+    try:
+        # Use service to get all dashboard data
+        logger.info("Fetching dashboard data...")
+        dashboard_data = AdminService.get_dashboard_data()
+        logger.info(f"Dashboard data keys: {dashboard_data.keys()}")
+        logger.info(f"Transport stats: {dashboard_data.get('transport_stats')}")
+        
+        return render_template('admin/dashboard.html', **dashboard_data)
+    except Exception as e:
+        logger.error(f"Dashboard error: {str(e)}", exc_info=True)
+        raise
 
 
 @bp.route('/guest/add', methods=['GET', 'POST'])
@@ -312,20 +319,19 @@ def _generate_guest_csv():
     
     # Header
     writer.writerow([
-        'Guest Name',
-        'Phone',
-        'Language',
-        'RSVP Status',
-        'Attending',
-        'Additional Guests',
-        'Total People',
-        'Hotel',
-        'Transport to Church',
-        'Transport to Reception',
-        'Transport to Hotel',
-        'Dietary Restrictions',
-        'Last Updated'
-    ])
+    'Guest Name',
+    'Phone',
+    'Language',
+    'RSVP Status',
+    'Attending',
+    'Additional Guests',
+    'Total People',
+    'Hotel',
+    'Transport to Reception',
+    'Transport to Hotel',
+    'Dietary Restrictions',
+    'Last Updated'
+])
     
     # Get all RSVPs with detailed info
     from app.services.admin_service import AdminService
@@ -366,7 +372,6 @@ def _generate_guest_csv():
             additional_str,
             rsvp_data['total_guests'],
             rsvp_data['hotel'] or '',
-            'Yes' if rsvp_data['transport_church'] else 'No',
             'Yes' if rsvp_data['transport_reception'] else 'No',
             'Yes' if rsvp_data['transport_hotel'] else 'No',
             allergens_str,
