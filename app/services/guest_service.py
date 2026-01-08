@@ -177,6 +177,8 @@ class GuestService:
         
         pending_count = total_guests - responses_received - cancelled_count
         
+        transport_stats['hotels'] = sorted(transport_stats['hotels'])
+
         return {
             'total_guests': total_guests,
             'total_attending': total_people_attending,
