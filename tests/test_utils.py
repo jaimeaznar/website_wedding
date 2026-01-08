@@ -130,7 +130,8 @@ class TestRSVPValidator:
         
         # Missing hotel name with transport
         form = {
-            'hotel_name': ''
+            'hotel_name': '',
+            'transport_to_hotel': 'on'
         }
         validator = RSVPValidator(form, guest)
         validator._validate_transport()

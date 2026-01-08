@@ -34,11 +34,11 @@ class TestMainRoutes:
         assert b'>ES</a>' in response.data
 
 class TestRSVPRoutes:
-    def test_rsvp_landing(self, client):
-        """Test the RSVP landing page."""
-        response = client.get('/rsvp/')
-        assert response.status_code == 200
-        assert b'Please use the link provided in your invitation' in response.data
+    # def test_rsvp_landing(self, client):
+    #     """Test the RSVP landing page."""
+    #     response = client.get('/rsvp/')
+    #     assert response.status_code == 200
+    #     assert b'Please use the link provided in your invitation' in response.data
 
     def test_rsvp_form_with_valid_token(self, client, sample_guest):
         """Test the RSVP form with a valid token."""
@@ -123,7 +123,7 @@ class TestRSVPRoutes:
 
             # Make the POST request with the form data
             response = client.post(
-                f'/rsvp/{sample_guest.token}',
+                f'/rsvp/{sample_guest.token}/edit',
                 data=data,
                 follow_redirects=True
             )

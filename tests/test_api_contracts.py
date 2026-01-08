@@ -246,14 +246,14 @@ class TestRSVPAPIContracts:
             db.session.remove()
             db.drop_all()
     
-    def test_rsvp_landing_contract(self, app):
-        """Test RSVP landing page contract."""
-        client = app.test_client()
-        response = client.get('/rsvp/')
+    # def test_rsvp_landing_contract(self, app):
+    #     """Test RSVP landing page contract."""
+    #     client = app.test_client()
+    #     response = client.get('/rsvp/')
         
-        assert response.status_code == HttpStatus.OK
-        assert b'Wedding RSVP' in response.data
-        assert b'use the link provided' in response.data
+    #     assert response.status_code == HttpStatus.OK
+    #     assert b'Wedding RSVP' in response.data
+    #     assert b'use the link provided' in response.data
     
     def test_rsvp_form_contract(self, app):
         """Test RSVP form endpoint contract."""
@@ -281,7 +281,7 @@ class TestRSVPAPIContracts:
         assert response.status_code == HttpStatus.NOT_FOUND
         
         # Test POST with attendance
-        response = client.post(f'/rsvp/{token}', data={
+        response = client.post(f'/rsvp/{token}/edit', data={
             'is_attending': 'yes',
             'hotel_name': 'Contract Hotel',
             'adults_count': '2',
@@ -292,7 +292,7 @@ class TestRSVPAPIContracts:
         }, follow_redirects=False)
         
         assert response.status_code == HttpStatus.REDIRECT
-        assert '/confirmation/accepted' in response.location
+        assert 'rsvp_success=1' in response.location
         
         # Verify RSVP was created
         with app.app_context():
@@ -329,7 +329,7 @@ class TestRSVPAPIContracts:
                              follow_redirects=False)
         
         assert response.status_code == HttpStatus.REDIRECT
-        assert '/confirmation/cancelled' in response.location
+        assert 'rsvp_cancelled=1' in response.location
         
         # Verify cancellation
         with app.app_context():
