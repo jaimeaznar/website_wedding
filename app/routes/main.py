@@ -1,20 +1,46 @@
 # app/routes/main.py
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, session
 from app import db
+from app.services.guest_service import GuestService
 import logging
 
 logger = logging.getLogger(__name__)
 bp = Blueprint('main', __name__)
 
+
 @bp.route('/')
 def index():
+    """Render the homepage."""
     logger.debug("Index route accessed")
+    
+    guest = None
+    
+    # Check for token in URL query param
+    token = request.args.get('token')
+    if token:
+        guest = GuestService.get_guest_by_token(token)
+        if guest:
+            session['guest_token'] = token
+            logger.info(f"Guest token stored in session: {guest.name}")
+    
+    # Fallback to session token if no URL param
+    if not guest:
+        token = session.get('guest_token')
+        if token:
+            guest = GuestService.get_guest_by_token(token)
+            if guest:
+                logger.debug(f"Guest retrieved from session: {guest.name}")
+            else:
+                # Invalid token in session, clear it
+                session.pop('guest_token', None)
+    
     try:
         logger.debug("Attempting to render home.html")
-        return render_template('home.html')
+        return render_template('home.html', guest=guest)
     except Exception as e:
         logger.error(f"Error rendering template: {str(e)}")
         raise
+
 
 @bp.route('/health')
 def health():
@@ -26,7 +52,8 @@ def health():
     except Exception as e:
         logger.error(f"Health check failed: {str(e)}")
         return {'status': 'unhealthy', 'error': str(e)}, 503
-    
+
+
 @bp.route('/seed-allergens')
 def seed_allergens():
     """One-time endpoint to seed allergens."""

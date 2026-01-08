@@ -1,5 +1,5 @@
-# app/routes/rsvp.py - REFACTORED VERSION
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, abort
+# app/routes/rsvp.py - SESSION-BASED TOKEN VERSION
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, abort, session
 from app.services.guest_service import GuestService
 from app.services.rsvp_service import RSVPService
 from app.services.allergen_service import AllergenService
@@ -15,18 +15,31 @@ logger = logging.getLogger(__name__)
 bp = Blueprint('rsvp', __name__, url_prefix='/rsvp')
 
 
-@bp.route('/<token>', methods=['GET'])
-@rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
-def rsvp_form(token):
-    """Handle RSVP - show summary if submitted, form if not."""
-    logger.info(LogMessage.RSVP_ACCESS.format(token=token))
+def get_guest_from_session():
+    """Get guest from session token. Returns (guest, error_response) tuple."""
+    token = session.get('guest_token')
+    if not token:
+        logger.warning("No token in session, redirecting to home")
+        return None, redirect(url_for('main.index'))
     
-    # Get guest by token
     guest = GuestService.get_guest_by_token(token)
     if not guest:
-        logger.warning(f"Invalid token attempted: {token}")
-        abort(HttpStatus.NOT_FOUND)
+        logger.warning(f"Invalid token in session: {token}")
+        session.pop('guest_token', None)
+        return None, redirect(url_for('main.index'))
     
+    return guest, None
+
+
+@bp.route('', methods=['GET'])
+@rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
+def rsvp():
+    """Handle RSVP - show summary if submitted, form if not."""
+    guest, error_response = get_guest_from_session()
+    if error_response:
+        return error_response
+    
+    logger.info(LogMessage.RSVP_ACCESS.format(token=guest.token))
     logger.info(LogMessage.RSVP_GUEST_FOUND.format(name=guest.name, id=guest.id))
     
     # Get configuration
@@ -62,17 +75,16 @@ def rsvp_form(token):
                          readonly=False,
                          show_warning=False)
 
-@bp.route('/<token>/edit', methods=['GET', 'POST'])
+
+@bp.route('/edit', methods=['GET', 'POST'])
 @rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
-def edit_rsvp(token):
+def edit():
     """Handle RSVP form editing."""
-    logger.info(f"Edit RSVP access: {token}")
+    guest, error_response = get_guest_from_session()
+    if error_response:
+        return error_response
     
-    # Get guest by token
-    guest = GuestService.get_guest_by_token(token)
-    if not guest:
-        logger.warning(f"Invalid token attempted: {token}")
-        abort(HttpStatus.NOT_FOUND)
+    logger.info(f"Edit RSVP access: {guest.name}")
     
     # Get configuration
     admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
@@ -124,20 +136,20 @@ def edit_rsvp(token):
                          show_warning=show_warning,
                          is_editing=True)
 
-@bp.route('/<token>/cancel', methods=['GET', 'POST'])
-def cancel_rsvp(token):
+
+@bp.route('/cancel', methods=['GET', 'POST'])
+def cancel():
     """Handle RSVP cancellation."""
+    guest, error_response = get_guest_from_session()
+    if error_response:
+        return error_response
+    
     try:
-        # Get guest
-        guest = GuestService.get_guest_by_token(token)
-        if not guest:
-            abort(404)
-        
         # Check if guest has RSVP
         rsvp = RSVPService.get_rsvp_by_guest_id(guest.id)
         if not rsvp:
             flash('No RSVP found to cancel.', 'warning')
-            return redirect(url_for('rsvp.rsvp_form', token=token))
+            return redirect(url_for('rsvp.rsvp'))
         
         admin_phone = current_app.config.get('ADMIN_PHONE', '123456789')
         
@@ -153,7 +165,7 @@ def cancel_rsvp(token):
                 return redirect(url_for('main.index', rsvp_cancelled=1))
             else:
                 flash(message, 'warning')
-                return redirect(url_for('rsvp.rsvp_form', token=token))
+                return redirect(url_for('rsvp.rsvp'))
         
         # GET request - show cancellation confirmation page
         return render_template('rsvp_cancel.html', 
@@ -162,9 +174,36 @@ def cancel_rsvp(token):
                              admin_phone=admin_phone)
     
     except Exception as e:
-        logger.error(f"Unexpected error in cancel_rsvp: {str(e)}", exc_info=True)
+        logger.error(f"Unexpected error in cancel: {str(e)}", exc_info=True)
         flash(f'An unexpected error occurred: {str(e)}', 'danger')
         return redirect(url_for('main.index'))
+
+
+# Legacy routes - redirect old token-based URLs to new session-based flow
+@bp.route('/<token>', methods=['GET'])
+def legacy_rsvp_form(token):
+    """Legacy route - redirect to homepage with token."""
+    return redirect(url_for('main.index', token=token))
+
+
+@bp.route('/<token>/edit', methods=['GET', 'POST'])
+def legacy_edit_rsvp(token):
+    """Legacy route - store token and redirect to edit."""
+    guest = GuestService.get_guest_by_token(token)
+    if guest:
+        session['guest_token'] = token
+        return redirect(url_for('rsvp.edit'))
+    abort(HttpStatus.NOT_FOUND)
+
+
+@bp.route('/<token>/cancel', methods=['GET', 'POST'])
+def legacy_cancel_rsvp(token):
+    """Legacy route - store token and redirect to cancel."""
+    guest = GuestService.get_guest_by_token(token)
+    if guest:
+        session['guest_token'] = token
+        return redirect(url_for('rsvp.cancel'))
+    abort(HttpStatus.NOT_FOUND)
 
 
 @bp.route('/confirmation/accepted')

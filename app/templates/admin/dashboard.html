@@ -189,7 +189,7 @@
                             <div class="input-group">
                                 <input type="text"
                                     class="form-control form-control-sm"
-                                    value="{{ url_for('rsvp.rsvp_form', token=guest.token, _external=True) }}"
+                                    value="{{ url_for('main.index', token=guest.token, _external=True) }}"
                                     id="link_{{ guest.id }}" readonly>
                                 <button class="btn btn-sm btn-outline-secondary"
                                     onclick="copyLink('{{ guest.id }}')">

@@ -65,8 +65,11 @@ class TestAllergenFunctionality:
             db.session.add(guest)
             db.session.commit()
             
+            # Set token in session by visiting homepage with token
+            client.get(f'/?token={guest.token}')
+            
             # Get the RSVP form
-            response = client.get(f'/rsvp/{guest.token}')
+            response = client.get('/rsvp')
             assert response.status_code == 200
             
             # Submit RSVP with allergens
@@ -90,7 +93,7 @@ class TestAllergenFunctionality:
             }
             
             response = client.post(
-                f'/rsvp/{guest.token}/edit',
+                '/rsvp/edit',
                 data=form_data,
                 follow_redirects=True
             )
@@ -117,7 +120,7 @@ class TestAllergenFunctionality:
                 guest_name=guest.name
             ).all()
             assert len(main_allergens) >= 1  # Should have at least one allergen
-
+    
     def test_allergen_display_in_admin(self, client, app):
         """Test that allergens display correctly in the admin dashboard."""
         with app.app_context():
@@ -291,6 +294,9 @@ class TestAllergenFunctionality:
             initial_count = GuestAllergen.query.filter_by(rsvp_id=rsvp.id).count()
             assert initial_count == 1
             
+            # Set token in session
+            client.get(f'/?token={guest.token}')
+            
             # Update RSVP with different allergens
             form_data = {
                 'csrf_token': 'test-token',
@@ -301,7 +307,7 @@ class TestAllergenFunctionality:
             }
             
             response = client.post(
-                f'/rsvp/{guest.token}/edit',
+                '/rsvp/edit',
                 data=form_data,
                 follow_redirects=True
             )
@@ -320,7 +326,7 @@ class TestAllergenFunctionality:
             # New allergens should be present  
             assert any(aid in allergen_ids for aid in [allergen2.id, allergen3.id])
             assert 'New Custom Allergen' in custom_allergens
-
+    
     def test_simple_allergen_workflow(self, client, app):
         """Test a simple allergen workflow end-to-end."""
         with app.app_context():
@@ -342,6 +348,9 @@ class TestAllergenFunctionality:
             db.session.add(guest)
             db.session.commit()
             
+            # Set token in session
+            client.get(f'/?token={guest.token}')
+            
             # Submit simple RSVP with allergen
             form_data = {
                 'csrf_token': 'test-token',
@@ -352,7 +361,7 @@ class TestAllergenFunctionality:
             }
             
             response = client.post(
-                f'/rsvp/{guest.token}/edit',
+                '/rsvp/edit',
                 data=form_data,
                 follow_redirects=True
             )
@@ -372,7 +381,7 @@ class TestAllergenFunctionality:
             has_custom = any(a.custom_allergen == 'Simple Custom' for a in allergens_saved)
             
             assert has_standard or has_custom  # At least one should be present
-
+    
     def test_direct_database_operations(self, app):
         """Test direct database operations without web interface."""
         with app.app_context():

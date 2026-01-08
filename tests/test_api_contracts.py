@@ -246,14 +246,14 @@ class TestRSVPAPIContracts:
             db.session.remove()
             db.drop_all()
     
-    # def test_rsvp_landing_contract(self, app):
-    #     """Test RSVP landing page contract."""
-    #     client = app.test_client()
-    #     response = client.get('/rsvp/')
+    def test_rsvp_without_token_redirects(self, app):
+        """Test RSVP page without token redirects to home."""
+        client = app.test_client()
+        response = client.get('/rsvp')
         
-    #     assert response.status_code == HttpStatus.OK
-    #     assert b'Wedding RSVP' in response.data
-    #     assert b'use the link provided' in response.data
+        # Accept both 302 and 308 redirects
+        assert response.status_code in [302, 308]
+        assert '/' in response.location
     
     def test_rsvp_form_contract(self, app):
         """Test RSVP form endpoint contract."""
@@ -267,8 +267,11 @@ class TestRSVPAPIContracts:
             )
             token = guest.token
         
-        # Test GET with valid token
-        response = client.get(f'/rsvp/{token}')
+        # Set token in session by visiting homepage with token
+        client.get(f'/?token={token}')
+        
+        # Test GET with valid session
+        response = client.get('/rsvp')
         assert response.status_code == HttpStatus.OK
         
         data = response.data.decode('utf-8')
@@ -276,12 +279,8 @@ class TestRSVPAPIContracts:
         assert 'Will you attend?' in data
         assert 'is_attending' in data
         
-        # Test GET with invalid token
-        response = client.get('/rsvp/invalid-token-123')
-        assert response.status_code == HttpStatus.NOT_FOUND
-        
         # Test POST with attendance
-        response = client.post(f'/rsvp/{token}/edit', data={
+        response = client.post('/rsvp/edit', data={
             'is_attending': 'yes',
             'hotel_name': 'Contract Hotel',
             'adults_count': '2',
@@ -296,6 +295,7 @@ class TestRSVPAPIContracts:
         
         # Verify RSVP was created
         with app.app_context():
+            guest = Guest.query.filter_by(phone="555-8000").first()
             rsvp = RSVP.query.filter_by(guest_id=guest.id).first()
             assert rsvp is not None
             assert rsvp.is_attending is True
@@ -318,13 +318,16 @@ class TestRSVPAPIContracts:
             db.session.commit()
             token = guest.token
         
+        # Set token in session
+        client.get(f'/?token={token}')
+        
         # Test GET
-        response = client.get(f'/rsvp/{token}/cancel')
+        response = client.get('/rsvp/cancel')
         assert response.status_code == HttpStatus.OK
         assert b'Cancel RSVP' in response.data
         
         # Test POST
-        response = client.post(f'/rsvp/{token}/cancel', 
+        response = client.post('/rsvp/cancel', 
                              data={'confirm_cancellation': 'true'},
                              follow_redirects=False)
         
@@ -333,10 +336,10 @@ class TestRSVPAPIContracts:
         
         # Verify cancellation
         with app.app_context():
+            guest = Guest.query.filter_by(phone="555-9000").first()
             rsvp = RSVP.query.filter_by(guest_id=guest.id).first()
             assert rsvp.is_cancelled is True
             assert rsvp.is_attending is False
-
 
 class TestErrorHandling:
     """Test error handling contracts."""
@@ -366,7 +369,7 @@ class TestErrorHandling:
         
         # This would require actually hitting the rate limit
         # For now, we'll test that the endpoint has rate limiting decorator
-        from app.routes.rsvp import rsvp_form
-        
+        from app.routes.rsvp import rsvp
+    
         # Check that the function has rate limiting
-        assert hasattr(rsvp_form, '__wrapped__')  # Indicates decorator
+        assert hasattr(rsvp, '__wrapped__')  # Indicates decorator

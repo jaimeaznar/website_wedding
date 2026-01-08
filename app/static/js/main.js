@@ -98,8 +98,14 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Hide RSVP card after RSVP deadline
     if (todayDateOnly >= rsvpDeadlineDateOnly) {
-        const rsvpCard = document.querySelector('[data-href*="rsvp"]');
-        if (rsvpCard) rsvpCard.style.display = 'none';
+        // Handle both link version (with guest) and modal version (without guest)
+        const rsvpCardLink = document.querySelector('a.rsvp-card');
+        const rsvpCardModal = document.querySelector('[data-target="rsvp"]');
+        const rsvpModal = document.getElementById('rsvp-modal');
+        
+        if (rsvpCardLink) rsvpCardLink.style.display = 'none';
+        if (rsvpCardModal) rsvpCardModal.style.display = 'none';
+        if (rsvpModal) rsvpModal.remove();
     }
 
     // Hide Accommodation on wedding day
@@ -109,6 +115,15 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (accommodationCard) accommodationCard.style.display = 'none';
         if (accommodationModal) accommodationModal.remove();
+    }
+
+    // Hide Dresscode on wedding day
+    if (todayDateOnly >= weddingDayDateOnly) {
+        const dresscodeCard = document.querySelector('[data-target="dresscode"]');
+        const dresscodeModal = document.getElementById('dresscode-modal');
+        
+        if (dresscodeCard) dresscodeCard.style.display = 'none';
+        if (dresscodeModal) dresscodeModal.remove();
     }
 
     // ========================================
@@ -130,13 +145,17 @@ document.addEventListener('DOMContentLoaded', function () {
             const lang = window.translator ? window.translator.currentLang : 'es';
             const message = lang === 'es' ? '¡Hoy es el día!' : 'Today is the day!';
             
-            countdownTimer.innerHTML = `
-                <div class="celebration-message">
-                    <span class="celebration-emoji">🎉</span>
-                    <span class="celebration-text">${message}</span>
-                    <span class="celebration-emoji">🎉</span>
-                </div>
-            `;
+            // Replace entire card content to match other cards' structure
+            const countdownCard = document.querySelector('.countdown-card');
+            if (countdownCard) {
+                const cardContent = countdownCard.querySelector('.feature-card-content');
+                if (cardContent) {
+                    cardContent.innerHTML = `
+                        <span class="feature-card-icon" style="font-size: 3rem;">🎉</span>
+                        <h3 class="feature-card-title celebration-text">${message}</h3>
+                    `;
+                }
+            }
             return;
         }
 

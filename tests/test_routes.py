@@ -34,25 +34,27 @@ class TestMainRoutes:
         assert b'>ES</a>' in response.data
 
 class TestRSVPRoutes:
-    # def test_rsvp_landing(self, client):
-    #     """Test the RSVP landing page."""
-    #     response = client.get('/rsvp/')
-    #     assert response.status_code == 200
-    #     assert b'Please use the link provided in your invitation' in response.data
-
     def test_rsvp_form_with_valid_token(self, client, sample_guest):
         """Test the RSVP form with a valid token."""
-        response = client.get(f'/rsvp/{sample_guest.token}')
+        # Set token in session by visiting homepage with token
+        client.get(f'/?token={sample_guest.token}')
+        
+        response = client.get('/rsvp')
         assert response.status_code == 200
         assert b'RSVP' in response.data
         assert sample_guest.name.encode() in response.data
 
-    def test_rsvp_form_with_invalid_token(self, client):
-        """Test the RSVP form with an invalid token."""
-        response = client.get('/rsvp/invalid-token')
-        assert response.status_code == 404
+    def test_rsvp_form_without_token(self, client):
+        """Test the RSVP form without a token redirects to home."""
+        response = client.get('/rsvp')
+        assert response.status_code in [302, 308]
+        assert '/' in response.location
 
-    # Add this test to test_routes.py
+    def test_rsvp_form_with_invalid_token(self, client):
+        """Test the RSVP form with an invalid token via legacy route."""
+        response = client.get('/rsvp/invalid-token')
+        # Legacy route redirects to homepage with token param
+        assert response.status_code == 302
 
     def test_direct_rsvp_creation(self, app, sample_guest):
         """Test creating an RSVP directly without using the form."""
@@ -98,16 +100,16 @@ class TestRSVPRoutes:
             RSVP.query.filter_by(guest_id=sample_guest.id).delete()
             db.session.commit()
 
-            db.session.commit()
+            # Set token in session
+            client.get(f'/?token={sample_guest.token}')
 
-            # Get the CSRF token from the form first
-            response = client.get(f'/rsvp/{sample_guest.token}')
+            # Get the RSVP form first
+            response = client.get('/rsvp')
             assert response.status_code == 200
 
-            # Set up simple form data without relying on CSRF token extraction
-            # In test mode with WTF_CSRF_ENABLED = False, we don't need a valid token
+            # Set up form data
             data = {
-                'csrf_token': 'test-token',  # Will be ignored in test mode
+                'csrf_token': 'test-token',
                 'is_attending': 'yes',
                 'adults_count': '2',
                 'children_count': '1',
@@ -121,9 +123,9 @@ class TestRSVPRoutes:
                 'custom_allergen_main': 'Shellfish'
             }
 
-            # Make the POST request with the form data
+            # Make the POST request
             response = client.post(
-                f'/rsvp/{sample_guest.token}/edit',
+                '/rsvp/edit',
                 data=data,
                 follow_redirects=True
             )
@@ -132,15 +134,13 @@ class TestRSVPRoutes:
             # Debug: Print response to see if there are any error messages
             print(f"Response status: {response.status_code}")
             
-            # Verify RSVP was created by making a direct database query
+            # Verify RSVP was created
             rsvp = RSVP.query.filter_by(guest_id=sample_guest.id).first()
             
             if rsvp is None:
-                # Additional debugging if RSVP is still None
                 print("RSVP creation failed")
                 print("Let's try creating one directly to test DB functionality:")
                 
-                # Direct database creation as a last resort
                 direct_rsvp = RSVP(
                     guest_id=sample_guest.id,
                     is_attending=True,
@@ -186,9 +186,12 @@ class TestRSVPRoutes:
             # Set the wedding date in the app config for the test
             app.config['WEDDING_DATE'] = '2026-06-06'
             
+            # Set token in session
+            client.get(f'/?token={sample_guest.token}')
+            
             # Now try to cancel it
             response = client.post(
-                f'/rsvp/{sample_guest.token}/cancel',
+                '/rsvp/cancel',
                 data={'confirm_cancellation': True},
                 follow_redirects=True
             )
@@ -201,7 +204,6 @@ class TestRSVPRoutes:
             # Clean up
             db.session.delete(rsvp)
             db.session.commit()
-
 
 class TestAdminAuthentication:
     """Test admin authentication with secure test credentials."""
