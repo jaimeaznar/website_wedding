@@ -44,7 +44,7 @@ def login():
                 Security.ADMIN_COOKIE_NAME,
                 'true',
                 httponly=Security.COOKIE_HTTPONLY,
-                secure=Security.COOKIE_SECURE if not current_app.debug else False,
+                secure=current_app.config.get('SESSION_COOKIE_SECURE', True),
                 max_age=TimeLimit.ADMIN_SESSION_TIMEOUT
             )
             logger.info(LogMessage.ADMIN_LOGIN_SUCCESS.format(ip=request.remote_addr))

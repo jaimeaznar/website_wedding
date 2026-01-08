@@ -240,7 +240,8 @@ class ProductionConfig(Config):
     def __init__(self):
         super().__init__()
         # Production-specific settings
-        self.SESSION_COOKIE_SECURE = True
+        # Allow override via env var for testing, default to True for real production
+        self.SESSION_COOKIE_SECURE = get_env_variable('SESSION_COOKIE_SECURE', 'True').lower() == 'true'
         self.WTF_CSRF_ENABLED = True
         
         # Ensure we're not using any development values
