@@ -42,7 +42,7 @@ const translations = {
         'rsvp.return.home': 'Return to Home',
 
         // RSVP Form
-        'rsvp.welcome': 'Welcome',
+        'rsvp.welcome': 'Hi',
         'rsvp.last.updated': 'Last updated',
         'rsvp.will.attend': 'Will you attend?',
         'rsvp.yes': 'Yes, I will attend',
@@ -394,7 +394,7 @@ const translations = {
         'rsvp.return.home': 'Volver al Inicio',
 
         // RSVP Form
-        'rsvp.welcome': 'Bienvenido/a',
+        'rsvp.welcome': 'Hola',
         'rsvp.last.updated': 'Última actualización',
         'rsvp.will.attend': '¿Asistirás?',
         'rsvp.yes': 'Sí, asistiré',
@@ -639,7 +639,7 @@ const translations = {
         'dresscode.women.title': 'Mujeres',
         'dresscode.women.recommended': 'Vestido largo (o midi) de tonos lisos',
         'dresscode.women.no.white': 'Colores blanco, beige o claro',
-        'dresscode.women.no.patterns': 'Estampados llamativos o estrabagantes',
+        'dresscode.women.no.patterns': 'Estampados llamativos o estravagantes',
         'dresscode.women.no.sequins': 'Lentejuelas (tipo nochevieja)',
         'dresscode.men.title': 'Hombres',
         'dresscode.men.recommended': 'Chaqué',
