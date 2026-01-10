@@ -24,6 +24,42 @@ document.addEventListener('DOMContentLoaded', function () {
     weddingDayDateOnly.setHours(0, 0, 0, 0);
 
     // ========================================
+    // WELCOME MODAL - First Visit
+    // ========================================
+    function checkWelcomeModal() {
+        // Check if user has dismissed it permanently
+        if (localStorage.getItem('welcomeModalDismissed')) {
+            return;
+        }
+        
+        const welcomeModal = document.getElementById('welcome-modal');
+        if (welcomeModal) {
+            welcomeModal.style.display = 'flex';
+            welcomeModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Close welcome modal function (global)
+    window.closeWelcomeModal = function() {
+        const welcomeModal = document.getElementById('welcome-modal');
+        const dontShowCheckbox = document.getElementById('welcome-dont-show');
+        
+        if (dontShowCheckbox && dontShowCheckbox.checked) {
+            localStorage.setItem('welcomeModalDismissed', 'true');
+        }
+        
+        if (welcomeModal) {
+            welcomeModal.classList.remove('active');
+            welcomeModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    };
+
+    // Show welcome modal on first load
+    checkWelcomeModal();
+
+    // ========================================
     // RSVP BANNER HANDLING
     // ========================================
     const bannerMessages = {
@@ -256,11 +292,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const minutes = spainTime.getMinutes();
         
         // Check if it's June 6, 2026 (after 22:30) or June 7, 2026 (before 05:30)
-        const isWeddingNight = true;
+        const isWeddingNight = (year === 2026 && month === 6 && day === 6);
         const isNextMorning = (year === 2026 && month === 6 && day === 7);
         
         const currentMinutes = hours * 60 + minutes;
-        const eveningStart = 11 * 60 + 15;  // 22:30
+        const eveningStart = 22 * 60 + 30;  // 22:30
         const morningEnd = 5 * 60 + 30;     // 05:30
         
         // Show if: wedding night after 22:30 OR next morning before 05:30
