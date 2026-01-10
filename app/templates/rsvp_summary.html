@@ -121,6 +121,43 @@
                             </div>
                         </div>
                         {% endif %}
+
+                        <!-- Pre-Boda Response -->
+                        {% if guest.preboda_invited %}
+                        <div class="col-12">
+                            <div class="border rounded p-3">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-glass-cheers me-2"></i>
+                                    <span data-translate="preboda.title">Pre-Wedding Party</span>
+                                </h6>
+                                <p class="mb-1">
+                                    <strong data-translate="preboda.date.label">Date:</strong> 
+                                    <span data-translate="preboda.date.value">June 5th, 2026</span> - 20:00
+                                </p>
+                                <p class="mb-2">
+                                    <strong data-translate="preboda.venue.label">Venue:</strong> Casa Palacchio
+                                </p>
+                                <div>
+                                    {% if rsvp.preboda_attending == true %}
+                                    <span class="badge bg-success fs-6">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        <span data-translate="preboda.status.attending">Attending pre-boda</span>
+                                    </span>
+                                    {% elif rsvp.preboda_attending == false %}
+                                    <span class="badge bg-secondary fs-6">
+                                        <i class="fas fa-times-circle me-1"></i>
+                                        <span data-translate="preboda.status.not.attending">Not attending pre-boda</span>
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-warning text-dark fs-6">
+                                        <i class="fas fa-question-circle me-1"></i>
+                                        <span data-translate="preboda.status.pending">Not yet responded</span>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                     {% endif %}
 

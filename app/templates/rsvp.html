@@ -180,6 +180,50 @@
                             <div id="children_container"></div>
                         </div>
                     </div>
+                    <!-- Pre-Boda Section (only for invited guests) -->
+                    {% if guest.preboda_invited %}
+                    <div class="form-section preboda-section">
+                        <div class="form-section-header">
+                            <h3 class="mb-0">🎉 <span data-translate="preboda.title">Pre-Wedding Party</span></h3>
+                        </div>
+                        <div class="form-section-body">
+                            <div class="preboda-info mb-4">
+                                <p data-translate="preboda.description">You're invited to our pre-wedding celebration! Join us for a casual evening before the big day.</p>
+                                <div class="preboda-details">
+                                    <p><i class="fas fa-calendar me-2"></i><strong data-translate="preboda.date.label">Date:</strong> <span data-translate="preboda.date.value">June 5th, 2026</span></p>
+                                    <p><i class="fas fa-clock me-2"></i><strong data-translate="preboda.time.label">Time:</strong> 20:00</p>
+                                    <p><i class="fas fa-map-marker-alt me-2"></i><strong data-translate="preboda.venue.label">Venue:</strong> Casa Palacchio</p>
+                                    <p><i class="fas fa-location-arrow me-2"></i><strong data-translate="preboda.address.label">Address:</strong> C. Cta. de la Compañía, Centro-Casco Antiguo, 10003 Cáceres</p>
+                                    <p><a href="https://maps.app.goo.gl/HNAHDx6jUVGySM3i8" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-map me-1"></i><span data-translate="preboda.map.link">View on Google Maps</span>
+                                    </a></p>
+                                </div>
+                            </div>
+                            <div class="preboda-attendance">
+                                <p class="fw-bold" data-translate="preboda.question">Will you join us for the pre-wedding party?</p>
+                                <div class="attendance-options">
+                                    <div class="attendance-option">
+                                        <input type="radio" name="preboda_attending" value="yes" id="preboda_yes"
+                                            {% if rsvp and rsvp.preboda_attending == true %}checked{% endif %}>
+                                        <label for="preboda_yes">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span data-translate="preboda.yes">Yes, count me in!</span>
+                                        </label>
+                                    </div>
+                                    <div class="attendance-option">
+                                        <input type="radio" name="preboda_attending" value="no" id="preboda_no"
+                                            {% if rsvp and rsvp.preboda_attending == false %}checked{% endif %}>
+                                        <label for="preboda_no">
+                                            <i class="fas fa-times-circle"></i>
+                                            <span data-translate="preboda.no">No, I can't make it</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
                 </div>
 
                 <div class="form-actions text-center mt-4">

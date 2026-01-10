@@ -196,6 +196,85 @@ class AdminService:
         }
     
     @staticmethod
+    def get_preboda_report() -> Dict[str, Any]:
+        """
+        Get pre-boda attendance report.
+        
+        Returns:
+            Dictionary containing pre-boda attendance information
+        """
+        from app.models.allergen import GuestAllergen
+        
+        # Get all guests invited to pre-boda
+        invited_guests = Guest.query.filter_by(preboda_invited=True).all()
+        
+        attending = []
+        not_attending = []
+        pending = []
+        total_adults_attending = 0
+        
+        for guest in invited_guests:
+            rsvp = RSVP.query.filter_by(guest_id=guest.id).first()
+            
+            guest_info = {
+                'name': guest.name,
+                'phone': guest.phone,
+                'language': guest.language_preference,
+                'adults_count': 1,  # Default to main guest
+                'allergens': []
+            }
+            
+            # Get allergens if RSVP exists
+            if rsvp:
+                # Count adults (main guest + additional adults)
+                adult_count = 1 + len([ag for ag in rsvp.additional_guests if not ag.is_child])
+                guest_info['adults_count'] = adult_count
+                
+                # Get allergens for this RSVP
+                allergen_records = GuestAllergen.query.filter_by(rsvp_id=rsvp.id).all()
+                for record in allergen_records:
+                    allergen_info = {
+                        'guest_name': record.guest_name,
+                        'allergen': record.allergen.name if record.allergen else None,
+                        'custom': record.custom_allergen
+                    }
+                    guest_info['allergens'].append(allergen_info)
+                
+                # Categorize based on preboda_attending
+                if rsvp.preboda_attending is True:
+                    attending.append(guest_info)
+                    total_adults_attending += adult_count
+                elif rsvp.preboda_attending is False:
+                    not_attending.append(guest_info)
+                else:
+                    pending.append(guest_info)
+            else:
+                # No RSVP yet = pending
+                pending.append(guest_info)
+        
+        # Build allergen summary for attending guests
+        allergen_summary = {}
+        for guest_info in attending:
+            for allergen_info in guest_info['allergens']:
+                allergen_name = allergen_info['allergen'] or allergen_info['custom']
+                if allergen_name:
+                    if allergen_name not in allergen_summary:
+                        allergen_summary[allergen_name] = []
+                    allergen_summary[allergen_name].append(allergen_info['guest_name'])
+        
+        return {
+            'total_invited': len(invited_guests),
+            'attending': attending,
+            'attending_count': len(attending),
+            'not_attending': not_attending,
+            'not_attending_count': len(not_attending),
+            'pending': pending,
+            'pending_count': len(pending),
+            'total_adults_attending': total_adults_attending,
+            'allergen_summary': allergen_summary
+        }
+    
+    @staticmethod
     def get_pending_rsvps() -> List[Guest]:
         """
         Get list of guests who haven't responded yet.

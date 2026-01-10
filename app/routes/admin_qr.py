@@ -86,7 +86,7 @@ def qr_dashboard():
     # Generate RSVP URLs for each guest
     guest_data = []
     for guest in guests:
-        rsvp_url = url_for('rsvp.rsvp_form', token=guest.token, _external=True)
+        rsvp_url = url_for('rsvp.legacy_rsvp_form', token=guest.token, _external=True)
         guest_data.append({
             'id': guest.id,
             'name': guest.name,
@@ -106,7 +106,7 @@ def download_qr(guest_id, format='png'):
     from app.models.guest import Guest
     
     guest = Guest.query.get_or_404(guest_id)
-    rsvp_url = url_for('rsvp.rsvp_form', token=guest.token, _external=True)
+    rsvp_url = url_for('rsvp.legacy_rsvp_form', token=guest.token, _external=True)
     
     # Generate QR code
     buffer = generate_qr_code(rsvp_url, format=format)
@@ -138,7 +138,7 @@ def preview_qr(guest_id):
     from app.models.guest import Guest
     
     guest = Guest.query.get_or_404(guest_id)
-    rsvp_url = url_for('rsvp.rsvp_form', token=guest.token, _external=True)
+    rsvp_url = url_for('rsvp.legacy_rsvp_form', token=guest.token, _external=True)
     
     buffer = generate_qr_code(rsvp_url, format='png', size=8)
     
@@ -163,7 +163,7 @@ def download_all_qr(format='png'):
     
     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
         for guest in guests:
-            rsvp_url = url_for('rsvp.rsvp_form', token=guest.token, _external=True)
+            rsvp_url = url_for('rsvp.legacy_rsvp_form', token=guest.token, _external=True)
             qr_buffer = generate_qr_code(rsvp_url, format=format)
             
             # Clean filename
@@ -193,7 +193,7 @@ def printable_sheet():
     
     guest_data = []
     for guest in guests:
-        rsvp_url = url_for('rsvp.rsvp_form', token=guest.token, _external=True)
+        rsvp_url = url_for('rsvp.legacy_rsvp_form', token=guest.token, _external=True)
         guest_data.append({
             'id': guest.id,
             'name': guest.name,

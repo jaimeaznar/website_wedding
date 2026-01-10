@@ -163,6 +163,13 @@ def transport_report():
     report_data = AdminService.get_transport_report()
     return render_template('admin/transport_report.html', **report_data)
 
+@bp.route('/reports/preboda')
+@admin_required
+def preboda_report():
+    """Generate pre-boda attendance report."""
+    report_data = AdminService.get_preboda_report()
+    return render_template('admin/preboda_report.html', **report_data)
+
 
 @bp.route('/reports/export')
 @admin_required
@@ -247,6 +254,40 @@ def download_transport_pdf():
         logger.error(f"Error generating transport PDF: {str(e)}", exc_info=True)
         flash(f"Error generating PDF: {str(e)}", 'error')
         return redirect(url_for('admin.transport_report'))
+
+@bp.route('/reports/preboda/pdf')
+@admin_required
+def download_preboda_pdf():
+    """Download pre-boda attendance report as PDF."""
+    try:
+        from app.services.pdf_service import PDFService
+        from flask import send_file
+        import io
+        
+        logger.info("Admin requested pre-boda PDF download")
+        
+        # Generate PDF
+        pdf_data = PDFService.generate_preboda_pdf()
+        
+        # Create a file-like object
+        pdf_buffer = io.BytesIO(pdf_data)
+        pdf_buffer.seek(0)
+        
+        # Generate filename with date
+        filename = f"preboda_attendance_{datetime.now().strftime('%Y%m%d')}.pdf"
+        
+        # Send file
+        return send_file(
+            pdf_buffer,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        logger.error(f"Error generating pre-boda PDF: {str(e)}", exc_info=True)
+        flash(f"Error generating PDF: {str(e)}", 'error')
+        return redirect(url_for('admin.preboda_report'))
 
 
 @bp.route('/reports/export-all')

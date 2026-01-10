@@ -60,29 +60,29 @@
                             </div>
                         </div>
                         
-                        <!-- All Reports -->
+                        <!-- Pre-boda Report -->
                         <div class="col-md-4 mb-3">
                             <div class="card h-100 shadow-sm">
                                 <div class="card-body text-center">
                                     <div class="mb-3">
-                                        <i class="fas fa-file-archive fa-3x text-primary"></i>
+                                        <i class="fas fa-glass-cheers fa-3x text-purple" style="color: #9b59b6;"></i>
                                     </div>
-                                    <h5 class="card-title">Complete Package</h5>
+                                    <h5 class="card-title">Pre-Boda Report</h5>
                                     <p class="card-text text-muted small">
-                                        ZIP file with all PDFs and CSV guest list for complete coordination
+                                        Attendance list and dietary restrictions for the pre-wedding party
                                     </p>
-                                    <a href="{{ url_for('admin.export_all_reports') }}" 
-                                    class="btn btn-primary btn-lg w-100">
-                                        <i class="fas fa-download me-2"></i>Download All
+                                    <a href="{{ url_for('admin.download_preboda_pdf') }}" 
+                                    class="btn btn-lg w-100" style="background-color: #9b59b6; color: white;">
+                                        <i class="fas fa-file-pdf me-2"></i>Download PDF
                                     </a>
-                                    <div class="mt-2">
-                                        <small class="text-muted">
-                                            Includes: Dietary PDF, Transport PDF, Guest CSV
-                                        </small>
-                                    </div>
+                                    <a href="{{ url_for('admin.preboda_report') }}" 
+                                    class="btn btn-outline-secondary btn-sm w-100 mt-2">
+                                        <i class="fas fa-eye me-2"></i>View Online
+                                    </a>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     
                     <!-- Export Info -->
@@ -108,6 +108,9 @@
             </a>
             <a href="{{ url_for('admin.transport_report') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-bus me-2"></i>Transport Report
+            </a>
+            <a href="{{ url_for('admin.preboda_report') }}" class="btn btn-secondary btn-sm" style="background-color: #9b59b6; border-color: #9b59b6; color: white;">
+                <i class="fas fa-glass-cheers me-2"></i>Pre-Boda
             </a>
             <a href="{{ url_for('admin_qr.qr_dashboard') }}" class="btn btn-info btn-sm">
                 <i class="fas fa-qrcode me-2"></i>QR Codes

@@ -1,0 +1,210 @@
+{% extends "admin/dashboard.html" %}
+{% block title %}Pre-Boda Report - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h2 mb-1">Pre-Boda Attendance Report</h1>
+                    <p class="text-muted mb-0">Casa Palacchio - June 5th, 2026 at 20:00</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('admin.download_preboda_pdf') }}" class="btn btn-primary">
+                        <i class="fas fa-file-pdf me-2"></i>Download PDF
+                    </a>
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary ms-2">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 opacity-75">Total Invited</h6>
+                    <h2 class="card-title mb-0">{{ total_invited }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 opacity-75">Attending</h6>
+                    <h2 class="card-title mb-0">{{ attending_count }} <small class="fs-6">({{ total_adults_attending }} adults)</small></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 opacity-75">Not Attending</h6>
+                    <h2 class="card-title mb-0">{{ not_attending_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 opacity-75">Pending Response</h6>
+                    <h2 class="card-title mb-0">{{ pending_count }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metric -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <i class="fas fa-users fa-2x me-3"></i>
+                <div>
+                    <h5 class="alert-heading mb-1">Total Adults Attending Pre-Boda</h5>
+                    <p class="mb-0 fs-4"><strong>{{ total_adults_attending }}</strong> people confirmed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attending Guests -->
+    {% if attending %}
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Confirmed Attending ({{ attending_count }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Guest Name</th>
+                            <th>Phone</th>
+                            <th>Adults</th>
+                            <th>Language</th>
+                            <th>Dietary Restrictions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for guest in attending %}
+                        <tr>
+                            <td><strong>{{ guest.name }}</strong></td>
+                            <td>{{ guest.phone or '-' }}</td>
+                            <td><span class="badge bg-primary">{{ guest.adults_count }}</span></td>
+                            <td>{{ guest.language|upper }}</td>
+                            <td>
+                                {% if guest.allergens %}
+                                    {% for allergen in guest.allergens %}
+                                        <span class="badge bg-warning text-dark me-1">
+                                            {{ allergen.guest_name }}: {{ allergen.allergen or allergen.custom }}
+                                        </span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">None</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Dietary Restrictions Summary -->
+    {% if allergen_summary %}
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Dietary Restrictions Summary</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Restriction</th>
+                            <th>Guests</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for allergen, guests in allergen_summary.items() %}
+                        <tr>
+                            <td><strong>{{ allergen }}</strong></td>
+                            <td>{{ guests|join(', ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Not Attending -->
+    {% if not_attending %}
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0"><i class="fas fa-times-circle me-2"></i>Not Attending ({{ not_attending_count }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Guest Name</th>
+                            <th>Phone</th>
+                            <th>Language</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for guest in not_attending %}
+                        <tr>
+                            <td>{{ guest.name }}</td>
+                            <td>{{ guest.phone or '-' }}</td>
+                            <td>{{ guest.language|upper }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Pending Responses -->
+    {% if pending %}
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Pending Response ({{ pending_count }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Guest Name</th>
+                            <th>Phone</th>
+                            <th>Language</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for guest in pending %}
+                        <tr>
+                            <td>{{ guest.name }}</td>
+                            <td>{{ guest.phone or '-' }}</td>
+                            <td>{{ guest.language|upper }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

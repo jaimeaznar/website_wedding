@@ -110,6 +110,22 @@ const translations = {
         'rsvp.cancel.confirm.yes': 'Yes, Cancel RSVP',
         'modal.personal.continue': 'Continue to RSVP →',
 
+        // Pre-boda (Pre-Wedding Party)
+        'preboda.title': 'Pre-Wedding Party',
+        'preboda.description': 'You\'re invited to our pre-wedding celebration! Join us for a casual evening before the big day.',
+        'preboda.date.label': 'Date:',
+        'preboda.date.value': 'June 5th, 2026',
+        'preboda.time.label': 'Time:',
+        'preboda.venue.label': 'Venue:',
+        'preboda.address.label': 'Address:',
+        'preboda.map.link': 'View on Google Maps',
+        'preboda.question': 'Will you join us for the pre-wedding party?',
+        'preboda.yes': 'Yes, count me in!',
+        'preboda.no': 'No, I can\'t make it',
+        'preboda.status.attending': 'Attending pre-boda',
+        'preboda.status.not.attending': 'Not attending pre-boda',
+        'preboda.status.pending': 'Not yet responded',
+
         // Schedule Modal
         'schedule.title': 'Wedding Schedule',
         'schedule.arrival': 'Guest Arrival & Seating',
@@ -461,6 +477,22 @@ const translations = {
         'rsvp.cancel.confirm.message': '¿Estás seguro de que quieres cancelar tu confirmación? Puedes enviar una nueva respuesta antes de la fecha límite.',
         'rsvp.cancel.confirm.yes': 'Sí, Cancelar',
         'modal.personal.continue': 'Continuar con la confirmación →',
+
+        // Pre-boda (Fiesta Pre-Boda)
+        'preboda.title': 'Fiesta Pre-Boda',
+        'preboda.description': '¡Estás invitado a nuestra celebración pre-boda! Únete a nosotros para una velada informal antes del gran día.',
+        'preboda.date.label': 'Fecha:',
+        'preboda.date.value': '5 de Junio, 2026',
+        'preboda.time.label': 'Hora:',
+        'preboda.venue.label': 'Lugar:',
+        'preboda.address.label': 'Dirección:',
+        'preboda.map.link': 'Ver en Google Maps',
+        'preboda.question': '¿Te unes a la fiesta pre-boda?',
+        'preboda.yes': '¡Sí, cuenta conmigo!',
+        'preboda.no': 'No, no puedo asistir',
+        'preboda.status.attending': 'Asistiendo a la pre-boda',
+        'preboda.status.not.attending': 'No asistiendo a la pre-boda',
+        'preboda.status.pending': 'Aún sin responder',
 
         // Schedule Modal
         'schedule.title': 'Programa de la Boda',
