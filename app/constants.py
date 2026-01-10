@@ -212,6 +212,7 @@ class Template:
     ADMIN_GUEST_FORM = 'admin/guest_form.html'
     ADMIN_DIETARY_REPORT = 'admin/dietary_report.html'
     ADMIN_TRANSPORT_REPORT = 'admin/transport_report.html'
+    ADMIN_PREBODA_REPORT = 'admin/preboda_report.html'
     
     # Error pages
     ERROR_403 = 'errors/403.html'
@@ -243,3 +244,12 @@ DEFAULT_CONFIG = {
     'WARNING_MESSAGE_TIMEOUT': 0,
     'WEDDING_TITLE': "Irene & Jaime's Wedding",  # ADD THIS LINE
 }
+
+# Pre-boda event configuration
+class PrebodaConfig:
+    """Pre-boda event details."""
+    DATE = '2026-06-05'
+    TIME = '20:00'
+    VENUE_NAME = 'Casa Palacchio'
+    ADDRESS = 'C. Cta. de la Compañía, Centro-Casco Antiguo, 10003 Cáceres'
+    GOOGLE_MAPS_URL = 'https://maps.app.goo.gl/HNAHDx6jUVGySM3i8'

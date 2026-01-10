@@ -575,9 +575,205 @@ class PDFService:
         return pdf_data
     
     @staticmethod
+    def generate_preboda_pdf() -> bytes:
+        """
+        Generate pre-boda attendance report PDF for venue coordination.
+        
+        Returns:
+            PDF file as bytes
+        """
+        logger.info("Generating pre-boda attendance PDF")
+        
+        from app.constants import PrebodaConfig
+        
+        # Create PDF buffer
+        buffer = io.BytesIO()
+        
+        # Create document
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=PDFService.PAGE_SIZE,
+            rightMargin=PDFService.MARGIN,
+            leftMargin=PDFService.MARGIN,
+            topMargin=PDFService.MARGIN + 1.5 * inch,
+            bottomMargin=PDFService.MARGIN
+        )
+        
+        elements = []
+        
+        # Get styles
+        styles = getSampleStyleSheet()
+        heading_style = ParagraphStyle(
+            'CustomHeading',
+            parent=styles['Heading2'],
+            fontSize=14,
+            textColor=PDFService.COLOR_SECONDARY,
+            spaceAfter=10,
+            spaceBefore=15
+        )
+        normal_style = styles['Normal']
+        
+        # Get pre-boda data
+        preboda_data = AdminService.get_preboda_report()
+        
+        # Event Details Section
+        elements.append(Paragraph("Event Details", heading_style))
+        
+        event_data = [
+            ['Detail', 'Information'],
+            ['Date', PrebodaConfig.DATE],
+            ['Time', PrebodaConfig.TIME],
+            ['Venue', PrebodaConfig.VENUE_NAME],
+            ['Address', PrebodaConfig.ADDRESS],
+        ]
+        
+        event_table = Table(event_data, colWidths=[2 * inch, 4.5 * inch])
+        event_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_PRIMARY),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('GRID', (0, 0), (-1, -1), 1, colors.grey),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY])
+        ]))
+        elements.append(event_table)
+        elements.append(Spacer(1, 0.3 * inch))
+        
+        # Attendance Summary
+        elements.append(Paragraph("Attendance Summary", heading_style))
+        
+        summary_data = [
+            ['Status', 'Groups', 'Total Adults'],
+            ['Attending', str(preboda_data['attending_count']), str(preboda_data['total_adults_attending'])],
+            ['Not Attending', str(preboda_data['not_attending_count']), '-'],
+            ['Pending Response', str(preboda_data['pending_count']), '-'],
+            ['Total Invited', str(preboda_data['total_invited']), '-'],
+        ]
+        
+        summary_table = Table(summary_data, colWidths=[2.5 * inch, 1.5 * inch, 2 * inch])
+        summary_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_PRIMARY),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('BACKGROUND', (0, 1), (-1, 1), PDFService.COLOR_SUCCESS),
+            ('TEXTCOLOR', (0, 1), (-1, 1), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('GRID', (0, 0), (-1, -1), 1, colors.grey),
+            ('ROWBACKGROUNDS', (0, 2), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY])
+        ]))
+        elements.append(summary_table)
+        elements.append(Spacer(1, 0.3 * inch))
+        
+        # Attending Guests List
+        if preboda_data['attending']:
+            elements.append(PageBreak())
+            elements.append(Paragraph("Confirmed Attending", heading_style))
+            elements.append(Paragraph(
+                f"Total Adults: <b>{preboda_data['total_adults_attending']}</b>",
+                ParagraphStyle('Info', parent=normal_style, fontSize=11, textColor=PDFService.COLOR_SUCCESS)
+            ))
+            elements.append(Spacer(1, 0.1 * inch))
+            
+            guest_data = [['Guest Name', 'Phone', 'Adults', 'Language']]
+            for guest in sorted(preboda_data['attending'], key=lambda x: x['name']):
+                guest_data.append([
+                    guest['name'],
+                    guest['phone'] or '-',
+                    str(guest['adults_count']),
+                    guest['language'].upper()
+                ])
+            
+            guest_table = Table(guest_data, colWidths=[2.5 * inch, 1.5 * inch, 1 * inch, 1 * inch])
+            guest_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_SUCCESS),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('ALIGN', (2, 0), (3, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY])
+            ]))
+            elements.append(guest_table)
+        
+        # Dietary Restrictions for Pre-boda
+        if preboda_data['allergen_summary']:
+            elements.append(Spacer(1, 0.3 * inch))
+            elements.append(Paragraph("Dietary Restrictions (Attending Guests)", heading_style))
+            
+            allergen_data = [['Restriction', 'Guests']]
+            for allergen, guests in sorted(preboda_data['allergen_summary'].items()):
+                allergen_data.append([allergen, ', '.join(guests)])
+            
+            allergen_table = Table(allergen_data, colWidths=[2 * inch, 4.5 * inch])
+            allergen_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_ACCENT),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY]),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP')
+            ]))
+            elements.append(allergen_table)
+        
+        # Pending Responses
+        if preboda_data['pending']:
+            elements.append(PageBreak())
+            elements.append(Paragraph("Pending Responses", heading_style))
+            
+            pending_data = [['Guest Name', 'Phone', 'Language']]
+            for guest in sorted(preboda_data['pending'], key=lambda x: x['name']):
+                pending_data.append([
+                    guest['name'],
+                    guest['phone'] or '-',
+                    guest['language'].upper()
+                ])
+            
+            pending_table = Table(pending_data, colWidths=[2.5 * inch, 2 * inch, 1.5 * inch])
+            pending_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_WARNING),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('ALIGN', (2, 0), (2, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 10),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY])
+            ]))
+            elements.append(pending_table)
+        
+        # Build PDF with custom header/footer
+        def add_page_decorations(canvas_obj, doc):
+            PDFService._create_header(canvas_obj, doc, "Pre-Boda Attendance Report",
+                                     f"{PrebodaConfig.VENUE_NAME} - {PrebodaConfig.DATE}")
+            PDFService._create_footer(canvas_obj, doc)
+        
+        doc.build(elements, onFirstPage=add_page_decorations, onLaterPages=add_page_decorations)
+        
+        # Get PDF data
+        pdf_data = buffer.getvalue()
+        buffer.close()
+        
+        logger.info(f"Generated pre-boda PDF: {len(pdf_data)} bytes")
+        return pdf_data
+
+    @staticmethod
     def generate_combined_pdf() -> bytes:
         """
-        Generate a combined PDF with both dietary and transport information.
+        Generate a combined PDF with all dietary, transport information and preboda.
         Useful for venue coordinators who need both.
         
         Returns:
@@ -589,6 +785,7 @@ class PDFService:
         # In a future enhancement, we could merge them into one document
         dietary_pdf = PDFService.generate_dietary_pdf()
         transport_pdf = PDFService.generate_transport_pdf()
+        preboda_pdf = PDFService.generate_preboda_pdf()
         
         # Note: Merging PDFs requires PyPDF2 or similar
         # For now, return dietary (primary concern for venue)

@@ -9,6 +9,7 @@ class Guest(db.Model):
     token = db.Column(db.String(100), unique=True, nullable=False)
     language_preference = db.Column(db.String(2), default='en')
     personal_message = db.Column(db.Text, nullable=True)
+    preboda_invited = db.Column(db.Boolean, default=False, nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     
     # Updated relationship with cascade delete

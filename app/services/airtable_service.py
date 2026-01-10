@@ -60,6 +60,7 @@ class AirtableGuest:
     reminder_3: Optional[datetime]
     reminder_4: Optional[datetime]
     personal_message: Optional[str]
+    preboda_invited: bool
 
     
     @classmethod
@@ -98,9 +99,8 @@ class AirtableGuest:
             reminder_3=parse_date(fields.get('Reminder 3')),
             reminder_4=parse_date(fields.get('Reminder 4')),
             personal_message=fields.get('Personal Message'),
-
+            preboda_invited=fields.get('Pre-boda Invited', False),
         )
-
 
 class AirtableService:
     """
@@ -493,6 +493,7 @@ class AirtableService:
             local_guest.name = airtable_guest.name
             local_guest.phone = airtable_guest.phone
             local_guest.language_preference = airtable_guest.language
+            local_guest.preboda_invited = airtable_guest.preboda_invited
             if airtable_guest.token:
                 local_guest.token = airtable_guest.token
                 local_guest.personal_message = airtable_guest.personal_message
@@ -507,6 +508,7 @@ class AirtableService:
                 token=token,
                 language_preference=airtable_guest.language,
                 personal_message=airtable_guest.personal_message,
+                preboda_invited=airtable_guest.preboda_invited,
             )
             db.session.add(local_guest)
             db.session.flush()  # Get the guest ID

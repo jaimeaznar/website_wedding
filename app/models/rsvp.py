@@ -16,6 +16,7 @@ class RSVP(db.Model):
     guest_id = db.Column(db.Integer, db.ForeignKey('guest.id', ondelete='CASCADE'), nullable=False)
     is_attending = db.Column(db.Boolean, default=False)
     is_cancelled = db.Column(db.Boolean, default=False)
+    preboda_attending = db.Column(db.Boolean, nullable=True, default=None)
     adults_count = db.Column(db.Integer, default=1)
     children_count = db.Column(db.Integer, default=0)
     hotel_name = db.Column(db.String(200))

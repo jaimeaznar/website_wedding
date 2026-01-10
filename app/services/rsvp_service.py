@@ -116,6 +116,14 @@ class RSVPService:
             is_attending = form_data.get('is_attending') == 'yes'
             rsvp.is_attending = is_attending
             
+            # Process pre-boda attendance (only if guest is invited)
+            preboda_value = form_data.get('preboda_attending')
+            if preboda_value == 'yes':
+                rsvp.preboda_attending = True
+            elif preboda_value == 'no':
+                rsvp.preboda_attending = False
+            # If not provided, leave as None (not yet answered)
+            
             # Clear existing data
             if rsvp.id:
                 GuestAllergen.query.filter_by(rsvp_id=rsvp.id).delete()
