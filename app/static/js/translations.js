@@ -377,13 +377,29 @@ const translations = {
         'bus.return.second': 'Second bus',
         'bus.return.last': 'Last bus',
         'bus.return.pickup.location': 'Pickup at the reception venue main entrance',
+        'schedule.bus.return.warning': 'Buses leave on time! Please be there 5 minutes early.',
+        'bus.return.warning': 'Buses leave on time! Please be there 5 minutes early.',
+
+        // Welcome modal
+        'welcome.title': 'Welcome!',
+        'welcome.intro': 'This website has everything you need for our wedding day.',
+        'welcome.rsvp.title': 'Confirm Your Attendance',
+        'welcome.rsvp.description': 'Use your personal link to RSVP, let us know about dietary requirements, and select transportation options.',
+        'welcome.info.title': 'Wedding Information',
+        'welcome.info.description': 'Find the schedule, venue details, dress code, accommodation options, and things to do in Cáceres & Trujillo.',
+        'welcome.bus.title': 'Bus to Reception',
+        'welcome.bus.description': 'On the wedding day, after the ceremony, we\'ll show you exactly where to catch the bus to the reception venue.',
+        'welcome.return.title': 'Return Bus Schedule',
+        'welcome.return.description': 'During the party, we\'ll display the bus departure times so you know when the buses leave back to the hotels.',
+        'welcome.button': 'Got it!',
+        'welcome.dontshow': 'Don\'t show this again',
 
     },
 
     es: {
         // Common
         'wedding.title': 'Boda de Irene y Jaime',
-        'wedding.date': '6 de Junio, 2026',
+        'wedding.date': '6 de junio, 2026',
         'our.wedding': 'Nuestra Boda',
 
         // Navigation
@@ -494,7 +510,7 @@ const translations = {
         'preboda.title': 'Fiesta Pre-Boda',
         'preboda.description': '¡Estás invitado a nuestra celebración pre-boda! Únete a nosotros para una velada informal antes del gran día.',
         'preboda.date.label': 'Fecha:',
-        'preboda.date.value': '5 de Junio, 2026',
+        'preboda.date.value': '5 de junio, 2026',
         'preboda.time.label': 'Hora:',
         'preboda.venue.label': 'Lugar:',
         'preboda.address.label': 'Dirección:',
@@ -675,7 +691,7 @@ const translations = {
         'activities.tip.reservations.label': ' Reservas:',
         'activities.tip.reservations': ' ¡Reserva el museo Helga de Alvear con antelación!',
         'activities.tip.weather.label': 'Clima:',
-        'activities.tip.weather': ' Junio puede ser caluroso - lleva agua y protector solar',
+        'activities.tip.weather': ' junio puede ser caluroso - lleva agua y protector solar',
 
         // Dress Code Modal
         'dresscode.title': 'Código de Vestimenta',
@@ -757,6 +773,22 @@ const translations = {
         'bus.return.second': 'Segundo autobús',
         'bus.return.last': 'Último autobús',
         'bus.return.pickup.location': 'Recogida en la entrada principal del lugar de celebración',
+        'schedule.bus.return.warning': '¡Los autobuses salen puntuales! Por favor, estad allí 5 minutos antes.',
+        'bus.return.warning': '¡Los autobuses salen puntuales! Por favor, estad allí 5 minutos antes.',
+
+        // Welcome modal
+        'welcome.title': '¡Bienvenidos!',
+        'welcome.intro': 'En esta web encontrarás todo lo que necesitas para el día de nuestra boda.',
+        'welcome.rsvp.title': 'Confirma tu Asistencia',
+        'welcome.rsvp.description': 'Usa tu enlace personal para confirmar, indicar restricciones alimentarias y seleccionar opciones de transporte.',
+        'welcome.info.title': 'Información de la Boda',
+        'welcome.info.description': 'Consulta el horario, detalles del lugar, código de vestimenta, alojamiento y qué hacer en Cáceres y Trujillo.',
+        'welcome.bus.title': 'Autobús al Banquete',
+        'welcome.bus.description': 'El día de la boda, después de la ceremonia, te mostraremos dónde coger el autobús hacia el lugar de celebración.',
+        'welcome.return.title': 'Horario de Autobuses de Vuelta',
+        'welcome.return.description': 'Durante la fiesta, mostraremos los horarios de salida de los autobuses de vuelta a los hoteles.',
+        'welcome.button': 'Entendido!',
+        'welcome.dontshow': 'No mostrar de nuevo',
     }
 };
 

@@ -239,7 +239,11 @@
                             <strong>05:00</strong>
                         </div>
                     </div>
-                    <p class="mt-3 mb-0">
+                    <p class="bus-warning mt-3 mb-2">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span data-translate="schedule.bus.return.warning">Buses leave on time! Please be there 5 minutes early.</span>
+                    </p>
+                    <p class="mb-0">
                         <i class="fas fa-map-marker-alt me-2"></i>
                         <span data-translate="schedule.bus.return.pickup">Pickup: Reception venue main entrance</span>
                     </p>
@@ -1244,8 +1248,97 @@
                     <span class="time-label" data-translate="bus.return.last">Last bus</span>
                 </div>
             </div>
+
+            <div class="return-bus-warning mt-4 mb-3">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span data-translate="bus.return.warning">Buses leave on time! Please be there 5 minutes early.</span>
+            </div>
             
             <p class="text-muted" data-translate="bus.return.pickup.location">Pickup at the reception venue main entrance</p>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Modal - First Visit Only -->
+<div id="welcome-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper welcome-modal-wrapper">
+        <div class="modal-header">
+            <h2 data-translate="welcome.title">Welcome!</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="welcome-content">
+                <!-- Intro -->
+                <div class="welcome-intro text-center mb-4">
+                    <div class="welcome-icon mb-3">
+                        <i class="fas fa-church"></i>
+                    </div>
+                    <p class="lead" data-translate="welcome.intro">This website has everything you need for our wedding day.</p>
+                </div>
+
+                <!-- Features List -->
+                <div class="welcome-features">
+                    <!-- RSVP -->
+                    <div class="welcome-feature">
+                        <div class="welcome-feature-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div class="welcome-feature-content">
+                            <h4 data-translate="welcome.rsvp.title">Confirm Your Attendance</h4>
+                            <p data-translate="welcome.rsvp.description">Use your personal link to RSVP, let us know about dietary requirements, and select transportation options.</p>
+                        </div>
+                    </div>
+
+                    <!-- Schedule & Info -->
+                    <div class="welcome-feature">
+                        <div class="welcome-feature-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="welcome-feature-content">
+                            <h4 data-translate="welcome.info.title">Wedding Information</h4>
+                            <p data-translate="welcome.info.description">Find the schedule, venue details, dress code, accommodation options, and things to do in Cáceres & Trujillo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Bus to Reception -->
+                    <div class="welcome-feature">
+                        <div class="welcome-feature-icon">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <div class="welcome-feature-content">
+                            <h4 data-translate="welcome.bus.title">Bus to Reception</h4>
+                            <p data-translate="welcome.bus.description">On the wedding day, after the ceremony, we'll show you exactly where to catch the bus to the reception venue.</p>
+                        </div>
+                    </div>
+
+                    <!-- Return Bus -->
+                    <div class="welcome-feature">
+                        <div class="welcome-feature-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="welcome-feature-content">
+                            <h4 data-translate="welcome.return.title">Return Bus Schedule</h4>
+                            <p data-translate="welcome.return.description">During the party, we'll display the bus departure times so you know when the buses leave back to the hotels.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="welcome-cta text-center mt-4">
+                    <button class="btn btn-primary btn-lg welcome-start-btn" onclick="closeWelcomeModal()">
+                        <span data-translate="welcome.button">Let's Get Started!</span>
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+
+                <!-- Don't show again checkbox -->
+                <div class="welcome-remember text-center mt-3">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" id="welcome-dont-show">
+                        <span data-translate="welcome.dontshow">Don't show this again</span>
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 </div>
