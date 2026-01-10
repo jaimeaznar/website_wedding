@@ -795,8 +795,25 @@ const translations = {
 // Translation system
 class TranslationSystem {
     constructor() {
-        this.currentLang = localStorage.getItem('preferredLanguage') || 'es';
+        this.currentLang = this.getInitialLanguage();
         this.translations = translations;
+    }
+
+    getInitialLanguage() {
+        // First check if user has a saved preference
+        const saved = localStorage.getItem('preferredLanguage');
+        if (saved) return saved;
+        
+        // Detect browser/phone language
+        const browserLang = navigator.language || navigator.userLanguage || '';
+        
+        // If browser is set to English, use English
+        if (browserLang.toLowerCase().startsWith('en')) {
+            return 'en';
+        }
+        
+        // Default to Spanish for everything else
+        return 'es';
     }
 
     setLanguage(lang) {
