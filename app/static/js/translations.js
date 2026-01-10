@@ -3,7 +3,7 @@ const translations = {
     en: {
         // Common
         'wedding.title': 'Irene & Jaime\'s Wedding',
-        'wedding.date': 'June 6, 2026',
+        'wedding.date': 'June 6th, 2026',
         'our.wedding': 'Our Wedding',
 
         // Navigation
