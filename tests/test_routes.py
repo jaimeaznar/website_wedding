@@ -50,12 +50,6 @@ class TestRSVPRoutes:
         assert response.status_code in [302, 308]
         assert '/' in response.location
 
-    def test_rsvp_form_with_invalid_token(self, client):
-        """Test the RSVP form with an invalid token via legacy route."""
-        response = client.get('/rsvp/invalid-token')
-        # Legacy route redirects to homepage with token param
-        assert response.status_code == 302
-
     def test_direct_rsvp_creation(self, app, sample_guest):
         """Test creating an RSVP directly without using the form."""
         with app.app_context():

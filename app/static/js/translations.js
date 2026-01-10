@@ -366,6 +366,18 @@ const translations = {
         'bus.message': 'The buses to the reception venue are waiting for you!',
         'bus.location': 'Plaza Luis Obispo Galarza',
         'bus.directions': 'Get Directions',
+
+        // Return bus schedule
+        'schedule.bus.return.title': 'Return Bus Schedule',
+        'schedule.bus.return.description': 'Buses back to Cáceres hotels depart at:',
+        'schedule.bus.return.pickup': 'Pickup: Reception venue main entrance',
+        'bus.return.title': 'Return Bus Schedule',
+        'bus.return.message': 'Buses back to Cáceres hotels:',
+        'bus.return.first': 'First bus',
+        'bus.return.second': 'Second bus',
+        'bus.return.last': 'Last bus',
+        'bus.return.pickup.location': 'Pickup at the reception venue main entrance',
+
     },
 
     es: {
@@ -603,10 +615,10 @@ const translations = {
         'activities.caceres.plazaarea.desc': 'Muchas opciones de terrazas',
 
         // Shopping section
-'activities.wheretoshop': 'Productos Locales y Compras',
-'activities.caceres.gourmet.title': 'Gourmet y Delicatessen',
-'activities.caceres.mostazo.desc': 'Tienda de productos locales y regionales.',
-'activities.caceres.chinata.desc': 'Famosos productos de aceite de oliva y cosmética de Extremadura',
+        'activities.wheretoshop': 'Productos Locales y Compras',
+        'activities.caceres.gourmet.title': 'Gourmet y Delicatessen',
+        'activities.caceres.mostazo.desc': 'Tienda de productos locales y regionales.',
+        'activities.caceres.chinata.desc': 'Famosos productos de aceite de oliva y cosmética de Extremadura',
 
 
         // Trujillo
@@ -734,6 +746,17 @@ const translations = {
         'bus.message': '¡Los autobuses al lugar de la recepción os están esperando!',
         'bus.location': 'Plaza Luis Obispo Galarza',
         'bus.directions': 'Cómo Llegar',
+
+        // Return bus schedule
+        'schedule.bus.return.title': 'Horario de Autobuses de Vuelta',
+        'schedule.bus.return.description': 'Autobuses de vuelta a los hoteles de Cáceres:',
+        'schedule.bus.return.pickup': 'Recogida: Entrada principal del lugar de celebración',
+        'bus.return.title': 'Horario de Autobuses de Vuelta',
+        'bus.return.message': 'Autobuses de vuelta a los hoteles de Cáceres:',
+        'bus.return.first': 'Primer autobús',
+        'bus.return.second': 'Segundo autobús',
+        'bus.return.last': 'Último autobús',
+        'bus.return.pickup.location': 'Recogida en la entrada principal del lugar de celebración',
     }
 };
 
