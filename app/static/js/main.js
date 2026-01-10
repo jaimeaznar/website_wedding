@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const isCorrectTime = (currentMinutes >= startTime && currentMinutes <= endTime);
         
         // Show modal if both conditions met and not already dismissed
-        if (isWeddingDay && isCorrectTime && !sessionStorage.getItem('busDismissed')) {
+        if (isWeddingDay && isCorrectTime) {
             const busModal = document.getElementById('bus-modal');
             if (busModal) {
                 busModal.style.display = 'flex';
@@ -238,14 +238,49 @@ document.addEventListener('DOMContentLoaded', function () {
     // Re-check every minute
     setInterval(checkBusModal, 60000);
 
-    // Mark as dismissed when closed
-    const busModal = document.getElementById('bus-modal');
-    if (busModal) {
-        busModal.querySelector('.modal-close').addEventListener('click', function() {
-            sessionStorage.setItem('busDismissed', 'true');
-        });
+   
+
+    // ========================================
+    // RETURN BUS MODAL - Wedding Day 22:30-05:30 Only
+    // ========================================
+    function checkReturnBusModal() {
+        const now = testDate ? new Date(testDate) : new Date();
+        
+        // Get current time in Spain
+        const spainTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));
+        
+        const year = spainTime.getFullYear();
+        const month = spainTime.getMonth(); // 0-indexed (5 = June)
+        const day = spainTime.getDate();
+        const hours = spainTime.getHours();
+        const minutes = spainTime.getMinutes();
+        
+        // Check if it's June 6, 2026 (after 22:30) or June 7, 2026 (before 05:30)
+        const isWeddingNight = true;
+        const isNextMorning = (year === 2026 && month === 6 && day === 7);
+        
+        const currentMinutes = hours * 60 + minutes;
+        const eveningStart = 11 * 60 + 15;  // 22:30
+        const morningEnd = 5 * 60 + 30;     // 05:30
+        
+        // Show if: wedding night after 22:30 OR next morning before 05:30
+        const shouldShow = (isWeddingNight && currentMinutes >= eveningStart) || 
+                          (isNextMorning && currentMinutes <= morningEnd);
+        
+        // Show modal if conditions met and not already dismissed
+        if (shouldShow) {
+            const returnBusModal = document.getElementById('return-bus-modal');
+            if (returnBusModal) {
+                returnBusModal.style.display = 'flex';
+                returnBusModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
     }
 
+    // Check return bus modal on load
+    checkReturnBusModal();
+    
     // ========================================
     // LANGUAGE CHANGE LISTENER
     // ========================================

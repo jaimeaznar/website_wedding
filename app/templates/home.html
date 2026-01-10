@@ -220,9 +220,32 @@
                         <span data-translate="schedule.dancing.description">Dance the night away!</span>
                     </p>
                 </div>
+
+                <!-- Return Bus Schedule -->
+                <div class="event bus-schedule-card">
+                    <h3><i class="fas fa-bus me-2"></i><span data-translate="schedule.bus.return.title">Return Bus Schedule</span></h3>
+                    <p class="mb-2" data-translate="schedule.bus.return.description">Buses back to Cáceres hotels depart at:</p>
+                    <div class="bus-times">
+                        <div class="bus-time-item">
+                            <i class="far fa-clock me-2"></i>
+                            <strong>01:00</strong>
+                        </div>
+                        <div class="bus-time-item">
+                            <i class="far fa-clock me-2"></i>
+                            <strong>03:00</strong>
+                        </div>
+                        <div class="bus-time-item">
+                            <i class="far fa-clock me-2"></i>
+                            <strong>05:00</strong>
+                        </div>
+                    </div>
+                    <p class="mt-3 mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <span data-translate="schedule.bus.return.pickup">Pickup: Reception venue main entrance</span>
+                    </p>
+                </div>
             </div>
 
-            
         </div>
     </div>
 </div>
@@ -1190,6 +1213,39 @@
                 <i class="fas fa-map-marker-alt me-2"></i>
                 <span data-translate="bus.directions">Get Directions</span>
             </a>
+        </div>
+    </div>
+</div>
+
+<!-- Return Bus Modal - Shows 22:30-05:30 on wedding day -->
+<div id="return-bus-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2 data-translate="bus.return.title">Return Bus Schedule</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body text-center">
+            <div class="bus-icon-container mb-4">
+                <i class="fas fa-bus"></i>
+            </div>
+            <p class="lead mb-4" data-translate="bus.return.message">Buses back to Cáceres hotels:</p>
+            
+            <div class="return-bus-times mb-4">
+                <div class="return-bus-time">
+                    <span class="time-value">01:00</span>
+                    <span class="time-label" data-translate="bus.return.first">First bus</span>
+                </div>
+                <div class="return-bus-time">
+                    <span class="time-value">03:00</span>
+                    <span class="time-label" data-translate="bus.return.second">Second bus</span>
+                </div>
+                <div class="return-bus-time">
+                    <span class="time-value">05:00</span>
+                    <span class="time-label" data-translate="bus.return.last">Last bus</span>
+                </div>
+            </div>
+            
+            <p class="text-muted" data-translate="bus.return.pickup.location">Pickup at the reception venue main entrance</p>
         </div>
     </div>
 </div>

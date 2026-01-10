@@ -2141,3 +2141,96 @@ a:hover {
     background: #ffffff;
     padding: 1.5rem;
 }
+
+/* ========================================
+   BUS SCHEDULE CARD IN TIMELINE
+   ======================================== */
+.bus-schedule-card {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #e67e22 100%) !important;
+    color: white !important;
+    border-radius: 12px;
+    padding: 1.5rem !important;
+    margin-top: 1rem;
+}
+
+.bus-schedule-card h3 {
+    color: white !important;
+    margin-bottom: 1rem;
+}
+
+.bus-schedule-card p {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.bus-times {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.bus-time-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1.25rem;
+}
+
+.bus-time-item i {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========================================
+   RETURN BUS MODAL STYLES
+   ======================================== */
+.return-bus-times {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.return-bus-time {
+    background: var(--secondary-color);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 120px;
+}
+
+.return-bus-time .time-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.return-bus-time .time-label {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .bus-times {
+        gap: 1rem;
+    }
+    
+    .bus-time-item {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .return-bus-times {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .return-bus-time {
+        width: 100%;
+        max-width: 200px;
+    }
+}
