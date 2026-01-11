@@ -131,7 +131,7 @@ const translations = {
         'schedule.arrival': 'Guest Arrival & Seating',
         'schedule.arrival.description': 'Please arrive early to be seated before the bride and groom make their entrance.',
         'schedule.ceremony': 'Wedding Ceremony',
-        'schedule.ceremony.description': 'Join us as we exchange our vows in the beautiful historic cathedral of Cáceres.',
+        'schedule.ceremony.description': 'Join us for our wedding ceremony and mass in the beautiful historic cathedral of Cáceres.',
         'schedule.cathedral': 'Concatedral de Santa María',
         'schedule.travel': 'Travel to Reception',
         'schedule.travel.description': 'Transportation provided',
@@ -175,6 +175,7 @@ const translations = {
         'accommodation.hotel.extremadura.desc': 'Modern hotel with spacious rooms and excellent amenities. Perfect for those seeking comfort and convenience.',
         'accommodation.hotel.alcantara.desc': 'Cozy and welcoming hotel offering great value. Clean, comfortable rooms with friendly service.',
         'accommodation.hotel.soho.desc': 'Charming boutique hotel in the old town. Unique rooms with character and personalized service in a prime location.',
+        'accommodation.hotel.casapizarro.desc': 'Charming boutique hotel in a restored historic building. Combines traditional architecture with modern comfort.',
 
         // ==================== ACTIVITIES - CÁCERES & TRUJILLO ====================
         // Main
@@ -185,6 +186,7 @@ const translations = {
         'activities.didyouknow': 'Did You Know?',
         'activities.musttry': 'Must Try!',
         'activities.tips': 'Practical Tips',
+        'activities.directions': 'Get Directions',
 
         // Cáceres
         'activities.caceres.subtitle': 'UNESCO World Heritage Medieval City',
@@ -233,6 +235,7 @@ const translations = {
         'activities.caceres.sanpedro.desc': 'Pedestrian street near 100 Montaditos, full of bars',
         'activities.caceres.plazaarea': 'Plaza Mayor area',
         'activities.caceres.plazaarea.desc': 'Many terrace options',
+        'activities.caceres.torresande.desc': 'Elegant dining in a historic tower, creative cuisine',
 
         // Trujillo
         'activities.trujillo.subtitle': 'Birthplace of Conquistadors (45 min from Cáceres)',
@@ -527,7 +530,7 @@ const translations = {
         'schedule.arrival': 'Llegada y Asientos de Invitados',
         'schedule.arrival.description': 'Por favor, llega temprano para estar sentado antes de la entrada de los novios.',
         'schedule.ceremony': 'Ceremonia de Boda',
-        'schedule.ceremony.description': 'Acompáñanos mientras intercambiamos nuestros votos en la hermosa catedral histórica de Cáceres.',
+        'schedule.ceremony.description': 'Acompáñanos a nuestra ceremonia de boda y misa en la hermosa catedral histórica de Cáceres.',
         'schedule.cathedral': 'Concatedral de Santa María',
         'schedule.travel': 'Viaje a la Recepción',
         'schedule.travel.description': 'Transporte proporcionado',
@@ -571,6 +574,7 @@ const translations = {
         'accommodation.hotel.extremadura.desc': 'Hotel moderno con habitaciones amplias y excelentes comodidades. Perfecto para quienes buscan confort y comodidad.',
         'accommodation.hotel.alcantara.desc': 'Hotel acogedor que ofrece una excelente relación calidad-precio. Habitaciones limpias y cómodas con servicio amable.',
         'accommodation.hotel.soho.desc': 'Encantador hotel boutique en el casco antiguo. Habitaciones únicas con carácter y servicio personalizado en una ubicación privilegiada.',
+        'accommodation.hotel.casapizarro.desc': 'Encantador hotel boutique en un edificio histórico restaurado. Combina arquitectura tradicional con comodidad moderna.',
 
         // ==================== ACTIVITIES - CÁCERES Y TRUJILLO ====================
         // Main
@@ -581,6 +585,7 @@ const translations = {
         'activities.didyouknow': '¿Sabías que...?',
         'activities.musttry': '¡Imprescindibles!',
         'activities.tips': 'Consejos Prácticos',
+        'activities.directions': 'Cómo llegar',
 
         // Cáceres
         'activities.caceres.subtitle': 'Ciudad Medieval Patrimonio de la Humanidad',
@@ -629,6 +634,7 @@ const translations = {
         'activities.caceres.sanpedro.desc': 'Calle peatonal cerca de 100 Montaditos, llena de bares',
         'activities.caceres.plazaarea': 'Zona Plaza Mayor',
         'activities.caceres.plazaarea.desc': 'Muchas opciones de terrazas',
+        'activities.caceres.torresande.desc': 'Elegante restaurante en una torre histórica, cocina creativa',
 
         // Shopping section
         'activities.wheretoshop': 'Productos Locales y Compras',
