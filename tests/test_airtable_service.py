@@ -33,6 +33,7 @@ class TestAirtableGuestDataclass:
             'id': 'rec123ABC',
             'fields': {
                 'Name': 'John Doe',
+                'Surname': 'Smith',
                 'Phone': '+34612345678',
                 'Language': 'es',
                 'Token': 'test-token-123',
@@ -56,6 +57,7 @@ class TestAirtableGuestDataclass:
         
         assert guest.record_id == 'rec123ABC'
         assert guest.name == 'John Doe'
+        assert guest.surname == 'Smith'
         assert guest.phone == '+34612345678'
         assert guest.language == 'es'
         assert guest.token == 'test-token-123'
@@ -78,6 +80,7 @@ class TestAirtableGuestDataclass:
             'id': 'rec456DEF',
             'fields': {
                 'Name': 'Jane Smith',
+                'Surname': 'Smith',
             }
         }
         
@@ -85,6 +88,7 @@ class TestAirtableGuestDataclass:
         
         assert guest.record_id == 'rec456DEF'
         assert guest.name == 'Jane Smith'
+        assert guest.surname == 'Smith'
         assert guest.phone == ''
         assert guest.language == 'es'  # Default
         assert guest.token is None
@@ -151,6 +155,7 @@ class TestSyncGuestToLocalDb:
             airtable_guest = AirtableGuest(
                 record_id='recNew123',
                 name='New Sync Guest',
+                surname='Smith',
                 phone='+34611111111',
                 language='es',
                 token='new-sync-token-123',
@@ -177,6 +182,7 @@ class TestSyncGuestToLocalDb:
             
             assert local_guest.id is not None
             assert local_guest.name == 'New Sync Guest'
+            assert local_guest.surname == 'Smith'
             assert local_guest.phone == '+34611111111'
             assert local_guest.token == 'new-sync-token-123'
             
@@ -206,6 +212,7 @@ class TestSyncGuestToLocalDb:
             airtable_guest = AirtableGuest(
                 record_id='recExisting456',
                 name='Updated Name',
+                surname='Smith',
                 phone='+34699999999',
                 language='es',
                 token='existing-token-456',  # Same token
@@ -232,6 +239,7 @@ class TestSyncGuestToLocalDb:
             
             assert local_guest.id == existing_id  # Same guest
             assert local_guest.name == 'Updated Name'
+            assert local_guest.surname == 'Smith'
             assert local_guest.phone == '+34699999999'
             assert local_guest.language_preference == 'es'
             assert local_guest.personal_message == 'Updated message'
@@ -247,6 +255,7 @@ class TestSyncGuestToLocalDb:
             airtable_guest = AirtableGuest(
                 record_id='recAttending789',
                 name='Attending Guest',
+                surname='Smith',
                 phone='+34622222222',
                 language='en',
                 token='attending-token-789',
@@ -293,6 +302,7 @@ class TestSyncGuestToLocalDb:
             airtable_guest = AirtableGuest(
                 record_id='recDeclined101',
                 name='Declined Guest',
+                surname='Smith',
                 phone='+34633333333',
                 language='es',
                 token='declined-token-101',
@@ -340,6 +350,7 @@ class TestSyncAllToLocalDb:
                 AirtableGuest(
                     record_id='recBulk1',
                     name='Bulk Guest 1',
+                    surname='Smith',
                     phone='+34644444441',
                     language='es',
                     token='bulk-token-1',
@@ -363,6 +374,7 @@ class TestSyncAllToLocalDb:
                 AirtableGuest(
                     record_id='recBulk2',
                     name='Bulk Guest 2',
+                    surname='Smith',
                     phone='+34644444442',
                     language='en',
                     token='bulk-token-2',
@@ -425,6 +437,7 @@ class TestSyncAllToLocalDb:
                 AirtableGuest(
                     record_id='recExistingBulk',
                     name='Existing Guest New Name',
+                    surname='Smith',
                     phone='+34655555555',
                     language='es',
                     token='existing-bulk-token',
@@ -521,6 +534,7 @@ class TestSyncAllToLocalDb:
                 AirtableGuest(
                     record_id='recUpdateMixed',
                     name='Guest To Update - Updated',
+                    surname='Smith',
                     phone='+34677777771',
                     language='es',
                     token='update-mixed-token',
@@ -544,6 +558,7 @@ class TestSyncAllToLocalDb:
                 AirtableGuest(
                     record_id='recNewMixed',
                     name='New Guest Mixed',
+                    surname='Smith',
                     phone='+34677777773',
                     language='en',
                     token='new-mixed-token',
@@ -609,6 +624,7 @@ class TestSyncAllToLocalDb:
                 AirtableGuest(
                     record_id='recPhoneMatch',
                     name='Phone Match Guest Updated',
+                    surname='Smith',
                     phone='+34688888888',  # Same phone
                     language='es',
                     token='airtable-new-token',  # Different token
@@ -675,7 +691,7 @@ class TestAirtableServiceStatistics:
         """Statistics should correctly count different statuses."""
         mock_guests = [
             AirtableGuest(
-                record_id='rec1', name='Pending 1', phone='1', language='es',
+                record_id='rec1', name='Pending 1', surname='Smith', phone='1', language='es',
                 token='t1', status=AirtableStatus.PENDING, rsvp_date=None,
                 adults_count=None, children_count=None, hotel=None,
                 dietary_notes=None, transport_church=False, transport_reception=False,
@@ -684,7 +700,7 @@ class TestAirtableServiceStatistics:
                 personal_message=None, preboda_invited=False,
             ),
             AirtableGuest(
-                record_id='rec2', name='Attending 1', phone='2', language='es',
+                record_id='rec2', name='Attending 1', surname='Smith', phone='2', language='es',
                 token='t2', status=AirtableStatus.ATTENDING, rsvp_date=None,
                 adults_count=2, children_count=1, hotel=None,
                 dietary_notes=None, transport_church=False, transport_reception=False,
@@ -693,7 +709,7 @@ class TestAirtableServiceStatistics:
                 personal_message=None, preboda_invited=False,
             ),
             AirtableGuest(
-                record_id='rec3', name='Attending 2', phone='3', language='es',
+                record_id='rec3', name='Attending 2', surname='Smith', phone='3', language='es',
                 token='t3', status=AirtableStatus.ATTENDING, rsvp_date=None,
                 adults_count=1, children_count=0, hotel=None,
                 dietary_notes=None, transport_church=False, transport_reception=False,
@@ -702,7 +718,7 @@ class TestAirtableServiceStatistics:
                 personal_message=None, preboda_invited=False,
             ),
             AirtableGuest(
-                record_id='rec4', name='Declined 1', phone='4', language='es',
+                record_id='rec4', name='Declined 1', surname='Smith', phone='4', language='es',
                 token='t4', status=AirtableStatus.DECLINED, rsvp_date=None,
                 adults_count=None, children_count=None, hotel=None,
                 dietary_notes=None, transport_church=False, transport_reception=False,
@@ -711,7 +727,7 @@ class TestAirtableServiceStatistics:
                 personal_message=None, preboda_invited=False,
             ),
             AirtableGuest(
-                record_id='rec5', name='Cancelled 1', phone='5', language='es',
+                record_id='rec5', name='Cancelled 1', surname='Smith', phone='5', language='es',
                 token='t5', status=AirtableStatus.CANCELLED, rsvp_date=None,
                 adults_count=None, children_count=None, hotel=None,
                 dietary_notes=None, transport_church=False, transport_reception=False,

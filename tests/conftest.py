@@ -106,6 +106,7 @@ def sample_guest(app):
     with app.app_context():
         guest = Guest(
             name='Test Guest',
+            surname='Test Surname',
             phone='555-0123',
             token=secrets.token_urlsafe(32),
             language_preference='en',
