@@ -173,6 +173,7 @@ def download_all_qr(format='png'):
             safe_name = "".join(c for c in full_name if c.isalnum() or c in (' ', '-', '_')).strip()
             safe_name = safe_name.replace(' ', '_')
             
+            
             ext = 'svg' if format == 'svg' else 'png'
             zip_file.writestr(f'{safe_name}.{ext}', qr_buffer.getvalue())
     
