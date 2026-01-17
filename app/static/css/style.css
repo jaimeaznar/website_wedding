@@ -1517,24 +1517,35 @@ a:hover {
     
     .iban-container {
         width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
     }
     
-    .iban-number {
-        font-size: 0.95rem;
-        word-break: break-all;
+    .bank-value.iban-number {
+        font-size: 0.72rem;
+        letter-spacing: 0;
+        white-space: nowrap;
     }
     
     .btn-copy {
-        width: 100%;
-        padding: 0.75rem;
+        padding: 0.5rem 0.6rem;
+        flex-shrink: 0;
     }
     
     .bank-value {
         font-size: 1rem;
     }
 }
+
+@media (max-width: 380px) {
+    .bank-value.iban-number {
+        font-size: 0.65rem;
+    }
+}
+
+
 
 @media (max-width: 576px) {
     .gifts-heart-icon {

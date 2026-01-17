@@ -556,17 +556,21 @@ class AirtableService:
         db.session.commit()
         return local_guest
     
-    def sync_all_to_local_db(self) -> Tuple[int, int]:
+    def sync_all_to_local_db(self) -> Tuple[int, int, int]:
         """
         Sync all Airtable guests to the local database.
         
         Returns:
-            Tuple of (created_count, updated_count)
+            Tuple of (created_count, updated_count, deleted_count)
         """
         from app import db
         from app.models.guest import Guest
         
         airtable_guests = self.get_all_guests()
+        
+        # Build sets of tokens and phones from Airtable for deletion check
+        airtable_tokens = {ag.token for ag in airtable_guests if ag.token}
+        airtable_phones = {ag.phone for ag in airtable_guests if ag.phone}
         
         created = 0
         updated = 0
@@ -586,8 +590,25 @@ class AirtableService:
             else:
                 created += 1
         
-        logger.info(f"Synced from Airtable: {created} created, {updated} updated")
-        return created, updated
+        # Delete local guests that no longer exist in Airtable
+        deleted = 0
+        local_guests = Guest.query.all()
+        for local_guest in local_guests:
+            # Check if this guest exists in Airtable (by token or phone)
+            in_airtable = (
+                (local_guest.token and local_guest.token in airtable_tokens) or
+                (local_guest.phone and local_guest.phone in airtable_phones)
+            )
+            
+            if not in_airtable:
+                logger.info(f"Deleting local guest not in Airtable: {local_guest.name}")
+                db.session.delete(local_guest)
+                deleted += 1
+        
+        db.session.commit()
+        
+        logger.info(f"Synced from Airtable: {created} created, {updated} updated, {deleted} deleted")
+        return created, updated, deleted
     
     def sync_rsvp_to_airtable(self, token: str) -> None:
         """

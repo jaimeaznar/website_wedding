@@ -124,9 +124,9 @@ def sync_to_local():
         return redirect(url_for('admin_airtable.airtable_dashboard'))
     
     try:
-        created, updated = airtable.sync_all_to_local_db()
-        flash(f'Sync complete: {created} created, {updated} updated', 'success')
-        logger.info(f"Airtable sync: {created} created, {updated} updated")
+        created, updated, deleted = airtable.sync_all_to_local_db()
+        flash(f'Sync complete: {created} created, {updated} updated, {deleted} deleted', 'success')
+        logger.info(f"Airtable sync: {created} created, {updated} updated, {deleted} deleted")
     except Exception as e:
         flash(f'Sync failed: {str(e)}', 'error')
         logger.error(f"Airtable sync failed: {e}")
