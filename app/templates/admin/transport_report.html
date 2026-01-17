@@ -19,19 +19,6 @@
     
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">Transport to Church</h5>
-            <ul>
-                {% for guest in to_church %}
-                    <li>{{ guest.name }} - {{ guest.phone }} ({{ guest.guest_count }} people)</li>
-                {% else %}
-                    <li>No transport to church requested.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    
-    <div class="card mb-4">
-        <div class="card-body">
             <h5 class="card-title">Transport to Reception</h5>
             <ul>
                 {% for guest in to_reception %}
