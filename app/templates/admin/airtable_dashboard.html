@@ -347,7 +347,7 @@
                                     {% endif %}
                                     
                                     {% if guest.token %}
-                                    <a href="{{ url_for('rsvp.rsvp_form', token=guest.token) }}" 
+                                    <a href="{{ url_for('rsvp.rsvp', token=guest.token) }}" 
                                        class="btn btn-outline-primary btn-sm" 
                                        target="_blank" 
                                        title="View RSVP Form">
