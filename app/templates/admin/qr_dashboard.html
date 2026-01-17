@@ -74,7 +74,7 @@
                     </div>
                     
                     <!-- Guest Info -->
-                    <h5 class="card-title mb-1">{{ guest.name }}</h5>
+                    <h5 class="card-title mb-1">{{ guest.name }} {{ guest.surname or '' }}</h5>
                     {% if guest.phone %}
                     <p class="text-muted small mb-2">{{ guest.phone }}</p>
                     {% endif %}

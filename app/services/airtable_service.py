@@ -42,6 +42,7 @@ class AirtableGuest:
     """Data class representing a guest record from Airtable."""
     record_id: str
     name: str
+    surname: str
     phone: str
     language: str
     token: Optional[str]
@@ -81,6 +82,7 @@ class AirtableGuest:
         return cls(
             record_id=record['id'],
             name=fields.get('Name', ''),
+            surname=fields.get('Surname', ''),
             phone=fields.get('Phone', ''),
             language=fields.get('Language', 'es'),
             token=fields.get('Token'),
@@ -491,6 +493,7 @@ class AirtableService:
         if local_guest:
             # Update existing guest
             local_guest.name = airtable_guest.name
+            local_guest.surname = airtable_guest.surname
             local_guest.phone = airtable_guest.phone
             local_guest.language_preference = airtable_guest.language
             local_guest.preboda_invited = airtable_guest.preboda_invited
@@ -504,6 +507,7 @@ class AirtableService:
             token = airtable_guest.token or secrets.token_urlsafe(32)
             local_guest = Guest(
                 name=airtable_guest.name,
+                surname=airtable_guest.surname,
                 phone=airtable_guest.phone,
                 token=token,
                 language_preference=airtable_guest.language,

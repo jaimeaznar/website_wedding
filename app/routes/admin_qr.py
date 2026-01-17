@@ -90,6 +90,7 @@ def qr_dashboard():
         guest_data.append({
             'id': guest.id,
             'name': guest.name,
+            'surname': guest.surname,
             'phone': guest.phone,
             'token': guest.token,
             'rsvp_url': rsvp_url,
@@ -111,8 +112,9 @@ def download_qr(guest_id, format='png'):
     # Generate QR code
     buffer = generate_qr_code(rsvp_url, format=format)
     
-    # Clean filename
-    safe_name = "".join(c for c in guest.name if c.isalnum() or c in (' ', '-', '_')).strip()
+    # Clean filename - include surname
+    full_name = f"{guest.name} {guest.surname}" if guest.surname else guest.name
+    safe_name = "".join(c for c in full_name if c.isalnum() or c in (' ', '-', '_')).strip()
     safe_name = safe_name.replace(' ', '_')
     
     if format == 'svg':
