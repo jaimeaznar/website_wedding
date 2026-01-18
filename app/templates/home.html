@@ -1089,19 +1089,21 @@
                                 </div>
                                 <div class="bank-info-row" style="flex-direction: column; align-items: flex-start;">
                                     <span class="bank-label">IBAN:</span>
-                                    <div class="iban-container" style="margin-top: 0.5rem;">
-                                        <span class="bank-value iban-number" id="iban-number">ES00 0000 0000 0000 0000 0000</span>
+                                    <div class="iban-container" style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="bank-value iban-number" id="iban-number" style="font-size: 1rem; text-decoration: none;">ES00 0000 0000 0000 0000 0000</span>
                                         <button class="btn-copy" onclick="copyIBAN()" title="Copy IBAN">
                                             <i class="fas fa-copy"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="bank-info-row">
+                                <div class="bank-info-row" style="flex-direction: column; align-items: flex-start;">
                                     <span class="bank-label">BIC/SWIFT:</span>
-                                    <span class="bank-value" id="swift-number">XXXXXXXXX</span>
-                                    <button class="btn-copy" onclick="copySwift()" title="Copy Swift">
+                                    <div class="iban-container" style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="bank-value" id="swift-number" style="font-size: 1rem; text-decoration: none;">XXXXXXXXX</span>
+                                        <button class="btn-copy" onclick="copySwift()" title="Copy Swift">
                                             <i class="fas fa-copy"></i>
                                         </button>
+                                    </div>
                                 </div>
                                 <div class="copy-success" id="iban-copy-success">
                                     <i class="fas fa-check-circle me-2"></i>
