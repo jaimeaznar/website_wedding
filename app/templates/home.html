@@ -1298,53 +1298,34 @@
             <button class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-            <div class="welcome-content">
+            <div class="welcome-content text-center">
                 <!-- Intro -->
-                <div class="welcome-intro text-center mb-4">
-                    <div class="welcome-icon mb-3">
-                        <i class="far fa-lightbulb" style="font-size: 3rem; color: var(--primary-color);"></i>
-                    </div>
+                <div class="welcome-intro mb-4">
                     <p class="lead" data-translate="welcome.intro">This website has everything you need for our wedding day.</p>
                 </div>
-
-                <!-- Features List -->
-                <div class="welcome-features">
-                    <!-- RSVP -->
-                    <div class="welcome-feature">
-                        <div class="welcome-feature-icon">
-                            <i class="fas fa-envelope-open-text"></i>
-                        </div>
-                        <div class="welcome-feature-content">
-                            <h4 data-translate="welcome.rsvp.title">Confirm Your Attendance</h4>
-                            <p data-translate="welcome.rsvp.description">Use your personal link to RSVP, let us know about dietary requirements, and select transportation options.</p>
-                        </div>
+                
+                <!-- Info box -->
+                <div class="welcome-feature" style="max-width: 500px; margin: 0 auto 1rem auto; text-align: left;">
+                    <div class="welcome-feature-icon">
+                        <i class="fas fa-info-circle"></i>
                     </div>
-
-                    <!-- Schedule & Info -->
-                    <div class="welcome-feature">
-                        <div class="welcome-feature-icon">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
-                        <div class="welcome-feature-content">
-                            <h4 data-translate="welcome.info.title">Wedding Information</h4>
-                            <p data-translate="welcome.info.description">Find the schedule, venue details, dress code, accommodation options, and things to do in Cáceres & Trujillo.</p>
-                        </div>
+                    <div class="welcome-feature-content">
+                        <p class="mb-0" data-translate="welcome.description">You can confirm your attendance and check all the information about the wedding.</p>
                     </div>
+                </div>
 
-                    <!-- Bus to Reception -->
-                    <div class="welcome-feature">
-                        <div class="welcome-feature-icon">
-                            <i class="fas fa-bus"></i>
-                        </div>
-                        <div class="welcome-feature-content">
-                            <h4 data-translate="welcome.bus.title">Buses</h4>
-                            <p data-translate="welcome.bus.description">On the wedding day, after the ceremony, we'll show you exactly where to catch the bus to the reception venue. During the party, we'll display the bus departure times so you know when the buses leave back to the hotels.</p>
-                        </div>
+                <!-- Bus info box -->
+                <div class="welcome-feature" style="max-width: 500px; margin: 0 auto; text-align: left;">
+                    <div class="welcome-feature-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="welcome-feature-content">
+                        <p class="mb-0" data-translate="welcome.bus.description">On the wedding day, we'll show you where to catch the bus to the reception venue and the departure times for the buses back to the hotels.</p>
                     </div>
                 </div>
 
                 <!-- CTA -->
-                <div class="welcome-cta text-center mt-4">
+                <div class="welcome-cta mt-4">
                     <button class="btn btn-primary btn-lg welcome-start-btn" onclick="closeWelcomeModal()">
                         <span data-translate="welcome.button">Let's Get Started!</span>
                         <i class="fas fa-arrow-right ms-2"></i>
@@ -1352,7 +1333,7 @@
                 </div>
 
                 <!-- Don't show again checkbox -->
-                <div class="welcome-remember text-center mt-3">
+                <div class="welcome-remember mt-3">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" id="welcome-dont-show">
                         <span data-translate="welcome.dontshow">Don't show this again</span>
