@@ -76,6 +76,23 @@ def rsvp():
                          show_warning=False)
 
 
+@bp.route('/<token>', methods=['GET'])
+@rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
+def rsvp_with_token(token):
+    """Handle RSVP access via direct token link (e.g., /rsvp/abc123)."""
+    # Validate token and store in session
+    guest = GuestService.get_guest_by_token(token)
+    if not guest:
+        logger.warning(f"Invalid token in URL: {token}")
+        abort(404)
+    
+    # Store token in session
+    session['guest_token'] = token
+    logger.info(f"Token stored in session from URL: {guest.name}")
+    
+    # Redirect to main RSVP route (which now has the session)
+    return redirect(url_for('rsvp.rsvp'))
+
 @bp.route('/edit', methods=['GET', 'POST'])
 @rate_limit(max_requests=TimeLimit.RATE_LIMIT_MAX_REQUESTS, window=TimeLimit.RATE_LIMIT_WINDOW)
 def edit():
