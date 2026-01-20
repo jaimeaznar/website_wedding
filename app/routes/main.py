@@ -41,7 +41,6 @@ def index():
         logger.error(f"Error rendering template: {str(e)}")
         raise
 
-
 @bp.route('/health')
 def health():
     """Health check endpoint for Railway/load balancers."""
