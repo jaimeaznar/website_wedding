@@ -265,7 +265,7 @@
             id="allergen_PLACEHOLDER_{{ allergen.id }}">
         <label class="form-check-label"
             for="allergen_PLACEHOLDER_{{ allergen.id }}"
-            data-translate="allergen.{{ allergen.name|lower|replace(' ', '')|replace('(treenuts)', 'nuts')|replace('(', '')|replace(')', '') }}"
+            data-translate="allergen.{{ allergen.name|lower|replace(' (tree nuts)', '')|replace(' ', '') }}"
             data-allergen-fallback="{{ allergen.name }}">
             {{ allergen.name }}
         </label>
