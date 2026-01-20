@@ -247,29 +247,6 @@
     </div>
 </div>
 
-<!-- Personal Message Modal -->
-{% if personal_message %}
-<div class="modal fade" id="personalMessageModal" tabindex="-1" aria-labelledby="personalMessageModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center px-4 pb-4">
-                <div class="mb-4">
-                    <i class="fas fa-heart text-danger" style="font-size: 3rem;"></i>
-                </div>
-                <div class="personal-message mb-4">
-                    {{ personal_message | safe }}
-                </div>
-                <button type="button" class="btn btn-primary btn-lg" data-bs-dismiss="modal">
-                    <span data-translate="modal.personal.continue">Continue to RSVP →</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     // Show personal message modal on page load
     document.addEventListener('DOMContentLoaded', function() {
@@ -288,7 +265,7 @@
             id="allergen_PLACEHOLDER_{{ allergen.id }}">
         <label class="form-check-label"
             for="allergen_PLACEHOLDER_{{ allergen.id }}"
-            data-translate="allergen.{{ allergen.name|lower|replace(' ', '')|replace('(treenuts)', 'nuts')|replace('(', '')|replace(')', '') }}"
+            data-translate="allergen.{{ allergen.name|lower|replace(' (tree nuts)', '')|replace(' ', '') }}"
             data-allergen-fallback="{{ allergen.name }}">
             {{ allergen.name }}
         </label>
