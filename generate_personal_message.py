@@ -72,7 +72,7 @@ TEMPLATES: Dict[str, str] = {
 
 def generate_rsvp_link(token: str) -> str:
     """Generate the RSVP link from a token."""
-    return f"{BASE_URL}/{token}"
+    return f"{BASE_URL}/?token={token}"
 
 
 def generate_personal_message(
