@@ -247,15 +247,6 @@
     </div>
 </div>
 
-<script>
-    // Show personal message modal on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        var modal = new bootstrap.Modal(document.getElementById('personalMessageModal'));
-        modal.show();
-    });
-</script>
-{% endif %}
-
 <!-- Template for allergen sections -->
 <template id="allergen-template">
     {% for allergen in allergens %}

@@ -1,4 +1,4 @@
-// app/static/js/rsvp.js - IMPROVED VERSION
+// app/static/js/rsvp.js - IMPROVED VERSION WITH TRANSLATIONS
 document.addEventListener('DOMContentLoaded', function () {
     console.log("RSVP form script loaded");
 
@@ -65,17 +65,22 @@ document.addEventListener('DOMContentLoaded', function () {
             console.warn("Allergen template not found");
         }
 
+        // Use data-translate attributes for dynamic translation
+        const titleKey = type === 'adult' ? 'adult' : 'child';
+        const titleDefault = type === 'adult' ? 'Additional Adult' : 'Child';
+
         card.innerHTML = `
-            <h5 class="mb-3">${type === 'adult' ? 'Additional Adult' : 'Child'} #${index + 1}</h5>
+            <h5 class="mb-3"><span data-translate="${titleKey}">${titleDefault}</span> #${index + 1}</h5>
             <div class="mb-3">
-                <label class="form-label">Name*</label>
+                <label class="form-label"><span data-translate="rsvp.guest.name">Name</span>*</label>
                 <input type="text" class="form-control" name="${type}_name_${index}" required>
             </div>
             <div class="mb-3">
-                <h6 class="mb-3">Dietary Restrictions</h6>
+                <h6 class="mb-3" data-translate="rsvp.dietary.title">Dietary Restrictions</h6>
                 ${allergenContent}
             </div>
         `;
+        
         return card;
     }
 
@@ -125,6 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
             for (let i = 0; i < count; i++) {
                 adultsContainer.appendChild(createGuestInput('adult', i));
             }
+            // Update translations for new elements
+            if (window.translator) {
+                window.translator.updatePageTranslations();
+            }
             // Prefill after creating inputs
             setTimeout(prefillAdditionalGuests, 50);
         });
@@ -148,6 +157,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const count = parseInt(this.value) || 0;
             for (let i = 0; i < count; i++) {
                 childrenContainer.appendChild(createGuestInput('child', i));
+            }
+            // Update translations for new elements
+            if (window.translator) {
+                window.translator.updatePageTranslations();
             }
             // Prefill after creating inputs
             setTimeout(prefillAdditionalGuests, 50);
@@ -203,7 +216,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Try different possible field name formats for custom allergens
                 const possibleCustomNames = [
                     `custom_allergen_${guestName.toLowerCase().replace(' ', '_')}`,
-                    `custom_allergen_main`                ];
+                    `custom_allergen_main`
+                ];
 
                 let found = false;
                 possibleCustomNames.forEach(name => {
@@ -223,8 +237,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-
 
     // Call prefill function with a slight delay to ensure all elements are rendered
     setTimeout(prefillAllergens, 100);
