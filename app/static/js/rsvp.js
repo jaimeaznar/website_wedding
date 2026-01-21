@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("No radio buttons found, already RSVP'd");
     }
 
-    // Handle additional guests
     function createGuestInput(type, index) {
         console.log(`Creating ${type} input for index ${index}`);
         const card = document.createElement('div');
@@ -69,12 +68,33 @@ document.addEventListener('DOMContentLoaded', function () {
         const titleKey = type === 'adult' ? 'adult' : 'child';
         const titleDefault = type === 'adult' ? 'Additional Adult' : 'Child';
 
+        // Add "needs menu" checkbox only for children
+        let needsMenuHtml = '';
+        if (type === 'child') {
+            needsMenuHtml = `
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" 
+                        name="child_needs_menu_${index}" 
+                        id="child_needs_menu_${index}">
+                    <label class="form-check-label" for="child_needs_menu_${index}">
+                        <span data-translate="rsvp.child.needs.menu">With menu</span>
+                    </label>
+                </div>
+                <div class="form-text text-muted">
+                    <small data-translate="rsvp.child.needs.menu.help">Check if this child needs a meal</small>
+                </div>
+            </div>
+            `;
+        }
+
         card.innerHTML = `
             <h5 class="mb-3"><span data-translate="${titleKey}">${titleDefault}</span> #${index + 1}</h5>
             <div class="mb-3">
                 <label class="form-label"><span data-translate="rsvp.guest.name">Name</span>*</label>
                 <input type="text" class="form-control" name="${type}_name_${index}" required>
             </div>
+            ${needsMenuHtml}
             <div class="mb-3">
                 <h6 class="mb-3" data-translate="rsvp.dietary.title">Dietary Restrictions</h6>
                 ${allergenContent}
@@ -103,6 +123,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         nameInput.value = guest.name;
                         console.log(`Prefilled child ${childIndex}: ${guest.name}`);
                     }
+                    
+                    // Prefill needs_menu checkbox for children
+                    const needsMenuCheckbox = document.querySelector(`input[name="child_needs_menu_${childIndex}"]`);
+                    if (needsMenuCheckbox && guest.needs_menu) {
+                        needsMenuCheckbox.checked = true;
+                        console.log(`Prefilled child ${childIndex} needs_menu: ${guest.needs_menu}`);
+                    }
+                    
                     childIndex++;
                 } else {
                     const nameInput = document.querySelector(`input[name="adult_name_${adultIndex}"]`);

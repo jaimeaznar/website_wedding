@@ -203,10 +203,14 @@ class RSVPService:
         for i in range(rsvp.children_count):
             name = form_data.get(f'child_name_{i}', '').strip()
             if name:
+                # Check if child needs a menu (checkbox: present in form_data = checked)
+                needs_menu = f'child_needs_menu_{i}' in form_data
+                
                 guest_obj = AdditionalGuest(
                     rsvp_id=rsvp.id,
                     name=name,
-                    is_child=True
+                    is_child=True,
+                    needs_menu=needs_menu
                 )
                 db.session.add(guest_obj)
                 
@@ -214,7 +218,7 @@ class RSVPService:
                 AllergenService.process_guest_allergens(
                     rsvp.id, name, form_data, f'child_{i}'
                 )
-    
+
     @staticmethod
     def cancel_rsvp(guest: Guest) -> Tuple[bool, str]:
         """
@@ -306,7 +310,6 @@ class RSVPService:
         attending_rsvps = RSVPService.get_attending_rsvps()
         
         summary = {
-            'to_church': 0,
             'to_reception': 0,
             'to_hotel': 0,
             'total_requiring_transport': 0

@@ -70,6 +70,12 @@ const translations = {
         'rsvp.cancelled.message': 'Your RSVP has been cancelled.',
         'rsvp.change.mind': 'If you change your mind before the RSVP deadline, please contact us directly at',
 
+        // Child menu option
+        'rsvp.child.needs.menu': 'With menu',
+        'rsvp.child.needs.menu.help': 'Check if this child needs a meal',
+        'rsvp.child.with.menu': 'with menu',
+        'rsvp.child.no.menu': 'no menu',
+
         // RSVP Confirmation Pages
         'rsvp.explore.message': 'Now discover all the details about our wedding: venue, hotels, activities, and more!',
         'rsvp.explore.button': 'Explore Wedding Details',
@@ -472,6 +478,12 @@ const translations = {
         'rsvp.cancelled': 'Confirmación Cancelada',
         'rsvp.cancelled.message': 'Tu confirmación ha sido cancelada.',
         'rsvp.change.mind': 'Si cambias de opinión antes de la fecha límite de la confirmación, por favor contáctanos directamente en',
+
+        // Child menu option
+        'rsvp.child.needs.menu': 'Con menú',
+        'rsvp.child.needs.menu.help': 'Marca si este niño necesita menú',
+        'rsvp.child.with.menu': 'con menú',
+        'rsvp.child.no.menu': 'sin menú',
 
         // RSVP Confirmation Pages  
         'rsvp.explore.message': '¡Descubre todos los detalles de nuestra boda: lugar, hoteles, actividades y más!',

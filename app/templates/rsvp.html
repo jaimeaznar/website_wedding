@@ -280,12 +280,12 @@
 </div>
 {% endfor %}
 {% endif %}
-<!-- Hidden data for existing additional guests -->
+<<!-- Hidden data for existing additional guests -->
 {% if rsvp and rsvp.additional_guests %}
 <script id="existing-guests-data" type="application/json">
 [
 {% for guest in rsvp.additional_guests %}
-    {"name": "{{ guest.name }}", "is_child": {{ 'true' if guest.is_child else 'false' }}}{% if not loop.last %},{% endif %}
+    {"name": "{{ guest.name }}", "is_child": {{ 'true' if guest.is_child else 'false' }}, "needs_menu": {{ 'true' if guest.needs_menu else 'false' }}}{% if not loop.last %},{% endif %}
 {% endfor %}
 ]
 </script>

@@ -186,13 +186,96 @@ class TestAdditionalGuestModel:
             assert additional_guest.rsvp_id == sample_rsvp.id
             assert additional_guest.name == 'Jane Doe'
             assert additional_guest.is_child is False
+            assert additional_guest.needs_menu is False  # Default value
             
             assert child_guest.id is not None
             assert child_guest.rsvp_id == sample_rsvp.id
             assert child_guest.name == 'Baby Doe'
             assert child_guest.is_child is True
+            assert child_guest.needs_menu is False  # Default value
             
             # Clean up
             db.session.delete(additional_guest)
             db.session.delete(child_guest)
+            db.session.commit()
+
+    def test_child_with_menu(self, app, sample_rsvp):
+        """Test creating a child guest with menu requirement."""
+        with app.app_context():
+            # Clear any existing additional guests
+            AdditionalGuest.query.filter_by(rsvp_id=sample_rsvp.id).delete()
+            db.session.commit()
+            
+            # Child WITH menu
+            child_with_menu = AdditionalGuest(
+                rsvp_id=sample_rsvp.id,
+                name='Hungry Child',
+                is_child=True,
+                needs_menu=True
+            )
+            db.session.add(child_with_menu)
+            
+            # Child WITHOUT menu
+            child_no_menu = AdditionalGuest(
+                rsvp_id=sample_rsvp.id,
+                name='Not Hungry Child',
+                is_child=True,
+                needs_menu=False
+            )
+            db.session.add(child_no_menu)
+            db.session.commit()
+            
+            assert child_with_menu.id is not None
+            assert child_with_menu.is_child is True
+            assert child_with_menu.needs_menu is True
+            
+            assert child_no_menu.id is not None
+            assert child_no_menu.is_child is True
+            assert child_no_menu.needs_menu is False
+            
+            # Verify we can query by needs_menu
+            children_with_menu = AdditionalGuest.query.filter_by(
+                rsvp_id=sample_rsvp.id,
+                is_child=True,
+                needs_menu=True
+            ).all()
+            assert len(children_with_menu) == 1
+            assert children_with_menu[0].name == 'Hungry Child'
+            
+            children_no_menu = AdditionalGuest.query.filter_by(
+                rsvp_id=sample_rsvp.id,
+                is_child=True,
+                needs_menu=False
+            ).all()
+            assert len(children_no_menu) == 1
+            assert children_no_menu[0].name == 'Not Hungry Child'
+            
+            # Clean up
+            db.session.delete(child_with_menu)
+            db.session.delete(child_no_menu)
+            db.session.commit()
+
+    def test_needs_menu_default_value(self, app, sample_rsvp):
+        """Test that needs_menu defaults to False."""
+        with app.app_context():
+            # Clear any existing additional guests
+            AdditionalGuest.query.filter_by(rsvp_id=sample_rsvp.id).delete()
+            db.session.commit()
+            
+            # Create child without specifying needs_menu
+            child = AdditionalGuest(
+                rsvp_id=sample_rsvp.id,
+                name='Default Child',
+                is_child=True
+            )
+            db.session.add(child)
+            db.session.commit()
+            
+            # Refresh from database to ensure we get the actual stored value
+            db.session.refresh(child)
+            
+            assert child.needs_menu is False
+            
+            # Clean up
+            db.session.delete(child)
             db.session.commit()

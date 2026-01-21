@@ -120,6 +120,7 @@ class AdditionalGuest(db.Model):
     rsvp_id = db.Column(db.Integer, db.ForeignKey('rsvp.id', ondelete='CASCADE'), nullable=False)
     name = db.Column(db.String(120), nullable=False)
     is_child = db.Column(db.Boolean, default=False)
+    needs_menu = db.Column(db.Boolean, default=False)  # For children: whether they need a meal
     created_at = db.Column(db.DateTime, default=_utc_now)
     
     # Relationships
