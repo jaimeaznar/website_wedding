@@ -141,7 +141,6 @@ class GuestService:
         total_guests = len(guests)
         total_people_attending = 0
         transport_stats = {
-            'to_church': 0,
             'to_reception': 0,
             'to_hotel': 0,
             'hotels': set()
