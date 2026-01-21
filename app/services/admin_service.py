@@ -177,7 +177,6 @@ class AdminService:
         # Get detailed lists
         attending_rsvps = RSVPService.get_attending_rsvps()
         
-        to_church = []
         to_reception = []
         to_hotel = []
         hotels = {}
@@ -203,7 +202,6 @@ class AdminService:
         
         return {
             'summary': transport_summary,
-            'to_church': to_church,
             'to_reception': to_reception,
             'to_hotel': to_hotel,
             'hotels': hotels
