@@ -223,6 +223,208 @@ class TestRSVPService:
             app.config['RSVP_DEADLINE'] = past_date
             assert RSVPService.is_rsvp_deadline_passed() is True
 
+    def test_create_rsvp_with_children_needs_menu(self, app):
+        """Test creating an RSVP with children who need menu."""
+        with app.app_context():
+            from app.models.rsvp import AdditionalGuest
+            from datetime import datetime, timedelta
+
+            # Ensure RSVP deadline is in the future
+            future_deadline = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+            app.config['RSVP_DEADLINE'] = future_deadline
+            
+            # Create guest
+            guest = GuestService.create_guest("Children Menu Test Guest", "555-CHILDMENU")
+            
+            # Prepare form data with 2 children - one with menu, one without
+            form_data = {
+                'is_attending': 'yes',
+                'hotel_name': 'Test Hotel',
+                'adults_count': '0',
+                'children_count': '2',
+                'child_name_0': 'Child With Menu',
+                'child_needs_menu_0': 'on',  # Checkbox checked
+                'child_name_1': 'Child No Menu',
+                # child_needs_menu_1 NOT present = unchecked
+            }
+            
+            # Create RSVP
+            success, message, rsvp = RSVPService.create_or_update_rsvp(guest, form_data)
+
+            # Debug: print error message if failed
+            if not success:
+                print(f"RSVP creation failed: {message}")
+            
+            assert success is True, f"RSVP creation failed: {message}"
+            
+            assert success is True
+            assert rsvp is not None
+            assert rsvp.children_count == 2
+            
+            # Verify children were saved with correct needs_menu values
+            children = AdditionalGuest.query.filter_by(
+                rsvp_id=rsvp.id,
+                is_child=True
+            ).order_by(AdditionalGuest.name).all()
+            
+            assert len(children) == 2
+            
+            # Child No Menu (alphabetically first)
+            child_no_menu = next(c for c in children if c.name == 'Child No Menu')
+            assert child_no_menu.needs_menu is False
+            
+            # Child With Menu
+            child_with_menu = next(c for c in children if c.name == 'Child With Menu')
+            assert child_with_menu.needs_menu is True
+            
+            # Clean up
+            AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
+            db.session.delete(rsvp)
+            db.session.delete(guest)
+            db.session.commit()
+
+    def test_create_rsvp_children_default_no_menu(self, app):
+        """Test that children default to needs_menu=False when checkbox not checked."""
+        with app.app_context():
+            from app.models.rsvp import AdditionalGuest
+            from datetime import datetime, timedelta
+
+            # Ensure RSVP deadline is in the future
+            future_deadline = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+            app.config['RSVP_DEADLINE'] = future_deadline
+            
+            # Create guest
+            guest = GuestService.create_guest("Default Menu Test Guest", "555-DEFAULTMENU")
+            
+            # Prepare form data with child - NO checkbox checked
+            form_data = {
+                'is_attending': 'yes',
+                'hotel_name': 'Test Hotel',
+                'adults_count': '0',
+                'children_count': '1',
+                'child_name_0': 'Default Child',
+                # No child_needs_menu_0 = defaults to False
+            }
+            
+            # Create RSVP
+            success, message, rsvp = RSVPService.create_or_update_rsvp(guest, form_data)
+            
+            assert success is True, f"RSVP creation failed: {message}"
+            
+            # Verify child has needs_menu=False
+            child = AdditionalGuest.query.filter_by(
+                rsvp_id=rsvp.id,
+                is_child=True
+            ).first()
+            
+            assert child is not None
+            assert child.name == 'Default Child'
+            assert child.needs_menu is False
+            
+            # Clean up
+            AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
+            db.session.delete(rsvp)
+            db.session.delete(guest)
+            db.session.commit()
+
+    def test_update_rsvp_children_menu_preference(self, app):
+        """Test updating an RSVP changes children menu preferences correctly."""
+        with app.app_context():
+            from app.models.rsvp import AdditionalGuest
+            from datetime import datetime, timedelta
+
+            # Ensure RSVP deadline is in the future
+            future_deadline = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+            app.config['RSVP_DEADLINE'] = future_deadline
+            
+            # Create guest
+            guest = GuestService.create_guest("Update Menu Test Guest", "555-UPDATEMENU")
+            
+            # First submission: child WITHOUT menu
+            form_data_1 = {
+                'is_attending': 'yes',
+                'hotel_name': 'Test Hotel',
+                'adults_count': '0',
+                'children_count': '1',
+                'child_name_0': 'Toggle Child',
+                # No checkbox = no menu
+            }
+            
+            success, message, rsvp = RSVPService.create_or_update_rsvp(guest, form_data_1)
+            assert success is True, f"First RSVP creation failed: {message}"
+            
+            # Verify child has no menu
+            child = AdditionalGuest.query.filter_by(rsvp_id=rsvp.id, is_child=True).first()
+            assert child.needs_menu is False
+            
+            # Second submission: same child WITH menu
+            form_data_2 = {
+                'is_attending': 'yes',
+                'hotel_name': 'Test Hotel',
+                'adults_count': '0',
+                'children_count': '1',
+                'child_name_0': 'Toggle Child',
+                'child_needs_menu_0': 'on',  # Now checked
+            }
+            
+            success, message, rsvp = RSVPService.create_or_update_rsvp(guest, form_data_2)
+            assert success is True, f"Second RSVP update failed: {message}"
+            
+            # Verify child now has menu
+            child = AdditionalGuest.query.filter_by(rsvp_id=rsvp.id, is_child=True).first()
+            assert child is not None
+            assert child.name == 'Toggle Child'
+            assert child.needs_menu is True
+            
+            # Clean up
+            AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
+            db.session.delete(rsvp)
+            db.session.delete(guest)
+            db.session.commit()
+
+    def test_adults_do_not_have_needs_menu_in_form(self, app):
+        """Test that adults are created without needs_menu being set from form."""
+        with app.app_context():
+            from app.models.rsvp import AdditionalGuest
+            from datetime import datetime, timedelta
+
+            # Ensure RSVP deadline is in the future
+            future_deadline = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+            app.config['RSVP_DEADLINE'] = future_deadline
+            
+            # Create guest
+            guest = GuestService.create_guest("Adult Menu Test Guest", "555-ADULTMENU")
+            
+            # Prepare form data with adult
+            form_data = {
+                'is_attending': 'yes',
+                'hotel_name': 'Test Hotel',
+                'adults_count': '1',
+                'children_count': '0',
+                'adult_name_0': 'Test Adult',
+            }
+            
+            # Create RSVP
+            success, message, rsvp = RSVPService.create_or_update_rsvp(guest, form_data)
+            
+            assert success is True, f"RSVP creation failed: {message}"
+            
+            # Verify adult was created with default needs_menu=False
+            adult = AdditionalGuest.query.filter_by(
+                rsvp_id=rsvp.id,
+                is_child=False
+            ).first()
+            
+            assert adult is not None
+            assert adult.name == 'Test Adult'
+            assert adult.is_child is False
+            assert adult.needs_menu is False  # Default value, not set from form
+            
+            # Clean up
+            AdditionalGuest.query.filter_by(rsvp_id=rsvp.id).delete()
+            db.session.delete(rsvp)
+            db.session.delete(guest)
+            db.session.commit()
 
 class TestAllergenService:
     """Test cases for AllergenService."""

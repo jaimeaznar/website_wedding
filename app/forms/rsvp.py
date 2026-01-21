@@ -28,6 +28,7 @@ class AdditionalGuestForm(FlaskForm):
     """
     name = StringField('Name', validators=[DataRequired(), Length(max=120)])
     is_child = BooleanField('Child')
+    needs_menu = BooleanField('Needs Menu', default=False)  # For children: whether they need a meal
     allergens = FieldList(FormField(AllergenForm))
     
     class Meta:

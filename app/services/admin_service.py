@@ -80,6 +80,17 @@ class AdminService:
             # Get allergens grouped by guest
             allergens = AllergenService.get_allergens_for_rsvp(rsvp.id)
             
+            # Count children with/without menu
+            children_with_menu = 0
+            children_no_menu = 0
+            if rsvp.is_attending:
+                for additional in rsvp.additional_guests:
+                    if additional.is_child:
+                        if additional.needs_menu:
+                            children_with_menu += 1
+                        else:
+                            children_no_menu += 1
+            
             rsvp_data = {
                 'guest_name': guest.name,
                 'guest_phone': guest.phone,
@@ -87,6 +98,8 @@ class AdminService:
                 'status': 'Cancelled' if rsvp.is_cancelled else ('Attending' if rsvp.is_attending else 'Declined'),
                 'adults_count': rsvp.adults_count if rsvp.is_attending else 0,
                 'children_count': rsvp.children_count if rsvp.is_attending else 0,
+                'children_with_menu': children_with_menu,
+                'children_no_menu': children_no_menu,
                 'total_guests': 1 + len(rsvp.additional_guests) if rsvp.is_attending else 0,
                 'hotel': rsvp.hotel_name if rsvp.is_attending else None,
                 'transport_reception': rsvp.transport_to_reception if rsvp.is_attending else False,
@@ -102,7 +115,8 @@ class AdminService:
                 for additional in rsvp.additional_guests:
                     rsvp_data['additional_guests'].append({
                         'name': additional.name,
-                        'is_child': additional.is_child
+                        'is_child': additional.is_child,
+                        'needs_menu': additional.needs_menu if additional.is_child else None
                     })
             
             report.append(rsvp_data)

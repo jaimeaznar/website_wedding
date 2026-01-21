@@ -185,6 +185,8 @@ class PDFService:
         # Get dietary data
         dietary_data = AdminService.get_dietary_report()
 
+        children_menu_data = PDFService._get_children_menu_data()
+
         # Executive Summary
         elements.append(Paragraph("Executive Summary", heading_style))
         
@@ -192,7 +194,9 @@ class PDFService:
             ['Metric', 'Count'],
             ['Total Guests with Restrictions', str(dietary_data['total_guests_with_restrictions'])],
             ['Standard Allergens', str(len(dietary_data['standard_allergens']))],
-            ['Custom Restrictions', str(len(dietary_data['custom_allergens']))]
+            ['Custom Restrictions', str(len(dietary_data['custom_allergens']))],
+            ['Children with Menu', str(children_menu_data['total_with_menu'])],
+            ['Children without Menu', str(children_menu_data['total_no_menu'])]
         ]
         
         summary_table = Table(summary_data, colWidths=[3.5 * inch, 2 * inch])
@@ -311,6 +315,89 @@ class PDFService:
                 elements.append(guest_table)
                 elements.append(Spacer(1, 0.2 * inch))
         
+        # Children Menu Requirements
+        if children_menu_data['total_children'] > 0:
+            elements.append(PageBreak())
+            elements.append(Paragraph("Children Menu Requirements", heading_style))
+            
+            # Summary
+            elements.append(Paragraph(
+                f"Total Children: <b>{children_menu_data['total_children']}</b> "
+                f"({children_menu_data['total_with_menu']} with menu, "
+                f"{children_menu_data['total_no_menu']} without menu)",
+                ParagraphStyle('ChildrenSummary', parent=normal_style, fontSize=11, spaceAfter=15)
+            ))
+            
+            # Children WITH menu
+            if children_menu_data['with_menu']:
+                elements.append(Paragraph(
+                    f"<b>Children Requiring Menu</b> ({children_menu_data['total_with_menu']})",
+                    ParagraphStyle('MenuTitle', 
+                                parent=normal_style,
+                                fontSize=12,
+                                textColor=PDFService.COLOR_SUCCESS,
+                                spaceAfter=5)
+                ))
+                
+                menu_data = [['Child Name', 'Parent/Guardian', 'Contact']]
+                for child in sorted(children_menu_data['with_menu'], key=lambda x: x['name']):
+                    menu_data.append([
+                        child['name'],
+                        child['parent'],
+                        child['phone'] or '-'
+                    ])
+                
+                menu_table = Table(menu_data, colWidths=[2.2 * inch, 2.2 * inch, 1.6 * inch])
+                menu_table.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_SUCCESS),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, 0), (-1, 0), 10),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                    ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY]),
+                    ('LEFTPADDING', (0, 0), (-1, -1), 8),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+                ]))
+                elements.append(menu_table)
+                elements.append(Spacer(1, 0.2 * inch))
+            
+            # Children WITHOUT menu
+            if children_menu_data['no_menu']:
+                elements.append(Paragraph(
+                    f"<b>Children Not Requiring Menu</b> ({children_menu_data['total_no_menu']})",
+                    ParagraphStyle('NoMenuTitle',
+                                parent=normal_style,
+                                fontSize=12,
+                                textColor=PDFService.COLOR_WARNING,
+                                spaceAfter=5)
+                ))
+                
+                no_menu_data = [['Child Name', 'Parent/Guardian', 'Contact']]
+                for child in sorted(children_menu_data['no_menu'], key=lambda x: x['name']):
+                    no_menu_data.append([
+                        child['name'],
+                        child['parent'],
+                        child['phone'] or '-'
+                    ])
+                
+                no_menu_table = Table(no_menu_data, colWidths=[2.2 * inch, 2.2 * inch, 1.6 * inch])
+                no_menu_table.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), PDFService.COLOR_WARNING),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, 0), (-1, 0), 10),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                    ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                    ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, PDFService.COLOR_LIGHT_GRAY]),
+                    ('LEFTPADDING', (0, 0), (-1, -1), 8),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+                ]))
+                elements.append(no_menu_table)
+                elements.append(Spacer(1, 0.2 * inch))
+        
         # Important notes for venue
         elements.append(PageBreak())
         elements.append(Paragraph("Important Notes for Venue Staff", heading_style))
@@ -348,6 +435,49 @@ class PDFService:
         
         logger.info(f"Generated dietary PDF: {len(pdf_data)} bytes")
         return pdf_data
+    
+    @staticmethod
+    def _get_children_menu_data() -> Dict[str, List[Dict[str, Any]]]:
+        """
+        Get children menu requirements for PDF report.
+        
+        Returns:
+            Dictionary with 'with_menu' and 'no_menu' lists
+        """
+        from app.models.rsvp import RSVP, AdditionalGuest
+        
+        children_with_menu = []
+        children_no_menu = []
+        
+        # Get all attending RSVPs
+        attending_rsvps = RSVP.query.filter_by(is_attending=True, is_cancelled=False).all()
+        
+        for rsvp in attending_rsvps:
+            # Get children for this RSVP
+            children = AdditionalGuest.query.filter_by(
+                rsvp_id=rsvp.id,
+                is_child=True
+            ).all()
+            
+            for child in children:
+                child_info = {
+                    'name': child.name,
+                    'parent': rsvp.guest.name,
+                    'phone': rsvp.guest.phone
+                }
+                
+                if child.needs_menu:
+                    children_with_menu.append(child_info)
+                else:
+                    children_no_menu.append(child_info)
+        
+        return {
+            'with_menu': children_with_menu,
+            'no_menu': children_no_menu,
+            'total_with_menu': len(children_with_menu),
+            'total_no_menu': len(children_no_menu),
+            'total_children': len(children_with_menu) + len(children_no_menu)
+        }
     
     @staticmethod
     def generate_transport_pdf() -> bytes:

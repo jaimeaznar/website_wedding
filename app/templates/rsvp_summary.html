@@ -50,7 +50,17 @@
                                 {% if rsvp.additional_guests %}
                                 <ul class="list-unstyled mt-2 mb-0 small text-muted">
                                     {% for additional in rsvp.additional_guests %}
-                                    <li>• {{ additional.name }}{% if additional.is_child %} <span class="badge bg-info">child</span>{% endif %}</li>
+                                    <li>
+                                        • {{ additional.name }}
+                                        {% if additional.is_child %}
+                                            <span class="badge bg-info" data-translate="child">child</span>
+                                            {% if additional.needs_menu %}
+                                                <span class="badge bg-success" data-translate="rsvp.child.with.menu">with menu</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary" data-translate="rsvp.child.no.menu">no menu</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </li>
                                     {% endfor %}
                                 </ul>
                                 {% endif %}
