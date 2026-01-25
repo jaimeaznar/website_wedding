@@ -562,7 +562,7 @@ const translations = {
         'schedule.dancing.description': '¡Baila toda la noche!',
         'schedule.dancing.until': '22:30 - Cierre',
         'schedule.note.title': 'Importante:',
-        'schedule.note.text': 'Se proporcionará transporte entre la catedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu confirmación.',
+        'schedule.note.text': 'Se proporcionará transporte entre la concatedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu confirmación.',
         'schedule.bus.location': 'Parada de autobús: Plaza Luis Obispo Galarza',
         // Venue Modal
         'venue.title': 'Ceremonia y banquete',
@@ -618,7 +618,7 @@ const translations = {
         'activities.caceres.culture.title': 'Museos y Cultura',
         'activities.caceres.helga.desc': 'Museo de arte contemporáneo. ¡Visitas guiadas gratuitas pero hay que reservar!',
         'activities.caceres.teatro.desc': 'Consulta la programación de teatro, conciertos o cine independiente',
-        'activities.caceres.cathedral.desc': 'Catedral gótica, lugar de la ceremonia de boda',
+        'activities.caceres.cathedral.desc': 'Concatedral gótica, lugar de la ceremonia de boda',
         'activities.caceres.viewpoints.title': 'Miradores y Vistas',
         'activities.caceres.montana.desc': 'Una de las mejores vistas de la ciudad! Perfecto para el atardecer.',
         'activities.caceres.galarza.desc': 'Cerca de la plaza con parking y buenas vistas',
