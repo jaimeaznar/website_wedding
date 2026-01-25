@@ -32,32 +32,46 @@ load_dotenv()
 BASE_URL = "https://wedding.aznarroa.com"
 
 # Spanish template
-TEMPLATE_ES = """🎊 *¡Hola {name}!*
+TEMPLATE_ES = """
+🎊 *¡Querido {name}!*
 
-Estás invitado/a a la boda de *Irene y Jaime* el 6 de junio de 2026.
+Irene y yo tenemos el placer de invitarte a nuestra boda, que celebraremos el 6 de junio de 2026.
 
-Por favor, confirma tu asistencia antes del *6 de mayo de 2026* haciendo clic en el siguiente enlace (personal e intransferible):
+Por favor, confirma tu asistencia antes del 6 de mayo de 2026 en este enlace personal e intransferible:
 
 👉 {rsvp_link} 
 
 Descubre todos los detalles de la boda en nuestra web:
+
 🌐 https://wedding.aznarroa.com
 
-¡Esperamos verte allí! 💒"""
+¡Esperamos verte allí! 💒
+
+P.D.: En breve recibirás también nuestra invitación impresa. ✉️
+
+"""
+
+
 
 # English template
-TEMPLATE_EN = """🎊 *Hello {name}!*
+TEMPLATE_EN = """
+🎊 *Hello {name}!*
 
-You are invited to *Irene and Jaime's* wedding on June 6th, 2026.
+Irene and I have the pleasure of inviting you to our wedding, which will be held on June 6th, 2026.
 
-Please confirm your attendance before *May 6th, 2026* by clicking the following personal, non-transferable link:
+Kindly confirm your attendance before May 6th, 2026 through this personal link:
 
 👉 {rsvp_link}
 
-Discover all the wedding details on our website:
+All the information is available on our website:
+
 🌐 https://wedding.aznarroa.com
 
-We hope to see you there! 💒"""
+We very much hope you can join us on this special day. 💒
+
+P.S.: You will be receiving our printed invitation soon. ✉️
+
+"""
 
 # Template mapping
 TEMPLATES: Dict[str, str] = {
