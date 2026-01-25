@@ -460,9 +460,19 @@ class PDFService:
             ).all()
             
             for child in children:
+                # Build parent name with surname
+                parent_name = rsvp.guest.name
+                if rsvp.guest.surname:
+                    parent_name = f"{rsvp.guest.name} {rsvp.guest.surname}"
+                
+                # Build child name with family surname
+                child_name = child.name
+                if rsvp.guest.surname:
+                    child_name = f"{child.name} ({rsvp.guest.surname})"
+                
                 child_info = {
-                    'name': child.name,
-                    'parent': rsvp.guest.name,
+                    'name': child_name,
+                    'parent': parent_name,
                     'phone': rsvp.guest.phone
                 }
                 

@@ -436,8 +436,14 @@
                                                 {% for guest_name, allergen_list
                                                 in guest_allergens.items() %}
                                                 <div class="mb-3">
-                                                    <strong>{{ guest_name
-                                                        }}:</strong>
+                                                    {# Display name with surname #}
+                                                    {% if guest_name == rsvp.guest.name %}
+                                                    {# Main guest: Name Surname #}
+                                                    <strong>{{ guest_name }}{% if rsvp.guest.surname %} {{ rsvp.guest.surname }}{% endif %}:</strong>
+                                                    {% else %}
+                                                    {# Additional guest: Name (Surname) #}
+                                                    <strong>{{ guest_name }}{% if rsvp.guest.surname %} ({{ rsvp.guest.surname }}){% endif %}:</strong>
+                                                    {% endif %}
                                                     <ul
                                                         class="list-unstyled ms-3">
                                                         {% for allergen in

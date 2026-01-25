@@ -199,20 +199,43 @@ class AllergenService:
     @staticmethod
     def get_guests_with_allergen(allergen_name: str) -> List[str]:
         """
-        Get list of guest names who have a specific allergen.
+        Get list of guest names (with surnames) who have a specific allergen.
         
         Args:
             allergen_name: Name of the allergen
             
         Returns:
-            List of guest names
+            List of guest names with surnames
         """
+        from app.models.rsvp import RSVP, AdditionalGuest
+        
+        def get_display_name(guest_allergen: GuestAllergen) -> str:
+            """Build display name with surname for a guest allergen record."""
+            rsvp = RSVP.query.get(guest_allergen.rsvp_id)
+            if not rsvp or not rsvp.guest:
+                return guest_allergen.guest_name
+            
+            main_guest = rsvp.guest
+            main_guest_surname = main_guest.surname or ''
+            
+            # Check if this is the main guest
+            if guest_allergen.guest_name == main_guest.name:
+                # Main guest: "Name Surname"
+                if main_guest_surname:
+                    return f"{guest_allergen.guest_name} {main_guest_surname}"
+                return guest_allergen.guest_name
+            
+            # Additional guest: "Name (Surname family)"
+            if main_guest_surname:
+                return f"{guest_allergen.guest_name} ({main_guest_surname})"
+            return guest_allergen.guest_name
+        
         # Check standard allergens
         allergen = Allergen.query.filter_by(name=allergen_name).first()
         if allergen:
             guest_allergens = GuestAllergen.query.filter_by(allergen_id=allergen.id).all()
-            return [ga.guest_name for ga in guest_allergens]
+            return [get_display_name(ga) for ga in guest_allergens]
         
         # Check custom allergens
         guest_allergens = GuestAllergen.query.filter_by(custom_allergen=allergen_name).all()
-        return [ga.guest_name for ga in guest_allergens]
+        return [get_display_name(ga) for ga in guest_allergens]
