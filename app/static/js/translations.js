@@ -462,7 +462,7 @@ const translations = {
         'rsvp.hotel.help': 'Por favor, haznos saber dónde te alojarás.',
         'rsvp.transport.title': 'Transporte',
         'rsvp.transport.question': '¿Te gustaría que organicemos el transporte?',
-        'rsvp.transport.reception': 'Transporte a la recepción',
+        'rsvp.transport.reception': 'Transporte al banquete',
         'rsvp.transport.hotel': 'Transporte al hotel',
         'rsvp.dietary.title': 'Restricciones Dietéticas',
         'rsvp.dietary.other': 'Otras Restricciones Dietéticas',
@@ -548,9 +548,9 @@ const translations = {
         'schedule.ceremony': 'Ceremonia de Boda',
         'schedule.ceremony.description': 'Acompáñanos a nuestra ceremonia de boda y misa en la hermosa concatedral histórica de Cáceres.',
         'schedule.cathedral': 'Concatedral de Santa María',
-        'schedule.travel': 'Viaje a la Recepción',
+        'schedule.travel': 'Viaje al Banquete',
         'schedule.travel.description': 'Transporte proporcionado',
-        'schedule.reception': 'Recepción y Celebración',
+        'schedule.reception': 'Banquete y Celebración',
         'schedule.reception.time': '20:00 en adelante',
         'schedule.reception.description': '¡Disfruta de una velada de cena, bebidas y baile mientras celebramos nuestro matrimonio!',
         'schedule.venue.name': 'Dehesa la Torrecilla, Trujillo',
@@ -562,7 +562,7 @@ const translations = {
         'schedule.dancing.description': '¡Baila toda la noche!',
         'schedule.dancing.until': '22:30 - Cierre',
         'schedule.note.title': 'Importante:',
-        'schedule.note.text': 'Se proporcionará transporte entre la concatedral y el lugar de la recepción. Por favor, haznos saber si necesitas transporte al completar tu confirmación.',
+        'schedule.note.text': 'Se proporcionará transporte entre la concatedral y el lugar del banquete. Por favor, haznos saber si necesitas transporte al completar tu confirmación.',
         'schedule.bus.location': 'Parada de autobús: Plaza Luis Obispo Galarza',
         // Venue Modal
         'venue.title': 'Ceremonia y banquete',
@@ -781,7 +781,7 @@ const translations = {
         'allergen.halal': 'Halal',
 
         'bus.title': 'Ubicación del Autobús',
-        'bus.message': '¡Los autobuses al lugar de la recepción os están esperando!',
+        'bus.message': '¡Los autobuses al lugar del banquete os están esperando!',
         'bus.location': 'Plaza Luis Obispo Galarza',
         'bus.directions': 'Cómo Llegar',
 
