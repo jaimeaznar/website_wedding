@@ -546,7 +546,7 @@ const translations = {
         'schedule.arrival': 'Llegada y Asientos de Invitados',
         'schedule.arrival.description': 'Por favor, llega temprano para estar sentado antes de la entrada de los novios.',
         'schedule.ceremony': 'Ceremonia de Boda',
-        'schedule.ceremony.description': 'Acompáñanos a nuestra ceremonia de boda y misa en la hermosa catedral histórica de Cáceres.',
+        'schedule.ceremony.description': 'Acompáñanos a nuestra ceremonia de boda y misa en la hermosa concatedral histórica de Cáceres.',
         'schedule.cathedral': 'Concatedral de Santa María',
         'schedule.travel': 'Viaje a la Recepción',
         'schedule.travel.description': 'Transporte proporcionado',
