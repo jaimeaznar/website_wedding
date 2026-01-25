@@ -721,7 +721,7 @@ const translations = {
         'dresscode.women.title': 'Mujeres',
         'dresscode.women.recommended': 'Vestido largo (o midi) de tonos lisos',
         'dresscode.women.no.white': 'Colores blanco, beige o claro',
-        'dresscode.women.no.patterns': 'Estampados llamativos o estravagantes',
+        'dresscode.women.no.patterns': 'Estampados llamativos o extravagantes',
         'dresscode.women.no.sequins': 'Lentejuelas (tipo nochevieja)',
         'dresscode.men.title': 'Hombres',
         'dresscode.men.recommended': 'Chaqué',
