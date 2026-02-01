@@ -56,30 +56,42 @@ class RSVPService:
         """
         Sync RSVP data to Airtable (if configured).
         
-        This runs in a background-safe way - failures don't affect the main RSVP flow.
+        This runs in a background thread - the user gets an immediate response
+        while Airtable sync happens asynchronously. Failures don't affect the main RSVP flow.
         
         Args:
             guest: The guest whose RSVP should be synced
         """
-        try:
-            from app.services.airtable_service import get_airtable_service
-            
-            airtable = get_airtable_service()
-            
-            # Check if Airtable is configured
-            if not airtable.is_configured:
-                logger.debug("Airtable not configured, skipping sync")
-                return
-            
-            # Sync the RSVP to Airtable
-            airtable.sync_rsvp_to_airtable(guest.token)
-            logger.info(f"Synced RSVP for {guest.name} to Airtable")
-            
-        except ImportError:
-            logger.debug("Airtable service not available, skipping sync")
-        except Exception as e:
-            # Log but don't fail - Airtable sync is optional
-            logger.warning(f"Failed to sync RSVP to Airtable for {guest.name}: {e}")
+        import threading
+        
+        # Capture values before thread starts (guest object may not be available later)
+        token = guest.token
+        name = guest.name
+        
+        def sync_task():
+            try:
+                from app import create_app
+                from app.services.airtable_service import get_airtable_service
+                
+                # Create new app context for background thread
+                app = create_app()
+                with app.app_context():
+                    airtable = get_airtable_service()
+                    
+                    if not airtable.is_configured:
+                        logger.debug("Airtable not configured, skipping sync")
+                        return
+                    
+                    airtable.sync_rsvp_to_airtable(token)
+                    logger.info(f"Synced RSVP for {name} to Airtable")
+                    
+            except Exception as e:
+                # Log but don't fail - Airtable sync is optional
+                logger.warning(f"Background Airtable sync failed for {name}: {e}")
+        
+        # Fire and forget - user doesn't wait
+        thread = threading.Thread(target=sync_task, daemon=True)
+        thread.start()
     
     @staticmethod
     def create_or_update_rsvp(
