@@ -43,6 +43,7 @@ const translations = {
 
         // RSVP Form
         'rsvp.welcome': 'Hi',
+        'rsvp.rsvp': 'RSVP',
         'rsvp.last.updated': 'Last updated',
         'rsvp.will.attend': 'Will you attend?',
         'rsvp.yes': 'Yes, I will attend',
@@ -452,6 +453,7 @@ const translations = {
 
         // RSVP Form
         'rsvp.welcome': 'Hola',
+        'rsvp.rsvp': 'Confirmación',
         'rsvp.last.updated': 'Última actualización',
         'rsvp.will.attend': '¿Asistirás?',
         'rsvp.yes': 'Sí, asistiré',
