@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <div class="text-center mb-4">
-                <h1>RSVP</h1>
+                <h1 data-translate="rsvp.rsvp">RSVP</h1>
                 <p class="lead"><span data-translate="rsvp.welcome">Hi</span>, {{ guest.name }}!</p>
                 {% if rsvp and not rsvp.is_cancelled and rsvp.is_editable %}
                 <p class="text-muted"><span data-translate="rsvp.last.updated">Last updated</span>: {{
