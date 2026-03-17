@@ -516,6 +516,16 @@ class AirtableService:
             )
             db.session.add(local_guest)
             db.session.flush()  # Get the guest ID
+            
+            # If we generated a local token, push it to Airtable
+            # so both systems stay in sync and future syncs don't overwrite it
+            if not airtable_guest.token:
+                try:
+                    self.table.update(airtable_guest.record_id, {'Token': token})
+                    logger.info(f"Pushed generated token to Airtable for {local_guest.name}")
+                except Exception as e:
+                    logger.warning(f"Failed to push token to Airtable for {local_guest.name}: {e}")
+            
             logger.debug(f"Created local guest: {local_guest.name}")
         
         # Always sync RSVP status
