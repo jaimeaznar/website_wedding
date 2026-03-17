@@ -338,6 +338,56 @@ class TestSyncGuestToLocalDb:
             db.session.delete(local_guest)
             db.session.commit()
 
+    def test_sync_creates_new_guest_without_token_pushes_to_airtable(self, app):
+        """Sync should generate a token locally and push it to Airtable when guest has no token."""
+        with app.app_context():
+            airtable_guest = AirtableGuest(
+                record_id='recNoToken123',
+                name='No Token Guest',
+                surname='García',
+                phone='+34699999999',
+                language='es',
+                token=None,  # No token from Airtable
+                status=AirtableStatus.PENDING,
+                rsvp_date=None,
+                adults_count=None,
+                children_count=None,
+                hotel=None,
+                dietary_notes=None,
+                transport_church=False,
+                transport_reception=False,
+                transport_hotel=False,
+                link_sent=None,
+                reminder_1=None,
+                reminder_2=None,
+                reminder_3=None,
+                reminder_4=None,
+                personal_message=None,
+                preboda_invited=False,
+            )
+            
+            service = AirtableService()
+            
+            # Mock the table.update call to verify token is pushed to Airtable
+            mock_table = MagicMock()
+            service._table = mock_table
+            
+            local_guest = service.sync_guest_to_local_db(airtable_guest)
+            
+            # Guest should have a generated token
+            assert local_guest.token is not None
+            assert len(local_guest.token) > 0
+            assert local_guest.name == 'No Token Guest'
+            
+            # Verify token was pushed back to Airtable
+            mock_table.update.assert_called_once_with(
+                'recNoToken123',
+                {'Token': local_guest.token}
+            )
+            
+            # Clean up
+            db.session.delete(local_guest)
+            db.session.commit()
 
 class TestSyncAllToLocalDb:
     """Test bulk sync operations including delete functionality."""
