@@ -271,13 +271,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Validate transport and hotel inputs
     function validateTransportHotel() {
-        let needsHotel = false;
-
-        transportCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                needsHotel = true;
-            }
-        });
+        const transportToHotel = document.getElementById('transport_to_hotel');
+        const needsHotel = transportToHotel && transportToHotel.checked;
 
         if (needsHotel && hotelInput) {
             hotelInput.required = true;
