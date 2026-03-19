@@ -127,6 +127,8 @@ class RSVPService:
             # Update basic attendance
             is_attending = form_data.get('is_attending') == 'yes'
             rsvp.is_attending = is_attending
+            rsvp.is_cancelled = False          # ← clears the stale cancellation
+            rsvp.cancellation_date = None
             
             # Process pre-boda attendance (only if guest is invited)
             preboda_value = form_data.get('preboda_attending')
