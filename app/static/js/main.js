@@ -163,12 +163,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (todayDateOnly >= weddingDayDateOnly) {
-    const prebodaCard = document.querySelector('[data-target="preboda"]');
-    const prebodaModal = document.getElementById('preboda-modal');
+        const prebodaCard = document.querySelector('[data-target="preboda"]');
+        const prebodaModal = document.getElementById('preboda-modal');
 
-    if (prebodaCard) prebodaCard.style.display = 'none';
-    if (prebodaModal) prebodaModal.remove();
-}
+        if (prebodaCard) prebodaCard.style.display = 'none';
+        if (prebodaModal) prebodaModal.remove();
+    }
 
 
 
