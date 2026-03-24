@@ -33,6 +33,73 @@ class TestMainRoutes:
         assert b'>EN</a>' in response.data
         assert b'>ES</a>' in response.data
 
+    def test_index_passes_rsvp_to_template(self, client, app, sample_guest, sample_rsvp):
+        """Test that the index route passes the rsvp object when a guest is in session."""
+        with app.app_context():
+            client.get(f'/?token={sample_guest.token}')
+            response = client.get('/')
+            assert response.status_code == 200
+
+    def test_preboda_card_shown_when_attending(self, client, app):
+        """Preboda card is visible only when guest is invited AND confirmed preboda attendance."""
+        with app.app_context():
+            import secrets
+            guest = Guest(
+                name='Test Preboda Guest',
+                phone='555-PRE1',
+                token=secrets.token_urlsafe(32),
+                preboda_invited=True
+            )
+            db.session.add(guest)
+            db.session.commit()
+
+            rsvp = RSVP(
+                guest_id=guest.id,
+                is_attending=True,
+                preboda_attending=True
+            )
+            db.session.add(rsvp)
+            db.session.commit()
+
+            client.get(f'/?token={guest.token}')
+            response = client.get('/')
+            assert response.status_code == 200
+            assert b'preboda-modal' in response.data
+
+            db.session.delete(rsvp)
+            db.session.delete(guest)
+            db.session.commit()
+
+    def test_preboda_card_hidden_when_not_attending(self, client, app):
+        """Preboda card must NOT appear if guest declined the pre-wedding party."""
+        with app.app_context():
+            import secrets
+            guest = Guest(
+                name='Test Preboda Declined',
+                phone='555-PRE2',
+                token=secrets.token_urlsafe(32),
+                preboda_invited=True
+            )
+            db.session.add(guest)
+            db.session.commit()
+
+            rsvp = RSVP(
+                guest_id=guest.id,
+                is_attending=True,
+                preboda_attending=False
+            )
+            db.session.add(rsvp)
+            db.session.commit()
+
+            client.get(f'/?token={guest.token}')
+            response = client.get('/')
+            assert response.status_code == 200
+            assert b'preboda-modal' not in response.data
+
+            db.session.delete(rsvp)
+            db.session.delete(guest)
+            db.session.commit()
+
 class TestRSVPRoutes:
     def test_rsvp_form_with_valid_token(self, client, sample_guest):
         """Test the RSVP form with a valid token."""
