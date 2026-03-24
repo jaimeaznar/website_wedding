@@ -162,6 +162,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (dresscodeModal) dresscodeModal.remove();
     }
 
+    if (todayDateOnly >= weddingDayDateOnly) {
+        const prebodaCard = document.querySelector('[data-target="preboda"]');
+        const prebodaModal = document.getElementById('preboda-modal');
+
+        if (prebodaCard) prebodaCard.style.display = 'none';
+        if (prebodaModal) prebodaModal.remove();
+    }
+
+
+
     // ========================================
     // COUNTDOWN TIMER
     // CHANGED: Moved entirely from home.html inline script
