@@ -64,6 +64,15 @@
         </div>
         {% endif %}
 
+        {% if guest and guest.preboda_invited and rsvp and rsvp.preboda_attending %}
+        <div class="feature-card clickable-card" data-target="preboda">
+            <div class="feature-card-content">
+                <i class="fas fa-glass-cheers feature-card-icon"></i>
+                <h3 class="feature-card-title" data-translate="preboda.title">Pre-Wedding Party</h3>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="feature-card clickable-card" data-target="schedule">
             <div class="feature-card-content">
                 <i class="fas fa-clock feature-card-icon"></i>
@@ -1345,6 +1354,31 @@
         </div>
     </div>
 </div>
+
+<!-- Pre-Wedding Party Modal - Only for invited guests who confirmed attendance -->
+{% if guest and guest.preboda_invited and rsvp and rsvp.preboda_attending %}
+<div id="preboda-modal" class="fullscreen-modal">
+    <div class="modal-content-wrapper">
+        <div class="modal-header">
+            <h2>🎉 <span data-translate="preboda.title">Pre-Wedding Party</span></h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="preboda-details">
+                <p><i class="fas fa-calendar me-2"></i><strong data-translate="preboda.date.label">Date:</strong> <span data-translate="preboda.date.value">June 5th, 2026</span></p>
+                <p><i class="fas fa-clock me-2"></i><strong data-translate="preboda.time.label">Time:</strong> 20:00</p>
+                <p><i class="fas fa-map-marker-alt me-2"></i><strong data-translate="preboda.venue.label">Venue:</strong> Casa Palacchio</p>
+                <p><i class="fas fa-location-arrow me-2"></i><strong data-translate="preboda.address.label">Address:</strong> C. Cta. de la Compañía, Centro-Casco Antiguo, 10003 Cáceres</p>
+                <p>
+                    <a href="https://maps.app.goo.gl/HNAHDx6jUVGySM3i8" target="_blank" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-map me-1"></i><span data-translate="preboda.map.link">View on Google Maps</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <!-- CHANGED: Copy IBAN/Swift scripts kept here as they are specific to this page -->
 <script>

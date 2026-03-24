@@ -34,9 +34,11 @@ def index():
                 # Invalid token in session, clear it
                 session.pop('guest_token', None)
     
+    rsvp = guest.rsvp if guest else None
+    
     try:
         logger.debug("Attempting to render home.html")
-        return render_template('home.html', guest=guest)
+        return render_template('home.html', guest=guest, rsvp=rsvp)
     except Exception as e:
         logger.error(f"Error rendering template: {str(e)}")
         raise
