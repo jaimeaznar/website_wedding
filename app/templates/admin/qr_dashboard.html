@@ -196,17 +196,19 @@
     function startPolling(jobId, total) {
         const statusBase   = '/admin/qr/download-all-docx/status/';
         const downloadBase = '/admin/qr/download-all-docx/download/';
+        let completed = false;
 
         pollTimer = setInterval(function () {
             fetch(statusBase + jobId)
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
-                    if (data.error && !data.status) { onError(data.error); return; }
+                    if (data.error && !data.status) { if (!completed) onError(data.error); return; }
 
                     const done = Math.round((data.progress / 100) * (data.total || total));
                     setProgress(data.progress, done, data.total || total);
 
                     if (data.status === 'done') {
+                        completed = true;
                         stopPolling();
                         statusTxt.textContent = 'All done! Your download will start automatically…';
                         bar.classList.remove('progress-bar-animated');
