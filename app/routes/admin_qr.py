@@ -199,7 +199,8 @@ def _generate_guest_docx(name: str, surname, rsvp_url: str) -> BytesIO:
     title_para.paragraph_format.space_before = Pt(0)
     title_para.paragraph_format.space_after = Pt(4)
     title_run = title_para.add_run("Confirmaci\u00f3n de Asistencia")
-    title_run.font.size = Pt(9)
+    title_run.font.name = "Luxurious Script"
+    title_run.font.size = Pt(16)
     title_run.font.bold = True
 
     # 2. QR code (34 mm wide, centred)
@@ -217,7 +218,9 @@ def _generate_guest_docx(name: str, surname, rsvp_url: str) -> BytesIO:
     name_para.paragraph_format.space_after = Pt(0)
     full_name = f"{name} {surname}" if surname else name
     name_run = name_para.add_run(full_name)
+    name_run.font.name = "Luxurious Script"
     name_run.font.size = Pt(9)
+    name_run.font.bold = False
 
     buf = BytesIO()
     doc.save(buf)
