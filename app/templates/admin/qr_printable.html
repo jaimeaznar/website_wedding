@@ -162,7 +162,7 @@
         <div class="qr-item">
             <img src="{{ url_for('admin_qr.preview_qr', guest_id=guest.id) }}" 
                  alt="QR for {{ guest.name }}">
-            <div class="name">{{ guest.name }}</div>
+            <div class="name">{{ guest.name }} {{ guest.surname or '' }}</div>
             <div class="instruction">Scan to RSVP</div>
         </div>
         {% endfor %}
@@ -171,7 +171,7 @@
     <!-- Footer -->
     <div class="footer">
         Generated {{ now().strftime('%Y-%m-%d %H:%M') if now is defined else '' }} • 
-        {{ guests|length }} guests • 
+        {{ guests|length }} guests (pending &amp; confirmed) • 
         wedding.aznarroa.com
     </div>
 </body>
