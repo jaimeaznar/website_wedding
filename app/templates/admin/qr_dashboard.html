@@ -130,13 +130,14 @@
 </div>
 
 <!-- DOCX Bulk Download Progress Modal -->
-<div class="modal fade" id="docxProgressModal" tabindex="-1" aria-labelledby="docxProgressLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="docxProgressModal" tabindex="-1" aria-labelledby="docxProgressLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="docxProgressLabel">
                     <i class="fas fa-file-word me-2"></i>Generating DOCX Files
                 </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="docx-modal-close"></button>
             </div>
             <div class="modal-body">
                 <p class="text-muted mb-3" id="docx-status-text">Preparing files…</p>
@@ -158,12 +159,14 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
 <script>
 (function () {
     'use strict';
 
     const btn       = document.getElementById('btn-download-all-docx');
-    const modal     = new bootstrap.Modal(document.getElementById('docxProgressModal'));
     const bar       = document.getElementById('docx-progress-bar');
     const statusTxt = document.getElementById('docx-status-text');
     const countTxt  = document.getElementById('docx-count-text');
@@ -222,6 +225,7 @@
     }
 
     btn.addEventListener('click', function () {
+        const modal     = new bootstrap.Modal(document.getElementById('docxProgressModal'));
         // Reset modal state
         bar.style.width = '0%';
         bar.textContent = '0%';
@@ -252,5 +256,4 @@
     });
 }());
 </script>
-
 {% endblock %}
