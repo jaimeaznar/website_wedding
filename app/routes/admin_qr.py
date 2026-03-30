@@ -78,10 +78,19 @@ def generate_qr_code(url: str, format: str = 'png', size: int = 10) -> BytesIO:
 @bp.route('/')
 @admin_required
 def qr_dashboard():
-    """Display QR code dashboard with all guests."""
+    """Display QR code dashboard with pending and confirmed guests only."""
     from app.models.guest import Guest
-    
-    guests = Guest.query.order_by(Guest.name).all()
+    from app.models.rsvp import RSVP
+    from app import db
+
+    all_guests = Guest.query.order_by(Guest.name).all()
+    total_count = len(all_guests)
+
+    # Only show guests who are pending (no RSVP yet) or confirmed (attending, not cancelled)
+    guests = [
+        g for g in all_guests
+        if g.rsvp is None or (g.rsvp.is_attending and not g.rsvp.is_cancelled)
+    ]
     
     # Generate RSVP URLs for each guest
     guest_data = []
@@ -96,7 +105,7 @@ def qr_dashboard():
             'rsvp_url': rsvp_url,
         })
     
-    return render_template('admin/qr_dashboard.html', guests=guest_data)
+    return render_template('admin/qr_dashboard.html', guests=guest_data, total_count=total_count)
 
 
 @bp.route('/download/<int:guest_id>')
@@ -155,10 +164,16 @@ def preview_qr(guest_id):
 @bp.route('/download-all/<format>')
 @admin_required
 def download_all_qr(format='png'):
-    """Download all QR codes as a ZIP file."""
+    """Download all QR codes as a ZIP file (pending and confirmed guests only)."""
     from app.models.guest import Guest
-    
-    guests = Guest.query.order_by(Guest.name).all()
+
+    all_guests = Guest.query.order_by(Guest.name).all()
+
+    # Only include guests who are pending (no RSVP) or confirmed (attending, not cancelled)
+    guests = [
+        g for g in all_guests
+        if g.rsvp is None or (g.rsvp.is_attending and not g.rsvp.is_cancelled)
+    ]
     
     # Create ZIP file in memory
     zip_buffer = BytesIO()
@@ -190,17 +205,24 @@ def download_all_qr(format='png'):
 @bp.route('/printable')
 @admin_required
 def printable_sheet():
-    """Generate a printable page with all QR codes and names."""
+    """Generate a printable page with QR codes for pending and confirmed guests."""
     from app.models.guest import Guest
-    
-    guests = Guest.query.order_by(Guest.name).all()
-    
+
+    all_guests = Guest.query.order_by(Guest.name).all()
+
+    # Only include guests who are pending (no RSVP) or confirmed (attending, not cancelled)
+    guests = [
+        g for g in all_guests
+        if g.rsvp is None or (g.rsvp.is_attending and not g.rsvp.is_cancelled)
+    ]
+
     guest_data = []
     for guest in guests:
         rsvp_url = url_for('main.index', token=guest.token, _external=True)
         guest_data.append({
             'id': guest.id,
             'name': guest.name,
+            'surname': guest.surname,
             'rsvp_url': rsvp_url,
         })
     
