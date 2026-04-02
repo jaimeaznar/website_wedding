@@ -339,13 +339,16 @@ class PDFService:
                                 spaceAfter=5)
                 ))
                 
-                menu_data = [['Child Name', 'Parent/Guardian', 'Contact']]
+                
+                cell_style = ParagraphStyle('cell', parent=normal_style, fontSize=9, leading=11)
+                header_style = ParagraphStyle('header', parent=normal_style, fontSize=10, textColor=colors.whitesmoke, fontName='Helvetica-Bold')
+                menu_data = [[Paragraph('Child Name', header_style), Paragraph('Parent/Guardian', header_style), Paragraph('Contact', header_style)]]
                 for child in sorted(children_menu_data['with_menu'], key=lambda x: x['name']):
                     menu_data.append([
-                        child['name'],
-                        child['parent'],
-                        child['phone'] or '-'
-                    ])
+                        Paragraph(child['name'], cell_style),
+                        Paragraph(child['parent'], cell_style),
+                        Paragraph(child['phone'] or '-', cell_style)
+    ])
                 
                 menu_table = Table(menu_data, colWidths=[2.2 * inch, 2.2 * inch, 1.6 * inch])
                 menu_table.setStyle(TableStyle([
@@ -374,13 +377,15 @@ class PDFService:
                                 spaceAfter=5)
                 ))
                 
-                no_menu_data = [['Child Name', 'Parent/Guardian', 'Contact']]
+                cell_style = ParagraphStyle('cell', parent=normal_style, fontSize=9, leading=11)
+                header_style = ParagraphStyle('header', parent=normal_style, fontSize=10, textColor=colors.whitesmoke, fontName='Helvetica-Bold')
+                no_menu_data = [[Paragraph('Child Name', header_style), Paragraph('Parent/Guardian', header_style), Paragraph('Contact', header_style)]]
                 for child in sorted(children_menu_data['no_menu'], key=lambda x: x['name']):
                     no_menu_data.append([
-                        child['name'],
-                        child['parent'],
-                        child['phone'] or '-'
-                    ])
+                        Paragraph(child['name'], cell_style),
+                        Paragraph(child['parent'], cell_style),
+                        Paragraph(child['phone'] or '-', cell_style)
+    ])
                 
                 no_menu_table = Table(no_menu_data, colWidths=[2.2 * inch, 2.2 * inch, 1.6 * inch])
                 no_menu_table.setStyle(TableStyle([
