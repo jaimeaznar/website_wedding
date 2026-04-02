@@ -317,13 +317,13 @@ class TestInvalidDateScenarios:
             assert rsvp.is_editable is True
             
             # Simulate RSVP created 23 hours ago (should still be editable)
-            rsvp.created_at = datetime.now() - timedelta(hours=23, minutes=59)
+            rsvp.created_at = datetime.utcnow() - timedelta(hours=23, minutes=59)
             rsvp.testing_24h_check = True  # Use testing flag
             db.session.commit()
             assert rsvp.is_editable is True
             
             # Simulate RSVP created 25 hours ago (should not be editable)
-            rsvp.created_at = datetime.now() - timedelta(hours=25)
+            rsvp.created_at = datetime.utcnow() - timedelta(hours=25)
             db.session.commit()
             assert rsvp.is_editable is False
     
@@ -338,7 +338,7 @@ class TestInvalidDateScenarios:
             # Create RSVP more than 24 hours ago
             form_data = {'is_attending': 'yes'}
             _, _, rsvp = RSVPService.create_or_update_rsvp(guest, form_data)
-            rsvp.created_at = datetime.now() - timedelta(days=2)
+            rsvp.created_at = datetime.utcnow() - timedelta(days=2)
             db.session.commit()
             
             # Set wedding date to 8 days from now (within cutoff)
