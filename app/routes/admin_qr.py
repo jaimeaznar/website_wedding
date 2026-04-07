@@ -140,7 +140,7 @@ def generate_qr_code(url: str, format: str = "png", size: int = 10) -> BytesIO:
 
 def _generate_guest_docx(name: str, surname, rsvp_url: str) -> BytesIO:
     """
-    Generate an A7 landscape Word document for a single guest.
+    Generate an A6 landscape Word document for a single guest.
 
     Layout (vertically and horizontally centred):
         "Confirmacion de Asistencia"
@@ -169,12 +169,12 @@ def _generate_guest_docx(name: str, surname, rsvp_url: str) -> BytesIO:
         para._element.getparent().remove(para._element)
 
     # ------------------------------------------------------------------
-    # Page: A7 landscape (ISO 216)
+    # Page: A6 landscape (ISO 216)
     # python-docx uses actual page dimensions; width > height = landscape.
     # ------------------------------------------------------------------
     section = doc.sections[0]
-    section.page_width = Mm(105)   # long edge  = landscape width
-    section.page_height = Mm(74)   # short edge = landscape height
+    section.page_width = Mm(148)   # long edge  = landscape width
+    section.page_height = Mm(105)   # short edge = landscape height
     section.orientation = WD_ORIENT.LANDSCAPE
 
     # Margins: 6 mm all sides
@@ -498,4 +498,133 @@ def download_all_docx_file(job_id):
         mimetype="application/zip",
         as_attachment=True,
         download_name="wedding_invitations_docx.zip",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Route: Bulk PDF download — all guests, one per page, A6 landscape
+# Synchronous: ReportLab generates ~149 pages in <2 s, no async needed.
+# ---------------------------------------------------------------------------
+ 
+def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
+    """
+    Generate a single multi-page PDF with one A6 landscape card per guest.
+ 
+    Layout per page (all centred vertically and horizontally):
+        "Confirmación de Asistencia"  — Luxury Script-Bold 16pt
+        [QR code image]               — 80mm wide
+        Name Surname                  — Luxury Script 11pt
+ 
+    Args:
+        guests_data: list of dicts with keys name, surname, rsvp_url
+ 
+    Returns:
+        BytesIO buffer positioned at offset 0.
+    """
+    from reportlab.lib.pagesizes import A6, landscape
+    from reportlab.lib.units import mm
+    from reportlab.lib.styles import ParagraphStyle
+    from reportlab.lib.enums import TA_CENTER
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
+    from reportlab.lib import colors
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    import os
+
+    font_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'fonts', 'LuxuriousScript-Regular.ttf')
+    pdfmetrics.registerFont(TTFont('LuxuriousScript', font_path))
+ 
+    page_w, page_h = landscape(A6)  # 419.5 x 297.6 pt  (148mm x 105mm)
+    margin = 8 * mm
+ 
+    buf = BytesIO()
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=landscape(A6),
+        leftMargin=margin,
+        rightMargin=margin,
+        topMargin=margin,
+        bottomMargin=margin,
+    )
+ 
+    title_style = ParagraphStyle(
+        "title",
+        fontName="LuxuriousScript",
+        fontSize=16,
+        leading=24,
+        alignment=TA_CENTER,
+        textColor=colors.black,
+        spaceAfter=6 * mm,
+    )
+    name_style = ParagraphStyle(
+        "name",
+        fontName="LuxuriousScript",
+        fontSize=11,
+        leading=14,
+        alignment=TA_CENTER,
+        textColor=colors.black,
+        spaceBefore=6 * mm,
+    )
+ 
+    content_width = page_w - 2 * margin
+    qr_size = 80 * mm  # QR image width (and height — it's square)
+ 
+    story = []
+    total = len(guests_data)
+ 
+    for i, guest in enumerate(guests_data):
+        # --- QR code PNG ---
+        qr_buf = generate_qr_code(guest["rsvp_url"], format="png", size=10)
+        qr_image = Image(qr_buf, width=qr_size, height=qr_size)
+        qr_image.hAlign = "CENTER"
+ 
+        # --- Full name ---
+        full_name = f"{guest['name']} {guest['surname']}" if guest["surname"] else guest["name"]
+ 
+        # Vertical centering: wrap everything in a table-less spacer approach.
+        # Total content height ≈ 20 (title) + 6 (gap) + qr_size + 6 (gap) + 14 (name)
+        content_h = 20 + 6 * mm + qr_size + 6 * mm + 14
+        top_spacer = (page_h - 2 * margin - content_h) / 2
+        if top_spacer > 0:
+            story.append(Spacer(1, top_spacer))
+ 
+        story.append(Paragraph("Confirmaci\u00f3n de Asistencia", title_style))
+        story.append(qr_image)
+        story.append(Paragraph(full_name, name_style))
+ 
+        # Page break between guests, not after the last one
+        if i < total - 1:
+            story.append(PageBreak())
+ 
+    doc.build(story)
+    buf.seek(0)
+    return buf
+ 
+ 
+@bp.route("/download-pdf")
+@admin_required
+def download_all_pdf():
+    """
+    Download a single PDF with one A6 landscape QR card per guest
+    (pending and confirmed only).
+    """
+    from app.models.guest import Guest
+ 
+    all_guests = Guest.query.order_by(Guest.name).all()
+    guests_data = []
+    for g in _filter_guests(all_guests):
+        rsvp_url = url_for("main.index", token=g.token, _external=True)
+        guests_data.append({
+            "name":    g.name,
+            "surname": g.surname,
+            "rsvp_url": rsvp_url,
+        })
+ 
+    pdf_buf = _generate_all_guests_pdf(guests_data)
+ 
+    return send_file(
+        pdf_buf,
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name="wedding_invitations.pdf",
     )
