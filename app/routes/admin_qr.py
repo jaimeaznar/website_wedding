@@ -554,7 +554,7 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
         leading=24,
         alignment=TA_CENTER,
         textColor=colors.black,
-        spaceAfter=6 * mm,
+        spaceAfter=0 * mm,
     )
     name_style = ParagraphStyle(
         "name",
@@ -563,11 +563,11 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
         leading=14,
         alignment=TA_CENTER,
         textColor=colors.black,
-        spaceBefore=6 * mm,
+        spaceBefore=0 * mm,
     )
  
     content_width = page_w - 2 * margin
-    qr_size = 80 * mm  # QR image width (and height — it's square)
+    qr_size = 55 * mm  # QR image width (and height — it's square)
  
     story = []
     total = len(guests_data)
@@ -583,13 +583,15 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
  
         # Vertical centering: wrap everything in a table-less spacer approach.
         # Total content height ≈ 20 (title) + 6 (gap) + qr_size + 6 (gap) + 14 (name)
-        content_h = 20 + 6 * mm + qr_size + 6 * mm + 14
-        top_spacer = (page_h - 2 * margin - content_h) / 2
-        if top_spacer > 0:
-            story.append(Spacer(1, top_spacer))
- 
+        gap = 5 * mm
+        content_h = 20 + gap + qr_size + gap + 14
+        top_spacer = max((page_h - 2 * margin - content_h) / 2, 0)
+
+        story.append(Spacer(1, top_spacer))
         story.append(Paragraph("Confirmaci\u00f3n de Asistencia", title_style))
+        story.append(Spacer(1, gap))
         story.append(qr_image)
+        story.append(Spacer(1, gap))
         story.append(Paragraph(full_name, name_style))
  
         # Page break between guests, not after the last one
