@@ -200,7 +200,7 @@ def _generate_guest_docx(name: str, surname, rsvp_url: str) -> BytesIO:
     title_para.paragraph_format.space_after = Pt(4)
     title_run = title_para.add_run("Confirmaci\u00f3n de Asistencia")
     title_run.font.name = "Luxurious Script"
-    title_run.font.size = Pt(16)
+    title_run.font.size = Pt(24)
     title_run.font.bold = True
 
     # 2. QR code (34 mm wide, centred)
@@ -219,7 +219,7 @@ def _generate_guest_docx(name: str, surname, rsvp_url: str) -> BytesIO:
     full_name = f"{name} {surname}" if surname else name
     name_run = name_para.add_run(full_name)
     name_run.font.name = "Luxurious Script"
-    name_run.font.size = Pt(9)
+    name_run.font.size = Pt(16)
     name_run.font.bold = False
 
     buf = BytesIO()
@@ -521,7 +521,7 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
     Returns:
         BytesIO buffer positioned at offset 0.
     """
-    from reportlab.lib.pagesizes import A6, landscape
+    from reportlab.lib.pagesizes import A6,A7, landscape
     from reportlab.lib.units import mm
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.lib.enums import TA_CENTER
@@ -534,13 +534,13 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
     font_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'fonts', 'LuxuriousScript-Regular.ttf')
     pdfmetrics.registerFont(TTFont('LuxuriousScript', font_path))
  
-    page_w, page_h = landscape(A6)  # 419.5 x 297.6 pt  (148mm x 105mm)
-    margin = 8 * mm
+    page_w, page_h = landscape(A7)  # 419.5 x 297.6 pt  (148mm x 105mm)
+    margin = 12.7 * mm
  
     buf = BytesIO()
     doc = SimpleDocTemplate(
         buf,
-        pagesize=landscape(A6),
+        pagesize=landscape(A7),
         leftMargin=margin,
         rightMargin=margin,
         topMargin=margin,
@@ -550,8 +550,8 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
     title_style = ParagraphStyle(
         "title",
         fontName="LuxuriousScript",
-        fontSize=16,
-        leading=24,
+        fontSize=24,
+        leading=28,
         alignment=TA_CENTER,
         textColor=colors.black,
         spaceAfter=0 * mm,
@@ -559,15 +559,15 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
     name_style = ParagraphStyle(
         "name",
         fontName="LuxuriousScript",
-        fontSize=11,
-        leading=14,
+        fontSize=16,
+        leading=20,
         alignment=TA_CENTER,
         textColor=colors.black,
         spaceBefore=0 * mm,
     )
  
     content_width = page_w - 2 * margin
-    qr_size = 55 * mm  # QR image width (and height — it's square)
+    qr_size = 18 * mm  # QR image width (and height — it's square)
  
     story = []
     total = len(guests_data)
@@ -583,9 +583,9 @@ def _generate_all_guests_pdf(guests_data: list) -> BytesIO:
  
         # Vertical centering: wrap everything in a table-less spacer approach.
         # Total content height ≈ 20 (title) + 6 (gap) + qr_size + 6 (gap) + 14 (name)
-        gap = 5 * mm
-        content_h = 20 + gap + qr_size + gap + 14
-        top_spacer = max((page_h - 2 * margin - content_h) / 2, 0)
+        gap = 2 * mm
+        content_h = 17 + gap + qr_size + gap + 13
+        top_spacer = max((page_h - 2 * margin - content_h) / 4, 0)
 
         story.append(Spacer(1, top_spacer))
         story.append(Paragraph("Confirmaci\u00f3n de Asistencia", title_style))
