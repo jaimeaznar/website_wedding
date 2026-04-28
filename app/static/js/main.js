@@ -259,12 +259,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const minutes = spainTime.getMinutes();
         
         // Check if it's June 6, 2026
-        const isWeddingDay = (year === 2026 && month === 6 && day === 6);
+        const isWeddingDay = (year === 2026 && month === 5 && day === 6);
         
         // Check if time is between 18:30 and 19:30
         const currentMinutes = hours * 60 + minutes;
         const startTime = 18 * 60 + 45; // 18:30
-        const endTime = 19 * 60 + 30;   // 19:30
+        const endTime = 19 * 60 + 45;   // 19:30
         const isCorrectTime = (currentMinutes >= startTime && currentMinutes <= endTime);
         
         // Show modal if both conditions met and not already dismissed
@@ -302,8 +302,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const minutes = spainTime.getMinutes();
         
         // Check if it's June 6, 2026 (after 22:30) or June 7, 2026 (before 05:30)
-        const isWeddingNight = (year === 2026 && month === 6 && day === 6);
-        const isNextMorning = (year === 2026 && month === 6 && day === 7);
+        const isWeddingNight = (year === 2026 && month === 5 && day === 6);
+        const isNextMorning = (year === 2026 && month === 5 && day === 7);
         
         const currentMinutes = hours * 60 + minutes;
         const eveningStart = 22 * 60 + 30;  // 22:30
