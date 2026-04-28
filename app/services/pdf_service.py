@@ -22,6 +22,7 @@ from reportlab.pdfgen import canvas
 
 from app.services.admin_service import AdminService
 from app.services.rsvp_service import RSVPService
+from app.services.allergen_service import AllergenService
 
 logger = logging.getLogger(__name__)
 
@@ -494,6 +495,138 @@ class PDFService:
             'total_children': len(children_with_menu) + len(children_no_menu)
         }
     
+    @staticmethod
+    def generate_dietary_docx() -> bytes:
+        """
+        Generate dietary restrictions Word document for catering staff.
+
+        Layout: a single 4-column table (Nombre | Apellidos | Mesa | Restricciones)
+        listing every attending guest grouped with their plus-ones. The Mesa
+        column is left blank so the coordinator can write the table number by
+        hand on the printed copy.
+
+        Plus-ones inherit the main guest's surname so each family stays visually
+        grouped, and are tagged "(acompañante)" / "(acomp. N)" in the name
+        column so the catering team can tell them apart from the main invitee.
+
+        Returns:
+            DOCX file as bytes
+        """
+        logger.info("Generating dietary restrictions DOCX")
+
+        from docx import Document
+        from docx.shared import Cm
+        from docx.enum.text import WD_ALIGN_PARAGRAPH
+        from docx.enum.section import WD_ORIENT
+        from app.models.rsvp import RSVP, AdditionalGuest
+
+        document = Document()
+
+        # Landscape A4 with comfortable margins so a 4-col table reads well.
+        section = document.sections[0]
+        section.orientation = WD_ORIENT.LANDSCAPE
+        section.page_width, section.page_height = section.page_height, section.page_width
+        section.top_margin = Cm(1.5)
+        section.bottom_margin = Cm(1.5)
+        section.left_margin = Cm(1.5)
+        section.right_margin = Cm(1.5)
+
+        # Title block
+        wedding_title = current_app.config.get('WEDDING_TITLE', "Irene & Jaime's Wedding")
+        title = document.add_heading(wedding_title, level=0)
+        title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        subtitle = document.add_heading('Restricciones alimentarias', level=1)
+        subtitle.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        generated = document.add_paragraph(
+            f"Generado: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        )
+        generated.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+        # 4-column table: header row + one row per attendee.
+        table = document.add_table(rows=1, cols=4)
+        table.style = 'Table Grid'
+
+        column_widths = [Cm(5), Cm(6), Cm(2.5), Cm(12)]
+        headers = ['Nombre', 'Apellidos', 'Mesa', 'Restricciones']
+        header_cells = table.rows[0].cells
+        for cell, label, width in zip(header_cells, headers, column_widths):
+            cell.text = label
+            cell.width = width
+            for para in cell.paragraphs:
+                for run in para.runs:
+                    run.bold = True
+
+        # Pull every attending, non-cancelled RSVP. We sort in Python (rather
+        # than via SQL) so NULL surnames behave consistently across SQLite
+        # (tests) and Postgres (prod).
+        attending_rsvps = RSVP.query.filter_by(
+            is_attending=True,
+            is_cancelled=False,
+        ).all()
+        attending_rsvps.sort(
+            key=lambda r: (
+                (r.guest.surname or '').lower(),
+                (r.guest.name or '').lower(),
+            )
+        )
+
+        def _add_row(name: str, surname: str, restrictions: str) -> None:
+            row = table.add_row().cells
+            row[0].text = name
+            row[1].text = surname or ''
+            row[2].text = ''  # Mesa: filled in by hand
+            row[3].text = restrictions
+            for cell, width in zip(row, column_widths):
+                cell.width = width
+
+        for rsvp in attending_rsvps:
+            guest = rsvp.guest
+            family_surname = guest.surname or ''
+
+            # Build a per-RSVP map of restrictions in one query, keyed by the
+            # exact guest_name string used elsewhere in the system.
+            allergens_by_guest = AllergenService.get_allergens_for_rsvp(rsvp.id)
+
+            def _restrictions_for(person_name: str) -> str:
+                items = allergens_by_guest.get(person_name, [])
+                return ', '.join(a['name'] for a in items if a.get('name'))
+
+            # Main guest row
+            _add_row(
+                name=guest.name,
+                surname=family_surname,
+                restrictions=_restrictions_for(guest.name),
+            )
+
+            # Plus-one rows immediately after the main guest, preserving creation
+            # order so "plus one" / "plus two" stay consistent for the catering
+            # team across reprints.
+            plus_ones = (
+                AdditionalGuest.query
+                .filter_by(rsvp_id=rsvp.id)
+                .order_by(AdditionalGuest.id.asc())
+                .all()
+            )
+            multiple = len(plus_ones) > 1
+            for idx, plus_one in enumerate(plus_ones, start=1):
+                label = f"(acomp. {idx})" if multiple else "(acompañante)"
+                _add_row(
+                    name=f"{plus_one.name} {label}",
+                    surname=family_surname,  # inherit family surname for grouping
+                    restrictions=_restrictions_for(plus_one.name),
+                )
+
+        buffer = io.BytesIO()
+        document.save(buffer)
+        docx_data = buffer.getvalue()
+        buffer.close()
+
+        logger.info(f"Generated dietary DOCX: {len(docx_data)} bytes")
+        return docx_data
+
+
     @staticmethod
     def generate_transport_pdf() -> bytes:
         """

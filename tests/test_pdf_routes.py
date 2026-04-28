@@ -56,10 +56,10 @@ class TestPDFRoutes:
                 db.session.delete(guest_to_delete)
                 db.session.commit()
     
-    def test_dietary_pdf_route_requires_auth(self, client):
-        """Test that dietary PDF route requires authentication."""
-        response = client.get('/admin/reports/dietary/pdf')
-        
+    def test_dietary_docx_route_requires_auth(self, client):
+        """Test that dietary DOCX route requires authentication."""
+        response = client.get('/admin/reports/dietary/docx')
+
         # Should redirect to login
         assert response.status_code == 302
         assert '/admin/login' in response.location
@@ -80,19 +80,23 @@ class TestPDFRoutes:
         assert response.status_code == 302
         assert '/admin/login' in response.location
     
-    def test_dietary_pdf_download_with_auth(self, auth_client, app, sample_pdf_data):
-        """Test downloading dietary PDF with authentication."""
+    def test_dietary_docx_download_with_auth(self, auth_client, app, sample_pdf_data):
+        """Test downloading dietary DOCX with authentication."""
+        from docx import Document
+
         with app.app_context():
-            response = auth_client.get('/admin/reports/dietary/pdf')
-            
+            response = auth_client.get('/admin/reports/dietary/docx')
+
             assert response.status_code == 200
-            assert response.content_type == 'application/pdf'
+            assert response.content_type == (
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            )
             assert len(response.data) > 0
-            
-            # Verify it's a valid PDF
-            pdf_buffer = io.BytesIO(response.data)
-            reader = PdfReader(pdf_buffer)
-            assert len(reader.pages) > 0
+
+            # Verify it parses as a valid DOCX with the expected 4-col table
+            doc = Document(io.BytesIO(response.data))
+            assert len(doc.tables) >= 1
+            assert len(doc.tables[0].columns) == 4
     
     def test_transport_pdf_download_with_auth(self, auth_client, app, sample_pdf_data):
         """Test downloading transport PDF with authentication."""
@@ -108,15 +112,15 @@ class TestPDFRoutes:
             reader = PdfReader(pdf_buffer)
             assert len(reader.pages) > 0
     
-    def test_dietary_pdf_has_correct_filename(self, auth_client, app, sample_pdf_data):
-        """Test that dietary PDF has correct filename."""
+    def test_dietary_docx_has_correct_filename(self, auth_client, app, sample_pdf_data):
+        """Test that dietary DOCX has correct filename."""
         with app.app_context():
-            response = auth_client.get('/admin/reports/dietary/pdf')
-            
+            response = auth_client.get('/admin/reports/dietary/docx')
+
             content_disposition = response.headers.get('Content-Disposition')
             assert content_disposition is not None
             assert 'dietary_restrictions_' in content_disposition
-            assert '.pdf' in content_disposition
+            assert '.docx' in content_disposition
     
     def test_transport_pdf_has_correct_filename(self, auth_client, app, sample_pdf_data):
         """Test that transport PDF has correct filename."""
@@ -233,10 +237,10 @@ class TestPDFRoutes:
         """Test that dietary report page has download button."""
         with app.app_context():
             response = auth_client.get('/admin/reports/dietary')
-            
+
             assert response.status_code in [200, 302]  # May not be implemented yet
             if response.status_code == 200:
-                assert b'Download PDF' in response.data or b'download' in response.data.lower()
+                assert b'Download Word' in response.data or b'download' in response.data.lower()
     
     def test_transport_report_page_shows_download_button(self, auth_client, app, sample_pdf_data):
         """Test that transport report page has download button."""
@@ -256,11 +260,11 @@ class TestPDFRoutes:
             Guest.query.delete()
             db.session.commit()
             
-            # Should still generate PDFs without crashing
-            response = auth_client.get('/admin/reports/dietary/pdf')
+            # Should still generate documents without crashing
+            response = auth_client.get('/admin/reports/dietary/docx')
             assert response.status_code == 200
             assert len(response.data) > 0
-            
+
             response = auth_client.get('/admin/reports/transport/pdf')
             assert response.status_code == 200
             assert len(response.data) > 0
@@ -268,10 +272,10 @@ class TestPDFRoutes:
     def test_multiple_pdf_downloads_same_session(self, auth_client, app, sample_pdf_data):
         """Test downloading multiple PDFs in same session."""
         with app.app_context():
-            # Download dietary PDF
-            response1 = auth_client.get('/admin/reports/dietary/pdf')
+            # Download dietary DOCX
+            response1 = auth_client.get('/admin/reports/dietary/docx')
             assert response1.status_code == 200
-            
+
             # Download transport PDF
             response2 = auth_client.get('/admin/reports/transport/pdf')
             assert response2.status_code == 200
@@ -284,18 +288,21 @@ class TestPDFRoutes:
             assert len(response1.data) > 0
             assert len(response2.data) > 0
     
-    def test_pdf_content_matches_database(self, auth_client, app, sample_pdf_data):
-        """Test that PDF content matches database data."""
+    def test_docx_content_matches_database(self, auth_client, app, sample_pdf_data):
+        """Test that DOCX content matches database data."""
+        from docx import Document
+
         with app.app_context():
-            response = auth_client.get('/admin/reports/dietary/pdf')
-            
-            pdf_buffer = io.BytesIO(response.data)
-            reader = PdfReader(pdf_buffer)
-            
-            text = ''
-            for page in reader.pages:
-                text += page.extract_text()
-            
-            # Should contain our test guest
+            response = auth_client.get('/admin/reports/dietary/docx')
+
+            doc = Document(io.BytesIO(response.data))
+            text = ' '.join(
+                cell.text
+                for table in doc.tables
+                for row in table.rows
+                for cell in row.cells
+            )
+
+            # Should contain our test guest and their allergen
             assert 'PDF Route Test' in text
             assert 'Test Allergen PDF' in text

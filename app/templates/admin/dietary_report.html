@@ -7,18 +7,19 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Dietary Restrictions & Allergen Information</h1>
         <div>
-            <a href="{{ url_for('admin.download_dietary_pdf') }}" 
-               class="btn btn-danger btn-lg">
-                <i class="fas fa-file-pdf me-2"></i>Download PDF
+            <a href="{{ url_for('admin.download_dietary_docx') }}"
+               class="btn btn-primary btn-lg">
+                <i class="fas fa-file-word me-2"></i>Download Word
             </a>
         </div>
     </div>
-    
+
     <!-- Alert Box -->
     <div class="alert alert-info mb-4" role="alert">
         <i class="fas fa-info-circle me-2"></i>
-        <strong>For Venue Staff:</strong> Download the PDF version to provide to your catering team and waitstaff.
-        The PDF includes all allergen information formatted for easy reference during the event.
+        <strong>For Venue Staff:</strong> Download the Word document to share with the catering team.
+        It lists every attending guest (including plus-ones) in a single table with a blank "Mesa" column
+        so the coordinator can write each table number by hand.
     </div>
     
     <div class="card mb-4">
