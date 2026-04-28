@@ -186,40 +186,35 @@ def export_report():
 
 # ============= PDF EXPORT ROUTES =============
 
-@bp.route('/reports/dietary/pdf')
+@bp.route('/reports/dietary/docx')
 @admin_required
-def download_dietary_pdf():
-    """Download dietary restrictions report as PDF."""
+def download_dietary_docx():
+    """Download the catering dietary-restrictions report as a Word document."""
     try:
         from app.services.pdf_service import PDFService
         from flask import send_file
         import io
-        
-        logger.info("Admin requested dietary PDF download")
-        
-        # Generate PDF
-        pdf_data = PDFService.generate_dietary_pdf()
-        
-        # Create a file-like object
-        pdf_buffer = io.BytesIO(pdf_data)
-        pdf_buffer.seek(0)
-        
-        # Generate filename with date
-        filename = f"dietary_restrictions_{datetime.now().strftime('%Y%m%d')}.pdf"
-        
-        # Send file
-        return send_file(
-            pdf_buffer,
-            mimetype='application/pdf',
-            as_attachment=True,
-            download_name=filename
-        )
-        
-    except Exception as e:
-        logger.error(f"Error generating dietary PDF: {str(e)}", exc_info=True)
-        flash(f"Error generating PDF: {str(e)}", 'error')
-        return redirect(url_for('admin.dietary_report'))
 
+        logger.info("Admin requested dietary DOCX download")
+
+        docx_data = PDFService.generate_dietary_docx()
+
+        docx_buffer = io.BytesIO(docx_data)
+        docx_buffer.seek(0)
+
+        filename = f"dietary_restrictions_{datetime.now().strftime('%Y%m%d')}.docx"
+
+        return send_file(
+            docx_buffer,
+            mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            as_attachment=True,
+            download_name=filename,
+        )
+
+    except Exception as e:
+        logger.error(f"Error generating dietary DOCX: {str(e)}", exc_info=True)
+        flash(f"Error generating document: {str(e)}", 'error')
+        return redirect(url_for('admin.dietary_report'))
 
 @bp.route('/reports/transport/pdf')
 @admin_required

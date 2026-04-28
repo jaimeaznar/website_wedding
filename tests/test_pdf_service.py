@@ -1,6 +1,7 @@
 # tests/test_pdf_service.py
 import pytest
 import io
+from docx import Document
 from app import db
 from app.models.guest import Guest
 from app.models.rsvp import RSVP, AdditionalGuest
@@ -434,3 +435,218 @@ class TestPDFService:
             
             # Should have generation date
             assert 'Generated' in text or '202' in text  # Year format
+
+class TestDietaryDocx:
+    """Tests for generate_dietary_docx — the catering Word document with one
+    table row per attendee (main guests + plus-ones grouped together)."""
+
+    @pytest.fixture
+    def docx_sample(self, app):
+        """Setup covering every branch:
+          - Ana: main guest with 2 plus-ones (Luis, Sofía) -> "(acomp. N)" labels
+          - Juan: main guest with 1 plus-one (María) -> "(acompañante)" label
+          - Pedro: solo attendee, no restrictions
+          - Carmen: cancelled (must be excluded)
+          - Mario: declined (must be excluded)
+        """
+        with app.app_context():
+            allergens = {}
+            for name in ['Gluten', 'Frutos secos']:
+                a = Allergen.query.filter_by(name=name).first()
+                if not a:
+                    a = Allergen(name=name)
+                    db.session.add(a)
+                allergens[name] = a
+            db.session.flush()
+
+            created = []
+
+            # 1) Ana + 2 plus-ones; Sofía also has a custom restriction
+            ana = Guest(name='Ana', surname='Martínez Ruiz',
+                        phone='555-d1', token='tok-docx-1')
+            db.session.add(ana)
+            db.session.flush()
+            ana_rsvp = RSVP(guest_id=ana.id, is_attending=True)
+            db.session.add(ana_rsvp)
+            db.session.flush()
+            db.session.add(GuestAllergen(rsvp_id=ana_rsvp.id, guest_name='Ana',
+                                         allergen_id=allergens['Frutos secos'].id))
+            db.session.add(GuestAllergen(rsvp_id=ana_rsvp.id, guest_name='Ana',
+                                         custom_allergen='Vegana'))
+            luis = AdditionalGuest(rsvp_id=ana_rsvp.id, name='Luis')
+            sofia = AdditionalGuest(rsvp_id=ana_rsvp.id, name='Sofía')
+            db.session.add_all([luis, sofia])
+            db.session.flush()
+            db.session.add(GuestAllergen(rsvp_id=ana_rsvp.id, guest_name='Sofía',
+                                         custom_allergen='Lactosa'))
+            created.append(ana)
+
+            # 2) Juan + 1 plus-one
+            juan = Guest(name='Juan', surname='García López',
+                         phone='555-d2', token='tok-docx-2')
+            db.session.add(juan)
+            db.session.flush()
+            juan_rsvp = RSVP(guest_id=juan.id, is_attending=True)
+            db.session.add(juan_rsvp)
+            db.session.flush()
+            db.session.add(GuestAllergen(rsvp_id=juan_rsvp.id, guest_name='Juan',
+                                         allergen_id=allergens['Gluten'].id))
+            db.session.add(AdditionalGuest(rsvp_id=juan_rsvp.id, name='María'))
+            created.append(juan)
+
+            # 3) Pedro - solo, no restrictions
+            pedro = Guest(name='Pedro', surname='Sánchez Ruiz',
+                          phone='555-d3', token='tok-docx-3')
+            db.session.add(pedro)
+            db.session.flush()
+            db.session.add(RSVP(guest_id=pedro.id, is_attending=True))
+            created.append(pedro)
+
+            # 4) Carmen - cancelled, must NOT appear
+            carmen = Guest(name='Carmen', surname='Cancelada',
+                           phone='555-d4', token='tok-docx-4')
+            db.session.add(carmen)
+            db.session.flush()
+            db.session.add(RSVP(guest_id=carmen.id, is_attending=False,
+                                is_cancelled=True))
+            created.append(carmen)
+
+            # 5) Mario - declined, must NOT appear
+            mario = Guest(name='Mario', surname='Declinado',
+                          phone='555-d5', token='tok-docx-5')
+            db.session.add(mario)
+            db.session.flush()
+            db.session.add(RSVP(guest_id=mario.id, is_attending=False))
+            created.append(mario)
+
+            db.session.commit()
+
+            yield created
+
+            for g in created:
+                if Guest.query.get(g.id):
+                    db.session.delete(g)
+            db.session.commit()
+
+    # ----- helpers ---------------------------------------------------------
+
+    @staticmethod
+    def _open(docx_bytes):
+        return Document(io.BytesIO(docx_bytes))
+
+    @staticmethod
+    def _data_rows(table):
+        """Return list of (nombre, apellidos, mesa, restricciones) for non-header rows."""
+        return [
+            (r.cells[0].text, r.cells[1].text, r.cells[2].text, r.cells[3].text)
+            for r in table.rows[1:]
+        ]
+
+    # ----- tests -----------------------------------------------------------
+
+    def test_returns_valid_docx_bytes(self, app, docx_sample):
+        with app.app_context():
+            data = PDFService.generate_dietary_docx()
+            assert isinstance(data, bytes) and len(data) > 0
+            doc = self._open(data)
+            assert len(doc.tables) >= 1
+
+    def test_table_has_four_columns_and_correct_headers(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            table = doc.tables[0]
+            assert len(table.columns) == 4
+            header = [c.text for c in table.rows[0].cells]
+            assert header == ['Nombre', 'Apellidos', 'Mesa', 'Restricciones']
+
+    def test_main_guests_appear_with_their_surnames(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            rows = self._data_rows(doc.tables[0])
+            name_surname = {(n, s) for n, s, _, _ in rows}
+            assert ('Ana', 'Martínez Ruiz') in name_surname
+            assert ('Juan', 'García López') in name_surname
+            assert ('Pedro', 'Sánchez Ruiz') in name_surname
+
+    def test_excludes_cancelled_and_declined_guests(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            all_text = ' '.join(c.text for r in doc.tables[0].rows for c in r.cells)
+            assert 'Carmen' not in all_text
+            assert 'Cancelada' not in all_text
+            assert 'Mario' not in all_text
+            assert 'Declinado' not in all_text
+
+    def test_plus_ones_appear_immediately_after_main_guest_in_order(self, app, docx_sample):
+        """Family unit must stay together so the catering team reads one party at a time."""
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            names = [r.cells[0].text for r in doc.tables[0].rows[1:]]
+            ana_idx = names.index('Ana')
+            assert names[ana_idx + 1].startswith('Luis')
+            assert names[ana_idx + 2].startswith('Sofía')
+            juan_idx = names.index('Juan')
+            assert names[juan_idx + 1].startswith('María')
+
+    def test_single_plus_one_uses_acompanante_label(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            names = [r.cells[0].text for r in doc.tables[0].rows[1:]]
+            maria_rows = [n for n in names if n.startswith('María')]
+            assert len(maria_rows) == 1
+            assert '(acompañante)' in maria_rows[0]
+
+    def test_multiple_plus_ones_use_numbered_labels(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            names = [r.cells[0].text for r in doc.tables[0].rows[1:]]
+            assert any(n.startswith('Luis') and 'acomp. 1' in n for n in names)
+            assert any(n.startswith('Sofía') and 'acomp. 2' in n for n in names)
+
+    def test_plus_ones_inherit_main_guests_surname(self, app, docx_sample):
+        """Surname column shows the family surname so each party visually clusters."""
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            rows = self._data_rows(doc.tables[0])
+            surname_for = {n.split(' (')[0]: s for n, s, _, _ in rows}
+            assert surname_for['Luis'] == 'Martínez Ruiz'
+            assert surname_for['Sofía'] == 'Martínez Ruiz'
+            assert surname_for['María'] == 'García López'
+
+    def test_mesa_column_is_blank_for_every_data_row(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            for row in doc.tables[0].rows[1:]:
+                assert row.cells[2].text == ''
+
+    def test_restrictions_appear_against_the_correct_person(self, app, docx_sample):
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            rows = self._data_rows(doc.tables[0])
+            restr_for = {n.split(' (')[0]: r for n, _, _, r in rows}
+
+            assert 'Frutos secos' in restr_for['Ana']
+            assert 'Vegana' in restr_for['Ana']
+            assert 'Gluten' in restr_for['Juan']
+            assert 'Lactosa' in restr_for['Sofía']
+            # Plus-ones with no restrictions and main guests with no restrictions
+            # should not silently inherit anyone else's allergens
+            assert restr_for['Pedro'] == ''
+            assert restr_for['Luis'] == ''
+            assert restr_for['María'] == ''
+
+    def test_total_attendee_rows(self, app, docx_sample):
+        """Header + Ana + Luis + Sofía + Juan + María + Pedro = 7 rows."""
+        with app.app_context():
+            doc = self._open(PDFService.generate_dietary_docx())
+            assert len(doc.tables[0].rows) == 7
+
+    def test_does_not_crash_when_no_attendees(self, app):
+        """Empty database should yield a valid (header-only) document, not an exception."""
+        with app.app_context():
+            data = PDFService.generate_dietary_docx()
+            assert isinstance(data, bytes)
+            doc = self._open(data)
+            assert len(doc.tables) >= 1
+            # At minimum the header row exists
+            assert len(doc.tables[0].rows) >= 1
