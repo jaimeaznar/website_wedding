@@ -23,6 +23,8 @@ const translations = {
         'card.countdown': 'Countdown',
         'card.dresscode': 'Dress Code',
         'card.gifts': 'Gifts',
+        'card.parking': 'Parking',
+        'card.hairdressers': 'Hairdressers',
         
         // Countdown
         'countdown.days': 'Days',
@@ -328,6 +330,19 @@ const translations = {
         'gifts.bank.name': 'Account Name:',
         'gifts.copied': 'IBAN copied to clipboard!',
         'gifts.thanks': 'Thank you for your generosity and for being part of our special day!',
+        // Parking
+        'parking.title': 'Parking',
+        'parking.intro': 'Public car parks in central Cáceres, close to the cathedral and the bus pickup point.',
+        'parking.atbusstop': 'At the bus pickup point',
+        'parking.directions': 'Get Directions',
+        'parking.note.title': 'Tip:',
+        'parking.note.text': 'There is also free parking outside the old town walls.',
+
+        // Hairdressers
+        'hairdressers.title': 'Hairdressers',
+        'hairdressers.intro': 'If you would like to get your hair or makeup done before the wedding, here are some salons in the centre of Cáceres. We recommend booking in advance.',
+        'hairdressers.call': 'Call',
+        'hairdressers.directions': 'Get Directions',
 
         // Common actions
         'action.close': 'Close',
@@ -434,6 +449,8 @@ const translations = {
         'card.countdown': 'Cuenta Atrás',
         'card.dresscode': 'Código de Vestimenta',
         'card.gifts': 'Regalos',
+        'card.parking': 'Aparcamiento',
+        'card.hairdressers': 'Peluquerías',
         
         // Countdown
         'countdown.days': 'Días',
@@ -739,6 +756,19 @@ const translations = {
         'gifts.bank.name': 'Nombre de Cuenta:',
         'gifts.copied': '¡IBAN copiado al portapapeles!',
         'gifts.thanks': '¡Gracias por vuestra generosidad y por ser parte de nuestro día especial!',
+        // Parking
+        'parking.title': 'Aparcamiento',
+        'parking.intro': 'Aparcamientos públicos en el centro de Cáceres, cerca de la catedral y del punto de recogida del autobús.',
+        'parking.atbusstop': 'En el punto de recogida del autobús',
+        'parking.directions': 'Cómo llegar',
+        'parking.note.title': 'Consejo:',
+        'parking.note.text': 'También hay aparcamiento gratuito a las afueras del casco antiguo.',
+
+        // Hairdressers
+        'hairdressers.title': 'Peluquerías',
+        'hairdressers.intro': 'Si quieres arreglarte el pelo o maquillarte antes de la boda, aquí tienes algunas peluquerías en el centro de Cáceres. Te recomendamos reservar con antelación.',
+        'hairdressers.call': 'Llamar',
+        'hairdressers.directions': 'Cómo llegar',
 
         // Common actions
         'action.close': 'Cerrar',

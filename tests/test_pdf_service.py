@@ -7,7 +7,7 @@ from app.models.guest import Guest
 from app.models.rsvp import RSVP, AdditionalGuest
 from app.models.allergen import Allergen, GuestAllergen
 from app.services.pdf_service import PDFService
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 
 
 class TestPDFService:

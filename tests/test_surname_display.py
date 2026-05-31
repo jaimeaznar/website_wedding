@@ -16,7 +16,7 @@ from app.models.rsvp import RSVP, AdditionalGuest
 from app.models.allergen import Allergen, GuestAllergen
 from app.services.allergen_service import AllergenService
 from app.services.pdf_service import PDFService
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 
 
 class TestSurnameInAllergenService:
