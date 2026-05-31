@@ -268,7 +268,7 @@ class TestConfig(Config):
     
     # Use defaults for other values
     WEDDING_DATE = DEFAULT_CONFIG['WEDDING_DATE']
-    RSVP_DEADLINE = DEFAULT_CONFIG['RSVP_DEADLINE']
+    RSVP_DEADLINE = '2099-12-31'  # Far-future date so tests don't break after the real deadline passes
 
 
 # Configuration dictionary for easy access

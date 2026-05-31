@@ -19,6 +19,7 @@ class CustomTestConfig(TestConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SECRET_KEY = 'test-secret-key-for-testing-only'
+    RSVP_DEADLINE = '2099-12-31'
     
     # Generate a test password hash dynamically for testing
     # This ensures we're not committing actual password hashes
@@ -40,6 +41,11 @@ def app():
     """Create and configure a Flask app for testing."""
     # Create the app with the test config
     app = create_app(CustomTestConfig)
+    # Force-override deadline so tests run regardless of the date on the host machine.
+    # The class attribute override in CustomTestConfig should handle this, but the
+    # .env value can leak through depending on import order.
+    app.config['RSVP_DEADLINE'] = '2099-12-31'
+
     
     # Establish an application context
     with app.app_context():
