@@ -17,7 +17,7 @@ const translations = {
         // Home page cards
         'card.rsvp': 'RSVP',
         'card.schedule': 'Schedule',
-        'card.venue': 'Wedding Venue and Reception',
+        'card.venue': 'Wedding and Reception',
         'card.accommodation': 'Accommodation',
         'card.activities': 'Cáceres & Trujillo',
         'card.countdown': 'Countdown',
@@ -160,7 +160,7 @@ const translations = {
         'schedule.note.text': 'Transportation will be provided between the cathedral and reception venue. Please let us know if you need transportation when completing your RSVP.',
         'schedule.bus.location': 'Bus Stop: Plaza Luis Obispo Galarza',
         // Venue Modal
-        'venue.title': 'Wedding Venue and Reception',
+        'venue.title': 'Wedding and Reception',
         'venue.location': 'Location',
         'venue.getting.there': 'Getting There',
 
