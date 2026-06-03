@@ -264,6 +264,26 @@
                             <strong>05:00</strong>
                         </div>
                     </div>
+
+                    <!-- Return bus route image -->
+                    <div class="bus-route-image mt-3">
+                        <img src="{{ url_for('static', filename='img/return_bus_route.png') }}"
+                             alt="Return bus route" class="img-fluid rounded">
+                    </div>
+
+                    <!-- Return bus stops -->
+                    <p class="mb-2 mt-3" data-translate="schedule.bus.return.stops.title">The return buses stop at:</p>
+                    <div class="bus-stops">
+                        <a href="https://maps.app.goo.gl/vWt2vyA6cXEaWQ6c6" target="_blank" rel="noopener" class="bus-stop-link">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span data-translate="schedule.bus.return.stop1">Stop 1: Edificio Multiples</span>
+                        </a>
+                        <a href="https://maps.app.goo.gl/uaBKP8ZUe5XHVc2U6" target="_blank" rel="noopener" class="bus-stop-link">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span data-translate="schedule.bus.return.stop2">Stop 2: Gasolinera Mirat</span>
+                        </a>
+                    </div>
+
                     <p class="bus-warning mt-3 mb-2">
                         <i class="fas fa-exclamation-circle me-2"></i>
                         <span data-translate="schedule.bus.return.warning">Buses leave on time! Please be there 5 minutes early.</span>
@@ -1519,6 +1539,25 @@
                     <span class="time-value">05:00</span>
                     <span class="time-label" data-translate="bus.return.last">Last bus</span>
                 </div>
+            </div>
+
+            <!-- Return bus route image -->
+            <div class="bus-route-image mt-3 mb-3">
+                <img src="{{ url_for('static', filename='img/return_bus_route.png') }}"
+                     alt="Return bus route" class="img-fluid rounded">
+            </div>
+
+            <!-- Return bus stops -->
+            <p class="mb-2 mt-3" data-translate="schedule.bus.return.stops.title">The return buses stop at:</p>
+            <div class="bus-stops">
+                <a href="https://maps.app.goo.gl/vWt2vyA6cXEaWQ6c6" target="_blank" rel="noopener" class="bus-stop-link">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    <span data-translate="schedule.bus.return.stop1">Stop 1: Edificio Multiples</span>
+                </a>
+                <a href="https://maps.app.goo.gl/uaBKP8ZUe5XHVc2U6" target="_blank" rel="noopener" class="bus-stop-link">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    <span data-translate="schedule.bus.return.stop2">Stop 2: Gasolinera Mirat</span>
+                </a>
             </div>
 
             <div class="return-bus-warning mt-4 mb-3">

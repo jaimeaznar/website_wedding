@@ -170,6 +170,36 @@ document.addEventListener('DOMContentLoaded', function () {
         if (prebodaModal) prebodaModal.remove();
     }
 
+    // ========================================
+    // HIDE CARDS BASED ON SPANISH TIME (Wedding Day)
+    // ========================================
+    function hideCardAfterSpanishHour(targetHour, dataTarget, modalId) {
+        const now = testDate ? new Date(testDate) : new Date();
+        const spainTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));
+
+        const year = spainTime.getFullYear();
+        const month = spainTime.getMonth(); // 0-indexed (5 = June)
+        const day = spainTime.getDate();
+        const hours = spainTime.getHours();
+
+        // Only on the wedding day, June 6, 2026
+        const isWeddingDay = (year === 2026 && month === 5 && day === 6);
+        if (!isWeddingDay) return;
+
+        if (hours >= targetHour) {
+            const card = document.querySelector('[data-target="' + dataTarget + '"]');
+            const modal = document.getElementById(modalId);
+            if (card) card.style.display = 'none';
+            if (modal) modal.remove();
+        }
+    }
+
+    // Hairdressers card → removed after 16:00 Spanish time
+    hideCardAfterSpanishHour(16, 'hairdressers', 'hairdressers-modal');
+
+    // Wedding & reception (venue) card → removed after 21:00 Spanish time
+    hideCardAfterSpanishHour(21, 'venue', 'venue-modal');
+
 
 
     // ========================================
@@ -326,6 +356,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Check return bus modal on load
     checkReturnBusModal();
+
+    // Re-check every minute (so it appears/persists across the 22:30–05:30 window without a refresh)
+    setInterval(checkReturnBusModal, 60000);
     
     // ========================================
     // LANGUAGE CHANGE LISTENER
