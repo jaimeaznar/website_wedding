@@ -394,8 +394,12 @@ const translations = {
         'bus.directions': 'Get Directions',
 
         // Return bus schedule
+        // Return bus schedule
         'schedule.bus.return.title': 'Return Bus Schedule',
         'schedule.bus.return.description': 'Buses back to Cáceres hotels depart at:',
+        'schedule.bus.return.stops.title': 'The return buses stop at:',
+        'schedule.bus.return.stop1': 'Stop 1: Edificio Multiples',
+        'schedule.bus.return.stop2': 'Stop 2: Gasolinera Mirat',
         'schedule.bus.return.pickup': 'Pickup: Reception venue main entrance',
         'bus.return.title': 'Return Bus Schedule',
         'bus.return.message': 'Buses back to Cáceres hotels:',
@@ -820,8 +824,12 @@ const translations = {
         'bus.directions': 'Cómo Llegar',
 
         // Return bus schedule
+        // Return bus schedule
         'schedule.bus.return.title': 'Horario de Autobuses de Vuelta',
         'schedule.bus.return.description': 'Autobuses de vuelta a los hoteles de Cáceres:',
+        'schedule.bus.return.stops.title': 'Los autobuses de vuelta paran en:',
+        'schedule.bus.return.stop1': 'Parada 1: Edificio Multiples',
+        'schedule.bus.return.stop2': 'Parada 2: Gasolinera Mirat',
         'schedule.bus.return.pickup': 'Recogida: Entrada principal del lugar de celebración',
         'bus.return.title': 'Horario de Autobuses de Vuelta',
         'bus.return.message': 'Autobuses de vuelta a los hoteles de Cáceres:',
